@@ -2833,6 +2833,211 @@ export interface SnapshotInput {
   donnees: SnapshotInputDonnees;
 }
 
+export type FraisConfigInputAutresFraisItem = { [key: string]: unknown };
+
+export interface FraisConfigInput {
+  annee_scolaire_id?: string;
+  niveau?: string;
+  filiere_id?: string;
+  etablissement_id?: string;
+  frais_inscription?: number;
+  frais_scolarite_annuel?: number;
+  frais_tranche1?: number;
+  frais_tranche2?: number;
+  frais_tranche3?: number;
+  date_limite_tranche1?: string;
+  date_limite_tranche2?: string;
+  date_limite_tranche3?: string;
+  autres_frais?: FraisConfigInputAutresFraisItem[];
+}
+
+export type FraisConfigAutresFraisItem = { [key: string]: unknown };
+
+export interface FraisConfig {
+  id?: string;
+  etablissement_id?: string;
+  annee_scolaire_id?: string;
+  niveau?: string;
+  filiere_id?: string;
+  frais_inscription?: string;
+  frais_scolarite_annuel?: string;
+  frais_tranche1?: string;
+  frais_tranche2?: string;
+  frais_tranche3?: string;
+  date_limite_tranche1?: string;
+  date_limite_tranche2?: string;
+  date_limite_tranche3?: string;
+  autres_frais?: FraisConfigAutresFraisItem[];
+}
+
+export interface FraisConfigResponse {
+  success?: boolean;
+  data?: FraisConfig;
+}
+
+export type ScolariteEleveEnrichiStatut = typeof ScolariteEleveEnrichiStatut[keyof typeof ScolariteEleveEnrichiStatut];
+
+
+export const ScolariteEleveEnrichiStatut = {
+  en_regle: 'en_regle',
+  partiel: 'partiel',
+  impaye: 'impaye',
+} as const;
+
+export interface ScolariteEleveEnrichi {
+  id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_matricule?: string;
+  eleve_photo?: string;
+  classe_nom?: string;
+  annee_scolaire_id?: string;
+  frais_config_id?: string;
+  montant_total_du?: string;
+  montant_total_paye?: string;
+  montant_restant?: string;
+  inscription_payee?: boolean;
+  tranche1_payee?: boolean;
+  tranche2_payee?: boolean;
+  tranche3_payee?: boolean;
+  statut?: ScolariteEleveEnrichiStatut;
+  observations?: string;
+  frais_config?: FraisConfig;
+}
+
+export interface ScolariteEleveResponse {
+  success?: boolean;
+  data?: ScolariteEleveEnrichi;
+}
+
+export interface PaiementEnrichi {
+  id?: string;
+  numero_recu?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_matricule?: string;
+  montant?: string;
+  mode_paiement?: string;
+  type_paiement?: string;
+  date_paiement?: string;
+  reference_paiement?: string;
+  observations?: string;
+  annule?: boolean;
+  enregistre_par_nom?: string;
+}
+
+export type ScolariteEleveDetailResponseData = ScolariteEleveEnrichi & {
+  paiements?: PaiementEnrichi[];
+};
+
+export interface ScolariteEleveDetailResponse {
+  success?: boolean;
+  data?: ScolariteEleveDetailResponseData;
+}
+
+export type ScolariteStatsResponseDataParModePaiement = { [key: string]: unknown };
+
+export type ScolariteStatsResponseDataParMoisItem = { [key: string]: unknown };
+
+export type ScolariteStatsResponseDataParTranche = { [key: string]: unknown };
+
+export type ScolariteStatsResponseData = {
+  taux_recouvrement?: number;
+  montant_total_du?: number;
+  montant_total_paye?: number;
+  montant_total_restant?: number;
+  nb_en_regle?: number;
+  nb_partiel?: number;
+  nb_impaye?: number;
+  total_eleves?: number;
+  par_mode_paiement?: ScolariteStatsResponseDataParModePaiement;
+  par_mois?: ScolariteStatsResponseDataParMoisItem[];
+  par_tranche?: ScolariteStatsResponseDataParTranche;
+};
+
+export interface ScolariteStatsResponse {
+  success?: boolean;
+  data?: ScolariteStatsResponseData;
+}
+
+export interface PaiementInput {
+  eleve_id: string;
+  montant: number;
+  mode_paiement: string;
+  type_paiement: string;
+  date_paiement: string;
+  reference_paiement?: string;
+  observations?: string;
+  annee_scolaire_id?: string;
+}
+
+export type PaiementEnregistreResponseData = {
+  paiement?: PaiementEnrichi;
+  scolarite?: ScolariteEleveEnrichi;
+  numero_recu?: string;
+};
+
+export interface PaiementEnregistreResponse {
+  success?: boolean;
+  message?: string;
+  data?: PaiementEnregistreResponseData;
+}
+
+export type RecuResponseDataEleve = { [key: string]: unknown };
+
+export type RecuResponseDataPaiement = { [key: string]: unknown };
+
+export type RecuResponseDataScolarite = { [key: string]: unknown };
+
+export type RecuResponseData = {
+  numero_recu?: string;
+  date_paiement?: string;
+  eleve?: RecuResponseDataEleve;
+  paiement?: RecuResponseDataPaiement;
+  scolarite?: RecuResponseDataScolarite;
+  enregistre_par?: string;
+};
+
+export interface RecuResponse {
+  success?: boolean;
+  data?: RecuResponseData;
+}
+
+export type RapportCaisseResponseDataParMode = { [key: string]: unknown };
+
+export type RapportCaisseResponseDataParType = { [key: string]: unknown };
+
+export type RapportCaisseResponseData = {
+  paiements?: PaiementEnrichi[];
+  total?: number;
+  par_mode?: RapportCaisseResponseDataParMode;
+  par_type?: RapportCaisseResponseDataParType;
+};
+
+export interface RapportCaisseResponse {
+  success?: boolean;
+  data?: RapportCaisseResponseData;
+}
+
+export interface RelanceInput {
+  eleve_ids: string[];
+  type_relance: string;
+  motif?: string;
+}
+
+export type RelanceResponseData = {
+  envoyes?: number;
+  erreurs?: string[];
+};
+
+export interface RelanceResponse {
+  success?: boolean;
+  message?: string;
+  data?: RelanceResponseData;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -3208,4 +3413,110 @@ classe_id?: string;
 export type GetApiAnalyticsProfesseurParams = {
 trimestre?: number;
 };
+
+export type GetScolariteFraisListeParams = {
+annee_scolaire_id?: string;
+etablissement_id?: string;
+};
+
+export type GetScolariteFraisListe200 = {
+  success?: boolean;
+  data?: FraisConfig[];
+};
+
+export type GetScolariteFraisNiveauParams = {
+annee_scolaire_id?: string;
+etablissement_id?: string;
+};
+
+export type PostScolariteInitialiserBody = {
+  eleve_id: string;
+  annee_scolaire_id: string;
+  etablissement_id?: string;
+};
+
+export type PostScolariteInitialiserClasseBody = {
+  classe_id: string;
+  annee_scolaire_id: string;
+  etablissement_id?: string;
+};
+
+export type PostScolariteInitialiserClasse200Data = {
+  initialises?: number;
+  erreurs?: string[];
+};
+
+export type PostScolariteInitialiserClasse200 = {
+  success?: boolean;
+  data?: PostScolariteInitialiserClasse200Data;
+};
+
+export type GetScolariteStatistiquesParams = {
+annee_scolaire_id?: string;
+classe_id?: string;
+etablissement_id?: string;
+};
+
+export type GetScolariteImpayesParams = {
+classe_id?: string;
+annee_scolaire_id?: string;
+etablissement_id?: string;
+};
+
+export type GetScolariteImpayes200 = {
+  success?: boolean;
+  data?: ScolariteEleveEnrichi[];
+};
+
+export type GetScolariteClasseClasseIdParams = {
+annee_scolaire_id?: string;
+statut?: string;
+etablissement_id?: string;
+};
+
+export type GetScolariteClasseClasseId200 = {
+  success?: boolean;
+  total?: number;
+  data?: ScolariteEleveEnrichi[];
+};
+
+export type GetScolariteEleveEleveIdParams = {
+annee_scolaire_id?: string;
+};
+
+export type PutScolariteIdObservationsBody = {
+  observations?: string;
+};
+
+export type GetScolariteRapportCaisseParams = {
+date_debut?: string;
+date_fin?: string;
+etablissement_id?: string;
+};
+
+export type GetPaiementsListeParams = {
+eleve_id?: string;
+type_paiement?: string;
+mode_paiement?: string;
+date_debut?: string;
+date_fin?: string;
+page?: number;
+limit?: number;
+};
+
+export type GetPaiementsListe200 = {
+  success?: boolean;
+  data?: PaiementEnrichi[];
+};
+
+export type PostPaiementsRelancerImpayesBody = {
+  classe_id?: string;
+  annee_scolaire_id?: string;
+  type_relance?: string;
+  motif?: string;
+};
+
+export type PutPaiementsIdAnnuler200 = { [key: string]: unknown };
+
+export type GetPaiementsId200 = { [key: string]: unknown };
 

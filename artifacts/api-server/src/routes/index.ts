@@ -32,6 +32,7 @@ import clubsRouter from "./clubs";
 import analyticsRouter from "./analytics";
 import saasRouter from "./saas";
 import disciplineRouter from "./discipline";
+import scolariteRouter from "./scolarite";
 
 const router: IRouter = Router();
 
@@ -68,5 +69,6 @@ router.use(clubsRouter);
 router.use(analyticsRouter);
 router.use(saasRouter);
 router.use(disciplineRouter);
+router.use(scolariteRouter);
 
 export default router;

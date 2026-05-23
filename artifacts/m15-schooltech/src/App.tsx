@@ -90,6 +90,13 @@ import GestionEtablissements from "@/pages/saas/GestionEtablissements";
 import FicheEtablissement from "@/pages/saas/FicheEtablissement";
 import GestionLicences from "@/pages/saas/GestionLicences";
 import LogsSaas from "@/pages/saas/LogsSaas";
+import ScolariteDashboard from "@/pages/scolarite-dashboard";
+import ScolariteClasse from "@/pages/scolarite-classe";
+import ScolariteEleve from "@/pages/scolarite-eleve";
+import PaiementForm from "@/pages/paiement-form";
+import FraisConfig from "@/pages/frais-config";
+import ScolariteParent from "@/pages/scolarite-parent";
+import RecuPaiement from "@/pages/recu-paiement";
 
 const queryClient = new QueryClient();
 
@@ -688,10 +695,82 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      {/* ─── Module 10 — Scolarité ──────────────────────────────── */}
+      <Route path="/scolarite/recu/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <RecuPaiement />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/eleve/:eleveId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteEleve />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/classe/:classeId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteClasse />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/classe">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteClasse />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/paiement">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <PaiementForm />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/frais-config">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <FraisConfig />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/impayes">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteClasse />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite/caisse">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/scolarite-parent">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ScolariteParent />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
-        "/paiements", "/rapports",
+        "/rapports",
         "/professeurs",
         "/notes", "/mon-enfant",
       ].map((path) => (

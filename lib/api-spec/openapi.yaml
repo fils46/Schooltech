@@ -4840,6 +4840,397 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
+
+  # ─── SCOLARITÉ — FRAIS CONFIG ────────────────────────────────────
+
+  /scolarite/frais/configurer:
+    post:
+      tags: [scolarite]
+      summary: Configurer les frais par niveau
+      operationId: postScolariteFraisConfigurer
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FraisConfigInput" }
+      responses:
+        "200":
+          description: Configuration enregistrée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraisConfigResponse" }
+
+  /scolarite/frais/liste:
+    get:
+      tags: [scolarite]
+      summary: Lister les configurations de frais
+      operationId: getScolariteFraisListe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/FraisConfig" }
+
+  /scolarite/frais/{niveau}:
+    get:
+      tags: [scolarite]
+      summary: Obtenir la config frais d'un niveau
+      operationId: getScolariteFraisNiveau
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: niveau, in: path, required: true, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Configuration trouvée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraisConfigResponse" }
+
+  /scolarite/frais/{id}:
+    put:
+      tags: [scolarite]
+      summary: Modifier une configuration de frais
+      operationId: putScolariteFraisId
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FraisConfigInput" }
+      responses:
+        "200":
+          description: Configuration modifiée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraisConfigResponse" }
+
+  /scolarite/initialiser:
+    post:
+      tags: [scolarite]
+      summary: Initialiser la scolarité d'un élève
+      operationId: postScolariteInitialiser
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [eleve_id, annee_scolaire_id]
+              properties:
+                eleve_id: { type: string }
+                annee_scolaire_id: { type: string }
+                etablissement_id: { type: string }
+      responses:
+        "200":
+          description: Scolarité initialisée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ScolariteEleveResponse" }
+
+  /scolarite/initialiser-classe:
+    post:
+      tags: [scolarite]
+      summary: Initialiser la scolarité d'une classe entière
+      operationId: postScolariteInitialiserClasse
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [classe_id, annee_scolaire_id]
+              properties:
+                classe_id: { type: string }
+                annee_scolaire_id: { type: string }
+                etablissement_id: { type: string }
+      responses:
+        "200":
+          description: Scolarités initialisées
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      initialises: { type: integer }
+                      erreurs:
+                        type: array
+                        items: { type: string }
+
+  /scolarite/statistiques:
+    get:
+      tags: [scolarite]
+      summary: Statistiques de recouvrement
+      operationId: getScolariteStatistiques
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Statistiques scolarité
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ScolariteStatsResponse" }
+
+  /scolarite/impayes:
+    get:
+      tags: [scolarite]
+      summary: Lister les élèves impayés
+      operationId: getScolariteImpayes
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des élèves impayés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/ScolariteEleveEnrichi" }
+
+  /scolarite/classe/{classeId}:
+    get:
+      tags: [scolarite]
+      summary: Scolarité de tous les élèves d'une classe
+      operationId: getScolariteClasseClasseId
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: classeId, in: path, required: true, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Scolarités de la classe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  total: { type: integer }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/ScolariteEleveEnrichi" }
+
+  /scolarite/eleve/{eleveId}:
+    get:
+      tags: [scolarite]
+      summary: Scolarité complète d'un élève
+      operationId: getScolariteEleveEleveId
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Scolarité élève complète
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ScolariteEleveDetailResponse" }
+
+  /scolarite/{id}/observations:
+    put:
+      tags: [scolarite]
+      summary: Modifier les observations d'une scolarité
+      operationId: putScolariteIdObservations
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                observations: { type: string }
+      responses:
+        "200":
+          description: Observations mises à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ScolariteEleveResponse" }
+
+  /paiements/enregistrer:
+    post:
+      tags: [paiements]
+      summary: Enregistrer un paiement
+      operationId: postPaiementsEnregistrer
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PaiementInput" }
+      responses:
+        "200":
+          description: Paiement enregistré
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PaiementEnregistreResponse" }
+
+  /paiements/rapport-caisse:
+    get:
+      tags: [paiements]
+      summary: Rapport de caisse
+      operationId: getScolariteRapportCaisse
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+        - { name: etablissement_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Rapport de caisse
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RapportCaisseResponse" }
+
+  /paiements/liste:
+    get:
+      tags: [paiements]
+      summary: Lister les paiements
+      operationId: getPaiementsListe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleve_id, in: query, schema: { type: string } }
+        - { name: type_paiement, in: query, schema: { type: string } }
+        - { name: mode_paiement, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des paiements
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/PaiementEnrichi" }
+
+  /paiements/relancer:
+    post:
+      tags: [paiements]
+      summary: Envoyer des relances
+      operationId: postPaiementsRelancer
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RelanceInput" }
+      responses:
+        "200":
+          description: Relances envoyées
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RelanceResponse" }
+
+  /paiements/relancer-impayes:
+    post:
+      tags: [paiements]
+      summary: Relancer tous les impayés d'une classe
+      operationId: postPaiementsRelancerImpayes
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                classe_id: { type: string }
+                annee_scolaire_id: { type: string }
+                type_relance: { type: string }
+                motif: { type: string }
+      responses:
+        "200":
+          description: Relances envoyées
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RelanceResponse" }
+
+  /paiements/{id}/annuler:
+    put:
+      tags: [paiements]
+      summary: Annuler un paiement
+      operationId: putPaiementsIdAnnuler
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Paiement annulé
+          content:
+            application/json:
+              schema: { type: object }
+
+  /paiements/{id}/recu:
+    get:
+      tags: [paiements]
+      summary: Obtenir les données du reçu
+      operationId: getPaiementsIdRecu
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Données reçu
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecuResponse" }
+
+  /paiements/{id}:
+    get:
+      tags: [paiements]
+      summary: Obtenir un paiement
+      operationId: getPaiementsId
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Paiement trouvé
+          content:
+            application/json:
+              schema: { type: object }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -8230,3 +8621,199 @@ components:
         trimestre: { type: integer }
         date_snapshot: { type: string }
         donnees: { type: object }
+
+    FraisConfigInput:
+      type: object
+      properties:
+        annee_scolaire_id: { type: string }
+        niveau: { type: string }
+        filiere_id: { type: string }
+        etablissement_id: { type: string }
+        frais_inscription: { type: number }
+        frais_scolarite_annuel: { type: number }
+        frais_tranche1: { type: number }
+        frais_tranche2: { type: number }
+        frais_tranche3: { type: number }
+        date_limite_tranche1: { type: string }
+        date_limite_tranche2: { type: string }
+        date_limite_tranche3: { type: string }
+        autres_frais: { type: array, items: { type: object } }
+
+    FraisConfig:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        annee_scolaire_id: { type: string }
+        niveau: { type: string }
+        filiere_id: { type: string }
+        frais_inscription: { type: string }
+        frais_scolarite_annuel: { type: string }
+        frais_tranche1: { type: string }
+        frais_tranche2: { type: string }
+        frais_tranche3: { type: string }
+        date_limite_tranche1: { type: string }
+        date_limite_tranche2: { type: string }
+        date_limite_tranche3: { type: string }
+        autres_frais: { type: array, items: { type: object } }
+
+    FraisConfigResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data: { $ref: "#/components/schemas/FraisConfig" }
+
+    ScolariteEleveEnrichi:
+      type: object
+      properties:
+        id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_matricule: { type: string }
+        eleve_photo: { type: string }
+        classe_nom: { type: string }
+        annee_scolaire_id: { type: string }
+        frais_config_id: { type: string }
+        montant_total_du: { type: string }
+        montant_total_paye: { type: string }
+        montant_restant: { type: string }
+        inscription_payee: { type: boolean }
+        tranche1_payee: { type: boolean }
+        tranche2_payee: { type: boolean }
+        tranche3_payee: { type: boolean }
+        statut: { type: string, enum: [en_regle, partiel, impaye] }
+        observations: { type: string }
+        frais_config: { $ref: "#/components/schemas/FraisConfig" }
+
+    ScolariteEleveResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data: { $ref: "#/components/schemas/ScolariteEleveEnrichi" }
+
+    ScolariteEleveDetailResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          allOf:
+            - { $ref: "#/components/schemas/ScolariteEleveEnrichi" }
+            - type: object
+              properties:
+                paiements:
+                  type: array
+                  items: { $ref: "#/components/schemas/PaiementEnrichi" }
+
+    ScolariteStatsResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            taux_recouvrement: { type: integer }
+            montant_total_du: { type: number }
+            montant_total_paye: { type: number }
+            montant_total_restant: { type: number }
+            nb_en_regle: { type: integer }
+            nb_partiel: { type: integer }
+            nb_impaye: { type: integer }
+            total_eleves: { type: integer }
+            par_mode_paiement: { type: object }
+            par_mois: { type: array, items: { type: object } }
+            par_tranche: { type: object }
+
+    PaiementInput:
+      type: object
+      required: [eleve_id, montant, mode_paiement, type_paiement, date_paiement]
+      properties:
+        eleve_id: { type: string }
+        montant: { type: number }
+        mode_paiement: { type: string }
+        type_paiement: { type: string }
+        date_paiement: { type: string }
+        reference_paiement: { type: string }
+        observations: { type: string }
+        annee_scolaire_id: { type: string }
+
+    PaiementEnrichi:
+      type: object
+      properties:
+        id: { type: string }
+        numero_recu: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_matricule: { type: string }
+        montant: { type: string }
+        mode_paiement: { type: string }
+        type_paiement: { type: string }
+        date_paiement: { type: string }
+        reference_paiement: { type: string }
+        observations: { type: string }
+        annule: { type: boolean }
+        enregistre_par_nom: { type: string }
+
+    PaiementEnregistreResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+        data:
+          type: object
+          properties:
+            paiement: { $ref: "#/components/schemas/PaiementEnrichi" }
+            scolarite: { $ref: "#/components/schemas/ScolariteEleveEnrichi" }
+            numero_recu: { type: string }
+
+    RecuResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            numero_recu: { type: string }
+            date_paiement: { type: string }
+            eleve: { type: object }
+            paiement: { type: object }
+            scolarite: { type: object }
+            enregistre_par: { type: string }
+
+    RapportCaisseResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            paiements:
+              type: array
+              items: { $ref: "#/components/schemas/PaiementEnrichi" }
+            total: { type: number }
+            par_mode: { type: object }
+            par_type: { type: object }
+
+    RelanceInput:
+      type: object
+      required: [eleve_ids, type_relance]
+      properties:
+        eleve_ids:
+          type: array
+          items: { type: string }
+        type_relance: { type: string }
+        motif: { type: string }
+
+    RelanceResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+        data:
+          type: object
+          properties:
+            envoyes: { type: integer }
+            erreurs:
+              type: array
+              items: { type: string }

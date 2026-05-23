@@ -6387,3 +6387,737 @@ export const PostApiAnalyticsSnapshotsBody = zod.object({
 })
 
 
+/**
+ * @summary Configurer les frais par niveau
+ */
+export const PostScolariteFraisConfigurerBody = zod.object({
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "frais_inscription": zod.number().optional(),
+  "frais_scolarite_annuel": zod.number().optional(),
+  "frais_tranche1": zod.number().optional(),
+  "frais_tranche2": zod.number().optional(),
+  "frais_tranche3": zod.number().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+
+export const PostScolariteFraisConfigurerResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les configurations de frais
+ */
+export const GetScolariteFraisListeQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteFraisListeResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+})).optional()
+})
+
+
+/**
+ * @summary Obtenir la config frais d'un niveau
+ */
+export const GetScolariteFraisNiveauParams = zod.object({
+  "niveau": zod.coerce.string()
+})
+
+export const GetScolariteFraisNiveauQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteFraisNiveauResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Modifier une configuration de frais
+ */
+export const PutScolariteFraisIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutScolariteFraisIdBody = zod.object({
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "frais_inscription": zod.number().optional(),
+  "frais_scolarite_annuel": zod.number().optional(),
+  "frais_tranche1": zod.number().optional(),
+  "frais_tranche2": zod.number().optional(),
+  "frais_tranche3": zod.number().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+
+export const PutScolariteFraisIdResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Initialiser la scolarité d'un élève
+ */
+export const PostScolariteInitialiserBody = zod.object({
+  "eleve_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const PostScolariteInitialiserResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Initialiser la scolarité d'une classe entière
+ */
+export const PostScolariteInitialiserClasseBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const PostScolariteInitialiserClasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "initialises": zod.number().optional(),
+  "erreurs": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Statistiques de recouvrement
+ */
+export const GetScolariteStatistiquesQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteStatistiquesResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "taux_recouvrement": zod.number().optional(),
+  "montant_total_du": zod.number().optional(),
+  "montant_total_paye": zod.number().optional(),
+  "montant_total_restant": zod.number().optional(),
+  "nb_en_regle": zod.number().optional(),
+  "nb_partiel": zod.number().optional(),
+  "nb_impaye": zod.number().optional(),
+  "total_eleves": zod.number().optional(),
+  "par_mode_paiement": zod.object({
+
+}).passthrough().optional(),
+  "par_mois": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "par_tranche": zod.object({
+
+}).passthrough().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les élèves impayés
+ */
+export const GetScolariteImpayesQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteImpayesResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+})).optional()
+})
+
+
+/**
+ * @summary Scolarité de tous les élèves d'une classe
+ */
+export const GetScolariteClasseClasseIdParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetScolariteClasseClasseIdQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteClasseClasseIdResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "total": zod.number().optional(),
+  "data": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+})).optional()
+})
+
+
+/**
+ * @summary Scolarité complète d'un élève
+ */
+export const GetScolariteEleveEleveIdParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetScolariteEleveEleveIdQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteEleveEleveIdResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+}).and(zod.object({
+  "paiements": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "numero_recu": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "montant": zod.string().optional(),
+  "mode_paiement": zod.string().optional(),
+  "type_paiement": zod.string().optional(),
+  "date_paiement": zod.string().optional(),
+  "reference_paiement": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "annule": zod.boolean().optional(),
+  "enregistre_par_nom": zod.string().optional()
+})).optional()
+})).optional()
+})
+
+
+/**
+ * @summary Modifier les observations d'une scolarité
+ */
+export const PutScolariteIdObservationsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutScolariteIdObservationsBody = zod.object({
+  "observations": zod.string().optional()
+})
+
+export const PutScolariteIdObservationsResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Enregistrer un paiement
+ */
+export const PostPaiementsEnregistrerBody = zod.object({
+  "eleve_id": zod.string(),
+  "montant": zod.number(),
+  "mode_paiement": zod.string(),
+  "type_paiement": zod.string(),
+  "date_paiement": zod.string(),
+  "reference_paiement": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional()
+})
+
+export const PostPaiementsEnregistrerResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "paiement": zod.object({
+  "id": zod.string().optional(),
+  "numero_recu": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "montant": zod.string().optional(),
+  "mode_paiement": zod.string().optional(),
+  "type_paiement": zod.string().optional(),
+  "date_paiement": zod.string().optional(),
+  "reference_paiement": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "annule": zod.boolean().optional(),
+  "enregistre_par_nom": zod.string().optional()
+}).optional(),
+  "scolarite": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "frais_config_id": zod.string().optional(),
+  "montant_total_du": zod.string().optional(),
+  "montant_total_paye": zod.string().optional(),
+  "montant_restant": zod.string().optional(),
+  "inscription_payee": zod.boolean().optional(),
+  "tranche1_payee": zod.boolean().optional(),
+  "tranche2_payee": zod.boolean().optional(),
+  "tranche3_payee": zod.boolean().optional(),
+  "statut": zod.enum(['en_regle', 'partiel', 'impaye']).optional(),
+  "observations": zod.string().optional(),
+  "frais_config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "filiere_id": zod.string().optional(),
+  "frais_inscription": zod.string().optional(),
+  "frais_scolarite_annuel": zod.string().optional(),
+  "frais_tranche1": zod.string().optional(),
+  "frais_tranche2": zod.string().optional(),
+  "frais_tranche3": zod.string().optional(),
+  "date_limite_tranche1": zod.string().optional(),
+  "date_limite_tranche2": zod.string().optional(),
+  "date_limite_tranche3": zod.string().optional(),
+  "autres_frais": zod.array(zod.object({
+
+}).passthrough()).optional()
+}).optional()
+}).optional(),
+  "numero_recu": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Rapport de caisse
+ */
+export const GetScolariteRapportCaisseQueryParams = zod.object({
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetScolariteRapportCaisseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "paiements": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "numero_recu": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "montant": zod.string().optional(),
+  "mode_paiement": zod.string().optional(),
+  "type_paiement": zod.string().optional(),
+  "date_paiement": zod.string().optional(),
+  "reference_paiement": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "annule": zod.boolean().optional(),
+  "enregistre_par_nom": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "par_mode": zod.object({
+
+}).passthrough().optional(),
+  "par_type": zod.object({
+
+}).passthrough().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les paiements
+ */
+export const GetPaiementsListeQueryParams = zod.object({
+  "eleve_id": zod.coerce.string().optional(),
+  "type_paiement": zod.coerce.string().optional(),
+  "mode_paiement": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetPaiementsListeResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "numero_recu": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "montant": zod.string().optional(),
+  "mode_paiement": zod.string().optional(),
+  "type_paiement": zod.string().optional(),
+  "date_paiement": zod.string().optional(),
+  "reference_paiement": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "annule": zod.boolean().optional(),
+  "enregistre_par_nom": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Envoyer des relances
+ */
+export const PostPaiementsRelancerBody = zod.object({
+  "eleve_ids": zod.array(zod.string()),
+  "type_relance": zod.string(),
+  "motif": zod.string().optional()
+})
+
+export const PostPaiementsRelancerResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "envoyes": zod.number().optional(),
+  "erreurs": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Relancer tous les impayés d'une classe
+ */
+export const PostPaiementsRelancerImpayesBody = zod.object({
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "type_relance": zod.string().optional(),
+  "motif": zod.string().optional()
+})
+
+export const PostPaiementsRelancerImpayesResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional(),
+  "data": zod.object({
+  "envoyes": zod.number().optional(),
+  "erreurs": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Annuler un paiement
+ */
+export const PutPaiementsIdAnnulerParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutPaiementsIdAnnulerResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Obtenir les données du reçu
+ */
+export const GetPaiementsIdRecuParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetPaiementsIdRecuResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "numero_recu": zod.string().optional(),
+  "date_paiement": zod.string().optional(),
+  "eleve": zod.object({
+
+}).passthrough().optional(),
+  "paiement": zod.object({
+
+}).passthrough().optional(),
+  "scolarite": zod.object({
+
+}).passthrough().optional(),
+  "enregistre_par": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Obtenir un paiement
+ */
+export const GetPaiementsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetPaiementsIdResponse = zod.object({
+
+}).passthrough()
+
+

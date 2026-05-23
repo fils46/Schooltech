@@ -14,7 +14,7 @@ import {
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
   Trophy, Activity, Star as StarIcon,
-  ShieldAlert,
+  ShieldAlert, DollarSign, Banknote, Receipt,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -57,6 +57,15 @@ const navConfig: Record<string, Section[]> = {
         { label: "Analyse pédagogique",   href: "/analyse-pedagogique",  icon: TrendingUp },
         { label: "Analyse présences",     href: "/analyse-presences",    icon: UserMinus },
         { label: "Rapports & Exports",    href: "/rapports-exports",     icon: FileSpreadsheet },
+      ],
+    },
+    {
+      title: "SCOLARITÉ",
+      links: [
+        { label: "Tableau de bord",   href: "/scolarite",              icon: DollarSign },
+        { label: "Suivi par classe",  href: "/scolarite/classe",       icon: Banknote },
+        { label: "Config. frais",     href: "/scolarite/frais-config", icon: Receipt },
+        { label: "Rapport de caisse", href: "/scolarite/caisse",       icon: FileText },
       ],
     },
     {
@@ -144,9 +153,13 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "GESTION",
+      title: "SCOLARITÉ",
       links: [
-        { label: "Paiements", href: "/paiements", icon: CreditCard },
+        { label: "Tableau de bord",   href: "/scolarite",              icon: DollarSign },
+        { label: "Suivi par classe",  href: "/scolarite/classe",       icon: Banknote },
+        { label: "Enreg. paiement",   href: "/scolarite/paiement",     icon: CreditCard },
+        { label: "Config. frais",     href: "/scolarite/frais-config", icon: Receipt },
+        { label: "Rapport de caisse", href: "/scolarite/caisse",       icon: FileText },
       ],
     },
     {
@@ -214,6 +227,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
         { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
         { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
+      ],
+    },
+    {
+      title: "SCOLARITÉ",
+      links: [
+        { label: "Tableau de bord",  href: "/scolarite",          icon: DollarSign },
+        { label: "Suivi par classe", href: "/scolarite/classe",   icon: Banknote },
+        { label: "Enreg. paiement",  href: "/scolarite/paiement", icon: CreditCard },
       ],
     },
     {
@@ -454,13 +475,18 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "SCOLARITÉ",
+      links: [
+        { label: "Ma scolarité", href: "/scolarite-parent", icon: DollarSign },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
         { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
         { label: "Notifications", href: "/notifications", icon: Bell },
         { label: "Rendez-vous",   href: "/rendez-vous",   icon: CalendarCheck },
-        { label: "Paiements",     href: "/paiements",     icon: CreditCard },
       ],
     },
   ],
@@ -474,8 +500,14 @@ const PAGE_TITLES: Record<string, string> = {
   "/statistiques":     "Statistiques",
   "/censeurs":         "Censeurs",
   "/classes":          "Classes",
-  "/paiements":        "Paiements",
-  "/rapports":         "Rapports",
+  "/paiements":              "Paiements",
+  "/rapports":               "Rapports",
+  "/scolarite":              "Scolarité — Tableau de bord",
+  "/scolarite/classe":       "Scolarité par classe",
+  "/scolarite/paiement":     "Enregistrer un paiement",
+  "/scolarite/frais-config": "Configuration des frais",
+  "/scolarite/caisse":       "Rapport de caisse",
+  "/scolarite-parent":       "Ma scolarité",
   "/professeurs":      "Professeurs",
   "/eleves":           "Élèves",
   "/eleves/inscrire":  "Inscrire un élève",

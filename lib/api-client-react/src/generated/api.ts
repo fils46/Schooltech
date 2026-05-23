@@ -118,6 +118,8 @@ import type {
   FiliereInput,
   FilieresListeResponse,
   ForgotPasswordInput,
+  FraisConfigInput,
+  FraisConfigResponse,
   GenererBulletinInput,
   GenererClasseInput,
   GenererClasseResponse,
@@ -155,8 +157,21 @@ import type {
   GetNotesClasseParams,
   GetNotesEleveParams,
   GetNotesEnfantParams,
+  GetPaiementsId200,
+  GetPaiementsListe200,
+  GetPaiementsListeParams,
   GetPresencesEleveParams,
   GetResumeAbsencesEleveParams,
+  GetScolariteClasseClasseId200,
+  GetScolariteClasseClasseIdParams,
+  GetScolariteEleveEleveIdParams,
+  GetScolariteFraisListe200,
+  GetScolariteFraisListeParams,
+  GetScolariteFraisNiveauParams,
+  GetScolariteImpayes200,
+  GetScolariteImpayesParams,
+  GetScolariteRapportCaisseParams,
+  GetScolariteStatistiquesParams,
   GetStatistiquesAbsencesParams,
   GetStatistiquesNotesParams,
   HealthStatus,
@@ -207,20 +222,32 @@ import type {
   NotificationCountResponse,
   NotificationsListeResponse,
   OuvrirConsultationInput,
+  PaiementEnregistreResponse,
+  PaiementInput,
   ParentDashboardResponse,
   PlanifierConseilInput,
   PlanningListeResponse,
   PlanningSessionItem,
   PostBibliothequeRessourcesIdFavori200,
   PostBibliothequeRessourcesIdTelecharger200,
+  PostPaiementsRelancerImpayesBody,
+  PostScolariteInitialiserBody,
+  PostScolariteInitialiserClasse200,
+  PostScolariteInitialiserClasseBody,
   PresenceEleveResponse,
   PresenceUpdateInput,
   PresencesActiviteResponse,
   ProgressionEleveResponse,
   PublierClasseResponse,
   PutBibliothequeRessourcesIdPublierBody,
+  PutPaiementsIdAnnuler200,
+  PutScolariteIdObservationsBody,
+  RapportCaisseResponse,
   RapportInput,
   RechercherElevesParams,
+  RecuResponse,
+  RelanceInput,
+  RelanceResponse,
   RendezVousItemResponse,
   RendezVousListeResponse,
   RepondreMessageInput,
@@ -237,6 +264,9 @@ import type {
   Salle,
   SalleInput,
   SallesListeResponse,
+  ScolariteEleveDetailResponse,
+  ScolariteEleveResponse,
+  ScolariteStatsResponse,
   SeanceCreeeResponse,
   SeanceDetailResponse,
   SeanceInput,
@@ -18663,4 +18693,1485 @@ export const usePostApiAnalyticsSnapshots = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getPostApiAnalyticsSnapshotsMutationOptions(options));
     }
+
+export const getPostScolariteFraisConfigurerUrl = () => {
+
+
+
+
+  return `/api/scolarite/frais/configurer`
+}
+
+/**
+ * @summary Configurer les frais par niveau
+ */
+export const postScolariteFraisConfigurer = async (fraisConfigInput: FraisConfigInput, options?: RequestInit): Promise<FraisConfigResponse> => {
+
+  return customFetch<FraisConfigResponse>(getPostScolariteFraisConfigurerUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      fraisConfigInput,)
+  }
+);}
+
+
+
+
+export const getPostScolariteFraisConfigurerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteFraisConfigurer>>, TError,{data: BodyType<FraisConfigInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postScolariteFraisConfigurer>>, TError,{data: BodyType<FraisConfigInput>}, TContext> => {
+
+const mutationKey = ['postScolariteFraisConfigurer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postScolariteFraisConfigurer>>, {data: BodyType<FraisConfigInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postScolariteFraisConfigurer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostScolariteFraisConfigurerMutationResult = NonNullable<Awaited<ReturnType<typeof postScolariteFraisConfigurer>>>
+    export type PostScolariteFraisConfigurerMutationBody = BodyType<FraisConfigInput>
+    export type PostScolariteFraisConfigurerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Configurer les frais par niveau
+ */
+export const usePostScolariteFraisConfigurer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteFraisConfigurer>>, TError,{data: BodyType<FraisConfigInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postScolariteFraisConfigurer>>,
+        TError,
+        {data: BodyType<FraisConfigInput>},
+        TContext
+      > => {
+      return useMutation(getPostScolariteFraisConfigurerMutationOptions(options));
+    }
+
+export const getGetScolariteFraisListeUrl = (params?: GetScolariteFraisListeParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/frais/liste?${stringifiedParams}` : `/api/scolarite/frais/liste`
+}
+
+/**
+ * @summary Lister les configurations de frais
+ */
+export const getScolariteFraisListe = async (params?: GetScolariteFraisListeParams, options?: RequestInit): Promise<GetScolariteFraisListe200> => {
+
+  return customFetch<GetScolariteFraisListe200>(getGetScolariteFraisListeUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteFraisListeQueryKey = (params?: GetScolariteFraisListeParams,) => {
+    return [
+    `/api/scolarite/frais/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteFraisListeQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteFraisListe>>, TError = ErrorType<unknown>>(params?: GetScolariteFraisListeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisListe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteFraisListeQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteFraisListe>>> = ({ signal }) => getScolariteFraisListe(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisListe>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteFraisListeQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteFraisListe>>>
+export type GetScolariteFraisListeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les configurations de frais
+ */
+
+export function useGetScolariteFraisListe<TData = Awaited<ReturnType<typeof getScolariteFraisListe>>, TError = ErrorType<unknown>>(
+ params?: GetScolariteFraisListeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisListe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteFraisListeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetScolariteFraisNiveauUrl = (niveau: string,
+    params?: GetScolariteFraisNiveauParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/frais/${niveau}?${stringifiedParams}` : `/api/scolarite/frais/${niveau}`
+}
+
+/**
+ * @summary Obtenir la config frais d'un niveau
+ */
+export const getScolariteFraisNiveau = async (niveau: string,
+    params?: GetScolariteFraisNiveauParams, options?: RequestInit): Promise<FraisConfigResponse> => {
+
+  return customFetch<FraisConfigResponse>(getGetScolariteFraisNiveauUrl(niveau,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteFraisNiveauQueryKey = (niveau: string,
+    params?: GetScolariteFraisNiveauParams,) => {
+    return [
+    `/api/scolarite/frais/${niveau}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteFraisNiveauQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteFraisNiveau>>, TError = ErrorType<unknown>>(niveau: string,
+    params?: GetScolariteFraisNiveauParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisNiveau>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteFraisNiveauQueryKey(niveau,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteFraisNiveau>>> = ({ signal }) => getScolariteFraisNiveau(niveau,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(niveau), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisNiveau>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteFraisNiveauQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteFraisNiveau>>>
+export type GetScolariteFraisNiveauQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir la config frais d'un niveau
+ */
+
+export function useGetScolariteFraisNiveau<TData = Awaited<ReturnType<typeof getScolariteFraisNiveau>>, TError = ErrorType<unknown>>(
+ niveau: string,
+    params?: GetScolariteFraisNiveauParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteFraisNiveau>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteFraisNiveauQueryOptions(niveau,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutScolariteFraisIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/scolarite/frais/${id}`
+}
+
+/**
+ * @summary Modifier une configuration de frais
+ */
+export const putScolariteFraisId = async (id: string,
+    fraisConfigInput: FraisConfigInput, options?: RequestInit): Promise<FraisConfigResponse> => {
+
+  return customFetch<FraisConfigResponse>(getPutScolariteFraisIdUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      fraisConfigInput,)
+  }
+);}
+
+
+
+
+export const getPutScolariteFraisIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putScolariteFraisId>>, TError,{id: string;data: BodyType<FraisConfigInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putScolariteFraisId>>, TError,{id: string;data: BodyType<FraisConfigInput>}, TContext> => {
+
+const mutationKey = ['putScolariteFraisId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putScolariteFraisId>>, {id: string;data: BodyType<FraisConfigInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putScolariteFraisId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutScolariteFraisIdMutationResult = NonNullable<Awaited<ReturnType<typeof putScolariteFraisId>>>
+    export type PutScolariteFraisIdMutationBody = BodyType<FraisConfigInput>
+    export type PutScolariteFraisIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier une configuration de frais
+ */
+export const usePutScolariteFraisId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putScolariteFraisId>>, TError,{id: string;data: BodyType<FraisConfigInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putScolariteFraisId>>,
+        TError,
+        {id: string;data: BodyType<FraisConfigInput>},
+        TContext
+      > => {
+      return useMutation(getPutScolariteFraisIdMutationOptions(options));
+    }
+
+export const getPostScolariteInitialiserUrl = () => {
+
+
+
+
+  return `/api/scolarite/initialiser`
+}
+
+/**
+ * @summary Initialiser la scolarité d'un élève
+ */
+export const postScolariteInitialiser = async (postScolariteInitialiserBody: PostScolariteInitialiserBody, options?: RequestInit): Promise<ScolariteEleveResponse> => {
+
+  return customFetch<ScolariteEleveResponse>(getPostScolariteInitialiserUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postScolariteInitialiserBody,)
+  }
+);}
+
+
+
+
+export const getPostScolariteInitialiserMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiser>>, TError,{data: BodyType<PostScolariteInitialiserBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiser>>, TError,{data: BodyType<PostScolariteInitialiserBody>}, TContext> => {
+
+const mutationKey = ['postScolariteInitialiser'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postScolariteInitialiser>>, {data: BodyType<PostScolariteInitialiserBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postScolariteInitialiser(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostScolariteInitialiserMutationResult = NonNullable<Awaited<ReturnType<typeof postScolariteInitialiser>>>
+    export type PostScolariteInitialiserMutationBody = BodyType<PostScolariteInitialiserBody>
+    export type PostScolariteInitialiserMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Initialiser la scolarité d'un élève
+ */
+export const usePostScolariteInitialiser = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiser>>, TError,{data: BodyType<PostScolariteInitialiserBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postScolariteInitialiser>>,
+        TError,
+        {data: BodyType<PostScolariteInitialiserBody>},
+        TContext
+      > => {
+      return useMutation(getPostScolariteInitialiserMutationOptions(options));
+    }
+
+export const getPostScolariteInitialiserClasseUrl = () => {
+
+
+
+
+  return `/api/scolarite/initialiser-classe`
+}
+
+/**
+ * @summary Initialiser la scolarité d'une classe entière
+ */
+export const postScolariteInitialiserClasse = async (postScolariteInitialiserClasseBody: PostScolariteInitialiserClasseBody, options?: RequestInit): Promise<PostScolariteInitialiserClasse200> => {
+
+  return customFetch<PostScolariteInitialiserClasse200>(getPostScolariteInitialiserClasseUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postScolariteInitialiserClasseBody,)
+  }
+);}
+
+
+
+
+export const getPostScolariteInitialiserClasseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiserClasse>>, TError,{data: BodyType<PostScolariteInitialiserClasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiserClasse>>, TError,{data: BodyType<PostScolariteInitialiserClasseBody>}, TContext> => {
+
+const mutationKey = ['postScolariteInitialiserClasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postScolariteInitialiserClasse>>, {data: BodyType<PostScolariteInitialiserClasseBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postScolariteInitialiserClasse(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostScolariteInitialiserClasseMutationResult = NonNullable<Awaited<ReturnType<typeof postScolariteInitialiserClasse>>>
+    export type PostScolariteInitialiserClasseMutationBody = BodyType<PostScolariteInitialiserClasseBody>
+    export type PostScolariteInitialiserClasseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Initialiser la scolarité d'une classe entière
+ */
+export const usePostScolariteInitialiserClasse = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postScolariteInitialiserClasse>>, TError,{data: BodyType<PostScolariteInitialiserClasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postScolariteInitialiserClasse>>,
+        TError,
+        {data: BodyType<PostScolariteInitialiserClasseBody>},
+        TContext
+      > => {
+      return useMutation(getPostScolariteInitialiserClasseMutationOptions(options));
+    }
+
+export const getGetScolariteStatistiquesUrl = (params?: GetScolariteStatistiquesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/statistiques?${stringifiedParams}` : `/api/scolarite/statistiques`
+}
+
+/**
+ * @summary Statistiques de recouvrement
+ */
+export const getScolariteStatistiques = async (params?: GetScolariteStatistiquesParams, options?: RequestInit): Promise<ScolariteStatsResponse> => {
+
+  return customFetch<ScolariteStatsResponse>(getGetScolariteStatistiquesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteStatistiquesQueryKey = (params?: GetScolariteStatistiquesParams,) => {
+    return [
+    `/api/scolarite/statistiques`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteStatistiquesQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteStatistiques>>, TError = ErrorType<unknown>>(params?: GetScolariteStatistiquesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteStatistiques>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteStatistiquesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteStatistiques>>> = ({ signal }) => getScolariteStatistiques(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteStatistiques>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteStatistiquesQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteStatistiques>>>
+export type GetScolariteStatistiquesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Statistiques de recouvrement
+ */
+
+export function useGetScolariteStatistiques<TData = Awaited<ReturnType<typeof getScolariteStatistiques>>, TError = ErrorType<unknown>>(
+ params?: GetScolariteStatistiquesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteStatistiques>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteStatistiquesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetScolariteImpayesUrl = (params?: GetScolariteImpayesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/impayes?${stringifiedParams}` : `/api/scolarite/impayes`
+}
+
+/**
+ * @summary Lister les élèves impayés
+ */
+export const getScolariteImpayes = async (params?: GetScolariteImpayesParams, options?: RequestInit): Promise<GetScolariteImpayes200> => {
+
+  return customFetch<GetScolariteImpayes200>(getGetScolariteImpayesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteImpayesQueryKey = (params?: GetScolariteImpayesParams,) => {
+    return [
+    `/api/scolarite/impayes`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteImpayesQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteImpayes>>, TError = ErrorType<unknown>>(params?: GetScolariteImpayesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteImpayes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteImpayesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteImpayes>>> = ({ signal }) => getScolariteImpayes(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteImpayes>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteImpayesQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteImpayes>>>
+export type GetScolariteImpayesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les élèves impayés
+ */
+
+export function useGetScolariteImpayes<TData = Awaited<ReturnType<typeof getScolariteImpayes>>, TError = ErrorType<unknown>>(
+ params?: GetScolariteImpayesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteImpayes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteImpayesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetScolariteClasseClasseIdUrl = (classeId: string,
+    params?: GetScolariteClasseClasseIdParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/classe/${classeId}?${stringifiedParams}` : `/api/scolarite/classe/${classeId}`
+}
+
+/**
+ * @summary Scolarité de tous les élèves d'une classe
+ */
+export const getScolariteClasseClasseId = async (classeId: string,
+    params?: GetScolariteClasseClasseIdParams, options?: RequestInit): Promise<GetScolariteClasseClasseId200> => {
+
+  return customFetch<GetScolariteClasseClasseId200>(getGetScolariteClasseClasseIdUrl(classeId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteClasseClasseIdQueryKey = (classeId: string,
+    params?: GetScolariteClasseClasseIdParams,) => {
+    return [
+    `/api/scolarite/classe/${classeId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteClasseClasseIdQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteClasseClasseId>>, TError = ErrorType<unknown>>(classeId: string,
+    params?: GetScolariteClasseClasseIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteClasseClasseId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteClasseClasseIdQueryKey(classeId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteClasseClasseId>>> = ({ signal }) => getScolariteClasseClasseId(classeId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(classeId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteClasseClasseId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteClasseClasseIdQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteClasseClasseId>>>
+export type GetScolariteClasseClasseIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Scolarité de tous les élèves d'une classe
+ */
+
+export function useGetScolariteClasseClasseId<TData = Awaited<ReturnType<typeof getScolariteClasseClasseId>>, TError = ErrorType<unknown>>(
+ classeId: string,
+    params?: GetScolariteClasseClasseIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteClasseClasseId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteClasseClasseIdQueryOptions(classeId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetScolariteEleveEleveIdUrl = (eleveId: string,
+    params?: GetScolariteEleveEleveIdParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scolarite/eleve/${eleveId}?${stringifiedParams}` : `/api/scolarite/eleve/${eleveId}`
+}
+
+/**
+ * @summary Scolarité complète d'un élève
+ */
+export const getScolariteEleveEleveId = async (eleveId: string,
+    params?: GetScolariteEleveEleveIdParams, options?: RequestInit): Promise<ScolariteEleveDetailResponse> => {
+
+  return customFetch<ScolariteEleveDetailResponse>(getGetScolariteEleveEleveIdUrl(eleveId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteEleveEleveIdQueryKey = (eleveId: string,
+    params?: GetScolariteEleveEleveIdParams,) => {
+    return [
+    `/api/scolarite/eleve/${eleveId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteEleveEleveIdQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteEleveEleveId>>, TError = ErrorType<unknown>>(eleveId: string,
+    params?: GetScolariteEleveEleveIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteEleveEleveId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteEleveEleveIdQueryKey(eleveId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteEleveEleveId>>> = ({ signal }) => getScolariteEleveEleveId(eleveId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteEleveEleveId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteEleveEleveIdQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteEleveEleveId>>>
+export type GetScolariteEleveEleveIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Scolarité complète d'un élève
+ */
+
+export function useGetScolariteEleveEleveId<TData = Awaited<ReturnType<typeof getScolariteEleveEleveId>>, TError = ErrorType<unknown>>(
+ eleveId: string,
+    params?: GetScolariteEleveEleveIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteEleveEleveId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteEleveEleveIdQueryOptions(eleveId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutScolariteIdObservationsUrl = (id: string,) => {
+
+
+
+
+  return `/api/scolarite/${id}/observations`
+}
+
+/**
+ * @summary Modifier les observations d'une scolarité
+ */
+export const putScolariteIdObservations = async (id: string,
+    putScolariteIdObservationsBody: PutScolariteIdObservationsBody, options?: RequestInit): Promise<ScolariteEleveResponse> => {
+
+  return customFetch<ScolariteEleveResponse>(getPutScolariteIdObservationsUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      putScolariteIdObservationsBody,)
+  }
+);}
+
+
+
+
+export const getPutScolariteIdObservationsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putScolariteIdObservations>>, TError,{id: string;data: BodyType<PutScolariteIdObservationsBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putScolariteIdObservations>>, TError,{id: string;data: BodyType<PutScolariteIdObservationsBody>}, TContext> => {
+
+const mutationKey = ['putScolariteIdObservations'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putScolariteIdObservations>>, {id: string;data: BodyType<PutScolariteIdObservationsBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putScolariteIdObservations(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutScolariteIdObservationsMutationResult = NonNullable<Awaited<ReturnType<typeof putScolariteIdObservations>>>
+    export type PutScolariteIdObservationsMutationBody = BodyType<PutScolariteIdObservationsBody>
+    export type PutScolariteIdObservationsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier les observations d'une scolarité
+ */
+export const usePutScolariteIdObservations = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putScolariteIdObservations>>, TError,{id: string;data: BodyType<PutScolariteIdObservationsBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putScolariteIdObservations>>,
+        TError,
+        {id: string;data: BodyType<PutScolariteIdObservationsBody>},
+        TContext
+      > => {
+      return useMutation(getPutScolariteIdObservationsMutationOptions(options));
+    }
+
+export const getPostPaiementsEnregistrerUrl = () => {
+
+
+
+
+  return `/api/paiements/enregistrer`
+}
+
+/**
+ * @summary Enregistrer un paiement
+ */
+export const postPaiementsEnregistrer = async (paiementInput: PaiementInput, options?: RequestInit): Promise<PaiementEnregistreResponse> => {
+
+  return customFetch<PaiementEnregistreResponse>(getPostPaiementsEnregistrerUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      paiementInput,)
+  }
+);}
+
+
+
+
+export const getPostPaiementsEnregistrerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsEnregistrer>>, TError,{data: BodyType<PaiementInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postPaiementsEnregistrer>>, TError,{data: BodyType<PaiementInput>}, TContext> => {
+
+const mutationKey = ['postPaiementsEnregistrer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postPaiementsEnregistrer>>, {data: BodyType<PaiementInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postPaiementsEnregistrer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostPaiementsEnregistrerMutationResult = NonNullable<Awaited<ReturnType<typeof postPaiementsEnregistrer>>>
+    export type PostPaiementsEnregistrerMutationBody = BodyType<PaiementInput>
+    export type PostPaiementsEnregistrerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Enregistrer un paiement
+ */
+export const usePostPaiementsEnregistrer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsEnregistrer>>, TError,{data: BodyType<PaiementInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postPaiementsEnregistrer>>,
+        TError,
+        {data: BodyType<PaiementInput>},
+        TContext
+      > => {
+      return useMutation(getPostPaiementsEnregistrerMutationOptions(options));
+    }
+
+export const getGetScolariteRapportCaisseUrl = (params?: GetScolariteRapportCaisseParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/paiements/rapport-caisse?${stringifiedParams}` : `/api/paiements/rapport-caisse`
+}
+
+/**
+ * @summary Rapport de caisse
+ */
+export const getScolariteRapportCaisse = async (params?: GetScolariteRapportCaisseParams, options?: RequestInit): Promise<RapportCaisseResponse> => {
+
+  return customFetch<RapportCaisseResponse>(getGetScolariteRapportCaisseUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetScolariteRapportCaisseQueryKey = (params?: GetScolariteRapportCaisseParams,) => {
+    return [
+    `/api/paiements/rapport-caisse`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetScolariteRapportCaisseQueryOptions = <TData = Awaited<ReturnType<typeof getScolariteRapportCaisse>>, TError = ErrorType<unknown>>(params?: GetScolariteRapportCaisseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteRapportCaisse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetScolariteRapportCaisseQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getScolariteRapportCaisse>>> = ({ signal }) => getScolariteRapportCaisse(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getScolariteRapportCaisse>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetScolariteRapportCaisseQueryResult = NonNullable<Awaited<ReturnType<typeof getScolariteRapportCaisse>>>
+export type GetScolariteRapportCaisseQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Rapport de caisse
+ */
+
+export function useGetScolariteRapportCaisse<TData = Awaited<ReturnType<typeof getScolariteRapportCaisse>>, TError = ErrorType<unknown>>(
+ params?: GetScolariteRapportCaisseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getScolariteRapportCaisse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetScolariteRapportCaisseQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPaiementsListeUrl = (params?: GetPaiementsListeParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/paiements/liste?${stringifiedParams}` : `/api/paiements/liste`
+}
+
+/**
+ * @summary Lister les paiements
+ */
+export const getPaiementsListe = async (params?: GetPaiementsListeParams, options?: RequestInit): Promise<GetPaiementsListe200> => {
+
+  return customFetch<GetPaiementsListe200>(getGetPaiementsListeUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPaiementsListeQueryKey = (params?: GetPaiementsListeParams,) => {
+    return [
+    `/api/paiements/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetPaiementsListeQueryOptions = <TData = Awaited<ReturnType<typeof getPaiementsListe>>, TError = ErrorType<unknown>>(params?: GetPaiementsListeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsListe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPaiementsListeQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaiementsListe>>> = ({ signal }) => getPaiementsListe(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPaiementsListe>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPaiementsListeQueryResult = NonNullable<Awaited<ReturnType<typeof getPaiementsListe>>>
+export type GetPaiementsListeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les paiements
+ */
+
+export function useGetPaiementsListe<TData = Awaited<ReturnType<typeof getPaiementsListe>>, TError = ErrorType<unknown>>(
+ params?: GetPaiementsListeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsListe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPaiementsListeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostPaiementsRelancerUrl = () => {
+
+
+
+
+  return `/api/paiements/relancer`
+}
+
+/**
+ * @summary Envoyer des relances
+ */
+export const postPaiementsRelancer = async (relanceInput: RelanceInput, options?: RequestInit): Promise<RelanceResponse> => {
+
+  return customFetch<RelanceResponse>(getPostPaiementsRelancerUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      relanceInput,)
+  }
+);}
+
+
+
+
+export const getPostPaiementsRelancerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancer>>, TError,{data: BodyType<RelanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancer>>, TError,{data: BodyType<RelanceInput>}, TContext> => {
+
+const mutationKey = ['postPaiementsRelancer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postPaiementsRelancer>>, {data: BodyType<RelanceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postPaiementsRelancer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostPaiementsRelancerMutationResult = NonNullable<Awaited<ReturnType<typeof postPaiementsRelancer>>>
+    export type PostPaiementsRelancerMutationBody = BodyType<RelanceInput>
+    export type PostPaiementsRelancerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Envoyer des relances
+ */
+export const usePostPaiementsRelancer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancer>>, TError,{data: BodyType<RelanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postPaiementsRelancer>>,
+        TError,
+        {data: BodyType<RelanceInput>},
+        TContext
+      > => {
+      return useMutation(getPostPaiementsRelancerMutationOptions(options));
+    }
+
+export const getPostPaiementsRelancerImpayesUrl = () => {
+
+
+
+
+  return `/api/paiements/relancer-impayes`
+}
+
+/**
+ * @summary Relancer tous les impayés d'une classe
+ */
+export const postPaiementsRelancerImpayes = async (postPaiementsRelancerImpayesBody: PostPaiementsRelancerImpayesBody, options?: RequestInit): Promise<RelanceResponse> => {
+
+  return customFetch<RelanceResponse>(getPostPaiementsRelancerImpayesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postPaiementsRelancerImpayesBody,)
+  }
+);}
+
+
+
+
+export const getPostPaiementsRelancerImpayesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>, TError,{data: BodyType<PostPaiementsRelancerImpayesBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>, TError,{data: BodyType<PostPaiementsRelancerImpayesBody>}, TContext> => {
+
+const mutationKey = ['postPaiementsRelancerImpayes'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>, {data: BodyType<PostPaiementsRelancerImpayesBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postPaiementsRelancerImpayes(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostPaiementsRelancerImpayesMutationResult = NonNullable<Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>>
+    export type PostPaiementsRelancerImpayesMutationBody = BodyType<PostPaiementsRelancerImpayesBody>
+    export type PostPaiementsRelancerImpayesMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Relancer tous les impayés d'une classe
+ */
+export const usePostPaiementsRelancerImpayes = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>, TError,{data: BodyType<PostPaiementsRelancerImpayesBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postPaiementsRelancerImpayes>>,
+        TError,
+        {data: BodyType<PostPaiementsRelancerImpayesBody>},
+        TContext
+      > => {
+      return useMutation(getPostPaiementsRelancerImpayesMutationOptions(options));
+    }
+
+export const getPutPaiementsIdAnnulerUrl = (id: string,) => {
+
+
+
+
+  return `/api/paiements/${id}/annuler`
+}
+
+/**
+ * @summary Annuler un paiement
+ */
+export const putPaiementsIdAnnuler = async (id: string, options?: RequestInit): Promise<PutPaiementsIdAnnuler200> => {
+
+  return customFetch<PutPaiementsIdAnnuler200>(getPutPaiementsIdAnnulerUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getPutPaiementsIdAnnulerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPaiementsIdAnnuler>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putPaiementsIdAnnuler>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['putPaiementsIdAnnuler'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putPaiementsIdAnnuler>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  putPaiementsIdAnnuler(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutPaiementsIdAnnulerMutationResult = NonNullable<Awaited<ReturnType<typeof putPaiementsIdAnnuler>>>
+
+    export type PutPaiementsIdAnnulerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Annuler un paiement
+ */
+export const usePutPaiementsIdAnnuler = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPaiementsIdAnnuler>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putPaiementsIdAnnuler>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPutPaiementsIdAnnulerMutationOptions(options));
+    }
+
+export const getGetPaiementsIdRecuUrl = (id: string,) => {
+
+
+
+
+  return `/api/paiements/${id}/recu`
+}
+
+/**
+ * @summary Obtenir les données du reçu
+ */
+export const getPaiementsIdRecu = async (id: string, options?: RequestInit): Promise<RecuResponse> => {
+
+  return customFetch<RecuResponse>(getGetPaiementsIdRecuUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPaiementsIdRecuQueryKey = (id: string,) => {
+    return [
+    `/api/paiements/${id}/recu`
+    ] as const;
+    }
+
+
+export const getGetPaiementsIdRecuQueryOptions = <TData = Awaited<ReturnType<typeof getPaiementsIdRecu>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsIdRecu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPaiementsIdRecuQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaiementsIdRecu>>> = ({ signal }) => getPaiementsIdRecu(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPaiementsIdRecu>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPaiementsIdRecuQueryResult = NonNullable<Awaited<ReturnType<typeof getPaiementsIdRecu>>>
+export type GetPaiementsIdRecuQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir les données du reçu
+ */
+
+export function useGetPaiementsIdRecu<TData = Awaited<ReturnType<typeof getPaiementsIdRecu>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsIdRecu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPaiementsIdRecuQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPaiementsIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/paiements/${id}`
+}
+
+/**
+ * @summary Obtenir un paiement
+ */
+export const getPaiementsId = async (id: string, options?: RequestInit): Promise<GetPaiementsId200> => {
+
+  return customFetch<GetPaiementsId200>(getGetPaiementsIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPaiementsIdQueryKey = (id: string,) => {
+    return [
+    `/api/paiements/${id}`
+    ] as const;
+    }
+
+
+export const getGetPaiementsIdQueryOptions = <TData = Awaited<ReturnType<typeof getPaiementsId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPaiementsIdQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaiementsId>>> = ({ signal }) => getPaiementsId(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPaiementsId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPaiementsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getPaiementsId>>>
+export type GetPaiementsIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir un paiement
+ */
+
+export function useGetPaiementsId<TData = Awaited<ReturnType<typeof getPaiementsId>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPaiementsId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPaiementsIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
