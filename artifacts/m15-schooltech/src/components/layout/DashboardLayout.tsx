@@ -7,6 +7,7 @@ import {
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
+  BookMarked, FileSpreadsheet,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -32,6 +33,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
         { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
+      ],
+    },
+    {
+      title: "BULLETINS",
+      links: [
+        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
+        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
       ],
     },
     {
@@ -61,6 +70,14 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "BULLETINS",
+      links: [
+        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
+        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
+      ],
+    },
+    {
       title: "GESTION",
       links: [
         { label: "Paiements", href: "/paiements", icon: CreditCard },
@@ -75,6 +92,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Classes",         href: "/classes",         icon: UsersRound },
         { label: "Professeurs",     href: "/professeurs",     icon: GraduationCap },
         { label: "Élèves",          href: "/eleves",          icon: UserSquare },
+      ],
+    },
+    {
+      title: "BULLETINS",
+      links: [
+        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
+        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
       ],
     },
     {
@@ -106,8 +131,9 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "PRINCIPAL",
       links: [
-        { label: "Tableau de bord",  href: "/dashboard",       icon: LayoutDashboard },
-        { label: "Notes",            href: "/notes",            icon: Award },
+        { label: "Tableau de bord", href: "/dashboard",     icon: LayoutDashboard },
+        { label: "Mes bulletins",   href: "/mes-bulletins", icon: FileSpreadsheet },
+        { label: "Notes",           href: "/notes",         icon: Award },
       ],
     },
     {
@@ -123,9 +149,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "MON ENFANT",
       links: [
-        { label: "Mon enfant", href: "/mon-enfant", icon: UserCircle },
-        { label: "Notes",      href: "/notes",      icon: Award },
-        { label: "Absences",   href: "/absences",   icon: UserMinus },
+        { label: "Mon enfant",    href: "/mon-enfant",    icon: UserCircle },
+        { label: "Mes bulletins", href: "/mes-bulletins", icon: FileSpreadsheet },
+        { label: "Notes",         href: "/notes",         icon: Award },
+        { label: "Absences",      href: "/absences",      icon: UserMinus },
       ],
     },
     {
@@ -165,6 +192,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/mon-enfant":       "Mon enfant",
   "/annees-scolaires": "Années scolaires",
   "/filieres":         "Filières",
+  "/matieres-config":  "Configuration des Matières",
+  "/bulletins":        "Gestion des Bulletins",
+  "/mes-bulletins":    "Mes Bulletins",
+  "/conseils-classe":  "Conseils de Classe",
 };
 
 const ROLE_LABELS: Record<string, string> = {

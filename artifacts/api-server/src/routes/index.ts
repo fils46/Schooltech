@@ -14,6 +14,9 @@ import emploisDuTempsRouter from "./emploisDuTemps";
 import cahierTextesRouter from "./cahierTextes";
 import appelsRouter from "./appels";
 import notesRouter from "./notes";
+import matieresConfigRouter from "./matieresConfig";
+import bulletinsRouter from "./bulletins";
+import conseilsClasseRouter from "./conseilsClasse";
 
 const router: IRouter = Router();
 
@@ -32,5 +35,8 @@ router.use(classesRouter);
 router.use(cahierTextesRouter);
 router.use(appelsRouter);
 router.use(notesRouter);
+router.use(matieresConfigRouter);
+router.use(bulletinsRouter);
+router.use(conseilsClasseRouter);
 
 export default router;

@@ -2143,6 +2143,401 @@ paths:
                 properties:
                   message: { type: string }
 
+  # ── Module 07 : Matières Config ──────────────────────────────
+
+  /api/matieres-config/classe/{classeId}:
+    get:
+      operationId: getMatiereClasse
+      summary: Lister les matières configurées pour une classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: classeId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des matières
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatieresConfigResponse"
+
+  /api/matieres-config/configurer:
+    post:
+      operationId: configurerMatieres
+      summary: Configurer les matières d'une classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigurerMatieresInput"
+      responses:
+        "200":
+          description: Configuration sauvegardée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatieresConfigResponse"
+
+  /api/matieres-config/{id}/modifier:
+    put:
+      operationId: modifierMatiereConfig
+      summary: Modifier une matière configurée
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatiereConfigInput"
+      responses:
+        "200":
+          description: Matière modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereConfigItemResponse"
+
+  /api/matieres-config/{id}/supprimer:
+    delete:
+      operationId: supprimerMatiereConfig
+      summary: Supprimer une matière configurée
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Matière supprimée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── Module 07 : Bulletins ─────────────────────────────────────
+
+  /api/bulletins/generer:
+    post:
+      operationId: genererBulletin
+      summary: Générer le bulletin d'un élève
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenererBulletinInput"
+      responses:
+        "200":
+          description: Bulletin généré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinDetailResponse"
+
+  /api/bulletins/generer-classe:
+    post:
+      operationId: genererBulletinsClasse
+      summary: Générer les bulletins de toute une classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenererClasseInput"
+      responses:
+        "200":
+          description: Bulletins générés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenererClasseResponse"
+
+  /api/bulletins/calculer-rangs:
+    post:
+      operationId: calculerRangs
+      summary: Recalculer les rangs d'une classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenererClasseInput"
+      responses:
+        "200":
+          description: Rangs calculés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /api/bulletins/publier-classe:
+    put:
+      operationId: publierBulletinsClasse
+      summary: Publier tous les bulletins d'une classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenererClasseInput"
+      responses:
+        "200":
+          description: Bulletins publiés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublierClasseResponse"
+
+  /api/bulletins/classe/{classeId}:
+    get:
+      operationId: getBulletinsClasse
+      summary: Lister les bulletins d'une classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: classeId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string, enum: ["1","2","3"] }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+        - in: query
+          name: publie
+          schema: { type: boolean }
+      responses:
+        "200":
+          description: Liste des bulletins
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinsClasseResponse"
+
+  /api/bulletins/eleve/{eleveId}:
+    get:
+      operationId: getBulletinsEleve
+      summary: Lister les bulletins d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: eleveId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bulletins de l'élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinsEleveResponse"
+
+  /api/bulletins/{id}:
+    get:
+      operationId: getBulletin
+      summary: Obtenir un bulletin détaillé
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bulletin détaillé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinDetailResponse"
+
+  /api/bulletins/{id}/appreciation:
+    put:
+      operationId: ajouterAppreciation
+      summary: Ajouter l'appréciation du conseil de classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppreciationInput"
+      responses:
+        "200":
+          description: Appréciation ajoutée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinDetailResponse"
+
+  /api/bulletins/{id}/publier:
+    put:
+      operationId: publierBulletin
+      summary: Publier un bulletin
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bulletin publié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinDetailResponse"
+
+  /api/bulletins/{id}/pdf:
+    get:
+      operationId: exportBulletinPDF
+      summary: Exporter le bulletin en HTML imprimable
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: HTML du bulletin
+          content:
+            text/html:
+              schema:
+                type: string
+
+  # ── Module 07 : Conseils de Classe ────────────────────────────
+
+  /api/conseils/planifier:
+    post:
+      operationId: planifierConseil
+      summary: Planifier un conseil de classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlanifierConseilInput"
+      responses:
+        "200":
+          description: Conseil planifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConseilClasseItemResponse"
+
+  /api/conseils/liste:
+    get:
+      operationId: listerConseils
+      summary: Lister les conseils de classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: classe_id
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string, enum: ["1","2","3"] }
+        - in: query
+          name: statut
+          schema: { type: string, enum: ["planifie","en_cours","termine"] }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des conseils
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConseilsListeResponse"
+
+  /api/conseils/{id}:
+    get:
+      operationId: getConseil
+      summary: Obtenir un conseil de classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Conseil de classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConseilClasseItemResponse"
+
+  /api/conseils/{id}/demarrer:
+    put:
+      operationId: demarrerConseil
+      summary: Démarrer un conseil de classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Conseil démarré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConseilClasseItemResponse"
+
+  /api/conseils/{id}/terminer:
+    put:
+      operationId: terminerConseil
+      summary: Terminer un conseil de classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TerminerConseilInput"
+      responses:
+        "200":
+          description: Conseil terminé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConseilClasseItemResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -3638,3 +4033,226 @@ components:
                 type: integer
               ecart_type:
                 type: number
+
+    # ── Module 07 Schemas ─────────────────────────────────────
+
+    MatiereConfigItem:
+      type: object
+      properties:
+        id: { type: string }
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        nom_matiere: { type: string }
+        coefficient: { type: number }
+        ordre_affichage: { type: integer }
+        professeur_id: { type: string, nullable: true }
+        professeur_nom: { type: string, nullable: true }
+        actif: { type: boolean }
+
+    MatieresConfigResponse:
+      type: object
+      required: [matieres]
+      properties:
+        matieres:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatiereConfigItem"
+
+    MatiereConfigItemResponse:
+      type: object
+      required: [matiere]
+      properties:
+        matiere:
+          $ref: "#/components/schemas/MatiereConfigItem"
+
+    MatiereConfigInput:
+      type: object
+      properties:
+        nom_matiere: { type: string }
+        coefficient: { type: number }
+        ordre_affichage: { type: integer }
+        professeur_id: { type: string, nullable: true }
+        actif: { type: boolean }
+
+    ConfigurerMatieresInput:
+      type: object
+      required: [classe_id, annee_scolaire_id, matieres]
+      properties:
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        matieres:
+          type: array
+          items:
+            type: object
+            required: [nom_matiere, coefficient, ordre_affichage]
+            properties:
+              nom_matiere: { type: string }
+              coefficient: { type: number }
+              ordre_affichage: { type: integer }
+              professeur_id: { type: string, nullable: true }
+
+    BulletinDetailItem:
+      type: object
+      properties:
+        id: { type: string }
+        matiere: { type: string }
+        coefficient: { type: number }
+        moyenne_matiere: { type: number, nullable: true }
+        note_min_classe: { type: number, nullable: true }
+        note_max_classe: { type: number, nullable: true }
+        moyenne_classe: { type: number, nullable: true }
+        appreciation_prof: { type: string, nullable: true }
+        rang_matiere: { type: integer, nullable: true }
+
+    BulletinItem:
+      type: object
+      properties:
+        id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_matricule: { type: string }
+        classe_id: { type: string }
+        classe_nom: { type: string }
+        annee_scolaire_id: { type: string }
+        annee_scolaire_libelle: { type: string }
+        trimestre: { type: string, enum: ["1","2","3"] }
+        moyenne_generale: { type: number, nullable: true }
+        rang: { type: integer, nullable: true }
+        effectif_classe: { type: integer, nullable: true }
+        mention: { type: string, nullable: true, enum: ["tres_bien","bien","assez_bien","passable","insuffisant"] }
+        appreciation_conseil: { type: string, nullable: true }
+        decision_conseil: { type: string, nullable: true, enum: ["passage","redoublement","exclusion","orientation"] }
+        publie: { type: boolean }
+        date_publication: { type: string, nullable: true }
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/BulletinDetailItem"
+
+    BulletinDetailResponse:
+      type: object
+      required: [bulletin]
+      properties:
+        bulletin:
+          $ref: "#/components/schemas/BulletinItem"
+
+    BulletinsClasseResponse:
+      type: object
+      required: [bulletins, stats]
+      properties:
+        bulletins:
+          type: array
+          items:
+            $ref: "#/components/schemas/BulletinItem"
+        stats:
+          type: object
+          properties:
+            moyenne_classe: { type: number }
+            meilleure_moyenne: { type: number }
+            plus_basse_moyenne: { type: number }
+            nb_au_dessus_10: { type: integer }
+            nb_en_dessous_10: { type: integer }
+            total: { type: integer }
+
+    BulletinsEleveResponse:
+      type: object
+      required: [bulletins]
+      properties:
+        bulletins:
+          type: array
+          items:
+            $ref: "#/components/schemas/BulletinItem"
+
+    GenererBulletinInput:
+      type: object
+      required: [eleve_id, classe_id, annee_scolaire_id, trimestre]
+      properties:
+        eleve_id: { type: string }
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        trimestre: { type: string, enum: ["1","2","3"] }
+
+    GenererClasseInput:
+      type: object
+      required: [classe_id, annee_scolaire_id, trimestre]
+      properties:
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        trimestre: { type: string, enum: ["1","2","3"] }
+
+    GenererClasseResponse:
+      type: object
+      required: [generes, erreurs]
+      properties:
+        generes: { type: integer }
+        erreurs:
+          type: array
+          items:
+            type: object
+
+    PublierClasseResponse:
+      type: object
+      required: [publies, erreurs]
+      properties:
+        publies: { type: integer }
+        erreurs:
+          type: array
+          items:
+            type: object
+
+    AppreciationInput:
+      type: object
+      properties:
+        appreciation_conseil: { type: string, nullable: true }
+        decision_conseil:
+          type: string
+          nullable: true
+          enum: ["passage","redoublement","exclusion","orientation"]
+
+    ConseilClasseItem:
+      type: object
+      properties:
+        id: { type: string }
+        classe_id: { type: string }
+        classe_nom: { type: string }
+        annee_scolaire_id: { type: string }
+        trimestre: { type: string, enum: ["1","2","3"] }
+        date_conseil: { type: string }
+        president_id: { type: string }
+        president_nom: { type: string }
+        participants: {}
+        observations_generales: { type: string, nullable: true }
+        statut: { type: string, enum: ["planifie","en_cours","termine"] }
+
+    ConseilClasseItemResponse:
+      type: object
+      required: [conseil]
+      properties:
+        conseil:
+          $ref: "#/components/schemas/ConseilClasseItem"
+
+    ConseilsListeResponse:
+      type: object
+      required: [conseils]
+      properties:
+        conseils:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConseilClasseItem"
+
+    PlanifierConseilInput:
+      type: object
+      required: [classe_id, annee_scolaire_id, trimestre, date_conseil, president_id]
+      properties:
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        trimestre: { type: string, enum: ["1","2","3"] }
+        date_conseil: { type: string }
+        president_id: { type: string }
+        participants: {}
+
+    TerminerConseilInput:
+      type: object
+      properties:
+        observations_generales: { type: string, nullable: true }

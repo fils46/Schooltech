@@ -974,6 +974,255 @@ export interface StatsNotesResponse {
   statistiques: StatsNotesResponseStatistiquesItem[];
 }
 
+export interface MatiereConfigItem {
+  id?: string;
+  classe_id?: string;
+  annee_scolaire_id?: string;
+  nom_matiere?: string;
+  coefficient?: number;
+  ordre_affichage?: number;
+  professeur_id?: string | null;
+  professeur_nom?: string | null;
+  actif?: boolean;
+}
+
+export interface MatieresConfigResponse {
+  matieres: MatiereConfigItem[];
+}
+
+export interface MatiereConfigItemResponse {
+  matiere: MatiereConfigItem;
+}
+
+export interface MatiereConfigInput {
+  nom_matiere?: string;
+  coefficient?: number;
+  ordre_affichage?: number;
+  professeur_id?: string | null;
+  actif?: boolean;
+}
+
+export type ConfigurerMatieresInputMatieresItem = {
+  nom_matiere: string;
+  coefficient: number;
+  ordre_affichage: number;
+  professeur_id?: string | null;
+};
+
+export interface ConfigurerMatieresInput {
+  classe_id: string;
+  annee_scolaire_id: string;
+  matieres: ConfigurerMatieresInputMatieresItem[];
+}
+
+export interface BulletinDetailItem {
+  id?: string;
+  matiere?: string;
+  coefficient?: number;
+  moyenne_matiere?: number | null;
+  note_min_classe?: number | null;
+  note_max_classe?: number | null;
+  moyenne_classe?: number | null;
+  appreciation_prof?: string | null;
+  rang_matiere?: number | null;
+}
+
+export type BulletinItemTrimestre = typeof BulletinItemTrimestre[keyof typeof BulletinItemTrimestre];
+
+
+export const BulletinItemTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export type BulletinItemMention = typeof BulletinItemMention[keyof typeof BulletinItemMention] | null;
+
+
+export const BulletinItemMention = {
+  tres_bien: 'tres_bien',
+  bien: 'bien',
+  assez_bien: 'assez_bien',
+  passable: 'passable',
+  insuffisant: 'insuffisant',
+} as const;
+
+export type BulletinItemDecisionConseil = typeof BulletinItemDecisionConseil[keyof typeof BulletinItemDecisionConseil] | null;
+
+
+export const BulletinItemDecisionConseil = {
+  passage: 'passage',
+  redoublement: 'redoublement',
+  exclusion: 'exclusion',
+  orientation: 'orientation',
+} as const;
+
+export interface BulletinItem {
+  id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_matricule?: string;
+  classe_id?: string;
+  classe_nom?: string;
+  annee_scolaire_id?: string;
+  annee_scolaire_libelle?: string;
+  trimestre?: BulletinItemTrimestre;
+  moyenne_generale?: number | null;
+  rang?: number | null;
+  effectif_classe?: number | null;
+  mention?: BulletinItemMention;
+  appreciation_conseil?: string | null;
+  decision_conseil?: BulletinItemDecisionConseil;
+  publie?: boolean;
+  date_publication?: string | null;
+  details?: BulletinDetailItem[];
+}
+
+export interface BulletinDetailResponse {
+  bulletin: BulletinItem;
+}
+
+export type BulletinsClasseResponseStats = {
+  moyenne_classe?: number;
+  meilleure_moyenne?: number;
+  plus_basse_moyenne?: number;
+  nb_au_dessus_10?: number;
+  nb_en_dessous_10?: number;
+  total?: number;
+};
+
+export interface BulletinsClasseResponse {
+  bulletins: BulletinItem[];
+  stats: BulletinsClasseResponseStats;
+}
+
+export interface BulletinsEleveResponse {
+  bulletins: BulletinItem[];
+}
+
+export type GenererBulletinInputTrimestre = typeof GenererBulletinInputTrimestre[keyof typeof GenererBulletinInputTrimestre];
+
+
+export const GenererBulletinInputTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export interface GenererBulletinInput {
+  eleve_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  trimestre: GenererBulletinInputTrimestre;
+}
+
+export type GenererClasseInputTrimestre = typeof GenererClasseInputTrimestre[keyof typeof GenererClasseInputTrimestre];
+
+
+export const GenererClasseInputTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export interface GenererClasseInput {
+  classe_id: string;
+  annee_scolaire_id: string;
+  trimestre: GenererClasseInputTrimestre;
+}
+
+export type GenererClasseResponseErreursItem = { [key: string]: unknown };
+
+export interface GenererClasseResponse {
+  generes: number;
+  erreurs: GenererClasseResponseErreursItem[];
+}
+
+export type PublierClasseResponseErreursItem = { [key: string]: unknown };
+
+export interface PublierClasseResponse {
+  publies: number;
+  erreurs: PublierClasseResponseErreursItem[];
+}
+
+export type AppreciationInputDecisionConseil = typeof AppreciationInputDecisionConseil[keyof typeof AppreciationInputDecisionConseil] | null;
+
+
+export const AppreciationInputDecisionConseil = {
+  passage: 'passage',
+  redoublement: 'redoublement',
+  exclusion: 'exclusion',
+  orientation: 'orientation',
+} as const;
+
+export interface AppreciationInput {
+  appreciation_conseil?: string | null;
+  decision_conseil?: AppreciationInputDecisionConseil;
+}
+
+export type ConseilClasseItemTrimestre = typeof ConseilClasseItemTrimestre[keyof typeof ConseilClasseItemTrimestre];
+
+
+export const ConseilClasseItemTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export type ConseilClasseItemStatut = typeof ConseilClasseItemStatut[keyof typeof ConseilClasseItemStatut];
+
+
+export const ConseilClasseItemStatut = {
+  planifie: 'planifie',
+  en_cours: 'en_cours',
+  termine: 'termine',
+} as const;
+
+export interface ConseilClasseItem {
+  id?: string;
+  classe_id?: string;
+  classe_nom?: string;
+  annee_scolaire_id?: string;
+  trimestre?: ConseilClasseItemTrimestre;
+  date_conseil?: string;
+  president_id?: string;
+  president_nom?: string;
+  participants?: unknown;
+  observations_generales?: string | null;
+  statut?: ConseilClasseItemStatut;
+}
+
+export interface ConseilClasseItemResponse {
+  conseil: ConseilClasseItem;
+}
+
+export interface ConseilsListeResponse {
+  conseils: ConseilClasseItem[];
+}
+
+export type PlanifierConseilInputTrimestre = typeof PlanifierConseilInputTrimestre[keyof typeof PlanifierConseilInputTrimestre];
+
+
+export const PlanifierConseilInputTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export interface PlanifierConseilInput {
+  classe_id: string;
+  annee_scolaire_id: string;
+  trimestre: PlanifierConseilInputTrimestre;
+  date_conseil: string;
+  president_id: string;
+  participants?: unknown;
+}
+
+export interface TerminerConseilInput {
+  observations_generales?: string | null;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -1082,4 +1331,52 @@ annee_scolaire_id?: string;
 export type SupprimerNote200 = {
   message?: string;
 };
+
+export type GetMatiereClasseParams = {
+annee_scolaire_id?: string;
+};
+
+export type GetBulletinsClasseParams = {
+trimestre?: GetBulletinsClasseTrimestre;
+annee_scolaire_id?: string;
+publie?: boolean;
+};
+
+export type GetBulletinsClasseTrimestre = typeof GetBulletinsClasseTrimestre[keyof typeof GetBulletinsClasseTrimestre];
+
+
+export const GetBulletinsClasseTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export type GetBulletinsEleveParams = {
+annee_scolaire_id?: string;
+};
+
+export type ListerConseilsParams = {
+classe_id?: string;
+trimestre?: ListerConseilsTrimestre;
+statut?: ListerConseilsStatut;
+annee_scolaire_id?: string;
+};
+
+export type ListerConseilsTrimestre = typeof ListerConseilsTrimestre[keyof typeof ListerConseilsTrimestre];
+
+
+export const ListerConseilsTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export type ListerConseilsStatut = typeof ListerConseilsStatut[keyof typeof ListerConseilsStatut];
+
+
+export const ListerConseilsStatut = {
+  planifie: 'planifie',
+  en_cours: 'en_cours',
+  termine: 'termine',
+} as const;
 

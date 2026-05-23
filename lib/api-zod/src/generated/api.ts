@@ -2024,3 +2024,566 @@ export const SupprimerNoteResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les matières configurées pour une classe
+ */
+export const GetMatiereClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetMatiereClasseQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetMatiereClasseResponse = zod.object({
+  "matieres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "nom_matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "ordre_affichage": zod.number().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "actif": zod.boolean().optional()
+}))
+})
+
+
+/**
+ * @summary Configurer les matières d'une classe
+ */
+export const ConfigurerMatieresBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matieres": zod.array(zod.object({
+  "nom_matiere": zod.string(),
+  "coefficient": zod.number(),
+  "ordre_affichage": zod.number(),
+  "professeur_id": zod.string().nullish()
+}))
+})
+
+export const ConfigurerMatieresResponse = zod.object({
+  "matieres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "nom_matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "ordre_affichage": zod.number().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "actif": zod.boolean().optional()
+}))
+})
+
+
+/**
+ * @summary Modifier une matière configurée
+ */
+export const ModifierMatiereConfigParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierMatiereConfigBody = zod.object({
+  "nom_matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "ordre_affichage": zod.number().optional(),
+  "professeur_id": zod.string().nullish(),
+  "actif": zod.boolean().optional()
+})
+
+export const ModifierMatiereConfigResponse = zod.object({
+  "matiere": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "nom_matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "ordre_affichage": zod.number().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "actif": zod.boolean().optional()
+})
+})
+
+
+/**
+ * @summary Supprimer une matière configurée
+ */
+export const SupprimerMatiereConfigParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerMatiereConfigResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Générer le bulletin d'un élève
+ */
+export const GenererBulletinBody = zod.object({
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.enum(['1', '2', '3'])
+})
+
+export const GenererBulletinResponse = zod.object({
+  "bulletin": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+})
+})
+
+
+/**
+ * @summary Générer les bulletins de toute une classe
+ */
+export const GenererBulletinsClasseBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.enum(['1', '2', '3'])
+})
+
+export const GenererBulletinsClasseResponse = zod.object({
+  "generes": zod.number(),
+  "erreurs": zod.array(zod.object({
+
+}).passthrough())
+})
+
+
+/**
+ * @summary Recalculer les rangs d'une classe
+ */
+export const CalculerRangsBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.enum(['1', '2', '3'])
+})
+
+export const CalculerRangsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Publier tous les bulletins d'une classe
+ */
+export const PublierBulletinsClasseBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.enum(['1', '2', '3'])
+})
+
+export const PublierBulletinsClasseResponse = zod.object({
+  "publies": zod.number(),
+  "erreurs": zod.array(zod.object({
+
+}).passthrough())
+})
+
+
+/**
+ * @summary Lister les bulletins d'une classe
+ */
+export const GetBulletinsClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetBulletinsClasseQueryParams = zod.object({
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "publie": zod.coerce.boolean().optional()
+})
+
+export const GetBulletinsClasseResponse = zod.object({
+  "bulletins": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+})),
+  "stats": zod.object({
+  "moyenne_classe": zod.number().optional(),
+  "meilleure_moyenne": zod.number().optional(),
+  "plus_basse_moyenne": zod.number().optional(),
+  "nb_au_dessus_10": zod.number().optional(),
+  "nb_en_dessous_10": zod.number().optional(),
+  "total": zod.number().optional()
+})
+})
+
+
+/**
+ * @summary Lister les bulletins d'un élève
+ */
+export const GetBulletinsEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetBulletinsEleveQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetBulletinsEleveResponse = zod.object({
+  "bulletins": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+}))
+})
+
+
+/**
+ * @summary Obtenir un bulletin détaillé
+ */
+export const GetBulletinParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetBulletinResponse = zod.object({
+  "bulletin": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+})
+})
+
+
+/**
+ * @summary Ajouter l'appréciation du conseil de classe
+ */
+export const AjouterAppreciationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AjouterAppreciationBody = zod.object({
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish()
+})
+
+export const AjouterAppreciationResponse = zod.object({
+  "bulletin": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+})
+})
+
+
+/**
+ * @summary Publier un bulletin
+ */
+export const PublierBulletinParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PublierBulletinResponse = zod.object({
+  "bulletin": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "annee_scolaire_libelle": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif_classe": zod.number().nullish(),
+  "mention": zod.enum(['tres_bien', 'bien', 'assez_bien', 'passable', 'insuffisant']).nullish(),
+  "appreciation_conseil": zod.string().nullish(),
+  "decision_conseil": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation']).nullish(),
+  "publie": zod.boolean().optional(),
+  "date_publication": zod.string().nullish(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "moyenne_matiere": zod.number().nullish(),
+  "note_min_classe": zod.number().nullish(),
+  "note_max_classe": zod.number().nullish(),
+  "moyenne_classe": zod.number().nullish(),
+  "appreciation_prof": zod.string().nullish(),
+  "rang_matiere": zod.number().nullish()
+})).optional()
+})
+})
+
+
+/**
+ * @summary Exporter le bulletin en HTML imprimable
+ */
+export const ExportBulletinPDFParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+
+/**
+ * @summary Planifier un conseil de classe
+ */
+export const PlanifierConseilBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.enum(['1', '2', '3']),
+  "date_conseil": zod.string(),
+  "president_id": zod.string(),
+  "participants": zod.unknown().optional()
+})
+
+export const PlanifierConseilResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+})
+})
+
+
+/**
+ * @summary Lister les conseils de classe
+ */
+export const ListerConseilsQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const ListerConseilsResponse = zod.object({
+  "conseils": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+}))
+})
+
+
+/**
+ * @summary Obtenir un conseil de classe
+ */
+export const GetConseilParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetConseilResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+})
+})
+
+
+/**
+ * @summary Démarrer un conseil de classe
+ */
+export const DemarrerConseilParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DemarrerConseilResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+})
+})
+
+
+/**
+ * @summary Terminer un conseil de classe
+ */
+export const TerminerConseilParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const TerminerConseilBody = zod.object({
+  "observations_generales": zod.string().nullish()
+})
+
+export const TerminerConseilResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+})
+})
+
+

@@ -16,3 +16,7 @@ export * from "./cahierTextes";
 export * from "./appels";
 export * from "./appelDetails";
 export * from "./notes";
+export * from "./matieresConfig";
+export * from "./bulletins";
+export * from "./bulletinDetails";
+export * from "./conseilsClasse";

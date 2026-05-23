@@ -31,6 +31,11 @@ import FaireAppel from "@/pages/faire-appel";
 import CahierTextesProfPage from "@/pages/cahier-textes-prof";
 import SaisieNotes from "@/pages/saisie-notes";
 import NoteEleveDetail from "@/pages/note-eleve-detail";
+import MatiereConfig from "@/pages/matiere-config";
+import BulletinGestion from "@/pages/bulletin-gestion";
+import BulletinDetail from "@/pages/bulletin-detail";
+import MesBulletins from "@/pages/mes-bulletins";
+import ConseilClasse from "@/pages/conseil-classe";
 
 const queryClient = new QueryClient();
 
@@ -189,6 +194,47 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <SaisieNotes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module 07 : Notes & Bulletins ── */}
+      <Route path="/matieres-config">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MatiereConfig />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/bulletins/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <BulletinDetail />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/bulletins">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <BulletinGestion />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mes-bulletins">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MesBulletins />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/conseils-classe">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConseilClasse />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
