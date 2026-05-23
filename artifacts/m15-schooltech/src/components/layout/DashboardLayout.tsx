@@ -50,6 +50,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "ANALYTIQUE",
+      links: [
+        { label: "Dashboard analytique",  href: "/analytics",            icon: BarChart3 },
+        { label: "Analyse pédagogique",   href: "/analyse-pedagogique",  icon: TrendingUp },
+        { label: "Analyse présences",     href: "/analyse-presences",    icon: UserMinus },
+        { label: "Rapports & Exports",    href: "/rapports-exports",     icon: FileSpreadsheet },
+      ],
+    },
+    {
       title: "GESTION",
       links: [
         { label: "Licences",       href: "/licences",       icon: Key },
@@ -125,10 +134,18 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "ANALYTIQUE",
+      links: [
+        { label: "Dashboard analytique",  href: "/analytics",            icon: BarChart3 },
+        { label: "Analyse pédagogique",   href: "/analyse-pedagogique",  icon: TrendingUp },
+        { label: "Analyse présences",     href: "/analyse-presences",    icon: UserMinus },
+        { label: "Rapports & Exports",    href: "/rapports-exports",     icon: FileSpreadsheet },
+      ],
+    },
+    {
       title: "GESTION",
       links: [
         { label: "Paiements", href: "/paiements", icon: CreditCard },
-        { label: "Rapports",  href: "/rapports",  icon: FileText },
       ],
     },
     {
@@ -173,6 +190,15 @@ const navConfig: Record<string, Section[]> = {
     },
   ],
   censeur: [
+    {
+      title: "ANALYTIQUE",
+      links: [
+        { label: "Dashboard analytique", href: "/analytics",           icon: BarChart3 },
+        { label: "Analyse pédagogique",  href: "/analyse-pedagogique", icon: TrendingUp },
+        { label: "Analyse présences",    href: "/analyse-presences",   icon: UserMinus },
+        { label: "Rapports",             href: "/rapports-exports",    icon: FileSpreadsheet },
+      ],
+    },
     {
       title: "ACADÉMIQUE",
       links: [
@@ -238,6 +264,12 @@ const navConfig: Record<string, Section[]> = {
     },
   ],
   professeur: [
+    {
+      title: "MON ANALYTIQUE",
+      links: [
+        { label: "Tableau de bord", href: "/analytics-professeur", icon: BarChart3 },
+      ],
+    },
     {
       title: "MES COURS",
       links: [
@@ -470,6 +502,12 @@ const PAGE_TITLES: Record<string, string> = {
   "/clubs/nouveau":     "Créer un club",
   "/mes-clubs":         "Mes clubs",
   "/admin-clubs":       "Administration — Clubs",
+  "/analytics":                 "Tableau de bord analytique",
+  "/analyse-pedagogique":       "Analyse pédagogique",
+  "/analyse-presences":         "Analyse des présences",
+  "/analytics-professeur":      "Mon tableau de bord analytique",
+  "/rapports-exports":          "Rapports & Exports",
+  "/analytics-complementaires": "Analytics — Clubs & Infirmerie",
 };
 
 const ROLE_LABELS: Record<string, string> = {

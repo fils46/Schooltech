@@ -64,6 +64,16 @@ Module 01 — Authentification complet :
 - Statistiques globales et par établissement
 - Thème Bleu marine / Cyan / Or + Poppins + mode sombre/clair
 
+Module 18 — Tableau de Bord Analytique (complet) :
+- 2 tables DB : rapports_generes, snapshots_analytics
+- 12 endpoints API REST sous /api/analytics/...
+- KPIs établissement, analyse pédagogique (par classe/matière/prof/élève), analyse présences, infirmerie, clubs, bibliothèque
+- Dashboard professeur avec ses propres moyennes et classes
+- Pages : dashboard-analytique, analyse-pedagogique, analyse-presences, dashboard-professeur-analytique, rapports-exports
+- Exports rapides PDF/Excel avec modal de génération personnalisée
+- Graphiques Recharts (BarChart, LineChart) + tableaux détaillés
+- Sections ANALYTIQUE ajoutées dans la sidebar dev/directeur/censeur/professeur
+
 Module 16 — Infirmerie Numérique (complet) :
 - 4 tables DB : dossiers_medicaux, consultations_infirmerie, stocks_infirmerie, mouvements_stocks
 - 15 endpoints API REST sous /api/infirmerie/...

@@ -124,6 +124,10 @@ import type {
   GenererPV200,
   GenererPlanningInput,
   GetAbsencesEnfantParams,
+  GetApiAnalyticsKpisParams,
+  GetApiAnalyticsPedagogiqueParams,
+  GetApiAnalyticsPresencesParams,
+  GetApiAnalyticsProfesseurParams,
   GetApiAnnoncesParams,
   GetBibliothequeHistoriqueParams,
   GetBibliothequeRessourcesParams,
@@ -215,6 +219,7 @@ import type {
   ProgressionEleveResponse,
   PublierClasseResponse,
   PutBibliothequeRessourcesIdPublierBody,
+  RapportInput,
   RechercherElevesParams,
   RendezVousItemResponse,
   RendezVousListeResponse,
@@ -236,6 +241,7 @@ import type {
   SeanceDetailResponse,
   SeanceInput,
   SeancesListeResponse,
+  SnapshotInput,
   StatistiquesAbsencesResponse,
   StatsEpreuveResponse,
   StatsEtablissement,
@@ -17717,4 +17723,944 @@ export function useGetDistinctionsEleveEleveId<TData = Awaited<ReturnType<typeof
 
 
 
+
+export const getGetApiAnalyticsKpisUrl = (params?: GetApiAnalyticsKpisParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/analytics/kpis?${stringifiedParams}` : `/api/api/analytics/kpis`
+}
+
+/**
+ * @summary KPIs établissement
+ */
+export const getApiAnalyticsKpis = async (params?: GetApiAnalyticsKpisParams, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsKpisUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsKpisQueryKey = (params?: GetApiAnalyticsKpisParams,) => {
+    return [
+    `/api/api/analytics/kpis`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsKpisQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsKpisQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsKpis>>> = ({ signal }) => getApiAnalyticsKpis(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsKpisQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsKpis>>>
+export type GetApiAnalyticsKpisQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary KPIs établissement
+ */
+
+export function useGetApiAnalyticsKpis<TData = Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError = ErrorType<unknown>>(
+ params?: GetApiAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsKpisQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsPedagogiqueUrl = (params?: GetApiAnalyticsPedagogiqueParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/analytics/pedagogique?${stringifiedParams}` : `/api/api/analytics/pedagogique`
+}
+
+/**
+ * @summary Analyse pédagogique
+ */
+export const getApiAnalyticsPedagogique = async (params?: GetApiAnalyticsPedagogiqueParams, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsPedagogiqueUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsPedagogiqueQueryKey = (params?: GetApiAnalyticsPedagogiqueParams,) => {
+    return [
+    `/api/api/analytics/pedagogique`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsPedagogiqueQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsPedagogiqueQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>> = ({ signal }) => getApiAnalyticsPedagogique(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsPedagogiqueQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>>
+export type GetApiAnalyticsPedagogiqueQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Analyse pédagogique
+ */
+
+export function useGetApiAnalyticsPedagogique<TData = Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError = ErrorType<unknown>>(
+ params?: GetApiAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsPedagogiqueQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsPresencesUrl = (params?: GetApiAnalyticsPresencesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/analytics/presences?${stringifiedParams}` : `/api/api/analytics/presences`
+}
+
+/**
+ * @summary Analyse présences & absences
+ */
+export const getApiAnalyticsPresences = async (params?: GetApiAnalyticsPresencesParams, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsPresencesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsPresencesQueryKey = (params?: GetApiAnalyticsPresencesParams,) => {
+    return [
+    `/api/api/analytics/presences`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsPresencesQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsPresencesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsPresences>>> = ({ signal }) => getApiAnalyticsPresences(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsPresencesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsPresences>>>
+export type GetApiAnalyticsPresencesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Analyse présences & absences
+ */
+
+export function useGetApiAnalyticsPresences<TData = Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError = ErrorType<unknown>>(
+ params?: GetApiAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsPresencesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsInfirmerieUrl = () => {
+
+
+
+
+  return `/api/api/analytics/infirmerie`
+}
+
+/**
+ * @summary Analyse infirmerie
+ */
+export const getApiAnalyticsInfirmerie = async ( options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsInfirmerieUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsInfirmerieQueryKey = () => {
+    return [
+    `/api/api/analytics/infirmerie`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsInfirmerieQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsInfirmerieQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>> = ({ signal }) => getApiAnalyticsInfirmerie({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsInfirmerieQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>>
+export type GetApiAnalyticsInfirmerieQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Analyse infirmerie
+ */
+
+export function useGetApiAnalyticsInfirmerie<TData = Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsInfirmerieQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsClubsUrl = () => {
+
+
+
+
+  return `/api/api/analytics/clubs`
+}
+
+/**
+ * @summary Analyse clubs & activités
+ */
+export const getApiAnalyticsClubs = async ( options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsClubsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsClubsQueryKey = () => {
+    return [
+    `/api/api/analytics/clubs`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsClubsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsClubsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsClubs>>> = ({ signal }) => getApiAnalyticsClubs({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsClubsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsClubs>>>
+export type GetApiAnalyticsClubsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Analyse clubs & activités
+ */
+
+export function useGetApiAnalyticsClubs<TData = Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsClubsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsBibliothequeUrl = () => {
+
+
+
+
+  return `/api/api/analytics/bibliotheque`
+}
+
+/**
+ * @summary Analyse bibliothèque
+ */
+export const getApiAnalyticsBibliotheque = async ( options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsBibliothequeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsBibliothequeQueryKey = () => {
+    return [
+    `/api/api/analytics/bibliotheque`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsBibliothequeQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsBibliothequeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>> = ({ signal }) => getApiAnalyticsBibliotheque({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsBibliothequeQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>>
+export type GetApiAnalyticsBibliothequeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Analyse bibliothèque
+ */
+
+export function useGetApiAnalyticsBibliotheque<TData = Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsBibliothequeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsProfesseurUrl = (params?: GetApiAnalyticsProfesseurParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/analytics/professeur?${stringifiedParams}` : `/api/api/analytics/professeur`
+}
+
+/**
+ * @summary Dashboard analytique professeur
+ */
+export const getApiAnalyticsProfesseur = async (params?: GetApiAnalyticsProfesseurParams, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsProfesseurUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsProfesseurQueryKey = (params?: GetApiAnalyticsProfesseurParams,) => {
+    return [
+    `/api/api/analytics/professeur`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsProfesseurQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsProfesseurQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>> = ({ signal }) => getApiAnalyticsProfesseur(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsProfesseurQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>>
+export type GetApiAnalyticsProfesseurQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Dashboard analytique professeur
+ */
+
+export function useGetApiAnalyticsProfesseur<TData = Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError = ErrorType<unknown>>(
+ params?: GetApiAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsProfesseurQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsCenseurUrl = () => {
+
+
+
+
+  return `/api/api/analytics/censeur`
+}
+
+/**
+ * @summary Dashboard analytique censeur
+ */
+export const getApiAnalyticsCenseur = async ( options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsCenseurUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsCenseurQueryKey = () => {
+    return [
+    `/api/api/analytics/censeur`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsCenseurQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsCenseurQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>> = ({ signal }) => getApiAnalyticsCenseur({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsCenseurQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>>
+export type GetApiAnalyticsCenseurQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Dashboard analytique censeur
+ */
+
+export function useGetApiAnalyticsCenseur<TData = Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsCenseurQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostApiAnalyticsRapportsGenererUrl = () => {
+
+
+
+
+  return `/api/api/analytics/rapports/generer`
+}
+
+/**
+ * @summary Générer un rapport
+ */
+export const postApiAnalyticsRapportsGenerer = async (rapportInput: RapportInput, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getPostApiAnalyticsRapportsGenererUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      rapportInput,)
+  }
+);}
+
+
+
+
+export const getPostApiAnalyticsRapportsGenererMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext> => {
+
+const mutationKey = ['postApiAnalyticsRapportsGenerer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, {data: BodyType<RapportInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAnalyticsRapportsGenerer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAnalyticsRapportsGenererMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>>
+    export type PostApiAnalyticsRapportsGenererMutationBody = BodyType<RapportInput>
+    export type PostApiAnalyticsRapportsGenererMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Générer un rapport
+ */
+export const usePostApiAnalyticsRapportsGenerer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>,
+        TError,
+        {data: BodyType<RapportInput>},
+        TContext
+      > => {
+      return useMutation(getPostApiAnalyticsRapportsGenererMutationOptions(options));
+    }
+
+export const getGetApiAnalyticsRapportsUrl = () => {
+
+
+
+
+  return `/api/api/analytics/rapports`
+}
+
+/**
+ * @summary Lister les rapports générés
+ */
+export const getApiAnalyticsRapports = async ( options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsRapportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsRapportsQueryKey = () => {
+    return [
+    `/api/api/analytics/rapports`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsRapportsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsRapportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsRapports>>> = ({ signal }) => getApiAnalyticsRapports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsRapportsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsRapports>>>
+export type GetApiAnalyticsRapportsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les rapports générés
+ */
+
+export function useGetApiAnalyticsRapports<TData = Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsRapportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnalyticsRapportsIdTelechargerUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/analytics/rapports/${id}/telecharger`
+}
+
+/**
+ * @summary Télécharger un rapport
+ */
+export const getApiAnalyticsRapportsIdTelecharger = async (id: string, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getGetApiAnalyticsRapportsIdTelechargerUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnalyticsRapportsIdTelechargerQueryKey = (id: string,) => {
+    return [
+    `/api/api/analytics/rapports/${id}/telecharger`
+    ] as const;
+    }
+
+
+export const getGetApiAnalyticsRapportsIdTelechargerQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsRapportsIdTelechargerQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>> = ({ signal }) => getApiAnalyticsRapportsIdTelecharger(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnalyticsRapportsIdTelechargerQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>>
+export type GetApiAnalyticsRapportsIdTelechargerQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Télécharger un rapport
+ */
+
+export function useGetApiAnalyticsRapportsIdTelecharger<TData = Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnalyticsRapportsIdTelechargerQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostApiAnalyticsSnapshotsUrl = () => {
+
+
+
+
+  return `/api/api/analytics/snapshots`
+}
+
+/**
+ * @summary Créer un snapshot analytique (dev uniquement)
+ */
+export const postApiAnalyticsSnapshots = async (snapshotInput: SnapshotInput, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getPostApiAnalyticsSnapshotsUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      snapshotInput,)
+  }
+);}
+
+
+
+
+export const getPostApiAnalyticsSnapshotsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext> => {
+
+const mutationKey = ['postApiAnalyticsSnapshots'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, {data: BodyType<SnapshotInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAnalyticsSnapshots(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAnalyticsSnapshotsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>>
+    export type PostApiAnalyticsSnapshotsMutationBody = BodyType<SnapshotInput>
+    export type PostApiAnalyticsSnapshotsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Créer un snapshot analytique (dev uniquement)
+ */
+export const usePostApiAnalyticsSnapshots = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>,
+        TError,
+        {data: BodyType<SnapshotInput>},
+        TContext
+      > => {
+      return useMutation(getPostApiAnalyticsSnapshotsMutationOptions(options));
+    }
 

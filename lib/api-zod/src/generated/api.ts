@@ -6250,3 +6250,140 @@ export const GetDistinctionsEleveEleveIdResponse = zod.object({
 })
 
 
+/**
+ * @summary KPIs établissement
+ */
+export const GetApiAnalyticsKpisQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.number().optional()
+})
+
+export const GetApiAnalyticsKpisResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Analyse pédagogique
+ */
+export const GetApiAnalyticsPedagogiqueQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.number().optional(),
+  "niveau": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional()
+})
+
+export const GetApiAnalyticsPedagogiqueResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Analyse présences & absences
+ */
+export const GetApiAnalyticsPresencesQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.number().optional(),
+  "classe_id": zod.coerce.string().optional()
+})
+
+export const GetApiAnalyticsPresencesResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Analyse infirmerie
+ */
+export const GetApiAnalyticsInfirmerieResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Analyse clubs & activités
+ */
+export const GetApiAnalyticsClubsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Analyse bibliothèque
+ */
+export const GetApiAnalyticsBibliothequeResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Dashboard analytique professeur
+ */
+export const GetApiAnalyticsProfesseurQueryParams = zod.object({
+  "trimestre": zod.coerce.number().optional()
+})
+
+export const GetApiAnalyticsProfesseurResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Dashboard analytique censeur
+ */
+export const GetApiAnalyticsCenseurResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Générer un rapport
+ */
+export const PostApiAnalyticsRapportsGenererBody = zod.object({
+  "titre": zod.string(),
+  "type": zod.string(),
+  "format": zod.string(),
+  "parametres": zod.object({
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.number().optional(),
+  "classe_id": zod.string().optional(),
+  "date_debut": zod.string().optional(),
+  "date_fin": zod.string().optional(),
+  "inclure_sections": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les rapports générés
+ */
+export const GetApiAnalyticsRapportsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Télécharger un rapport
+ */
+export const GetApiAnalyticsRapportsIdTelechargerParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetApiAnalyticsRapportsIdTelechargerResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Créer un snapshot analytique (dev uniquement)
+ */
+export const PostApiAnalyticsSnapshotsBody = zod.object({
+  "annee_scolaire_id": zod.string(),
+  "trimestre": zod.number().optional(),
+  "date_snapshot": zod.string(),
+  "donnees": zod.object({
+
+}).passthrough()
+})
+
+

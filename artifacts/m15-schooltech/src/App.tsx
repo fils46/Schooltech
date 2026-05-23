@@ -73,6 +73,11 @@ import GestionActivite from "@/pages/gestion-activite";
 import AdminClubs from "@/pages/admin-clubs";
 import NouveauClub from "@/pages/nouveau-club";
 import NouvelleActivite from "@/pages/nouvelle-activite";
+import DashboardAnalytique from "@/pages/dashboard-analytique";
+import AnalysePedagogique from "@/pages/analyse-pedagogique";
+import AnalysePresences from "@/pages/analyse-presences";
+import DashboardProfesseurAnalytique from "@/pages/dashboard-professeur-analytique";
+import RapportsExports from "@/pages/rapports-exports";
 
 const queryClient = new QueryClient();
 
@@ -532,6 +537,47 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <InfirmerieDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module 18 : Tableau de Bord Analytique ── */}
+      <Route path="/analytics">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DashboardAnalytique />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/analyse-pedagogique">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AnalysePedagogique />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/analyse-presences">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AnalysePresences />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/analytics-professeur">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DashboardProfesseurAnalytique />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/rapports-exports">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <RapportsExports />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

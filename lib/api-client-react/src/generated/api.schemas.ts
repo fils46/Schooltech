@@ -2804,6 +2804,31 @@ export interface DistinctionInput {
   date_obtention: string;
 }
 
+export type RapportInputParametres = {
+  annee_scolaire_id?: string;
+  trimestre?: number;
+  classe_id?: string;
+  date_debut?: string;
+  date_fin?: string;
+  inclure_sections?: string[];
+};
+
+export interface RapportInput {
+  titre: string;
+  type: string;
+  format: string;
+  parametres?: RapportInputParametres;
+}
+
+export type SnapshotInputDonnees = { [key: string]: unknown };
+
+export interface SnapshotInput {
+  annee_scolaire_id: string;
+  trimestre?: number;
+  date_snapshot: string;
+  donnees: SnapshotInputDonnees;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -3156,5 +3181,27 @@ type?: string;
 statut?: string;
 date_debut?: string;
 date_fin?: string;
+};
+
+export type GetApiAnalyticsKpisParams = {
+annee_scolaire_id?: string;
+trimestre?: number;
+};
+
+export type GetApiAnalyticsPedagogiqueParams = {
+annee_scolaire_id?: string;
+trimestre?: number;
+niveau?: string;
+classe_id?: string;
+};
+
+export type GetApiAnalyticsPresencesParams = {
+annee_scolaire_id?: string;
+trimestre?: number;
+classe_id?: string;
+};
+
+export type GetApiAnalyticsProfesseurParams = {
+trimestre?: number;
 };
 

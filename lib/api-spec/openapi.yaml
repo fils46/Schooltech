@@ -4669,6 +4669,176 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/DistinctionsListeResponse" }
 
+  # ── Module 18 : Analytics ─────────────────────────────────────
+  /api/analytics/kpis:
+    get:
+      summary: KPIs établissement
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: KPIs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/pedagogique:
+    get:
+      summary: Analyse pédagogique
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: integer } }
+        - { name: niveau, in: query, schema: { type: string } }
+        - { name: classe_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Analyse pédagogique
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/presences:
+    get:
+      summary: Analyse présences & absences
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: integer } }
+        - { name: classe_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Analyse présences
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/infirmerie:
+    get:
+      summary: Analyse infirmerie
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Analyse infirmerie
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/clubs:
+    get:
+      summary: Analyse clubs & activités
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Analyse clubs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/bibliotheque:
+    get:
+      summary: Analyse bibliothèque
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Analyse bibliothèque
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/professeur:
+    get:
+      summary: Dashboard analytique professeur
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: trimestre, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Dashboard professeur
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/censeur:
+    get:
+      summary: Dashboard analytique censeur
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Dashboard censeur
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/rapports/generer:
+    post:
+      summary: Générer un rapport
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RapportInput" }
+      responses:
+        "201":
+          description: Rapport créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/rapports:
+    get:
+      summary: Lister les rapports générés
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste des rapports
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/rapports/{id}/telecharger:
+    get:
+      summary: Télécharger un rapport
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: URL de téléchargement
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/analytics/snapshots:
+    post:
+      summary: Créer un snapshot analytique (dev uniquement)
+      tags: [Analytics]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SnapshotInput" }
+      responses:
+        "201":
+          description: Snapshot créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
 
 components:
   securitySchemes:
@@ -8032,3 +8202,31 @@ components:
         titre: { type: string }
         description: { type: string }
         date_obtention: { type: string }
+
+    RapportInput:
+      type: object
+      required: [titre, type, format]
+      properties:
+        titre: { type: string }
+        type: { type: string }
+        format: { type: string }
+        parametres:
+          type: object
+          properties:
+            annee_scolaire_id: { type: string }
+            trimestre: { type: integer }
+            classe_id: { type: string }
+            date_debut: { type: string }
+            date_fin: { type: string }
+            inclure_sections:
+              type: array
+              items: { type: string }
+
+    SnapshotInput:
+      type: object
+      required: [annee_scolaire_id, date_snapshot, donnees]
+      properties:
+        annee_scolaire_id: { type: string }
+        trimestre: { type: integer }
+        date_snapshot: { type: string }
+        donnees: { type: object }
