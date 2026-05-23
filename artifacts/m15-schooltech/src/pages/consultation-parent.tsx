@@ -60,7 +60,7 @@ function ConsultationCard({ c }: { c: ConsultationItem }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
       <CardContent className="p-4">
         <div
           className="flex items-center justify-between cursor-pointer"
@@ -70,7 +70,7 @@ function ConsultationCard({ c }: { c: ConsultationItem }) {
             <div className={`h-2 w-2 rounded-full ${c.statut === "en_cours" ? "bg-yellow-400" : c.statut === "hospitalise" ? "bg-red-400" : "bg-emerald-400"}`} />
             <div>
               <p className="text-[var(--m15-white)] font-medium">{c.motif}</p>
-              <p className="text-slate-400 text-sm">
+              <p className="text-[var(--m15-muted)] text-sm">
                 {new Date(c.heure_entree).toLocaleDateString("fr-FR", {
                   day: "2-digit",
                   month: "long",
@@ -86,49 +86,49 @@ function ConsultationCard({ c }: { c: ConsultationItem }) {
               {STATUT_LABELS[c.statut] ?? c.statut}
             </Badge>
             {expanded ? (
-              <ChevronUp className="h-4 w-4 text-slate-400" />
+              <ChevronUp className="h-4 w-4 text-[var(--m15-muted)]" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-slate-400" />
+              <ChevronDown className="h-4 w-4 text-[var(--m15-muted)]" />
             )}
           </div>
         </div>
 
         {expanded && (
-          <div className="mt-4 pt-4 border-t border-slate-700 space-y-3">
+          <div className="mt-4 pt-4 border-t border-[var(--m15-border)] space-y-3">
             {c.symptomes && (
               <div>
-                <p className="text-slate-400 text-xs font-medium mb-1">Symptômes</p>
-                <p className="text-slate-200 text-sm">{c.symptomes}</p>
+                <p className="text-[var(--m15-muted)] text-xs font-medium mb-1">Symptômes</p>
+                <p className="text-[var(--m15-white)] text-sm">{c.symptomes}</p>
               </div>
             )}
             {c.traitement_administre && (
               <div>
-                <p className="text-slate-400 text-xs font-medium mb-1">Traitement administré</p>
-                <p className="text-slate-200 text-sm">{c.traitement_administre}</p>
+                <p className="text-[var(--m15-muted)] text-xs font-medium mb-1">Traitement administré</p>
+                <p className="text-[var(--m15-white)] text-sm">{c.traitement_administre}</p>
               </div>
             )}
             {c.medicaments_donnes && (
               <div>
-                <p className="text-slate-400 text-xs font-medium mb-1">Médicaments donnés</p>
-                <p className="text-slate-200 text-sm">{c.medicaments_donnes}</p>
+                <p className="text-[var(--m15-muted)] text-xs font-medium mb-1">Médicaments donnés</p>
+                <p className="text-[var(--m15-white)] text-sm">{c.medicaments_donnes}</p>
               </div>
             )}
             {c.heure_sortie && (
               <div className="flex items-center gap-2">
-                <Clock className="h-3 w-3 text-slate-400" />
-                <span className="text-slate-400 text-xs">
+                <Clock className="h-3 w-3 text-[var(--m15-muted)]" />
+                <span className="text-[var(--m15-muted)] text-xs">
                   Sortie : {new Date(c.heure_sortie).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                 </span>
               </div>
             )}
             {c.observations && (
               <div>
-                <p className="text-slate-400 text-xs font-medium mb-1">Observations</p>
-                <p className="text-slate-200 text-sm">{c.observations}</p>
+                <p className="text-[var(--m15-muted)] text-xs font-medium mb-1">Observations</p>
+                <p className="text-[var(--m15-white)] text-sm">{c.observations}</p>
               </div>
             )}
             {c.infirmier_nom && (
-              <div className="flex items-center gap-2 text-slate-500 text-xs">
+              <div className="flex items-center gap-2 text-[var(--m15-muted)] text-xs">
                 <Stethoscope className="h-3 w-3" />
                 Suivi par : {c.infirmier_nom}
               </div>
@@ -175,7 +175,7 @@ export default function ConsultationParent() {
           <Heart className="h-7 w-7 text-rose-400" />
           Infirmerie
         </h1>
-        <p className="text-slate-400 text-sm mt-1">Historique des consultations infirmerie de votre enfant</p>
+        <p className="text-[var(--m15-muted)] text-sm mt-1">Historique des consultations infirmerie de votre enfant</p>
       </div>
 
       {/* Sélection enfant si plusieurs */}
@@ -185,12 +185,12 @@ export default function ConsultationParent() {
             value={selectedEnfantId || enfantActif?.id || ""}
             onValueChange={setSelectedEnfantId}
           >
-            <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)]">
+            <SelectTrigger className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)]">
               <SelectValue placeholder="Sélectionner un enfant" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700">
+            <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
               {enfants.map(e => (
-                <SelectItem key={e.id} value={e.id} className="text-[var(--m15-white)] focus:bg-slate-700">
+                <SelectItem key={e.id} value={e.id} className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">
                   {e.nom} {e.prenoms}
                 </SelectItem>
               ))}
@@ -200,18 +200,18 @@ export default function ConsultationParent() {
       )}
 
       {enfantActif && (
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 flex items-center gap-4">
             {enfantActif.photo_url ? (
               <img src={enfantActif.photo_url} alt="" className="h-14 w-14 rounded-full object-cover" />
             ) : (
-              <div className="h-14 w-14 rounded-full bg-slate-600 flex items-center justify-center">
-                <User className="h-7 w-7 text-slate-400" />
+              <div className="h-14 w-14 rounded-full bg-[var(--m15-card2)] flex items-center justify-center">
+                <User className="h-7 w-7 text-[var(--m15-muted)]" />
               </div>
             )}
             <div>
               <p className="text-[var(--m15-white)] text-lg font-bold">{enfantActif.nom} {enfantActif.prenoms}</p>
-              <p className="text-slate-400 text-sm">Mat. {enfantActif.matricule} · {enfantActif.classe_nom ?? "—"}</p>
+              <p className="text-[var(--m15-muted)] text-sm">Mat. {enfantActif.matricule} · {enfantActif.classe_nom ?? "—"}</p>
             </div>
           </CardContent>
         </Card>
@@ -220,25 +220,25 @@ export default function ConsultationParent() {
       {/* Stats */}
       {stats && (
         <div className="grid grid-cols-2 gap-4">
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardContent className="p-4 text-center">
-              <p className="text-slate-400 text-xs">Total des visites</p>
+              <p className="text-[var(--m15-muted)] text-xs">Total des visites</p>
               <p className="text-3xl font-bold text-rose-400">{stats.nb_visites}</p>
             </CardContent>
           </Card>
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-2 pt-4 px-4">
-              <CardTitle className="text-slate-400 text-xs">Motifs fréquents</CardTitle>
+              <CardTitle className="text-[var(--m15-muted)] text-xs">Motifs fréquents</CardTitle>
             </CardHeader>
             <CardContent className="pt-0 px-4 pb-4 space-y-1">
               {stats.motifs_frequents.slice(0, 3).map((m, i) => (
                 <div key={i} className="flex items-center justify-between">
-                  <span className="text-slate-300 text-xs truncate flex-1">{m.motif}</span>
+                  <span className="text-[var(--m15-white)] text-xs truncate flex-1">{m.motif}</span>
                   <Badge variant="outline" className="bg-rose-500/20 text-rose-300 border-rose-500/30 text-xs ml-2">{m.count}×</Badge>
                 </div>
               ))}
               {stats.motifs_frequents.length === 0 && (
-                <p className="text-slate-500 text-xs">—</p>
+                <p className="text-[var(--m15-muted)] text-xs">—</p>
               )}
             </CardContent>
           </Card>
@@ -253,12 +253,12 @@ export default function ConsultationParent() {
         </h2>
 
         {isLoading ? (
-          <div className="text-center text-slate-400 py-10">Chargement…</div>
+          <div className="text-center text-[var(--m15-muted)] py-10">Chargement…</div>
         ) : consultations.length === 0 ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardContent className="p-8 text-center">
-              <Heart className="h-12 w-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">Aucune consultation enregistrée</p>
+              <Heart className="h-12 w-12 text-[var(--m15-muted)] mx-auto mb-3" />
+              <p className="text-[var(--m15-muted)]">Aucune consultation enregistrée</p>
             </CardContent>
           </Card>
         ) : (

@@ -107,8 +107,8 @@ export default function GestionActivite() {
     });
   }
 
-  if (isLoading) return <div className="flex items-center justify-center h-48 text-slate-400">Chargement…</div>;
-  if (!activite) return <div className="text-center text-slate-500 py-12">Activité introuvable.</div>;
+  if (isLoading) return <div className="flex items-center justify-center h-48 text-[var(--m15-muted)]">Chargement…</div>;
+  if (!activite) return <div className="text-center text-[var(--m15-muted)] py-12">Activité introuvable.</div>;
 
   const nbPresentsLocal = presences.filter(p => getPresent(p)).length;
   const nbAbsentsLocal = presences.length - nbPresentsLocal;
@@ -117,25 +117,25 @@ export default function GestionActivite() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
 
       {/* Header activité */}
-      <Card className="bg-slate-800 border-slate-700 overflow-hidden">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)] overflow-hidden">
         <div className="h-1 w-full" style={{ backgroundColor: couleur }} />
         <CardContent className="p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-slate-400 text-sm">{activite.club_nom}</p>
+              <p className="text-[var(--m15-muted)] text-sm">{activite.club_nom}</p>
               <h1 className="text-xl font-bold text-[var(--m15-white)]">{activite.titre}</h1>
               <div className="flex flex-wrap gap-2 mt-2">
-                <span className="text-slate-400 text-sm">
+                <span className="text-[var(--m15-muted)] text-sm">
                   📅 {new Date(activite.date_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })}
                 </span>
-                <span className="text-slate-400 text-sm">🕐 {activite.heure_debut}{activite.heure_fin ? ` → ${activite.heure_fin}` : ""}</span>
-                {activite.lieu && <span className="text-slate-400 text-sm">📍 {activite.lieu}</span>}
+                <span className="text-[var(--m15-muted)] text-sm">🕐 {activite.heure_debut}{activite.heure_fin ? ` → ${activite.heure_fin}` : ""}</span>
+                {activite.lieu && <span className="text-[var(--m15-muted)] text-sm">📍 {activite.lieu}</span>}
               </div>
             </div>
             <Badge variant="outline" className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">
@@ -147,30 +147,30 @@ export default function GestionActivite() {
 
       {/* Stats en temps réel */}
       <div className="grid grid-cols-3 gap-3">
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
             <p className="text-3xl font-bold text-emerald-400">{nbPresentsLocal}</p>
-            <p className="text-slate-400 text-sm">Présents</p>
+            <p className="text-[var(--m15-muted)] text-sm">Présents</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
             <p className="text-3xl font-bold text-red-400">{nbAbsentsLocal}</p>
-            <p className="text-slate-400 text-sm">Absents</p>
+            <p className="text-[var(--m15-muted)] text-sm">Absents</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
             <p className="text-3xl font-bold text-cyan-400">
               {presences.length > 0 ? Math.round((nbPresentsLocal / presences.length) * 100) : 0}%
             </p>
-            <p className="text-slate-400 text-sm">Présence</p>
+            <p className="text-[var(--m15-muted)] text-sm">Présence</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Présences */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardHeader className="pb-3 flex flex-row items-center justify-between">
           <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
             <Users className="h-4 w-4 text-cyan-400" /> Présences
@@ -183,7 +183,7 @@ export default function GestionActivite() {
         </CardHeader>
         <CardContent className="space-y-2">
           {presences.length === 0 ? (
-            <p className="text-slate-500 text-sm text-center py-6">Aucun membre inscrit à cette activité</p>
+            <p className="text-[var(--m15-muted)] text-sm text-center py-6">Aucun membre inscrit à cette activité</p>
           ) : presences.map(p => {
             const present = getPresent(p);
             return (
@@ -191,19 +191,19 @@ export default function GestionActivite() {
                 {p.eleve_photo ? (
                   <img src={p.eleve_photo} alt="" className="h-9 w-9 rounded-full object-cover shrink-0" />
                 ) : (
-                  <div className="h-9 w-9 rounded-full bg-slate-600 flex items-center justify-center text-xs text-[var(--m15-white)] shrink-0">
+                  <div className="h-9 w-9 rounded-full bg-[var(--m15-card2)] flex items-center justify-center text-xs text-[var(--m15-white)] shrink-0">
                     {(p.eleve_nom ?? "?")[0]}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-[var(--m15-white)] text-sm font-medium">{p.eleve_nom} {p.eleve_prenoms}</p>
-                  {p.classe_nom && <p className="text-slate-500 text-xs">{p.classe_nom}</p>}
+                  {p.classe_nom && <p className="text-[var(--m15-muted)] text-xs">{p.classe_nom}</p>}
                   {!present && (
                     <Input
                       value={motifsLocaux[p.eleve_id] ?? p.motif_absence ?? ""}
                       onChange={e => setMotifsLocaux(prev => ({ ...prev, [p.eleve_id]: e.target.value }))}
                       placeholder="Motif d'absence (optionnel)"
-                      className="mt-1 h-7 text-xs bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-500"
+                      className="mt-1 h-7 text-xs bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                     />
                   )}
                 </div>
@@ -224,7 +224,7 @@ export default function GestionActivite() {
       </Card>
 
       {/* Compte-rendu */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardHeader className="pb-3">
           <CardTitle className="text-[var(--m15-white)] text-base">Compte-rendu de l'activité</CardTitle>
         </CardHeader>
@@ -233,13 +233,13 @@ export default function GestionActivite() {
             value={notes || activite.notes_compte_rendu || ""}
             onChange={e => setNotes(e.target.value)}
             placeholder="Résumé, observations, résultats de l'activité…"
-            className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 min-h-28"
+            className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] min-h-28"
           />
           <div className="flex gap-3">
-            <Button onClick={handleSaveNotes} disabled={isUpdating} variant="outline" className="border-slate-600 text-slate-300 gap-2">
+            <Button onClick={handleSaveNotes} disabled={isUpdating} variant="outline" className="border-[var(--m15-border)] text-[var(--m15-white)] gap-2">
               <Save className="h-4 w-4" /> Sauvegarder
             </Button>
-            <Button onClick={() => setShowDistinction(true)} className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold gap-2">
+            <Button onClick={() => setShowDistinction(true)} className="bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold gap-2">
               <Trophy className="h-4 w-4" /> Attribuer une distinction
             </Button>
           </div>
@@ -248,7 +248,7 @@ export default function GestionActivite() {
 
       {/* Modal distinction */}
       <Dialog open={showDistinction} onOpenChange={setShowDistinction}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)]">
+        <DialogContent className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-yellow-400">
               <Star className="h-5 w-5" /> Attribuer une distinction
@@ -256,14 +256,14 @@ export default function GestionActivite() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-slate-300">Membre</Label>
+              <Label className="text-[var(--m15-white)]">Membre</Label>
               <Select value={distForm.eleve_id} onValueChange={v => setDistForm(f => ({ ...f, eleve_id: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
+                <SelectTrigger className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]">
                   <SelectValue placeholder="Sélectionner un membre…" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
                   {presences.map(p => (
-                    <SelectItem key={p.eleve_id} value={p.eleve_id} className="text-[var(--m15-white)] focus:bg-slate-700">
+                    <SelectItem key={p.eleve_id} value={p.eleve_id} className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">
                       {p.eleve_nom} {p.eleve_prenoms}
                     </SelectItem>
                   ))}
@@ -271,25 +271,25 @@ export default function GestionActivite() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Titre de la distinction</Label>
+              <Label className="text-[var(--m15-white)]">Titre de la distinction</Label>
               <Input value={distForm.titre} onChange={e => setDistForm(f => ({ ...f, titre: e.target.value }))}
-                placeholder="Ex : Meilleur joueur, MVP…" className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
+                placeholder="Ex : Meilleur joueur, MVP…" className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]" />
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Description (optionnel)</Label>
+              <Label className="text-[var(--m15-white)]">Description (optionnel)</Label>
               <Textarea value={distForm.description} onChange={e => setDistForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Précisions sur la distinction…" className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
+                placeholder="Précisions sur la distinction…" className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]" />
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Date d'obtention</Label>
+              <Label className="text-[var(--m15-white)]">Date d'obtention</Label>
               <Input type="date" value={distForm.date_obtention} onChange={e => setDistForm(f => ({ ...f, date_obtention: e.target.value }))}
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" />
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]" />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDistinction(false)} className="border-slate-600 text-slate-300">Annuler</Button>
+            <Button variant="outline" onClick={() => setShowDistinction(false)} className="border-[var(--m15-border)] text-[var(--m15-white)]">Annuler</Button>
             <Button onClick={handleAttribuer} disabled={isAttribuing || !distForm.eleve_id || !distForm.titre}
-              className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold gap-2">
+              className="bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold gap-2">
               <Trophy className="h-4 w-4" /> Attribuer
             </Button>
           </DialogFooter>

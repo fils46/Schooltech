@@ -45,7 +45,7 @@ const TYPE_COLORS: Record<string, string> = {
   exercice: "bg-purple-500/20 text-purple-300 border-purple-500/30",
   video: "bg-rose-500/20 text-rose-300 border-rose-500/30",
   document_officiel: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-  autre: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  autre: "bg-[var(--elevate-1)] text-[var(--m15-white)] border-[var(--m15-border)]/30",
 };
 
 const NIVEAUX = ["6eme", "5eme", "4eme", "3eme", "2nde", "1ere", "Tle"];

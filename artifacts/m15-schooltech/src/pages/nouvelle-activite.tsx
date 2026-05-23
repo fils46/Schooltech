@@ -66,12 +66,12 @@ export default function NouvelleActivite() {
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
 
-      <Card className="bg-slate-800 border-slate-700 overflow-hidden">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)] overflow-hidden">
         <div className="h-1 w-full" style={{ backgroundColor: couleur }} />
         <CardHeader>
           <CardTitle className="text-[var(--m15-white)] flex items-center gap-2">
@@ -83,22 +83,22 @@ export default function NouvelleActivite() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Titre */}
             <div className="space-y-2">
-              <Label className="text-slate-300">Titre de l'activité *</Label>
+              <Label className="text-[var(--m15-white)]">Titre de l'activité *</Label>
               <Input value={form.titre} onChange={e => setForm(f => ({ ...f, titre: e.target.value }))}
                 placeholder="Ex : Entraînement hebdomadaire, Match contre Lycée Sud…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" required />
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]" required />
             </div>
 
             {/* Type */}
             <div className="space-y-2">
-              <Label className="text-slate-300">Type d'activité *</Label>
+              <Label className="text-[var(--m15-white)]">Type d'activité *</Label>
               <Select value={form.type} onValueChange={v => setForm(f => ({ ...f, type: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
+                <SelectTrigger className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
                   {TYPES.map(t => (
-                    <SelectItem key={t.value} value={t.value} className="text-[var(--m15-white)] focus:bg-slate-700">{t.label}</SelectItem>
+                    <SelectItem key={t.value} value={t.value} className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">{t.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -106,51 +106,51 @@ export default function NouvelleActivite() {
 
             {/* Date */}
             <div className="space-y-2">
-              <Label className="text-slate-300">Date *</Label>
+              <Label className="text-[var(--m15-white)]">Date *</Label>
               <Input type="date" value={form.date_activite}
                 onChange={e => setForm(f => ({ ...f, date_activite: e.target.value }))}
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" required />
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]" required />
             </div>
 
             {/* Horaires */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-slate-300">Heure de début *</Label>
+                <Label className="text-[var(--m15-white)]">Heure de début *</Label>
                 <Input type="time" value={form.heure_debut}
                   onChange={e => setForm(f => ({ ...f, heure_debut: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" required />
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]" required />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Heure de fin</Label>
+                <Label className="text-[var(--m15-white)]">Heure de fin</Label>
                 <Input type="time" value={form.heure_fin}
                   onChange={e => setForm(f => ({ ...f, heure_fin: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" />
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]" />
               </div>
             </div>
 
             {/* Lieu */}
             <div className="space-y-2">
-              <Label className="text-slate-300">Lieu</Label>
+              <Label className="text-[var(--m15-white)]">Lieu</Label>
               <Input value={form.lieu} onChange={e => setForm(f => ({ ...f, lieu: e.target.value }))}
                 placeholder="Ex : Terrain de sport, Salle polyvalente…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]" />
             </div>
 
             {/* Description */}
             <div className="space-y-2">
-              <Label className="text-slate-300">Description (optionnel)</Label>
+              <Label className="text-[var(--m15-white)]">Description (optionnel)</Label>
               <Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Informations complémentaires…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]" />
             </div>
 
             <div className="flex gap-3 pt-2">
               <Button type="button" variant="outline" onClick={() => navigate(`/clubs/${clubId}`)}
-                className="border-slate-600 text-slate-300">
+                className="border-[var(--m15-border)] text-[var(--m15-white)]">
                 Annuler
               </Button>
               <Button type="submit" disabled={isPending || !form.titre || !form.date_activite}
-                className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold gap-2">
+                className="bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold gap-2">
                 <Save className="h-4 w-4" />
                 {isPending ? "Planification…" : "Planifier l'activité"}
               </Button>

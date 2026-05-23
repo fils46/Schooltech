@@ -86,7 +86,7 @@ export default function NouvelleConsultation() {
           variant="ghost"
           size="sm"
           onClick={() => navigate("/infirmerie")}
-          className="text-slate-400 hover:text-[var(--m15-white)] gap-2"
+          className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour
@@ -96,7 +96,7 @@ export default function NouvelleConsultation() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Sélection élève */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardHeader className="pb-3">
             <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
               <User className="h-4 w-4 text-cyan-400" />
@@ -105,18 +105,18 @@ export default function NouvelleConsultation() {
           </CardHeader>
           <CardContent className="space-y-3">
             {selectedEleve ? (
-              <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-[var(--elevate-2)] rounded-lg">
                 <div className="flex items-center gap-3">
                   {selectedEleve.photo_url ? (
                     <img src={selectedEleve.photo_url} alt="" className="h-10 w-10 rounded-full object-cover" />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-slate-600 flex items-center justify-center">
-                      <User className="h-5 w-5 text-slate-400" />
+                    <div className="h-10 w-10 rounded-full bg-[var(--m15-card2)] flex items-center justify-center">
+                      <User className="h-5 w-5 text-[var(--m15-muted)]" />
                     </div>
                   )}
                   <div>
                     <p className="text-[var(--m15-white)] font-medium">{selectedEleve.nom} {selectedEleve.prenoms}</p>
-                    <p className="text-slate-400 text-sm">Mat. {selectedEleve.matricule}</p>
+                    <p className="text-[var(--m15-muted)] text-sm">Mat. {selectedEleve.matricule}</p>
                   </div>
                 </div>
                 <Button
@@ -124,7 +124,7 @@ export default function NouvelleConsultation() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedEleve(null)}
-                  className="text-slate-400 hover:text-[var(--m15-white)] text-xs"
+                  className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] text-xs"
                 >
                   Changer
                 </Button>
@@ -132,32 +132,32 @@ export default function NouvelleConsultation() {
             ) : (
               <div className="space-y-2">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--m15-muted)]" />
                   <Input
                     placeholder="Rechercher un élève (nom, matricule)…"
                     value={searchEleve}
                     onChange={e => setSearchEleve(e.target.value)}
-                    className="pl-9 bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                    className="pl-9 bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                   />
                 </div>
                 {searchEleve.length >= 2 && (
-                  <div className="border border-slate-600 rounded-lg overflow-hidden">
+                  <div className="border border-[var(--m15-border)] rounded-lg overflow-hidden">
                     {eleves.length === 0 ? (
-                      <p className="text-slate-500 text-sm p-3">Aucun élève trouvé</p>
+                      <p className="text-[var(--m15-muted)] text-sm p-3">Aucun élève trouvé</p>
                     ) : (
                       eleves.map(el => (
                         <button
                           key={el.id}
                           type="button"
-                          className="w-full flex items-center gap-3 p-3 hover:bg-slate-700 transition-colors text-left border-b border-slate-700 last:border-0"
+                          className="w-full flex items-center gap-3 p-3 hover:bg-[var(--m15-card2)] transition-colors text-left border-b border-[var(--m15-border)] last:border-0"
                           onClick={() => { setSelectedEleve(el); setSearchEleve(""); }}
                         >
-                          <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center shrink-0">
-                            <User className="h-4 w-4 text-slate-400" />
+                          <div className="h-8 w-8 rounded-full bg-[var(--m15-card2)] flex items-center justify-center shrink-0">
+                            <User className="h-4 w-4 text-[var(--m15-muted)]" />
                           </div>
                           <div>
                             <p className="text-[var(--m15-white)] text-sm font-medium">{el.nom} {el.prenoms}</p>
-                            <p className="text-slate-400 text-xs">Mat. {el.matricule}</p>
+                            <p className="text-[var(--m15-muted)] text-xs">Mat. {el.matricule}</p>
                           </div>
                           <Plus className="h-4 w-4 text-cyan-400 ml-auto" />
                         </button>
@@ -171,40 +171,40 @@ export default function NouvelleConsultation() {
         </Card>
 
         {/* Détails consultation */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardHeader className="pb-3">
             <CardTitle className="text-[var(--m15-white)] text-base">Détails de la consultation</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-slate-300">Heure d'entrée *</Label>
+              <Label className="text-[var(--m15-white)]">Heure d'entrée *</Label>
               <Input
                 type="datetime-local"
                 value={heureEntree}
                 onChange={e => setHeureEntree(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300">Motif de consultation *</Label>
+              <Label className="text-[var(--m15-white)]">Motif de consultation *</Label>
               <Input
                 placeholder="Ex: Maux de tête, douleur abdominale, blessure…"
                 value={motif}
                 onChange={e => setMotif(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300">Symptômes observés</Label>
+              <Label className="text-[var(--m15-white)]">Symptômes observés</Label>
               <Textarea
                 placeholder="Description des symptômes…"
                 value={symptomes}
                 onChange={e => setSymptomes(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none"
                 rows={3}
               />
             </div>
@@ -223,7 +223,7 @@ export default function NouvelleConsultation() {
             type="button"
             variant="outline"
             onClick={() => navigate("/infirmerie")}
-            className="flex-1 border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
+            className="flex-1 border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)]"
           >
             Annuler
           </Button>

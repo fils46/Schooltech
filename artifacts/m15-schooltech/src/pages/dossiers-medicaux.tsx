@@ -140,7 +140,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
   }
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-48 text-slate-400">Chargement…</div>;
+    return <div className="flex items-center justify-center h-48 text-[var(--m15-muted)]">Chargement…</div>;
   }
 
   return (
@@ -150,7 +150,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
           variant="ghost"
           size="sm"
           onClick={() => navigate("/infirmerie/dossiers")}
-          className="text-slate-400 hover:text-[var(--m15-white)] gap-2"
+          className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour
@@ -159,18 +159,18 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
       </div>
 
       {eleve && (
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 flex items-center gap-4">
             {eleve.photo_url ? (
               <img src={eleve.photo_url} alt="" className="h-14 w-14 rounded-full object-cover" />
             ) : (
-              <div className="h-14 w-14 rounded-full bg-slate-600 flex items-center justify-center">
-                <User className="h-7 w-7 text-slate-400" />
+              <div className="h-14 w-14 rounded-full bg-[var(--m15-card2)] flex items-center justify-center">
+                <User className="h-7 w-7 text-[var(--m15-muted)]" />
               </div>
             )}
             <div>
               <p className="text-[var(--m15-white)] text-lg font-bold">{eleve.nom} {eleve.prenoms}</p>
-              <p className="text-slate-400 text-sm">Mat. {eleve.matricule} · {eleve.classe_nom ?? "—"}</p>
+              <p className="text-[var(--m15-muted)] text-sm">Mat. {eleve.matricule} · {eleve.classe_nom ?? "—"}</p>
             </div>
           </CardContent>
         </Card>
@@ -178,7 +178,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Informations médicales */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardHeader className="pb-3">
             <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
               <Heart className="h-4 w-4 text-rose-400" />
@@ -187,30 +187,30 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-slate-300">Groupe sanguin</Label>
+              <Label className="text-[var(--m15-white)]">Groupe sanguin</Label>
               <Select value={groupeSanguin} onValueChange={setGroupeSanguin}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
+                <SelectTrigger className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]">
                   <SelectValue placeholder="Sélectionner…" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
                   {GROUPES_SANGUINS.map(g => (
-                    <SelectItem key={g} value={g} className="text-[var(--m15-white)] focus:bg-slate-700">{g}</SelectItem>
+                    <SelectItem key={g} value={g} className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">{g}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300">Allergies</Label>
+              <Label className="text-[var(--m15-white)]">Allergies</Label>
               <div className="flex gap-2">
                 <Input
                   value={newAllergie}
                   onChange={e => setNewAllergie(e.target.value)}
                   placeholder="Ajouter une allergie…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                   onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addAllergie())}
                 />
-                <Button type="button" onClick={addAllergie} size="sm" variant="outline" className="border-slate-600">
+                <Button type="button" onClick={addAllergie} size="sm" variant="outline" className="border-[var(--m15-border)]">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
@@ -229,29 +229,29 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300">Antécédents médicaux</Label>
+              <Label className="text-[var(--m15-white)]">Antécédents médicaux</Label>
               <Textarea
                 value={antecedents}
                 onChange={e => setAntecedents(e.target.value)}
                 placeholder="Antécédents, maladies chroniques…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none"
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300">Médicaments autorisés</Label>
+              <Label className="text-[var(--m15-white)]">Médicaments autorisés</Label>
               <Textarea
                 value={medsAutorises}
                 onChange={e => setMedsAutorises(e.target.value)}
                 placeholder="Ex: Paracétamol, Ibuprofène…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none"
                 rows={2}
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-slate-300 flex items-center gap-1">
+              <Label className="text-[var(--m15-white)] flex items-center gap-1">
                 <AlertTriangle className="h-3 w-3 text-red-400" />
                 Médicaments interdits
               </Label>
@@ -259,7 +259,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
                 value={medsInterdits}
                 onChange={e => setMedsInterdits(e.target.value)}
                 placeholder="Médicaments à éviter absolument…"
-                className="bg-slate-700 border-red-800/40 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
+                className="bg-[var(--m15-card2)] border-red-800/40 text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none"
                 rows={2}
               />
             </div>
@@ -268,7 +268,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
 
         <div className="space-y-5">
           {/* Médecin traitant */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <User className="h-4 w-4 text-cyan-400" />
@@ -277,28 +277,28 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">Nom du médecin</Label>
+                <Label className="text-[var(--m15-white)]">Nom du médecin</Label>
                 <Input
                   value={medecinNom}
                   onChange={e => setMedecinNom(e.target.value)}
                   placeholder="Dr. Kouamé…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Contact</Label>
+                <Label className="text-[var(--m15-white)]">Contact</Label>
                 <Input
                   value={medecinContact}
                   onChange={e => setMedecinContact(e.target.value)}
                   placeholder="+225 07 XX XX XX XX"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Assurance */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <Shield className="h-4 w-4 text-blue-400" />
@@ -307,28 +307,28 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">Compagnie</Label>
+                <Label className="text-[var(--m15-white)]">Compagnie</Label>
                 <Input
                   value={assuranceNom}
                   onChange={e => setAssuranceNom(e.target.value)}
                   placeholder="MUGEF-CI, CNPS…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Numéro de police</Label>
+                <Label className="text-[var(--m15-white)]">Numéro de police</Label>
                 <Input
                   value={assuranceNumero}
                   onChange={e => setAssuranceNumero(e.target.value)}
                   placeholder="N° de contrat…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Contact urgence */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <Phone className="h-4 w-4 text-emerald-400" />
@@ -337,30 +337,30 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">Nom</Label>
+                <Label className="text-[var(--m15-white)]">Nom</Label>
                 <Input
                   value={urgenceNom}
                   onChange={e => setUrgenceNom(e.target.value)}
                   placeholder="Nom complet"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Téléphone</Label>
+                <Label className="text-[var(--m15-white)]">Téléphone</Label>
                 <Input
                   value={urgenceTel}
                   onChange={e => setUrgenceTel(e.target.value)}
                   placeholder="+225 05 XX XX XX XX"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Lien de parenté</Label>
+                <Label className="text-[var(--m15-white)]">Lien de parenté</Label>
                 <Input
                   value={urgenceLien}
                   onChange={e => setUrgenceLien(e.target.value)}
                   placeholder="Père, mère, tuteur…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
             </CardContent>
@@ -369,7 +369,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
       </div>
 
       {/* Observations générales */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardHeader className="pb-3">
           <CardTitle className="text-[var(--m15-white)] text-base">Observations générales</CardTitle>
         </CardHeader>
@@ -378,7 +378,7 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
             value={observations}
             onChange={e => setObservations(e.target.value)}
             placeholder="Remarques diverses sur l'état de santé général de l'élève…"
-            className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
+            className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none"
             rows={3}
           />
         </CardContent>
@@ -426,23 +426,23 @@ function DossiersList() {
           <Heart className="h-7 w-7 text-rose-400" />
           Dossiers médicaux
         </h1>
-        <p className="text-slate-400 text-sm mt-1">Consultez et mettez à jour les dossiers médicaux des élèves</p>
+        <p className="text-[var(--m15-muted)] text-sm mt-1">Consultez et mettez à jour les dossiers médicaux des élèves</p>
       </div>
 
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--m15-muted)]" />
         <Input
           placeholder="Rechercher un élève…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="pl-9 bg-slate-800 border-slate-700 text-[var(--m15-white)] placeholder:text-slate-400"
+          className="pl-9 bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
         />
       </div>
 
       {isLoading ? (
-        <div className="text-center text-slate-400 py-12">Chargement…</div>
+        <div className="text-center text-[var(--m15-muted)] py-12">Chargement…</div>
       ) : eleves.length === 0 ? (
-        <div className="text-center text-slate-500 py-12">
+        <div className="text-center text-[var(--m15-muted)] py-12">
           {search ? "Aucun élève trouvé pour cette recherche." : "Aucun élève disponible."}
         </div>
       ) : (
@@ -450,22 +450,22 @@ function DossiersList() {
           {eleves.map(el => (
             <Card
               key={el.id}
-              className="bg-slate-800 border-slate-700 hover:border-slate-500 cursor-pointer transition-colors"
+              className="bg-[var(--m15-card)] border-[var(--m15-border)] hover:border-[var(--m15-border)] cursor-pointer transition-colors"
               onClick={() => navigate(`/infirmerie/dossier/${el.id}`)}
             >
               <CardContent className="p-4 flex items-center gap-3">
                 {el.photo_url ? (
                   <img src={el.photo_url} alt="" className="h-12 w-12 rounded-full object-cover shrink-0" />
                 ) : (
-                  <div className="h-12 w-12 rounded-full bg-slate-600 flex items-center justify-center shrink-0">
-                    <User className="h-6 w-6 text-slate-400" />
+                  <div className="h-12 w-12 rounded-full bg-[var(--m15-card2)] flex items-center justify-center shrink-0">
+                    <User className="h-6 w-6 text-[var(--m15-muted)]" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-[var(--m15-white)] font-medium truncate">{el.nom} {el.prenoms}</p>
-                  <p className="text-slate-400 text-sm">Mat. {el.matricule}</p>
+                  <p className="text-[var(--m15-muted)] text-sm">Mat. {el.matricule}</p>
                   {el.classe_nom && (
-                    <p className="text-slate-500 text-xs">{el.classe_nom}</p>
+                    <p className="text-[var(--m15-muted)] text-xs">{el.classe_nom}</p>
                   )}
                 </div>
                 <Heart className="h-4 w-4 text-rose-400 shrink-0" />

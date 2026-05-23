@@ -7,7 +7,7 @@ import { Trophy, Calendar, Activity, Star, Users, TrendingUp, Clock } from "luci
 import { useGetClubsMesClubs } from "@workspace/api-client-react";
 
 const ROLE_COLORS: Record<string, string> = {
-  membre:     "bg-slate-500/20 text-slate-300 border-slate-500/30",
+  membre:     "bg-[var(--elevate-1)] text-[var(--m15-white)] border-[var(--m15-border)]/30",
   delegue:    "bg-blue-500/20 text-blue-300 border-blue-500/30",
   capitaine:  "bg-orange-500/20 text-orange-300 border-orange-500/30",
   secretaire: "bg-purple-500/20 text-purple-300 border-purple-500/30",
@@ -39,7 +39,7 @@ export default function MesClubs() {
   const distinctions: DistinctionItem[] = (data as any)?.distinctions ?? [];
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-48 text-slate-400">Chargement…</div>;
+    return <div className="flex items-center justify-center h-48 text-[var(--m15-muted)]">Chargement…</div>;
   }
 
   return (
@@ -48,7 +48,7 @@ export default function MesClubs() {
         <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
           <Trophy className="h-7 w-7 text-yellow-400" /> Mes Clubs
         </h1>
-        <p className="text-slate-400 text-sm mt-1">Vos activités parascolaires</p>
+        <p className="text-[var(--m15-muted)] text-sm mt-1">Vos activités parascolaires</p>
       </div>
 
       {/* Clubs actifs */}
@@ -57,11 +57,11 @@ export default function MesClubs() {
           <Users className="h-5 w-5 text-cyan-400" /> Mes clubs actifs
         </h2>
         {clubsActifs.length === 0 ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardContent className="p-8 text-center">
-              <Trophy className="h-10 w-10 mx-auto mb-3 text-slate-600" />
-              <p className="text-slate-400">Vous n'êtes membre d'aucun club</p>
-              <Button onClick={() => navigate("/clubs")} className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold">
+              <Trophy className="h-10 w-10 mx-auto mb-3 text-[var(--m15-muted)]" />
+              <p className="text-[var(--m15-muted)]">Vous n'êtes membre d'aucun club</p>
+              <Button onClick={() => navigate("/clubs")} className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold">
                 Découvrir les clubs
               </Button>
             </CardContent>
@@ -71,7 +71,7 @@ export default function MesClubs() {
             {clubsActifs.map(club => {
               const couleur = club.couleur ?? "#00C9A7";
               return (
-                <Card key={club.id} className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-all cursor-pointer overflow-hidden"
+                <Card key={club.id} className="bg-[var(--m15-card)] border-[var(--m15-border)] hover:border-[var(--m15-border)] transition-all cursor-pointer overflow-hidden"
                   onClick={() => navigate(`/clubs/${club.id}`)}>
                   <div className="h-1 w-full" style={{ backgroundColor: couleur }} />
                   <CardContent className="p-4 space-y-3">
@@ -86,31 +86,31 @@ export default function MesClubs() {
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-[var(--m15-white)] font-semibold truncate">{club.nom}</p>
-                        <p className="text-slate-400 text-xs">{club.responsable_nom}</p>
+                        <p className="text-[var(--m15-muted)] text-xs">{club.responsable_nom}</p>
                       </div>
                       <Badge variant="outline" className={ROLE_COLORS[club.mon_role] ?? ""}>{club.mon_role}</Badge>
                     </div>
 
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-slate-700/50 rounded-lg p-2">
+                      <div className="bg-[var(--elevate-2)] rounded-lg p-2">
                         <p className="text-cyan-400 font-bold text-lg">{club.taux_presence}%</p>
-                        <p className="text-slate-400 text-xs">Présence</p>
+                        <p className="text-[var(--m15-muted)] text-xs">Présence</p>
                       </div>
-                      <div className="bg-slate-700/50 rounded-lg p-2">
+                      <div className="bg-[var(--elevate-2)] rounded-lg p-2">
                         <p className="text-yellow-400 font-bold text-lg">{club.nb_distinctions}</p>
-                        <p className="text-slate-400 text-xs">Distinctions</p>
+                        <p className="text-[var(--m15-muted)] text-xs">Distinctions</p>
                       </div>
-                      <div className="bg-slate-700/50 rounded-lg p-2">
+                      <div className="bg-[var(--elevate-2)] rounded-lg p-2">
                         {club.prochaine_activite ? (
                           <>
                             <p className="text-[var(--m15-white)] font-bold text-sm">{new Date(club.prochaine_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</p>
-                            <p className="text-slate-400 text-xs">Prochaine</p>
+                            <p className="text-[var(--m15-muted)] text-xs">Prochaine</p>
                           </>
                         ) : (
                           <>
-                            <p className="text-slate-500 font-bold text-sm">—</p>
-                            <p className="text-slate-400 text-xs">Activité</p>
+                            <p className="text-[var(--m15-muted)] font-bold text-sm">—</p>
+                            <p className="text-[var(--m15-muted)] text-xs">Activité</p>
                           </>
                         )}
                       </div>
@@ -131,11 +131,11 @@ export default function MesClubs() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {demandesEnAttente.map(club => (
-              <Card key={club.id} className="bg-slate-800 border-yellow-500/30 border">
+              <Card key={club.id} className="bg-[var(--m15-card)] border-yellow-500/30 border">
                 <CardContent className="p-4 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[var(--m15-white)] font-medium">{club.nom}</p>
-                    <p className="text-slate-400 text-sm">{club.responsable_nom}</p>
+                    <p className="text-[var(--m15-muted)] text-sm">{club.responsable_nom}</p>
                   </div>
                   <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30 shrink-0" variant="outline">En attente</Badge>
                 </CardContent>
@@ -159,8 +159,8 @@ export default function MesClubs() {
                 </div>
                 <div className="flex-1">
                   <p className="text-yellow-300 font-semibold">{d.titre}</p>
-                  {d.description && <p className="text-slate-400 text-sm mt-1">{d.description}</p>}
-                  <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
+                  {d.description && <p className="text-[var(--m15-muted)] text-sm mt-1">{d.description}</p>}
+                  <div className="flex items-center gap-3 mt-2 text-xs text-[var(--m15-muted)]">
                     <span>{d.club_nom}</span>
                     <span>·</span>
                     <span>{new Date(d.date_obtention).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })}</span>
@@ -175,7 +175,7 @@ export default function MesClubs() {
 
       {/* Bouton accès catalogue */}
       <div className="text-center pt-4">
-        <Button onClick={() => navigate("/clubs")} variant="outline" className="border-slate-600 text-slate-300 gap-2">
+        <Button onClick={() => navigate("/clubs")} variant="outline" className="border-[var(--m15-border)] text-[var(--m15-white)] gap-2">
           <Activity className="h-4 w-4" /> Découvrir tous les clubs
         </Button>
       </div>

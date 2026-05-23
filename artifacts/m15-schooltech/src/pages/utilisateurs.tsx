@@ -33,7 +33,7 @@ const roleColors: Record<string, string> = {
   censeur: "bg-cyan-500",
   professeur: "bg-orange-500",
   eleve: "bg-green-500",
-  parent: "bg-slate-500"
+  parent: "bg-[var(--m15-card2)]"
 };
 
 const utilisateurSchema = z.object({
@@ -284,7 +284,7 @@ export default function Utilisateurs() {
                     <div className="text-xs text-muted-foreground">{u.email}</div>
                   </TableCell>
                   <TableCell>
-                    <Badge className={`${roleColors[u.role] || 'bg-slate-500'} hover:opacity-80 text-[var(--m15-white)] capitalize`}>
+                    <Badge className={`${roleColors[u.role] || 'bg-[var(--m15-card2)]'} hover:opacity-80 text-[var(--m15-white)] capitalize`}>
                       {u.role}
                     </Badge>
                   </TableCell>

@@ -64,9 +64,9 @@ export default function AdminClubs() {
           <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
             <Trophy className="h-7 w-7 text-yellow-400" /> Administration — Clubs
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Gestion des clubs et activités parascolaires</p>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">Gestion des clubs et activités parascolaires</p>
         </div>
-        <Button onClick={() => navigate("/clubs/nouveau")} className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold gap-2">
+        <Button onClick={() => navigate("/clubs/nouveau")} className="bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold gap-2">
           <Plus className="h-4 w-4" /> Créer un club
         </Button>
       </div>
@@ -74,14 +74,14 @@ export default function AdminClubs() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map(s => (
-          <Card key={s.label} className="bg-slate-800 border-slate-700">
+          <Card key={s.label} className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardContent className="p-4 flex items-center gap-3">
-              <div className={`h-10 w-10 rounded-xl bg-slate-700 flex items-center justify-center shrink-0`}>
+              <div className={`h-10 w-10 rounded-xl bg-[var(--m15-card2)] flex items-center justify-center shrink-0`}>
                 <s.icon className={`h-5 w-5 ${s.color}`} />
               </div>
               <div>
                 <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-slate-400 text-xs">{s.label}</p>
+                <p className="text-[var(--m15-muted)] text-xs">{s.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -90,7 +90,7 @@ export default function AdminClubs() {
 
       {/* Répartition par catégorie */}
       {(stats?.par_categorie ?? []).length > 0 && (
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardHeader className="pb-3">
             <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-yellow-400" /> Répartition par catégorie
@@ -104,10 +104,10 @@ export default function AdminClubs() {
                 return (
                   <div key={cat.categorie} className="space-y-1">
                     <div className="flex justify-between text-sm">
-                      <span className="text-slate-300">{CATEGORIES_LABELS[cat.categorie] ?? cat.categorie}</span>
-                      <span className="text-slate-400">{cat.nb_clubs} club(s) — {pct}%</span>
+                      <span className="text-[var(--m15-white)]">{CATEGORIES_LABELS[cat.categorie] ?? cat.categorie}</span>
+                      <span className="text-[var(--m15-muted)]">{cat.nb_clubs} club(s) — {pct}%</span>
                     </div>
-                    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[var(--m15-card2)] rounded-full overflow-hidden">
                       <div className="h-full bg-yellow-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
@@ -119,7 +119,7 @@ export default function AdminClubs() {
       )}
 
       {/* Tableau des clubs */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardHeader className="pb-3 flex flex-row items-center justify-between">
           <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
             <Activity className="h-4 w-4 text-cyan-400" /> Tous les clubs ({clubs.length})
@@ -127,10 +127,10 @@ export default function AdminClubs() {
         </CardHeader>
         <CardContent className="p-0">
           {isLoading ? (
-            <div className="text-center text-slate-400 py-8">Chargement…</div>
+            <div className="text-center text-[var(--m15-muted)] py-8">Chargement…</div>
           ) : clubs.length === 0 ? (
-            <div className="text-center text-slate-500 py-12">
-              <Trophy className="h-10 w-10 mx-auto mb-2 text-slate-600" />
+            <div className="text-center text-[var(--m15-muted)] py-12">
+              <Trophy className="h-10 w-10 mx-auto mb-2 text-[var(--m15-muted)]" />
               <p>Aucun club créé</p>
             </div>
           ) : (
@@ -138,22 +138,22 @@ export default function AdminClubs() {
               {clubs.map(club => {
                 const couleur = club.couleur ?? "#00C9A7";
                 return (
-                  <div key={club.id} className="flex items-center gap-4 p-4 hover:bg-slate-700/30 transition-colors">
+                  <div key={club.id} className="flex items-center gap-4 p-4 hover:bg-[var(--elevate-1)] transition-colors">
                     {/* Indicateur couleur */}
                     <div className="h-10 w-1 rounded-full shrink-0" style={{ backgroundColor: couleur }} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-[var(--m15-white)] font-medium truncate">{club.nom}</p>
                         {!club.actif && (
-                          <Badge className="bg-slate-600/50 text-slate-400 border-slate-600 text-xs" variant="outline">Inactif</Badge>
+                          <Badge className="bg-[var(--elevate-2)] text-[var(--m15-muted)] border-[var(--m15-border)] text-xs" variant="outline">Inactif</Badge>
                         )}
                       </div>
                       <div className="flex flex-wrap items-center gap-2 mt-1">
                         <Badge variant="outline" className="text-xs" style={{ borderColor: couleur + "55", color: couleur }}>
                           {CATEGORIES_LABELS[club.categorie] ?? club.categorie}
                         </Badge>
-                        <span className="text-slate-500 text-xs">{club.responsable_nom} {club.responsable_prenoms}</span>
-                        <span className="text-slate-500 text-xs flex items-center gap-1">
+                        <span className="text-[var(--m15-muted)] text-xs">{club.responsable_nom} {club.responsable_prenoms}</span>
+                        <span className="text-[var(--m15-muted)] text-xs flex items-center gap-1">
                           <Users className="h-3 w-3" /> {club.nb_membres} membre(s)
                         </span>
                       </div>
@@ -161,7 +161,7 @@ export default function AdminClubs() {
                     <div className="flex items-center gap-2 shrink-0">
                       <Button size="sm" variant="ghost"
                         onClick={() => navigate(`/clubs/${club.id}`)}
-                        className="text-slate-400 hover:text-[var(--m15-white)] h-8 px-2">
+                        className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] h-8 px-2">
                         <Settings className="h-4 w-4" />
                       </Button>
                       <Button size="sm" variant="ghost"

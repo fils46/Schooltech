@@ -167,7 +167,7 @@ export default function StocksInfirmerie() {
             <Package className="h-7 w-7 text-orange-400" />
             Stocks Infirmerie
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Gestion des médicaments et matériels médicaux</p>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">Gestion des médicaments et matériels médicaux</p>
         </div>
         <Button
           onClick={() => { setEditingStock(null); setForm({ nom: "", categorie: "medicament", quantite: 0, unite: "", seuil_alerte: 5, date_expiration: "" }); setShowAddDialog(true); }}
@@ -180,22 +180,22 @@ export default function StocksInfirmerie() {
 
       {/* KPIs */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
-            <p className="text-slate-400 text-xs">Total articles</p>
+            <p className="text-[var(--m15-muted)] text-xs">Total articles</p>
             <p className="text-2xl font-bold text-[var(--m15-white)]">{stocks.length}</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
-            <p className="text-slate-400 text-xs">En alerte</p>
-            <p className={`text-2xl font-bold ${enAlerte > 0 ? "text-orange-400" : "text-slate-400"}`}>{enAlerte}</p>
+            <p className="text-[var(--m15-muted)] text-xs">En alerte</p>
+            <p className={`text-2xl font-bold ${enAlerte > 0 ? "text-orange-400" : "text-[var(--m15-muted)]"}`}>{enAlerte}</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
-            <p className="text-slate-400 text-xs">En rupture</p>
-            <p className={`text-2xl font-bold ${enRupture > 0 ? "text-red-400" : "text-slate-400"}`}>{enRupture}</p>
+            <p className="text-[var(--m15-muted)] text-xs">En rupture</p>
+            <p className={`text-2xl font-bold ${enRupture > 0 ? "text-red-400" : "text-[var(--m15-muted)]"}`}>{enRupture}</p>
           </CardContent>
         </Card>
       </div>
@@ -203,53 +203,53 @@ export default function StocksInfirmerie() {
       {/* Filtres */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--m15-muted)]" />
           <Input
             placeholder="Rechercher un article…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 bg-slate-800 border-slate-700 text-[var(--m15-white)] placeholder:text-slate-400"
+            className="pl-9 bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
           />
         </div>
         <Select value={categorieFilter} onValueChange={setCategorieFilter}>
-          <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)] w-[160px]">
+          <SelectTrigger className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] w-[160px]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-700">
-            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-slate-700">Toutes catégories</SelectItem>
-            <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-slate-700">Médicaments</SelectItem>
-            <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-slate-700">Matériel</SelectItem>
-            <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-slate-700">Consommables</SelectItem>
+          <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Toutes catégories</SelectItem>
+            <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Médicaments</SelectItem>
+            <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Matériel</SelectItem>
+            <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Consommables</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Table/liste des stocks */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="text-left text-slate-400 font-medium px-4 py-3">Article</th>
-                  <th className="text-left text-slate-400 font-medium px-4 py-3">Catégorie</th>
-                  <th className="text-right text-slate-400 font-medium px-4 py-3">Quantité</th>
-                  <th className="text-left text-slate-400 font-medium px-4 py-3">Expiration</th>
-                  <th className="text-center text-slate-400 font-medium px-4 py-3">Statut</th>
-                  <th className="text-right text-slate-400 font-medium px-4 py-3">Actions</th>
+                <tr className="border-b border-[var(--m15-border)]">
+                  <th className="text-left text-[var(--m15-muted)] font-medium px-4 py-3">Article</th>
+                  <th className="text-left text-[var(--m15-muted)] font-medium px-4 py-3">Catégorie</th>
+                  <th className="text-right text-[var(--m15-muted)] font-medium px-4 py-3">Quantité</th>
+                  <th className="text-left text-[var(--m15-muted)] font-medium px-4 py-3">Expiration</th>
+                  <th className="text-center text-[var(--m15-muted)] font-medium px-4 py-3">Statut</th>
+                  <th className="text-right text-[var(--m15-muted)] font-medium px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center text-slate-500 py-10">Aucun article trouvé</td>
+                    <td colSpan={6} className="text-center text-[var(--m15-muted)] py-10">Aucun article trouvé</td>
                   </tr>
                 ) : (
                   filtered.map(s => (
-                    <tr key={s.id} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition-colors">
+                    <tr key={s.id} className="border-b border-[var(--m15-border)]/50 hover:bg-[var(--elevate-1)] transition-colors">
                       <td className="px-4 py-3">
                         <p className="text-[var(--m15-white)] font-medium">{s.nom}</p>
-                        <p className="text-slate-500 text-xs">Seuil : {s.seuil_alerte} {s.unite}</p>
+                        <p className="text-[var(--m15-muted)] text-xs">Seuil : {s.seuil_alerte} {s.unite}</p>
                       </td>
                       <td className="px-4 py-3">
                         <Badge variant="outline" className={CATEGORIE_COLORS[s.categorie] ?? ""}>
@@ -260,18 +260,18 @@ export default function StocksInfirmerie() {
                         <span className={`font-semibold ${s.quantite === 0 ? "text-red-400" : s.quantite <= s.seuil_alerte ? "text-orange-400" : "text-[var(--m15-white)]"}`}>
                           {s.quantite}
                         </span>
-                        <span className="text-slate-400 text-xs ml-1">{s.unite}</span>
+                        <span className="text-[var(--m15-muted)] text-xs ml-1">{s.unite}</span>
                       </td>
                       <td className="px-4 py-3">
                         {s.date_expiration ? (
                           <div className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3 text-slate-400" />
-                            <span className={`text-xs ${new Date(s.date_expiration) < new Date() ? "text-red-400" : "text-slate-300"}`}>
+                            <Calendar className="h-3 w-3 text-[var(--m15-muted)]" />
+                            <span className={`text-xs ${new Date(s.date_expiration) < new Date() ? "text-red-400" : "text-[var(--m15-white)]"}`}>
                               {new Date(s.date_expiration).toLocaleDateString("fr-FR")}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-slate-500 text-xs">—</span>
+                          <span className="text-[var(--m15-muted)] text-xs">—</span>
                         )}
                       </td>
                       <td className="px-4 py-3 text-center">
@@ -283,7 +283,7 @@ export default function StocksInfirmerie() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openMouvement(s)}
-                            className="text-slate-400 hover:text-[var(--m15-white)] h-7 px-2 gap-1"
+                            className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] h-7 px-2 gap-1"
                             title="Mouvement stock"
                           >
                             <ArrowUpDown className="h-3 w-3" />
@@ -292,7 +292,7 @@ export default function StocksInfirmerie() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openEdit(s)}
-                            className="text-slate-400 hover:text-[var(--m15-white)] h-7 px-2"
+                            className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] h-7 px-2"
                             title="Modifier"
                           >
                             <Edit2 className="h-3 w-3" />
@@ -310,78 +310,78 @@ export default function StocksInfirmerie() {
 
       {/* Dialog Ajouter/Modifier */}
       <Dialog open={showAddDialog} onOpenChange={open => { setShowAddDialog(open); if (!open) setEditingStock(null); }}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)] max-w-md">
+        <DialogContent className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] max-w-md">
           <DialogHeader>
             <DialogTitle className="text-[var(--m15-white)]">{editingStock ? "Modifier l'article" : "Ajouter un article"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label className="text-slate-300">Nom *</Label>
+              <Label className="text-[var(--m15-white)]">Nom *</Label>
               <Input
                 value={form.nom}
                 onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
                 placeholder="Paracétamol 500mg…"
-                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Catégorie *</Label>
+              <Label className="text-[var(--m15-white)]">Catégorie *</Label>
               <Select value={form.categorie} onValueChange={v => setForm(f => ({ ...f, categorie: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
+                <SelectTrigger className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
-                  <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-slate-700">Médicament</SelectItem>
-                  <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-slate-700">Matériel</SelectItem>
-                  <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-slate-700">Consommable</SelectItem>
+                <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+                  <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Médicament</SelectItem>
+                  <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Matériel</SelectItem>
+                  <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Consommable</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">Quantité *</Label>
+                <Label className="text-[var(--m15-white)]">Quantité *</Label>
                 <Input
                   type="number"
                   min={0}
                   value={form.quantite}
                   onChange={e => setForm(f => ({ ...f, quantite: parseInt(e.target.value) || 0 }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Unité *</Label>
+                <Label className="text-[var(--m15-white)]">Unité *</Label>
                 <Input
                   value={form.unite}
                   onChange={e => setForm(f => ({ ...f, unite: e.target.value }))}
                   placeholder="comprimés, ml…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-slate-300">Seuil d'alerte</Label>
+                <Label className="text-[var(--m15-white)]">Seuil d'alerte</Label>
                 <Input
                   type="number"
                   min={0}
                   value={form.seuil_alerte}
                   onChange={e => setForm(f => ({ ...f, seuil_alerte: parseInt(e.target.value) || 0 }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Date d'expiration</Label>
+                <Label className="text-[var(--m15-white)]">Date d'expiration</Label>
                 <Input
                   type="date"
                   value={form.date_expiration}
                   onChange={e => setForm(f => ({ ...f, date_expiration: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]"
                 />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddDialog(false)} className="border-slate-600 text-slate-300">
+            <Button variant="outline" onClick={() => setShowAddDialog(false)} className="border-[var(--m15-border)] text-[var(--m15-white)]">
               Annuler
             </Button>
             <Button
@@ -397,55 +397,55 @@ export default function StocksInfirmerie() {
 
       {/* Dialog Mouvement */}
       <Dialog open={showMouvementDialog} onOpenChange={setShowMouvementDialog}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)] max-w-sm">
+        <DialogContent className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-[var(--m15-white)]">Mouvement de stock</DialogTitle>
           </DialogHeader>
           {selectedStock && (
             <div className="space-y-4 py-2">
-              <div className="p-3 bg-slate-700/50 rounded-lg">
+              <div className="p-3 bg-[var(--elevate-2)] rounded-lg">
                 <p className="text-[var(--m15-white)] font-medium">{selectedStock.nom}</p>
-                <p className="text-slate-400 text-sm">Stock actuel : {selectedStock.quantite} {selectedStock.unite}</p>
+                <p className="text-[var(--m15-muted)] text-sm">Stock actuel : {selectedStock.quantite} {selectedStock.unite}</p>
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Type de mouvement</Label>
+                <Label className="text-[var(--m15-white)]">Type de mouvement</Label>
                 <Select value={mouvementForm.type} onValueChange={v => setMouvementForm(m => ({ ...m, type: v }))}>
-                  <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
+                  <SelectTrigger className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
-                    <SelectItem value="entree" className="text-[var(--m15-white)] focus:bg-slate-700">
+                  <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+                    <SelectItem value="entree" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">
                       <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-emerald-400" /> Entrée</div>
                     </SelectItem>
-                    <SelectItem value="sortie" className="text-[var(--m15-white)] focus:bg-slate-700">
+                    <SelectItem value="sortie" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">
                       <div className="flex items-center gap-2"><TrendingDown className="h-4 w-4 text-red-400" /> Sortie</div>
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Quantité</Label>
+                <Label className="text-[var(--m15-white)]">Quantité</Label>
                 <Input
                   type="number"
                   min={1}
                   value={mouvementForm.quantite}
                   onChange={e => setMouvementForm(m => ({ ...m, quantite: parseInt(e.target.value) || 1 }))}
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-slate-300">Motif</Label>
+                <Label className="text-[var(--m15-white)]">Motif</Label>
                 <Input
                   value={mouvementForm.motif}
                   onChange={e => setMouvementForm(m => ({ ...m, motif: e.target.value }))}
                   placeholder="Raison du mouvement…"
-                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
+                  className="bg-[var(--m15-card2)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowMouvementDialog(false)} className="border-slate-600 text-slate-300">
+            <Button variant="outline" onClick={() => setShowMouvementDialog(false)} className="border-[var(--m15-border)] text-[var(--m15-white)]">
               Annuler
             </Button>
             <Button

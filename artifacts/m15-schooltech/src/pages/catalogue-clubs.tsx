@@ -44,7 +44,7 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
 
   return (
     <Card
-      className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-all cursor-pointer group overflow-hidden"
+      className="bg-[var(--m15-card)] border-[var(--m15-border)] hover:border-[var(--m15-border)] transition-all cursor-pointer group overflow-hidden"
       onClick={onView}
     >
       {/* Accent color bar */}
@@ -64,7 +64,7 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
           )}
           <div className="flex-1 min-w-0">
             <h3 className="text-[var(--m15-white)] font-semibold text-base truncate group-hover:text-cyan-300 transition-colors">{club.nom}</h3>
-            <p className="text-slate-400 text-sm truncate">{club.responsable_nom} {club.responsable_prenoms}</p>
+            <p className="text-[var(--m15-muted)] text-sm truncate">{club.responsable_nom} {club.responsable_prenoms}</p>
             <Badge variant="outline" className="mt-1 text-xs" style={{ borderColor: couleur + "66", color: couleur }}>
               {CATEGORIES.find(c => c.value === club.categorie)?.emoji} {CATEGORIES.find(c => c.value === club.categorie)?.label}
             </Badge>
@@ -72,16 +72,16 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
         </div>
 
         {club.description && (
-          <p className="text-slate-400 text-sm line-clamp-2">{club.description}</p>
+          <p className="text-[var(--m15-muted)] text-sm line-clamp-2">{club.description}</p>
         )}
 
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-slate-400">
+          <div className="flex items-center gap-1 text-[var(--m15-muted)]">
             <Users className="h-4 w-4" />
             <span>{club.nb_membres}{club.capacite_max ? `/${club.capacite_max}` : ""} membres</span>
           </div>
           {club.prochaine_activite && (
-            <div className="flex items-center gap-1 text-slate-500 text-xs">
+            <div className="flex items-center gap-1 text-[var(--m15-muted)] text-xs">
               <Calendar className="h-3 w-3" />
               <span>{new Date(club.prochaine_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</span>
             </div>
@@ -101,7 +101,7 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
         ) : (
           <Button
             size="sm"
-            className="w-full bg-slate-700 hover:bg-slate-600 text-[var(--m15-white)] text-xs"
+            className="w-full bg-[var(--m15-card2)] hover:bg-[var(--m15-card2)] text-[var(--m15-white)] text-xs"
             onClick={e => { e.stopPropagation(); onJoin(); }}
           >
             <Plus className="h-3 w-3 mr-1" />
@@ -131,12 +131,12 @@ export default function CatalogueClubs() {
             <Trophy className="h-7 w-7 text-yellow-400" />
             Clubs & Activités
           </h1>
-          <p className="text-slate-400 text-sm mt-1">{clubs.length} club(s) disponible(s)</p>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">{clubs.length} club(s) disponible(s)</p>
         </div>
         {["dev", "directeur", "censeur"].includes(user?.role ?? "") && (
           <Button
             onClick={() => navigate("/clubs/nouveau")}
-            className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold gap-2"
+            className="bg-yellow-500 hover:bg-yellow-600 text-[var(--m15-white)] font-semibold gap-2"
           >
             <Plus className="h-4 w-4" />
             Créer un club
@@ -152,8 +152,8 @@ export default function CatalogueClubs() {
             onClick={() => setCategorieFilter(cat.value)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               categorieFilter === cat.value
-                ? "bg-yellow-500 text-slate-900"
-                : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                ? "bg-yellow-500 text-[var(--m15-white)]"
+                : "bg-[var(--m15-card2)] text-[var(--m15-white)] hover:bg-[var(--m15-card2)]"
             }`}
           >
             {cat.emoji} {cat.label}
@@ -162,13 +162,13 @@ export default function CatalogueClubs() {
       </div>
 
       {isLoading ? (
-        <div className="text-center text-slate-400 py-12">Chargement…</div>
+        <div className="text-center text-[var(--m15-muted)] py-12">Chargement…</div>
       ) : clubs.length === 0 ? (
-        <div className="text-center text-slate-500 py-16 flex flex-col items-center gap-3">
-          <Trophy className="h-12 w-12 text-slate-600" />
+        <div className="text-center text-[var(--m15-muted)] py-16 flex flex-col items-center gap-3">
+          <Trophy className="h-12 w-12 text-[var(--m15-muted)]" />
           <p className="text-lg">Aucun club trouvé</p>
           {["dev", "directeur", "censeur"].includes(user?.role ?? "") && (
-            <Button onClick={() => navigate("/clubs/nouveau")} variant="outline" className="border-slate-600 text-slate-300">
+            <Button onClick={() => navigate("/clubs/nouveau")} variant="outline" className="border-[var(--m15-border)] text-[var(--m15-white)]">
               Créer le premier club
             </Button>
           )}

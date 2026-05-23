@@ -80,7 +80,7 @@ export default function InfirmerieDashboard() {
             <Heart className="h-7 w-7 text-rose-400" />
             Infirmerie
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Tableau de bord médical</p>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">Tableau de bord médical</p>
         </div>
         {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
           <Button
@@ -95,51 +95,51 @@ export default function InfirmerieDashboard() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-xs">Aujourd'hui</p>
+                <p className="text-[var(--m15-muted)] text-xs">Aujourd'hui</p>
                 <p className="text-2xl font-bold text-[var(--m15-white)]">{stats?.consultations_aujourd_hui ?? 0}</p>
-                <p className="text-slate-500 text-xs">consultations</p>
+                <p className="text-[var(--m15-muted)] text-xs">consultations</p>
               </div>
               <Stethoscope className="h-8 w-8 text-rose-400 opacity-70" />
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-xs">En cours</p>
+                <p className="text-[var(--m15-muted)] text-xs">En cours</p>
                 <p className="text-2xl font-bold text-yellow-400">{stats?.consultations_en_cours ?? 0}</p>
-                <p className="text-slate-500 text-xs">élèves présents</p>
+                <p className="text-[var(--m15-muted)] text-xs">élèves présents</p>
               </div>
               <Clock className="h-8 w-8 text-yellow-400 opacity-70" />
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-xs">Ce mois</p>
+                <p className="text-[var(--m15-muted)] text-xs">Ce mois</p>
                 <p className="text-2xl font-bold text-cyan-400">{stats?.consultations_mois ?? 0}</p>
-                <p className="text-slate-500 text-xs">consultations</p>
+                <p className="text-[var(--m15-muted)] text-xs">consultations</p>
               </div>
               <Activity className="h-8 w-8 text-cyan-400 opacity-70" />
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-xs">Stocks en alerte</p>
+                <p className="text-[var(--m15-muted)] text-xs">Stocks en alerte</p>
                 <p className={`text-2xl font-bold ${(stats?.articles_en_alerte ?? 0) > 0 ? "text-red-400" : "text-emerald-400"}`}>
                   {stats?.articles_en_alerte ?? 0}
                 </p>
-                <p className="text-slate-500 text-xs">articles</p>
+                <p className="text-[var(--m15-muted)] text-xs">articles</p>
               </div>
               <Package className="h-8 w-8 text-orange-400 opacity-70" />
             </div>
@@ -150,7 +150,7 @@ export default function InfirmerieDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Consultations en cours */}
         <div className="lg:col-span-2 space-y-4">
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
@@ -169,31 +169,31 @@ export default function InfirmerieDashboard() {
             </CardHeader>
             <CardContent className="space-y-2">
               {consultationsEnCours.length === 0 ? (
-                <p className="text-slate-500 text-sm text-center py-4">Aucune consultation en cours</p>
+                <p className="text-[var(--m15-muted)] text-sm text-center py-4">Aucune consultation en cours</p>
               ) : (
                 consultationsEnCours.map(c => (
                   <div
                     key={c.id}
-                    className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-[var(--elevate-2)] rounded-lg hover:bg-[var(--m15-card2)] transition-colors cursor-pointer"
                     onClick={() => navigate(`/infirmerie/consultation/${c.id}`)}
                   >
                     <div className="flex items-center gap-3">
                       {c.eleve_photo ? (
                         <img src={c.eleve_photo} alt="" className="h-8 w-8 rounded-full object-cover" />
                       ) : (
-                        <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center">
-                          <Users className="h-4 w-4 text-slate-400" />
+                        <div className="h-8 w-8 rounded-full bg-[var(--m15-card2)] flex items-center justify-center">
+                          <Users className="h-4 w-4 text-[var(--m15-muted)]" />
                         </div>
                       )}
                       <div>
                         <p className="text-[var(--m15-white)] text-sm font-medium">
                           {c.eleve_nom} {c.eleve_prenoms}
                         </p>
-                        <p className="text-slate-400 text-xs">{c.classe_nom ?? "—"} · {c.motif}</p>
+                        <p className="text-[var(--m15-muted)] text-xs">{c.classe_nom ?? "—"} · {c.motif}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-500 text-xs">
+                      <span className="text-[var(--m15-muted)] text-xs">
                         {new Date(c.heure_entree).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                       </span>
                       <Badge className={STATUT_COLORS[c.statut] ?? ""} variant="outline">
@@ -208,7 +208,7 @@ export default function InfirmerieDashboard() {
 
           {/* Activité 14j */}
           {chartData.length > 0 && (
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
               <CardHeader className="pb-2">
                 <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-cyan-400" />
@@ -218,12 +218,12 @@ export default function InfirmerieDashboard() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={160}>
                   <BarChart data={chartData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fill: "#94a3b8", fontSize: 11 }} />
-                    <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} allowDecimals={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--m15-card2)" vertical={false} />
+                    <XAxis dataKey="date" tick={{ fill: "var(--m15-muted)", fontSize: 11 }} />
+                    <YAxis tick={{ fill: "var(--m15-muted)", fontSize: 11 }} allowDecimals={false} />
                     <Tooltip
-                      contentStyle={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "8px" }}
-                      labelStyle={{ color: "#e2e8f0" }}
+                      contentStyle={{ background: "var(--m15-card)", border: "1px solid #334155", borderRadius: "8px" }}
+                      labelStyle={{ color: "var(--m15-white)" }}
                       itemStyle={{ color: "#f43f5e" }}
                     />
                     <Bar dataKey="Consultations" fill="#f43f5e" radius={[3, 3, 0, 0]} />
@@ -237,7 +237,7 @@ export default function InfirmerieDashboard() {
         {/* Colonne droite */}
         <div className="space-y-4">
           {/* Motifs fréquents */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <Activity className="h-4 w-4 text-cyan-400" />
@@ -246,11 +246,11 @@ export default function InfirmerieDashboard() {
             </CardHeader>
             <CardContent className="space-y-2">
               {(stats?.motifs_frequents ?? []).length === 0 ? (
-                <p className="text-slate-500 text-sm">Aucune donnée</p>
+                <p className="text-[var(--m15-muted)] text-sm">Aucune donnée</p>
               ) : (
                 (stats?.motifs_frequents ?? []).slice(0, 6).map((m, i) => (
                   <div key={i} className="flex items-center justify-between">
-                    <span className="text-slate-300 text-sm truncate flex-1">{m.motif}</span>
+                    <span className="text-[var(--m15-white)] text-sm truncate flex-1">{m.motif}</span>
                     <Badge variant="outline" className="bg-rose-500/20 text-rose-300 border-rose-500/30 text-xs ml-2">
                       {m.count}
                     </Badge>
@@ -261,7 +261,7 @@ export default function InfirmerieDashboard() {
           </Card>
 
           {/* Alertes stock */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
@@ -283,10 +283,10 @@ export default function InfirmerieDashboard() {
                 <p className="text-emerald-400 text-sm">Tous les stocks sont suffisants ✓</p>
               ) : (
                 alertes.slice(0, 5).map(a => (
-                  <div key={a.id} className="flex items-center justify-between p-2 bg-slate-700/50 rounded">
+                  <div key={a.id} className="flex items-center justify-between p-2 bg-[var(--elevate-2)] rounded">
                     <div>
-                      <p className="text-slate-200 text-xs font-medium">{a.nom}</p>
-                      <p className="text-slate-500 text-xs">{a.quantite} {a.unite} restant(s)</p>
+                      <p className="text-[var(--m15-white)] text-xs font-medium">{a.nom}</p>
+                      <p className="text-[var(--m15-muted)] text-xs">{a.quantite} {a.unite} restant(s)</p>
                     </div>
                     <Badge
                       variant="outline"
@@ -303,14 +303,14 @@ export default function InfirmerieDashboard() {
           </Card>
 
           {/* Actions rapides */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
             <CardHeader className="pb-3">
               <CardTitle className="text-[var(--m15-white)] text-base">Actions rapides</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
+                className="w-full justify-start border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/consultations")}
               >
                 <Stethoscope className="h-4 w-4 text-rose-400" />
@@ -318,7 +318,7 @@ export default function InfirmerieDashboard() {
               </Button>
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
+                className="w-full justify-start border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/dossiers")}
               >
                 <Heart className="h-4 w-4 text-pink-400" />
@@ -326,7 +326,7 @@ export default function InfirmerieDashboard() {
               </Button>
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
+                className="w-full justify-start border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/stocks")}
               >
                 <Package className="h-4 w-4 text-orange-400" />

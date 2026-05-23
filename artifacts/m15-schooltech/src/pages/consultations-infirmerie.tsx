@@ -73,7 +73,7 @@ export default function ConsultationsInfirmerie() {
             <Stethoscope className="h-7 w-7 text-rose-400" />
             Consultations
           </h1>
-          <p className="text-slate-400 text-sm mt-1">{total} consultation(s) au total</p>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">{total} consultation(s) au total</p>
         </div>
         {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
           <Button
@@ -89,35 +89,35 @@ export default function ConsultationsInfirmerie() {
       {/* Filtres */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--m15-muted)]" />
           <Input
             placeholder="Rechercher par élève ou motif…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 bg-slate-800 border-slate-700 text-[var(--m15-white)] placeholder:text-slate-400"
+            className="pl-9 bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
           />
         </div>
         <Select value={statutFilter} onValueChange={v => { setStatutFilter(v); setPage(1); }}>
-          <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)] w-[180px]">
+          <SelectTrigger className="bg-[var(--m15-card)] border-[var(--m15-border)] text-[var(--m15-white)] w-[180px]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-700">
-            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-slate-700">Tous les statuts</SelectItem>
-            <SelectItem value="en_cours" className="text-[var(--m15-white)] focus:bg-slate-700">En cours</SelectItem>
-            <SelectItem value="termine" className="text-[var(--m15-white)] focus:bg-slate-700">Terminé</SelectItem>
-            <SelectItem value="renvoye_domicile" className="text-[var(--m15-white)] focus:bg-slate-700">Renvoyé à domicile</SelectItem>
-            <SelectItem value="hospitalise" className="text-[var(--m15-white)] focus:bg-slate-700">Hospitalisé</SelectItem>
+          <SelectContent className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Tous les statuts</SelectItem>
+            <SelectItem value="en_cours" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">En cours</SelectItem>
+            <SelectItem value="termine" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Terminé</SelectItem>
+            <SelectItem value="renvoye_domicile" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Renvoyé à domicile</SelectItem>
+            <SelectItem value="hospitalise" className="text-[var(--m15-white)] focus:bg-[var(--m15-card2)]">Hospitalisé</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
         <CardContent className="p-0">
           {isLoading ? (
-            <div className="text-center text-slate-400 py-12">Chargement…</div>
+            <div className="text-center text-[var(--m15-muted)] py-12">Chargement…</div>
           ) : filtered.length === 0 ? (
-            <div className="text-center text-slate-500 py-12 flex flex-col items-center gap-2">
-              <Stethoscope className="h-10 w-10 text-slate-600" />
+            <div className="text-center text-[var(--m15-muted)] py-12 flex flex-col items-center gap-2">
+              <Stethoscope className="h-10 w-10 text-[var(--m15-muted)]" />
               <p>Aucune consultation trouvée</p>
             </div>
           ) : (
@@ -125,14 +125,14 @@ export default function ConsultationsInfirmerie() {
               {filtered.map(c => (
                 <div
                   key={c.id}
-                  className="flex items-center gap-4 p-4 hover:bg-slate-700/30 transition-colors cursor-pointer"
+                  className="flex items-center gap-4 p-4 hover:bg-[var(--elevate-1)] transition-colors cursor-pointer"
                   onClick={() => navigate(`/infirmerie/consultation/${c.id}`)}
                 >
                   {c.eleve_photo ? (
                     <img src={c.eleve_photo} alt="" className="h-10 w-10 rounded-full object-cover shrink-0" />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-slate-600 flex items-center justify-center shrink-0">
-                      <Users className="h-5 w-5 text-slate-400" />
+                    <div className="h-10 w-10 rounded-full bg-[var(--m15-card2)] flex items-center justify-center shrink-0">
+                      <Users className="h-5 w-5 text-[var(--m15-muted)]" />
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
@@ -141,19 +141,19 @@ export default function ConsultationsInfirmerie() {
                         {c.eleve_nom} {c.eleve_prenoms}
                       </p>
                       {c.classe_nom && (
-                        <span className="text-slate-500 text-xs shrink-0">{c.classe_nom}</span>
+                        <span className="text-[var(--m15-muted)] text-xs shrink-0">{c.classe_nom}</span>
                       )}
                     </div>
-                    <p className="text-slate-400 text-sm truncate">{c.motif}</p>
+                    <p className="text-[var(--m15-muted)] text-sm truncate">{c.motif}</p>
                     {c.infirmier_nom && (
-                      <p className="text-slate-500 text-xs">Suivi par : {c.infirmier_nom}</p>
+                      <p className="text-[var(--m15-muted)] text-xs">Suivi par : {c.infirmier_nom}</p>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-1 shrink-0">
                     <Badge className={STATUT_COLORS[c.statut] ?? ""} variant="outline">
                       {STATUT_LABELS[c.statut] ?? c.statut}
                     </Badge>
-                    <div className="flex items-center gap-1 text-slate-500 text-xs">
+                    <div className="flex items-center gap-1 text-[var(--m15-muted)] text-xs">
                       <Clock className="h-3 w-3" />
                       {new Date(c.heure_entree).toLocaleString("fr-FR", {
                         day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit",
@@ -170,14 +170,14 @@ export default function ConsultationsInfirmerie() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-slate-400 text-sm">Page {page} / {totalPages}</p>
+          <p className="text-[var(--m15-muted)] text-sm">Page {page} / {totalPages}</p>
           <div className="flex gap-2">
             <Button
               variant="outline"
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage(p => p - 1)}
-              className="border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
+              className="border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)]"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -186,7 +186,7 @@ export default function ConsultationsInfirmerie() {
               size="sm"
               disabled={page >= totalPages}
               onClick={() => setPage(p => p + 1)}
-              className="border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
+              className="border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)]"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>

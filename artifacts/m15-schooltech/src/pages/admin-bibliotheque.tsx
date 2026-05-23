@@ -233,7 +233,7 @@ export default function AdminBibliotheque() {
                         <Badge className={`text-xs border w-fit ${r.valide ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/30" : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"}`}>
                           {r.valide ? "Validé" : "Non validé"}
                         </Badge>
-                        <Badge className={`text-xs border w-fit ${r.publie ? "bg-green-500/20 text-green-300 border-green-500/30" : "bg-slate-500/20 text-slate-300 border-slate-500/30"}`}>
+                        <Badge className={`text-xs border w-fit ${r.publie ? "bg-green-500/20 text-green-300 border-green-500/30" : "bg-[var(--elevate-1)] text-[var(--m15-white)] border-[var(--m15-border)]/30"}`}>
                           {r.publie ? "Publié" : "Brouillon"}
                         </Badge>
                       </div>
@@ -246,7 +246,7 @@ export default function AdminBibliotheque() {
                           onClick={() => r.id && publier.mutate({ id: r.id, data: { publie: !r.publie } })}
                           className={`text-xs px-2 py-1 rounded border transition-colors ${
                             r.publie
-                              ? "border-slate-500/30 text-slate-300 hover:border-slate-400"
+                              ? "border-[var(--m15-border)]/30 text-[var(--m15-white)] hover:border-[var(--m15-border)]"
                               : "border-green-500/30 text-green-300 hover:border-green-400"
                           }`}
                         >
