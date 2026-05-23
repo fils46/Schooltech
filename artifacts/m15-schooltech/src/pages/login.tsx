@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useLocation, Link } from "wouter";
 import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
-import { Loader2, Lock, AlertCircle, CheckCircle2, GraduationCap } from "lucide-react";
+import { Loader2, Lock, GraduationCap } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -61,7 +61,7 @@ export default function Login() {
 
       {/* ── Colonne gauche ── */}
       <div className="hidden lg:flex lg:w-1/2 flex-col relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0A1628 0%, #0D2244 100%)" }}>
+        style={{ background: "linear-gradient(135deg, var(--m15-navy) 0%, var(--m15-card2) 100%)" }}>
 
         {/* Grille de fond */}
         <div className="absolute inset-0 pointer-events-none" style={{
@@ -92,19 +92,19 @@ export default function Login() {
                 }}>
                   M15-SchoolTech
                 </h1>
-                <p className="text-xs" style={{ color: "#8B9DC3" }}>v1.0 — Collège & Lycée</p>
+                <p className="text-xs" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
               </div>
             </div>
           </div>
 
           {/* Hero text */}
           <div className="mb-10">
-            <h2 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+            <h2 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
               La gestion scolaire<br />
               <span style={{ color: "#00C9A7" }}>simplifiée</span> pour la<br />
               Côte d'Ivoire
             </h2>
-            <p className="text-base leading-relaxed" style={{ color: "#8B9DC3" }}>
+            <p className="text-base leading-relaxed" style={{ color: "var(--m15-muted)" }}>
               Une plateforme complète pour administrer vos établissements, suivre les élèves et communiquer avec les familles.
             </p>
           </div>
@@ -113,15 +113,15 @@ export default function Login() {
           <div className="grid grid-cols-2 gap-3">
             {FEATURES.map((f) => (
               <div key={f.text} className="flex items-center gap-3 p-4 rounded-xl transition-all"
-                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(0,201,167,0.1)" }}>
+                style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
                 <span className="text-xl">{f.icon}</span>
-                <span className="text-sm font-medium" style={{ color: "#F0F4FF" }}>{f.text}</span>
+                <span className="text-sm font-medium" style={{ color: "var(--m15-white)" }}>{f.text}</span>
               </div>
             ))}
           </div>
 
           {/* Footer */}
-          <p className="mt-8 text-xs" style={{ color: "#8B9DC3" }}>
+          <p className="mt-8 text-xs" style={{ color: "var(--m15-muted)" }}>
             © {new Date().getFullYear()} M15 Tech. Tous droits réservés.
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function Login() {
 
       {/* ── Colonne droite — Formulaire ── */}
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-6 lg:p-12"
-        style={{ background: "#0D1F3C" }}>
+        style={{ background: "var(--m15-navy2)" }}>
 
         {/* Logo mobile uniquement */}
         <div className="lg:hidden mb-8 text-center">
@@ -140,15 +140,15 @@ export default function Login() {
             WebkitTextFillColor: "transparent",
             backgroundClip: "text"
           }}>M15-SchoolTech</h1>
-          <p className="text-sm mt-1" style={{ color: "#8B9DC3" }}>Portail de Gestion Scolaire</p>
+          <p className="text-sm mt-1" style={{ color: "var(--m15-muted)" }}>Portail de Gestion Scolaire</p>
         </div>
 
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+            <h2 className="text-3xl font-bold mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
               Connexion
             </h2>
-            <p className="text-sm" style={{ color: "#8B9DC3" }}>
+            <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
               Accédez à votre espace de gestion scolaire
             </p>
           </div>
@@ -156,16 +156,16 @@ export default function Login() {
           {/* Sélecteur de rôle */}
           <div className="mb-6">
             <label className="block text-xs font-semibold uppercase tracking-widest mb-3"
-              style={{ color: "#8B9DC3" }}>Connecter en tant que</label>
+              style={{ color: "var(--m15-muted)" }}>Connecter en tant que</label>
             <div className="grid grid-cols-3 gap-2">
               {ROLES.map((r) => (
                 <button key={r.id} type="button"
                   onClick={() => setSelectedRole(r.id === selectedRole ? null : r.id)}
                   className="flex flex-col items-center gap-1 p-3 rounded-xl text-sm font-medium transition-all"
                   style={{
-                    background: selectedRole === r.id ? "rgba(0,201,167,0.1)" : "rgba(255,255,255,0.03)",
-                    border: selectedRole === r.id ? "1px solid #00C9A7" : "1px solid rgba(255,255,255,0.06)",
-                    color: selectedRole === r.id ? "#00C9A7" : "#8B9DC3",
+                    background: selectedRole === r.id ? "rgba(0,201,167,0.1)" : "var(--elevate-1)",
+                    border: selectedRole === r.id ? "1px solid #00C9A7" : "1px solid var(--m15-border)",
+                    color: selectedRole === r.id ? "#00C9A7" : "var(--m15-muted)",
                   }}>
                   <span>{r.emoji}</span>
                   <span style={{ fontSize: "11px" }}>{r.label}</span>
@@ -178,7 +178,7 @@ export default function Login() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-widest mb-2"
-                style={{ color: "#8B9DC3" }}>Adresse email</label>
+                style={{ color: "var(--m15-muted)" }}>Adresse email</label>
               <input
                 type="email"
                 placeholder="nom@etablissement.edu.ci"
@@ -186,13 +186,13 @@ export default function Login() {
                 data-testid="input-email"
                 className="w-full rounded-xl px-4 py-3.5 text-sm transition-all outline-none"
                 style={{
-                  background: "#111E35",
-                  border: form.formState.errors.email ? "1px solid #FF4D6D" : "1px solid rgba(0,201,167,0.15)",
-                  color: "#F0F4FF",
+                  background: "var(--m15-card)",
+                  border: form.formState.errors.email ? "1px solid #FF4D6D" : "1px solid var(--m15-border)",
+                  color: "var(--m15-white)",
                   fontFamily: "'DM Sans', sans-serif",
                 }}
                 onFocus={e => { e.target.style.borderColor = "#00C9A7"; e.target.style.boxShadow = "0 0 0 3px rgba(0,201,167,0.1)"; }}
-                onBlur={e => { e.target.style.borderColor = form.formState.errors.email ? "#FF4D6D" : "rgba(0,201,167,0.15)"; e.target.style.boxShadow = "none"; }}
+                onBlur={e => { e.target.style.borderColor = form.formState.errors.email ? "#FF4D6D" : "var(--m15-border)"; e.target.style.boxShadow = "none"; }}
               />
               {form.formState.errors.email && (
                 <p className="mt-1.5 text-xs" style={{ color: "#FF4D6D" }}>{form.formState.errors.email.message}</p>
@@ -202,7 +202,7 @@ export default function Login() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-semibold uppercase tracking-widest"
-                  style={{ color: "#8B9DC3" }}>Mot de passe</label>
+                  style={{ color: "var(--m15-muted)" }}>Mot de passe</label>
                 <Link href="/forgot-password"
                   data-testid="link-forgot-password"
                   className="text-xs font-medium hover:underline transition-colors"
@@ -216,13 +216,13 @@ export default function Login() {
                 data-testid="input-password"
                 className="w-full rounded-xl px-4 py-3.5 text-sm transition-all outline-none"
                 style={{
-                  background: "#111E35",
-                  border: form.formState.errors.password ? "1px solid #FF4D6D" : "1px solid rgba(0,201,167,0.15)",
-                  color: "#F0F4FF",
+                  background: "var(--m15-card)",
+                  border: form.formState.errors.password ? "1px solid #FF4D6D" : "1px solid var(--m15-border)",
+                  color: "var(--m15-white)",
                   fontFamily: "'DM Sans', sans-serif",
                 }}
                 onFocus={e => { e.target.style.borderColor = "#00C9A7"; e.target.style.boxShadow = "0 0 0 3px rgba(0,201,167,0.1)"; }}
-                onBlur={e => { e.target.style.borderColor = form.formState.errors.password ? "#FF4D6D" : "rgba(0,201,167,0.15)"; e.target.style.boxShadow = "none"; }}
+                onBlur={e => { e.target.style.borderColor = form.formState.errors.password ? "#FF4D6D" : "var(--m15-border)"; e.target.style.boxShadow = "none"; }}
               />
               {form.formState.errors.password && (
                 <p className="mt-1.5 text-xs" style={{ color: "#FF4D6D" }}>{form.formState.errors.password.message}</p>
@@ -277,8 +277,8 @@ export default function Login() {
           {/* Bandeau sécurité */}
           <div className="mt-6 flex items-center justify-center gap-2 py-3 px-4 rounded-xl"
             style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.1)" }}>
-            <Lock className="w-3.5 h-3.5" style={{ color: "#8B9DC3" }} />
-            <span className="text-xs" style={{ color: "#8B9DC3" }}>
+            <Lock className="w-3.5 h-3.5" style={{ color: "var(--m15-muted)" }} />
+            <span className="text-xs" style={{ color: "var(--m15-muted)" }}>
               Connexion sécurisée SSL — Vos données sont chiffrées
             </span>
           </div>
