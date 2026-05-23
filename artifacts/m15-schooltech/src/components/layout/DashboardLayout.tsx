@@ -13,6 +13,7 @@ import {
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
+  Trophy, Activity, Star as StarIcon,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -71,6 +72,13 @@ const navConfig: Record<string, Section[]> = {
         { label: "Consultations",     href: "/infirmerie/consultations",      icon: Stethoscope },
         { label: "Dossiers médicaux", href: "/infirmerie/dossiers",           icon: FileText },
         { label: "Stocks médicaux",   href: "/infirmerie/stocks",             icon: Package },
+      ],
+    },
+    {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Catalogue clubs",  href: "/clubs",          icon: Trophy },
+        { label: "Administration",   href: "/admin-clubs",    icon: Activity },
       ],
     },
     {
@@ -142,6 +150,13 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
+        { label: "Administration",  href: "/admin-clubs", icon: Activity },
+      ],
+    },
+    {
       title: "BIBLIOTHÈQUE",
       links: [
         { label: "Catalogue",      href: "/bibliotheque",       icon: Library },
@@ -200,6 +215,13 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
+        { label: "Administration",  href: "/admin-clubs", icon: Activity },
+      ],
+    },
+    {
       title: "BIBLIOTHÈQUE",
       links: [
         { label: "Catalogue",      href: "/bibliotheque",       icon: Library },
@@ -236,6 +258,13 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",   href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats classe",   href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
+        { label: "Administration",  href: "/admin-clubs", icon: Activity },
       ],
     },
     {
@@ -279,6 +308,13 @@ const navConfig: Record<string, Section[]> = {
         { label: "Épreuves blanches",href: "/epreuves-blanches",   icon: ClipboardCheck },
         { label: "Mon planning",    href: "/planning-revision",    icon: Calendar },
         { label: "Mes résultats",   href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Catalogue clubs", href: "/clubs",     icon: Trophy },
+        { label: "Mes clubs",       href: "/mes-clubs", icon: StarIcon },
       ],
     },
     {
@@ -355,6 +391,12 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "CLUBS & ACTIVITÉS",
+      links: [
+        { label: "Clubs de mon enfant", href: "/clubs", icon: Trophy },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
@@ -424,6 +466,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/infirmerie/dossiers":                "Dossiers médicaux",
   "/infirmerie/stocks":                  "Stocks infirmerie",
   "/infirmerie/parent":                  "Infirmerie — Mon enfant",
+  "/clubs":             "Clubs & Activités",
+  "/clubs/nouveau":     "Créer un club",
+  "/mes-clubs":         "Mes clubs",
+  "/admin-clubs":       "Administration — Clubs",
 };
 
 const ROLE_LABELS: Record<string, string> = {

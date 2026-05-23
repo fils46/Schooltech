@@ -14,6 +14,10 @@ export interface ErrorResponse {
   error?: string;
 }
 
+export interface SuccessResponse {
+  message: string;
+}
+
 export interface MessageResponse {
   message: string;
 }
@@ -2560,6 +2564,246 @@ export interface MouvementsListeResponse {
   stock?: StockItem;
 }
 
+export interface ClubItem {
+  id?: string;
+  etablissement_id?: string;
+  responsable_id?: string;
+  responsable_nom?: string;
+  responsable_prenoms?: string;
+  nom?: string;
+  description?: string;
+  categorie?: string;
+  logo_url?: string;
+  couleur?: string;
+  capacite_max?: number;
+  annee_scolaire_id?: string;
+  actif?: boolean;
+  nb_membres?: number;
+  est_membre?: boolean;
+  mon_statut?: string;
+  mon_role?: string;
+  prochaine_activite?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ClubMembreItem {
+  id?: string;
+  club_id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_photo?: string;
+  classe_nom?: string;
+  statut?: string;
+  date_inscription?: string;
+  date_acceptation?: string;
+  role_membre?: string;
+  distinctions?: string;
+  created_at?: string;
+}
+
+export interface ActiviteItem {
+  id?: string;
+  club_id?: string;
+  club_nom?: string;
+  club_couleur?: string;
+  etablissement_id?: string;
+  titre?: string;
+  description?: string;
+  type?: string;
+  date_activite?: string;
+  heure_debut?: string;
+  heure_fin?: string;
+  lieu?: string;
+  statut?: string;
+  notes_compte_rendu?: string;
+  nb_presents?: number;
+  nb_absents?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface DistinctionItem {
+  id?: string;
+  club_id?: string;
+  club_nom?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  titre?: string;
+  description?: string;
+  date_obtention?: string;
+  decerne_par?: string;
+  decerne_par_nom?: string;
+  created_at?: string;
+}
+
+export interface ClubDetail {
+  id?: string;
+  etablissement_id?: string;
+  responsable_id?: string;
+  responsable_nom?: string;
+  responsable_prenoms?: string;
+  nom?: string;
+  description?: string;
+  categorie?: string;
+  logo_url?: string;
+  couleur?: string;
+  capacite_max?: number;
+  annee_scolaire_id?: string;
+  actif?: boolean;
+  nb_membres?: number;
+  est_membre?: boolean;
+  mon_statut?: string;
+  mon_role?: string;
+  membres?: ClubMembreItem[];
+  prochaines_activites?: ActiviteItem[];
+  distinctions_recentes?: DistinctionItem[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PresenceItem {
+  id?: string;
+  activite_id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_photo?: string;
+  classe_nom?: string;
+  present?: boolean;
+  motif_absence?: string;
+}
+
+export interface ClubsListeResponse {
+  clubs?: ClubItem[];
+  total?: number;
+}
+
+export type ClubsStatsResponseParCategorieItem = {
+  categorie?: string;
+  nb_clubs?: number;
+  nb_membres?: number;
+};
+
+export type ClubsStatsResponseClubsActifsItem = {
+  id?: string;
+  nom?: string;
+  nb_membres?: number;
+  nb_activites?: number;
+};
+
+export interface ClubsStatsResponse {
+  total_clubs?: number;
+  total_membres?: number;
+  activites_ce_mois?: number;
+  demandes_en_attente?: number;
+  par_categorie?: ClubsStatsResponseParCategorieItem[];
+  clubs_actifs?: ClubsStatsResponseClubsActifsItem[];
+}
+
+export interface MonClubItem {
+  id?: string;
+  nom?: string;
+  categorie?: string;
+  logo_url?: string;
+  couleur?: string;
+  responsable_nom?: string;
+  mon_role?: string;
+  taux_presence?: number;
+  nb_distinctions?: number;
+  prochaine_activite?: string;
+}
+
+export interface MesClubsResponse {
+  clubs_actifs?: MonClubItem[];
+  demandes_en_attente?: ClubItem[];
+  distinctions?: DistinctionItem[];
+}
+
+export interface ClubMembresResponse {
+  membres?: ClubMembreItem[];
+  total?: number;
+}
+
+export interface ActivitesListeResponse {
+  activites?: ActiviteItem[];
+  total?: number;
+}
+
+export interface PresencesActiviteResponse {
+  presences?: PresenceItem[];
+  activite?: ActiviteItem;
+  nb_presents?: number;
+  nb_absents?: number;
+}
+
+export interface DistinctionsListeResponse {
+  distinctions?: DistinctionItem[];
+  total?: number;
+}
+
+export interface StatsMembreResponse {
+  eleve_id?: string;
+  club_id?: string;
+  nb_activites?: number;
+  nb_presents?: number;
+  taux_presence?: number;
+  role_membre?: string;
+  distinctions?: DistinctionItem[];
+}
+
+export interface ClubInput {
+  nom: string;
+  description?: string;
+  categorie: string;
+  logo_url?: string;
+  couleur?: string;
+  capacite_max?: number;
+  responsable_id: string;
+  annee_scolaire_id: string;
+  actif?: boolean;
+}
+
+export interface ActiviteInput {
+  titre: string;
+  description?: string;
+  type: string;
+  date_activite: string;
+  heure_debut: string;
+  heure_fin?: string;
+  lieu?: string;
+  notes_compte_rendu?: string;
+}
+
+export interface TraiterMembreInput {
+  statut: string;
+  role_membre?: string;
+}
+
+export interface RoleMembreInput {
+  role_membre: string;
+  distinctions?: string;
+}
+
+export type SaisirPresencesInputPresencesItem = {
+  eleve_id?: string;
+  present?: boolean;
+  motif_absence?: string;
+};
+
+export interface SaisirPresencesInput {
+  presences: SaisirPresencesInputPresencesItem[];
+}
+
+export interface DistinctionInput {
+  eleve_id: string;
+  titre: string;
+  description?: string;
+  date_obtention: string;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -2894,5 +3138,23 @@ limit?: number;
 export type GetInfirmerieStocksParams = {
 categorie?: string;
 alerte_stock?: boolean;
+};
+
+export type GetClubsParams = {
+categorie?: string;
+actif?: boolean;
+annee_scolaire_id?: string;
+};
+
+export type GetClubsIdMembresParams = {
+statut?: string;
+role_membre?: string;
+};
+
+export type GetClubsClubIdActivitesParams = {
+type?: string;
+statut?: string;
+date_debut?: string;
+date_fin?: string;
 };
 

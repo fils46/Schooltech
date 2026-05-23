@@ -5475,3 +5475,778 @@ export const GetInfirmerieStocksIdHistoriqueResponse = zod.object({
 })
 
 
+/**
+ * @summary Liste des clubs
+ */
+export const GetClubsQueryParams = zod.object({
+  "categorie": zod.coerce.string().optional(),
+  "actif": zod.coerce.boolean().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetClubsResponse = zod.object({
+  "clubs": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "responsable_id": zod.string().optional(),
+  "responsable_nom": zod.string().optional(),
+  "responsable_prenoms": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "description": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "nb_membres": zod.number().optional(),
+  "est_membre": zod.boolean().optional(),
+  "mon_statut": zod.string().optional(),
+  "mon_role": zod.string().optional(),
+  "prochaine_activite": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Créer un club
+ */
+export const PostClubsBody = zod.object({
+  "nom": zod.string(),
+  "description": zod.string().optional(),
+  "categorie": zod.string(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "responsable_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "actif": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Statistiques globales des clubs
+ */
+export const GetClubsStatsResponse = zod.object({
+  "total_clubs": zod.number().optional(),
+  "total_membres": zod.number().optional(),
+  "activites_ce_mois": zod.number().optional(),
+  "demandes_en_attente": zod.number().optional(),
+  "par_categorie": zod.array(zod.object({
+  "categorie": zod.string().optional(),
+  "nb_clubs": zod.number().optional(),
+  "nb_membres": zod.number().optional()
+})).optional(),
+  "clubs_actifs": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "nb_membres": zod.number().optional(),
+  "nb_activites": zod.number().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Mes clubs (élève connecté)
+ */
+export const GetClubsMesClubsResponse = zod.object({
+  "clubs_actifs": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "responsable_nom": zod.string().optional(),
+  "mon_role": zod.string().optional(),
+  "taux_presence": zod.number().optional(),
+  "nb_distinctions": zod.number().optional(),
+  "prochaine_activite": zod.string().optional()
+})).optional(),
+  "demandes_en_attente": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "responsable_id": zod.string().optional(),
+  "responsable_nom": zod.string().optional(),
+  "responsable_prenoms": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "description": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "nb_membres": zod.number().optional(),
+  "est_membre": zod.boolean().optional(),
+  "mon_statut": zod.string().optional(),
+  "mon_role": zod.string().optional(),
+  "prochaine_activite": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "distinctions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Détail d'un club
+ */
+export const GetClubsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetClubsIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "responsable_id": zod.string().optional(),
+  "responsable_nom": zod.string().optional(),
+  "responsable_prenoms": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "description": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "nb_membres": zod.number().optional(),
+  "est_membre": zod.boolean().optional(),
+  "mon_statut": zod.string().optional(),
+  "mon_role": zod.string().optional(),
+  "membres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "prochaines_activites": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "distinctions_recentes": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier un club
+ */
+export const PutClubsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutClubsIdBody = zod.object({
+  "nom": zod.string(),
+  "description": zod.string().optional(),
+  "categorie": zod.string(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "responsable_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "actif": zod.boolean().optional()
+})
+
+export const PutClubsIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "responsable_id": zod.string().optional(),
+  "responsable_nom": zod.string().optional(),
+  "responsable_prenoms": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "description": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "logo_url": zod.string().optional(),
+  "couleur": zod.string().optional(),
+  "capacite_max": zod.number().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "nb_membres": zod.number().optional(),
+  "est_membre": zod.boolean().optional(),
+  "mon_statut": zod.string().optional(),
+  "mon_role": zod.string().optional(),
+  "membres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "prochaines_activites": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "distinctions_recentes": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Supprimer un club
+ */
+export const DeleteClubsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteClubsIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Membres d'un club
+ */
+export const GetClubsIdMembresParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetClubsIdMembresQueryParams = zod.object({
+  "statut": zod.coerce.string().optional(),
+  "role_membre": zod.coerce.string().optional()
+})
+
+export const GetClubsIdMembresResponse = zod.object({
+  "membres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Demandes d'inscription en attente
+ */
+export const GetClubsIdMembresEnAttenteParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetClubsIdMembresEnAttenteResponse = zod.object({
+  "membres": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Demander l'inscription à un club (élève)
+ */
+export const PostClubsIdInscrireParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+
+/**
+ * @summary Traiter une demande d'inscription (accepter/refuser)
+ */
+export const PutClubsClubIdMembresMembreIdParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "membreId": zod.coerce.string()
+})
+
+export const PutClubsClubIdMembresMembreIdBody = zod.object({
+  "statut": zod.string(),
+  "role_membre": zod.string().optional()
+})
+
+export const PutClubsClubIdMembresMembreIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Retirer un membre du club
+ */
+export const DeleteClubsClubIdMembresMembreIdParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "membreId": zod.coerce.string()
+})
+
+export const DeleteClubsClubIdMembresMembreIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Mettre à jour le rôle d'un membre
+ */
+export const PutClubsClubIdMembresMembreIdRoleParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "membreId": zod.coerce.string()
+})
+
+export const PutClubsClubIdMembresMembreIdRoleBody = zod.object({
+  "role_membre": zod.string(),
+  "distinctions": zod.string().optional()
+})
+
+export const PutClubsClubIdMembresMembreIdRoleResponse = zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "date_inscription": zod.string().optional(),
+  "date_acceptation": zod.string().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.string().optional(),
+  "created_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Activités d'un club
+ */
+export const GetClubsClubIdActivitesParams = zod.object({
+  "clubId": zod.coerce.string()
+})
+
+export const GetClubsClubIdActivitesQueryParams = zod.object({
+  "type": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const GetClubsClubIdActivitesResponse = zod.object({
+  "activites": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Créer une activité
+ */
+export const PostClubsClubIdActivitesParams = zod.object({
+  "clubId": zod.coerce.string()
+})
+
+export const PostClubsClubIdActivitesBody = zod.object({
+  "titre": zod.string(),
+  "description": zod.string().optional(),
+  "type": zod.string(),
+  "date_activite": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier une activité
+ */
+export const PutClubsClubIdActivitesIdParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "id": zod.coerce.string()
+})
+
+export const PutClubsClubIdActivitesIdBody = zod.object({
+  "titre": zod.string(),
+  "description": zod.string().optional(),
+  "type": zod.string(),
+  "date_activite": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional()
+})
+
+export const PutClubsClubIdActivitesIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Annuler une activité
+ */
+export const PutClubsClubIdActivitesIdAnnulerParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "id": zod.coerce.string()
+})
+
+export const PutClubsClubIdActivitesIdAnnulerResponse = zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Présences d'une activité
+ */
+export const GetClubsActivitesIdPresencesParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetClubsActivitesIdPresencesResponse = zod.object({
+  "presences": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "activite_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "present": zod.boolean().optional(),
+  "motif_absence": zod.string().optional()
+})).optional(),
+  "activite": zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}).optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional()
+})
+
+
+/**
+ * @summary Saisir les présences d'une activité
+ */
+export const PostClubsActivitesIdPresencesParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PostClubsActivitesIdPresencesBody = zod.object({
+  "presences": zod.array(zod.object({
+  "eleve_id": zod.string().optional(),
+  "present": zod.boolean().optional(),
+  "motif_absence": zod.string().optional()
+}))
+})
+
+export const PostClubsActivitesIdPresencesResponse = zod.object({
+  "presences": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "activite_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "present": zod.boolean().optional(),
+  "motif_absence": zod.string().optional()
+})).optional(),
+  "activite": zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "club_couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_activite": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "lieu": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "notes_compte_rendu": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}).optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional()
+})
+
+
+/**
+ * @summary Statistiques d'un membre dans un club
+ */
+export const GetClubsClubIdMembresEleveIdStatsParams = zod.object({
+  "clubId": zod.coerce.string(),
+  "eleveId": zod.coerce.string()
+})
+
+export const GetClubsClubIdMembresEleveIdStatsResponse = zod.object({
+  "eleve_id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "nb_activites": zod.number().optional(),
+  "nb_presents": zod.number().optional(),
+  "taux_presence": zod.number().optional(),
+  "role_membre": zod.string().optional(),
+  "distinctions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Distinctions d'un club
+ */
+export const GetClubsClubIdDistinctionsParams = zod.object({
+  "clubId": zod.coerce.string()
+})
+
+export const GetClubsClubIdDistinctionsResponse = zod.object({
+  "distinctions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Attribuer une distinction
+ */
+export const PostClubsClubIdDistinctionsParams = zod.object({
+  "clubId": zod.coerce.string()
+})
+
+export const PostClubsClubIdDistinctionsBody = zod.object({
+  "eleve_id": zod.string(),
+  "titre": zod.string(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string()
+})
+
+
+/**
+ * @summary Toutes distinctions d'un élève (tous clubs)
+ */
+export const GetDistinctionsEleveEleveIdParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetDistinctionsEleveEleveIdResponse = zod.object({
+  "distinctions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "club_id": zod.string().optional(),
+  "club_nom": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "description": zod.string().optional(),
+  "date_obtention": zod.string().optional(),
+  "decerne_par": zod.string().optional(),
+  "decerne_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+

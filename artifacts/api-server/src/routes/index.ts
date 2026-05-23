@@ -28,6 +28,7 @@ import epreuvesBlanChesRouter from "./epreuvesBlanches";
 import planningRevisionsRouter from "./planningRevisions";
 import bibliothequeRouter from "./bibliotheque";
 import infirmerieRouter from "./infirmerie";
+import clubsRouter from "./clubs";
 
 const router: IRouter = Router();
 
@@ -60,5 +61,6 @@ router.use(epreuvesBlanChesRouter);
 router.use(planningRevisionsRouter);
 router.use(bibliothequeRouter);
 router.use(infirmerieRouter);
+router.use(clubsRouter);
 
 export default router;

@@ -4311,6 +4311,365 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MouvementsListeResponse" }
 
+  # ─── Module 17 : Clubs & Activités Parascolaires ─────────────────────────
+
+  /clubs:
+    get:
+      operationId: getClubs
+      summary: Liste des clubs
+      tags: [Clubs]
+      parameters:
+        - { name: categorie, in: query, schema: { type: string } }
+        - { name: actif, in: query, schema: { type: boolean } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubsListeResponse" }
+    post:
+      operationId: postClubs
+      summary: Créer un club
+      tags: [Clubs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ClubInput" }
+      responses:
+        "201":
+          description: Créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubDetail" }
+
+  /clubs/stats:
+    get:
+      operationId: getClubsStats
+      summary: Statistiques globales des clubs
+      tags: [Clubs]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubsStatsResponse" }
+
+  /clubs/mes-clubs:
+    get:
+      operationId: getClubsMesClubs
+      summary: Mes clubs (élève connecté)
+      tags: [Clubs]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MesClubsResponse" }
+
+  /clubs/{id}:
+    get:
+      operationId: getClubsId
+      summary: Détail d'un club
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubDetail" }
+    put:
+      operationId: putClubsId
+      summary: Modifier un club
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ClubInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubDetail" }
+    delete:
+      operationId: deleteClubsId
+      summary: Supprimer un club
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /clubs/{id}/membres:
+    get:
+      operationId: getClubsIdMembres
+      summary: Membres d'un club
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: role_membre, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubMembresResponse" }
+
+  /clubs/{id}/membres/en-attente:
+    get:
+      operationId: getClubsIdMembresEnAttente
+      summary: Demandes d'inscription en attente
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubMembresResponse" }
+
+  /clubs/{id}/inscrire:
+    post:
+      operationId: postClubsIdInscrire
+      summary: Demander l'inscription à un club (élève)
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "201":
+          description: Demande créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubMembreItem" }
+
+  /clubs/{clubId}/membres/{membreId}:
+    put:
+      operationId: putClubsClubIdMembresMembreId
+      summary: Traiter une demande d'inscription (accepter/refuser)
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: membreId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TraiterMembreInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubMembreItem" }
+    delete:
+      operationId: deleteClubsClubIdMembresMembreId
+      summary: Retirer un membre du club
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: membreId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /clubs/{clubId}/membres/{membreId}/role:
+    put:
+      operationId: putClubsClubIdMembresMembreIdRole
+      summary: Mettre à jour le rôle d'un membre
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: membreId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RoleMembreInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClubMembreItem" }
+
+  /clubs/{clubId}/activites:
+    get:
+      operationId: getClubsClubIdActivites
+      summary: Activités d'un club
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: type, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ActivitesListeResponse" }
+    post:
+      operationId: postClubsClubIdActivites
+      summary: Créer une activité
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ActiviteInput" }
+      responses:
+        "201":
+          description: Créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ActiviteItem" }
+
+  /clubs/{clubId}/activites/{id}:
+    put:
+      operationId: putClubsClubIdActivitesId
+      summary: Modifier une activité
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ActiviteInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ActiviteItem" }
+
+  /clubs/{clubId}/activites/{id}/annuler:
+    put:
+      operationId: putClubsClubIdActivitesIdAnnuler
+      summary: Annuler une activité
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ActiviteItem" }
+
+  /clubs/activites/{id}/presences:
+    get:
+      operationId: getClubsActivitesIdPresences
+      summary: Présences d'une activité
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PresencesActiviteResponse" }
+    post:
+      operationId: postClubsActivitesIdPresences
+      summary: Saisir les présences d'une activité
+      tags: [Clubs]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SaisirPresencesInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PresencesActiviteResponse" }
+
+  /clubs/{clubId}/membres/{eleveId}/stats:
+    get:
+      operationId: getClubsClubIdMembresEleveIdStats
+      summary: Statistiques d'un membre dans un club
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatsMembreResponse" }
+
+  /clubs/{clubId}/distinctions:
+    get:
+      operationId: getClubsClubIdDistinctions
+      summary: Distinctions d'un club
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DistinctionsListeResponse" }
+    post:
+      operationId: postClubsClubIdDistinctions
+      summary: Attribuer une distinction
+      tags: [Clubs]
+      parameters:
+        - { name: clubId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DistinctionInput" }
+      responses:
+        "201":
+          description: Créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DistinctionItem" }
+
+  /distinctions/eleve/{eleveId}:
+    get:
+      operationId: getDistinctionsEleveEleveId
+      summary: Toutes distinctions d'un élève (tous clubs)
+      tags: [Clubs]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DistinctionsListeResponse" }
+
+
 components:
   securitySchemes:
     bearerAuth:
@@ -4333,6 +4692,14 @@ components:
         message:
           type: string
         error:
+          type: string
+      required:
+        - message
+
+    SuccessResponse:
+      type: object
+      properties:
+        message:
           type: string
       required:
         - message
@@ -7369,3 +7736,299 @@ components:
           type: array
           items: { $ref: "#/components/schemas/MouvementStockItem" }
         stock: { $ref: "#/components/schemas/StockItem" }
+
+    # ─── Module 17 Schemas ───────────────────────────────────────────────
+
+    ClubItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        responsable_id: { type: string }
+        responsable_nom: { type: string }
+        responsable_prenoms: { type: string }
+        nom: { type: string }
+        description: { type: string }
+        categorie: { type: string }
+        logo_url: { type: string }
+        couleur: { type: string }
+        capacite_max: { type: integer }
+        annee_scolaire_id: { type: string }
+        actif: { type: boolean }
+        nb_membres: { type: integer }
+        est_membre: { type: boolean }
+        mon_statut: { type: string }
+        mon_role: { type: string }
+        prochaine_activite: { type: string }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    ClubDetail:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        responsable_id: { type: string }
+        responsable_nom: { type: string }
+        responsable_prenoms: { type: string }
+        nom: { type: string }
+        description: { type: string }
+        categorie: { type: string }
+        logo_url: { type: string }
+        couleur: { type: string }
+        capacite_max: { type: integer }
+        annee_scolaire_id: { type: string }
+        actif: { type: boolean }
+        nb_membres: { type: integer }
+        est_membre: { type: boolean }
+        mon_statut: { type: string }
+        mon_role: { type: string }
+        membres:
+          type: array
+          items: { $ref: "#/components/schemas/ClubMembreItem" }
+        prochaines_activites:
+          type: array
+          items: { $ref: "#/components/schemas/ActiviteItem" }
+        distinctions_recentes:
+          type: array
+          items: { $ref: "#/components/schemas/DistinctionItem" }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    ClubMembreItem:
+      type: object
+      properties:
+        id: { type: string }
+        club_id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_photo: { type: string }
+        classe_nom: { type: string }
+        statut: { type: string }
+        date_inscription: { type: string }
+        date_acceptation: { type: string }
+        role_membre: { type: string }
+        distinctions: { type: string }
+        created_at: { type: string }
+
+    ActiviteItem:
+      type: object
+      properties:
+        id: { type: string }
+        club_id: { type: string }
+        club_nom: { type: string }
+        club_couleur: { type: string }
+        etablissement_id: { type: string }
+        titre: { type: string }
+        description: { type: string }
+        type: { type: string }
+        date_activite: { type: string }
+        heure_debut: { type: string }
+        heure_fin: { type: string }
+        lieu: { type: string }
+        statut: { type: string }
+        notes_compte_rendu: { type: string }
+        nb_presents: { type: integer }
+        nb_absents: { type: integer }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    PresenceItem:
+      type: object
+      properties:
+        id: { type: string }
+        activite_id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_photo: { type: string }
+        classe_nom: { type: string }
+        present: { type: boolean }
+        motif_absence: { type: string }
+
+    DistinctionItem:
+      type: object
+      properties:
+        id: { type: string }
+        club_id: { type: string }
+        club_nom: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        titre: { type: string }
+        description: { type: string }
+        date_obtention: { type: string }
+        decerne_par: { type: string }
+        decerne_par_nom: { type: string }
+        created_at: { type: string }
+
+    ClubsListeResponse:
+      type: object
+      properties:
+        clubs:
+          type: array
+          items: { $ref: "#/components/schemas/ClubItem" }
+        total: { type: integer }
+
+    ClubsStatsResponse:
+      type: object
+      properties:
+        total_clubs: { type: integer }
+        total_membres: { type: integer }
+        activites_ce_mois: { type: integer }
+        demandes_en_attente: { type: integer }
+        par_categorie:
+          type: array
+          items:
+            type: object
+            properties:
+              categorie: { type: string }
+              nb_clubs: { type: integer }
+              nb_membres: { type: integer }
+        clubs_actifs:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              nom: { type: string }
+              nb_membres: { type: integer }
+              nb_activites: { type: integer }
+
+    MesClubsResponse:
+      type: object
+      properties:
+        clubs_actifs:
+          type: array
+          items: { $ref: "#/components/schemas/MonClubItem" }
+        demandes_en_attente:
+          type: array
+          items: { $ref: "#/components/schemas/ClubItem" }
+        distinctions:
+          type: array
+          items: { $ref: "#/components/schemas/DistinctionItem" }
+
+    MonClubItem:
+      type: object
+      properties:
+        id: { type: string }
+        nom: { type: string }
+        categorie: { type: string }
+        logo_url: { type: string }
+        couleur: { type: string }
+        responsable_nom: { type: string }
+        mon_role: { type: string }
+        taux_presence: { type: number }
+        nb_distinctions: { type: integer }
+        prochaine_activite: { type: string }
+
+    ClubMembresResponse:
+      type: object
+      properties:
+        membres:
+          type: array
+          items: { $ref: "#/components/schemas/ClubMembreItem" }
+        total: { type: integer }
+
+    ActivitesListeResponse:
+      type: object
+      properties:
+        activites:
+          type: array
+          items: { $ref: "#/components/schemas/ActiviteItem" }
+        total: { type: integer }
+
+    PresencesActiviteResponse:
+      type: object
+      properties:
+        presences:
+          type: array
+          items: { $ref: "#/components/schemas/PresenceItem" }
+        activite: { $ref: "#/components/schemas/ActiviteItem" }
+        nb_presents: { type: integer }
+        nb_absents: { type: integer }
+
+    DistinctionsListeResponse:
+      type: object
+      properties:
+        distinctions:
+          type: array
+          items: { $ref: "#/components/schemas/DistinctionItem" }
+        total: { type: integer }
+
+    StatsMembreResponse:
+      type: object
+      properties:
+        eleve_id: { type: string }
+        club_id: { type: string }
+        nb_activites: { type: integer }
+        nb_presents: { type: integer }
+        taux_presence: { type: number }
+        role_membre: { type: string }
+        distinctions:
+          type: array
+          items: { $ref: "#/components/schemas/DistinctionItem" }
+
+    ClubInput:
+      type: object
+      required: [nom, categorie, responsable_id, annee_scolaire_id]
+      properties:
+        nom: { type: string }
+        description: { type: string }
+        categorie: { type: string }
+        logo_url: { type: string }
+        couleur: { type: string }
+        capacite_max: { type: integer }
+        responsable_id: { type: string }
+        annee_scolaire_id: { type: string }
+        actif: { type: boolean }
+
+    ActiviteInput:
+      type: object
+      required: [titre, type, date_activite, heure_debut]
+      properties:
+        titre: { type: string }
+        description: { type: string }
+        type: { type: string }
+        date_activite: { type: string }
+        heure_debut: { type: string }
+        heure_fin: { type: string }
+        lieu: { type: string }
+        notes_compte_rendu: { type: string }
+
+    TraiterMembreInput:
+      type: object
+      required: [statut]
+      properties:
+        statut: { type: string }
+        role_membre: { type: string }
+
+    RoleMembreInput:
+      type: object
+      required: [role_membre]
+      properties:
+        role_membre: { type: string }
+        distinctions: { type: string }
+
+    SaisirPresencesInput:
+      type: object
+      required: [presences]
+      properties:
+        presences:
+          type: array
+          items:
+            type: object
+            properties:
+              eleve_id: { type: string }
+              present: { type: boolean }
+              motif_absence: { type: string }
+
+    DistinctionInput:
+      type: object
+      required: [eleve_id, titre, date_obtention]
+      properties:
+        eleve_id: { type: string }
+        titre: { type: string }
+        description: { type: string }
+        date_obtention: { type: string }

@@ -66,6 +66,13 @@ import DossiersMedicaux from "@/pages/dossiers-medicaux";
 import StocksInfirmerie from "@/pages/stocks-infirmerie";
 import ConsultationParent from "@/pages/consultation-parent";
 import ConsultationsInfirmerie from "@/pages/consultations-infirmerie";
+import CatalogueClubs from "@/pages/catalogue-clubs";
+import DetailClub from "@/pages/detail-club";
+import MesClubs from "@/pages/mes-clubs";
+import GestionActivite from "@/pages/gestion-activite";
+import AdminClubs from "@/pages/admin-clubs";
+import NouveauClub from "@/pages/nouveau-club";
+import NouvelleActivite from "@/pages/nouvelle-activite";
 
 const queryClient = new QueryClient();
 
@@ -525,6 +532,63 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <InfirmerieDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module 17 : Clubs & Activités Parascolaires ── */}
+      <Route path="/clubs/nouveau">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <NouveauClub />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/clubs/:clubId/nouvelle-activite">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <NouvelleActivite />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/clubs/activite/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <GestionActivite />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/admin-clubs">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AdminClubs />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mes-clubs">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MesClubs />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/clubs/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DetailClub />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/clubs">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <CatalogueClubs />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
