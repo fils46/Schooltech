@@ -15,12 +15,6 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 
-const FEATURES = [
-  { icon: "📊", text: "Notes & Bulletins automatisés" },
-  { icon: "👨‍👩‍👧", text: "Portail parents en temps réel" },
-  { icon: "💳", text: "Paiements Mobile Money intégrés" },
-  { icon: "💬", text: "Notifications WhatsApp instantanées" },
-];
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -84,19 +78,37 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Feature cards */}
-          <div className="grid grid-cols-2 gap-3">
-            {FEATURES.map((f) => (
-              <div key={f.text} className="flex items-center gap-3 p-4 rounded-xl transition-all"
-                style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
-                <span className="text-xl">{f.icon}</span>
-                <span className="text-sm font-medium" style={{ color: "var(--m15-white)" }}>{f.text}</span>
+          {/* Photo collage */}
+          <div className="flex flex-col gap-3">
+            {/* Image large — classe entière */}
+            <div className="w-full rounded-2xl overflow-hidden shadow-lg" style={{ height: "190px" }}>
+              <img
+                src="/hero-classe.png"
+                alt="Élèves en classe"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            {/* Deux portraits côte à côte */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-2xl overflow-hidden shadow-md" style={{ height: "150px" }}>
+                <img
+                  src="/hero-eleve-1.png"
+                  alt="Élève au travail"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
-            ))}
+              <div className="rounded-2xl overflow-hidden shadow-md" style={{ height: "150px" }}>
+                <img
+                  src="/hero-eleve-2.png"
+                  alt="Élève concentré"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Footer */}
-          <p className="mt-8 text-xs" style={{ color: "var(--m15-muted)" }}>
+          <p className="mt-6 text-xs" style={{ color: "var(--m15-muted)" }}>
             © {new Date().getFullYear()} M15 Tech. Tous droits réservés.
           </p>
         </div>
