@@ -23,11 +23,11 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
-    <div className="flex min-h-screen" style={{ fontFamily: "Poppins, sans-serif", backgroundColor: "#0A1628" }}>
+    <div className="flex min-h-screen" style={{ fontFamily: "Poppins, sans-serif", backgroundColor: "var(--m15-navy)" }}>
       {/* Sidebar */}
       <aside
         className="w-64 flex-shrink-0 flex flex-col border-r"
-        style={{ backgroundColor: "#0A1628", borderColor: "rgba(0,201,167,0.15)" }}
+        style={{ backgroundColor: "var(--m15-navy)", borderColor: "rgba(0,201,167,0.15)" }}
       >
         {/* Logo */}
         <div className="px-6 py-5 flex items-center gap-3 border-b" style={{ borderColor: "rgba(0,201,167,0.15)" }}>
@@ -38,7 +38,7 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
             <Shield className="w-5 h-5" style={{ color: "#00C9A7" }} />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm leading-tight">M15-SchoolTech</p>
+            <p className="text-[var(--m15-white)] font-semibold text-sm leading-tight">M15-SchoolTech</p>
             <p className="text-xs font-medium" style={{ color: "#00C9A7" }}>Admin SaaS</p>
           </div>
         </div>
@@ -53,8 +53,8 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
                     active
-                      ? "text-white"
-                      : "text-[#8B9DC3] hover:text-white",
+                      ? "text-[var(--m15-white)]"
+                      : "text-[var(--m15-muted)] hover:text-[var(--m15-white)]",
                   )}
                   style={active ? { backgroundColor: "rgba(0,201,167,0.15)", color: "#00C9A7" } : {}}
                 >
@@ -80,14 +80,14 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
               {user?.nom?.[0]?.toUpperCase() ?? "D"}
             </div>
             <div className="min-w-0">
-              <p className="text-white text-sm font-medium truncate">{user?.nom ?? "Dev"}</p>
-              <p className="text-xs truncate" style={{ color: "#8B9DC3" }}>{user?.email}</p>
+              <p className="text-[var(--m15-white)] text-sm font-medium truncate">{user?.nom ?? "Dev"}</p>
+              <p className="text-xs truncate" style={{ color: "var(--m15-muted)" }}>{user?.email}</p>
             </div>
           </div>
           <button
             onClick={logout}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all"
-            style={{ color: "#8B9DC3" }}
+            style={{ color: "var(--m15-muted)" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#FF4D6D"; (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,77,109,0.1)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#8B9DC3"; (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent"; }}
           >

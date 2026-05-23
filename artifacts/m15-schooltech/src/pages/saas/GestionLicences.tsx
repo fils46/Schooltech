@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { CreditCard, AlertTriangle, TrendingUp, RefreshCw, ChevronRight } from "lucide-react";
 
 const C = {
-  navy: "#0A1628", card: "#111E35", cyan: "#00C9A7", gold: "#F5C842",
+  navy: "var(--m15-navy)", card: "var(--m15-card)", cyan: "#00C9A7", gold: "#F5C842",
   blue: "#0080FF", red: "#FF4D6D", muted: "#8B9DC3", border: "rgba(0,201,167,0.15)",
 };
 
@@ -89,7 +89,7 @@ export default function GestionLicences() {
     <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Licences & Paiements</h1>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Licences & Paiements</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>Gestion des licences et suivi des paiements</p>
         </div>
         <button onClick={load} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm" style={{ backgroundColor: "rgba(0,201,167,.12)", color: C.cyan, border: `1px solid ${C.border}` }}>
@@ -118,7 +118,7 @@ export default function GestionLicences() {
             <div className="mb-8 rounded-xl border overflow-hidden" style={{ backgroundColor: C.card, borderColor: C.border }}>
               <div className="flex items-center gap-2 px-5 py-4 border-b" style={{ borderColor: C.border }}>
                 <AlertTriangle className="w-4 h-4" style={{ color: C.gold }} />
-                <h3 className="text-sm font-semibold text-white">Licences expirant dans 30 jours</h3>
+                <h3 className="text-sm font-semibold text-[var(--m15-white)]">Licences expirant dans 30 jours</h3>
               </div>
               <table className="w-full">
                 <thead>
@@ -145,7 +145,7 @@ export default function GestionLicences() {
                             {daysLeft}j
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-white">{Number(l.licence.montant).toLocaleString("fr-FR")} FCFA</td>
+                        <td className="px-4 py-3 text-sm text-[var(--m15-white)]">{Number(l.licence.montant).toLocaleString("fr-FR")} FCFA</td>
                         <td className="px-4 py-3">
                           <button onClick={() => renouveler(l.etablissement.id)} className="text-xs px-3 py-1.5 rounded-lg font-medium" style={{ backgroundColor: "rgba(0,201,167,.1)", color: C.cyan }}>
                             Renouveler
@@ -162,14 +162,14 @@ export default function GestionLicences() {
           {/* Charts */}
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div className="rounded-xl p-5 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white mb-4">Revenus par mois (FCFA)</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-4">Revenus par mois (FCFA)</h3>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,.1)" />
                     <XAxis dataKey="mois" tick={{ fill: C.muted, fontSize: 10 }} />
                     <YAxis tick={{ fill: C.muted, fontSize: 10 }} />
-                    <Tooltip contentStyle={{ backgroundColor: C.card, border: `1px solid ${C.border}`, color: "white" }} formatter={(v: number) => [`${v.toLocaleString("fr-FR")} FCFA`, "Revenus"]} />
+                    <Tooltip contentStyle={{ backgroundColor: C.card, border: `1px solid ${C.border}`, color: "var(--m15-white)" }} formatter={(v: number) => [`${v.toLocaleString("fr-FR")} FCFA`, "Revenus"]} />
                     <Bar dataKey="total" fill={C.cyan} radius={[3, 3, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -180,13 +180,13 @@ export default function GestionLicences() {
               )}
             </div>
             <div className="rounded-xl p-5 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white mb-4">Répartition par type</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-4">Répartition par type</h3>
               <div className="space-y-3 mt-2">
                 {(stats?.par_type ?? []).map((t: any) => (
                   <div key={t.type} className="flex items-center gap-3">
                     <div className="flex-1 flex items-center justify-between">
                       <span className="text-sm capitalize" style={{ color: C.muted }}>{t.type}</span>
-                      <span className="text-sm font-semibold text-white">{t.nb}</span>
+                      <span className="text-sm font-semibold text-[var(--m15-white)]">{t.nb}</span>
                     </div>
                     <div className="w-24 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(139,157,195,.2)" }}>
                       <div className="h-full rounded-full" style={{ width: `${(t.nb / (stats?.etablissements?.total || 1)) * 100}%`, backgroundColor: C.cyan }} />
@@ -200,7 +200,7 @@ export default function GestionLicences() {
           {/* Tous les paiements */}
           <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: C.card, borderColor: C.border }}>
             <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white">Tous les paiements</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)]">Tous les paiements</h3>
               <p className="text-xs" style={{ color: C.cyan }}>Total filtré : {totalConfirme.toLocaleString("fr-FR")} FCFA</p>
             </div>
 
@@ -241,7 +241,7 @@ export default function GestionLicences() {
                         </Link>
                       </td>
                       <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{new Date(p.paiement.date_paiement).toLocaleDateString("fr-FR")}</td>
-                      <td className="px-4 py-3 text-sm font-medium text-white">{Number(p.paiement.montant).toLocaleString("fr-FR")} FCFA</td>
+                      <td className="px-4 py-3 text-sm font-medium text-[var(--m15-white)]">{Number(p.paiement.montant).toLocaleString("fr-FR")} FCFA</td>
                       <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{MODES[p.paiement.mode_paiement]}</td>
                       <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{p.paiement.reference ?? "—"}</td>
                       <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${s.color}20`, color: s.color }}>{s.label}</span></td>

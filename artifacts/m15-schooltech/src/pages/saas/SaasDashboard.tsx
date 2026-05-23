@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 const C = {
-  navy: "#0A1628", card: "#111E35", cyan: "#00C9A7", gold: "#F5C842",
+  navy: "var(--m15-navy)", card: "var(--m15-card)", cyan: "#00C9A7", gold: "#F5C842",
   blue: "#0080FF", red: "#FF4D6D", muted: "#8B9DC3",
   border: "rgba(0,201,167,0.15)",
 };
@@ -96,7 +96,7 @@ export default function SaasDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard SaaS</h1>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Dashboard SaaS</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>Vue d'ensemble de la plateforme M15-SchoolTech</p>
         </div>
         <div className="flex gap-3">
@@ -110,7 +110,7 @@ export default function SaasDashboard() {
           </button>
           <Link href="/saas/etablissements">
             <a
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[var(--m15-white)]"
               style={{ backgroundColor: C.cyan }}
             >
               <Plus className="w-4 h-4" />
@@ -144,7 +144,7 @@ export default function SaasDashboard() {
           {/* Alertes */}
           {(alertesExpirees.length > 0 || alertes7j.length > 0 || alertes30j.length > 0) && (
             <div className="mb-8 space-y-3">
-              <h2 className="text-sm font-semibold text-white mb-3">Alertes</h2>
+              <h2 className="text-sm font-semibold text-[var(--m15-white)] mb-3">Alertes</h2>
               {alertesExpirees.length > 0 && (
                 <div className="rounded-xl p-4 border" style={{ backgroundColor: "rgba(255,77,109,.06)", borderColor: "rgba(255,77,109,.25)" }}>
                   <div className="flex items-center justify-between">
@@ -192,14 +192,14 @@ export default function SaasDashboard() {
           <div className="grid grid-cols-2 gap-6 mb-8">
             {/* Courbe croissance */}
             <div className="rounded-xl p-5 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white mb-4">Croissance plateforme</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-4">Croissance plateforme</h3>
               {(stats?.evolution?.length ?? 0) > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={stats!.evolution}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,.1)" />
                     <XAxis dataKey="mois" tick={{ fill: C.muted, fontSize: 11 }} />
                     <YAxis tick={{ fill: C.muted, fontSize: 11 }} />
-                    <Tooltip contentStyle={{ backgroundColor: C.card, border: `1px solid ${C.border}`, color: "white" }} />
+                    <Tooltip contentStyle={{ backgroundColor: C.card, border: `1px solid ${C.border}`, color: "var(--m15-white)" }} />
                     <Line type="monotone" dataKey="nb" stroke={C.cyan} strokeWidth={2} dot={{ fill: C.cyan, r: 3 }} />
                   </LineChart>
                 </ResponsiveContainer>
@@ -212,7 +212,7 @@ export default function SaasDashboard() {
 
             {/* Répartition par type */}
             <div className="rounded-xl p-5 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white mb-4">Revenus annuels : {fmt(stats?.revenus.cette_annee ?? 0)} FCFA</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-4">Revenus annuels : {fmt(stats?.revenus.cette_annee ?? 0)} FCFA</h3>
               <div className="space-y-3 mt-4">
                 <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: C.border }}>
                   <span className="text-sm" style={{ color: C.muted }}>Ce mois</span>
@@ -224,7 +224,7 @@ export default function SaasDashboard() {
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-sm" style={{ color: C.muted }}>Cette année</span>
-                  <span className="text-sm font-semibold text-white">{fmt(stats?.revenus.cette_annee ?? 0)} FCFA</span>
+                  <span className="text-sm font-semibold text-[var(--m15-white)]">{fmt(stats?.revenus.cette_annee ?? 0)} FCFA</span>
                 </div>
                 <div className="mt-4">
                   <p className="text-xs mb-2" style={{ color: C.muted }}>Répartition par type</p>
@@ -242,7 +242,7 @@ export default function SaasDashboard() {
           {/* Derniers établissements */}
           <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: C.card, borderColor: C.border }}>
             <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white">Derniers établissements ajoutés</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)]">Derniers établissements ajoutés</h3>
               <Link href="/saas/etablissements">
                 <a className="text-xs" style={{ color: C.cyan }}>Voir tous <ChevronRight className="inline w-3 h-3" /></a>
               </Link>

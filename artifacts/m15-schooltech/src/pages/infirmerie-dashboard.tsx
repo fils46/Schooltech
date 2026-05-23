@@ -76,7 +76,7 @@ export default function InfirmerieDashboard() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
             <Heart className="h-7 w-7 text-rose-400" />
             Infirmerie
           </h1>
@@ -85,7 +85,7 @@ export default function InfirmerieDashboard() {
         {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
           <Button
             onClick={() => navigate("/infirmerie/nouvelle-consultation")}
-            className="bg-rose-600 hover:bg-rose-700 text-white gap-2"
+            className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2"
           >
             <Plus className="h-4 w-4" />
             Nouvelle consultation
@@ -100,7 +100,7 @@ export default function InfirmerieDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-xs">Aujourd'hui</p>
-                <p className="text-2xl font-bold text-white">{stats?.consultations_aujourd_hui ?? 0}</p>
+                <p className="text-2xl font-bold text-[var(--m15-white)]">{stats?.consultations_aujourd_hui ?? 0}</p>
                 <p className="text-slate-500 text-xs">consultations</p>
               </div>
               <Stethoscope className="h-8 w-8 text-rose-400 opacity-70" />
@@ -153,7 +153,7 @@ export default function InfirmerieDashboard() {
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <Clock className="h-4 w-4 text-yellow-400" />
                   Consultations en cours
                 </CardTitle>
@@ -186,7 +186,7 @@ export default function InfirmerieDashboard() {
                         </div>
                       )}
                       <div>
-                        <p className="text-white text-sm font-medium">
+                        <p className="text-[var(--m15-white)] text-sm font-medium">
                           {c.eleve_nom} {c.eleve_prenoms}
                         </p>
                         <p className="text-slate-400 text-xs">{c.classe_nom ?? "—"} · {c.motif}</p>
@@ -210,7 +210,7 @@ export default function InfirmerieDashboard() {
           {chartData.length > 0 && (
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader className="pb-2">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-cyan-400" />
                   Activité des 14 derniers jours
                 </CardTitle>
@@ -239,7 +239,7 @@ export default function InfirmerieDashboard() {
           {/* Motifs fréquents */}
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-base flex items-center gap-2">
+              <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <Activity className="h-4 w-4 text-cyan-400" />
                 Motifs fréquents
               </CardTitle>
@@ -264,7 +264,7 @@ export default function InfirmerieDashboard() {
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <AlertTriangle className="h-4 w-4 text-orange-400" />
                   Alertes stock
                 </CardTitle>
@@ -305,12 +305,12 @@ export default function InfirmerieDashboard() {
           {/* Actions rapides */}
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-base">Actions rapides</CardTitle>
+              <CardTitle className="text-[var(--m15-white)] text-base">Actions rapides</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-white gap-2"
+                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/consultations")}
               >
                 <Stethoscope className="h-4 w-4 text-rose-400" />
@@ -318,7 +318,7 @@ export default function InfirmerieDashboard() {
               </Button>
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-white gap-2"
+                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/dossiers")}
               >
                 <Heart className="h-4 w-4 text-pink-400" />
@@ -326,7 +326,7 @@ export default function InfirmerieDashboard() {
               </Button>
               <Button
                 variant="outline"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:text-white gap-2"
+                className="w-full justify-start border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
                 onClick={() => navigate("/infirmerie/stocks")}
               >
                 <Package className="h-4 w-4 text-orange-400" />

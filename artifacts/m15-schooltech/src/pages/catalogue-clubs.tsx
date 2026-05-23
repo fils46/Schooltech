@@ -56,14 +56,14 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
             <img src={club.logo_url} alt={club.nom} className="h-14 w-14 rounded-xl object-cover shrink-0" />
           ) : (
             <div
-              className="h-14 w-14 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0"
+              className="h-14 w-14 rounded-xl flex items-center justify-center text-[var(--m15-white)] font-bold text-lg shrink-0"
               style={{ backgroundColor: couleur + "33", border: `2px solid ${couleur}55` }}
             >
               <span style={{ color: couleur }}>{getInitiales(club.nom)}</span>
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h3 className="text-white font-semibold text-base truncate group-hover:text-cyan-300 transition-colors">{club.nom}</h3>
+            <h3 className="text-[var(--m15-white)] font-semibold text-base truncate group-hover:text-cyan-300 transition-colors">{club.nom}</h3>
             <p className="text-slate-400 text-sm truncate">{club.responsable_nom} {club.responsable_prenoms}</p>
             <Badge variant="outline" className="mt-1 text-xs" style={{ borderColor: couleur + "66", color: couleur }}>
               {CATEGORIES.find(c => c.value === club.categorie)?.emoji} {CATEGORIES.find(c => c.value === club.categorie)?.label}
@@ -101,7 +101,7 @@ function ClubCard({ club, onView, onJoin }: { club: ClubItem; onView: () => void
         ) : (
           <Button
             size="sm"
-            className="w-full bg-slate-700 hover:bg-slate-600 text-white text-xs"
+            className="w-full bg-slate-700 hover:bg-slate-600 text-[var(--m15-white)] text-xs"
             onClick={e => { e.stopPropagation(); onJoin(); }}
           >
             <Plus className="h-3 w-3 mr-1" />
@@ -127,7 +127,7 @@ export default function CatalogueClubs() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
             <Trophy className="h-7 w-7 text-yellow-400" />
             Clubs & Activités
           </h1>

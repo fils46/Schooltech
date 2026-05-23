@@ -69,7 +69,7 @@ export default function ConsultationsInfirmerie() {
     <div className="space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
             <Stethoscope className="h-7 w-7 text-rose-400" />
             Consultations
           </h1>
@@ -78,7 +78,7 @@ export default function ConsultationsInfirmerie() {
         {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
           <Button
             onClick={() => navigate("/infirmerie/nouvelle-consultation")}
-            className="bg-rose-600 hover:bg-rose-700 text-white gap-2"
+            className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2"
           >
             <Plus className="h-4 w-4" />
             Nouvelle consultation
@@ -94,19 +94,19 @@ export default function ConsultationsInfirmerie() {
             placeholder="Rechercher par élève ou motif…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
+            className="pl-9 bg-slate-800 border-slate-700 text-[var(--m15-white)] placeholder:text-slate-400"
           />
         </div>
         <Select value={statutFilter} onValueChange={v => { setStatutFilter(v); setPage(1); }}>
-          <SelectTrigger className="bg-slate-800 border-slate-700 text-white w-[180px]">
+          <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)] w-[180px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-slate-800 border-slate-700">
-            <SelectItem value="tous" className="text-white focus:bg-slate-700">Tous les statuts</SelectItem>
-            <SelectItem value="en_cours" className="text-white focus:bg-slate-700">En cours</SelectItem>
-            <SelectItem value="termine" className="text-white focus:bg-slate-700">Terminé</SelectItem>
-            <SelectItem value="renvoye_domicile" className="text-white focus:bg-slate-700">Renvoyé à domicile</SelectItem>
-            <SelectItem value="hospitalise" className="text-white focus:bg-slate-700">Hospitalisé</SelectItem>
+            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-slate-700">Tous les statuts</SelectItem>
+            <SelectItem value="en_cours" className="text-[var(--m15-white)] focus:bg-slate-700">En cours</SelectItem>
+            <SelectItem value="termine" className="text-[var(--m15-white)] focus:bg-slate-700">Terminé</SelectItem>
+            <SelectItem value="renvoye_domicile" className="text-[var(--m15-white)] focus:bg-slate-700">Renvoyé à domicile</SelectItem>
+            <SelectItem value="hospitalise" className="text-[var(--m15-white)] focus:bg-slate-700">Hospitalisé</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -137,7 +137,7 @@ export default function ConsultationsInfirmerie() {
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-white font-medium truncate">
+                      <p className="text-[var(--m15-white)] font-medium truncate">
                         {c.eleve_nom} {c.eleve_prenoms}
                       </p>
                       {c.classe_nom && (
@@ -177,7 +177,7 @@ export default function ConsultationsInfirmerie() {
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage(p => p - 1)}
-              className="border-slate-600 text-slate-300 hover:text-white"
+              className="border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -186,7 +186,7 @@ export default function ConsultationsInfirmerie() {
               size="sm"
               disabled={page >= totalPages}
               onClick={() => setPage(p => p + 1)}
-              className="border-slate-600 text-slate-300 hover:text-white"
+              className="border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>

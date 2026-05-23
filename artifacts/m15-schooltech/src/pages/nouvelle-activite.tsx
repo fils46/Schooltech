@@ -66,7 +66,7 @@ export default function NouvelleActivite() {
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-white gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
@@ -74,7 +74,7 @@ export default function NouvelleActivite() {
       <Card className="bg-slate-800 border-slate-700 overflow-hidden">
         <div className="h-1 w-full" style={{ backgroundColor: couleur }} />
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-[var(--m15-white)] flex items-center gap-2">
             <Calendar className="h-5 w-5 text-cyan-400" />
             Nouvelle activité — {club?.nom ?? "Club"}
           </CardTitle>
@@ -86,19 +86,19 @@ export default function NouvelleActivite() {
               <Label className="text-slate-300">Titre de l'activité *</Label>
               <Input value={form.titre} onChange={e => setForm(f => ({ ...f, titre: e.target.value }))}
                 placeholder="Ex : Entraînement hebdomadaire, Match contre Lycée Sud…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" required />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" required />
             </div>
 
             {/* Type */}
             <div className="space-y-2">
               <Label className="text-slate-300">Type d'activité *</Label>
               <Select value={form.type} onValueChange={v => setForm(f => ({ ...f, type: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {TYPES.map(t => (
-                    <SelectItem key={t.value} value={t.value} className="text-white focus:bg-slate-700">{t.label}</SelectItem>
+                    <SelectItem key={t.value} value={t.value} className="text-[var(--m15-white)] focus:bg-slate-700">{t.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -109,7 +109,7 @@ export default function NouvelleActivite() {
               <Label className="text-slate-300">Date *</Label>
               <Input type="date" value={form.date_activite}
                 onChange={e => setForm(f => ({ ...f, date_activite: e.target.value }))}
-                className="bg-slate-700 border-slate-600 text-white" required />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" required />
             </div>
 
             {/* Horaires */}
@@ -118,13 +118,13 @@ export default function NouvelleActivite() {
                 <Label className="text-slate-300">Heure de début *</Label>
                 <Input type="time" value={form.heure_debut}
                   onChange={e => setForm(f => ({ ...f, heure_debut: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-white" required />
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" required />
               </div>
               <div className="space-y-2">
                 <Label className="text-slate-300">Heure de fin</Label>
                 <Input type="time" value={form.heure_fin}
                   onChange={e => setForm(f => ({ ...f, heure_fin: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-white" />
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" />
               </div>
             </div>
 
@@ -133,7 +133,7 @@ export default function NouvelleActivite() {
               <Label className="text-slate-300">Lieu</Label>
               <Input value={form.lieu} onChange={e => setForm(f => ({ ...f, lieu: e.target.value }))}
                 placeholder="Ex : Terrain de sport, Salle polyvalente…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
 
             {/* Description */}
@@ -141,7 +141,7 @@ export default function NouvelleActivite() {
               <Label className="text-slate-300">Description (optionnel)</Label>
               <Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Informations complémentaires…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
 
             <div className="flex gap-3 pt-2">

@@ -163,7 +163,7 @@ export default function StocksInfirmerie() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
             <Package className="h-7 w-7 text-orange-400" />
             Stocks Infirmerie
           </h1>
@@ -171,7 +171,7 @@ export default function StocksInfirmerie() {
         </div>
         <Button
           onClick={() => { setEditingStock(null); setForm({ nom: "", categorie: "medicament", quantite: 0, unite: "", seuil_alerte: 5, date_expiration: "" }); setShowAddDialog(true); }}
-          className="bg-orange-600 hover:bg-orange-700 text-white gap-2"
+          className="bg-orange-600 hover:bg-orange-700 text-[var(--m15-white)] gap-2"
         >
           <Plus className="h-4 w-4" />
           Ajouter un article
@@ -183,7 +183,7 @@ export default function StocksInfirmerie() {
         <Card className="bg-slate-800 border-slate-700">
           <CardContent className="p-4 text-center">
             <p className="text-slate-400 text-xs">Total articles</p>
-            <p className="text-2xl font-bold text-white">{stocks.length}</p>
+            <p className="text-2xl font-bold text-[var(--m15-white)]">{stocks.length}</p>
           </CardContent>
         </Card>
         <Card className="bg-slate-800 border-slate-700">
@@ -208,18 +208,18 @@ export default function StocksInfirmerie() {
             placeholder="Rechercher un article…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
+            className="pl-9 bg-slate-800 border-slate-700 text-[var(--m15-white)] placeholder:text-slate-400"
           />
         </div>
         <Select value={categorieFilter} onValueChange={setCategorieFilter}>
-          <SelectTrigger className="bg-slate-800 border-slate-700 text-white w-[160px]">
+          <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)] w-[160px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-slate-800 border-slate-700">
-            <SelectItem value="tous" className="text-white focus:bg-slate-700">Toutes catégories</SelectItem>
-            <SelectItem value="medicament" className="text-white focus:bg-slate-700">Médicaments</SelectItem>
-            <SelectItem value="materiel" className="text-white focus:bg-slate-700">Matériel</SelectItem>
-            <SelectItem value="consommable" className="text-white focus:bg-slate-700">Consommables</SelectItem>
+            <SelectItem value="tous" className="text-[var(--m15-white)] focus:bg-slate-700">Toutes catégories</SelectItem>
+            <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-slate-700">Médicaments</SelectItem>
+            <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-slate-700">Matériel</SelectItem>
+            <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-slate-700">Consommables</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -248,7 +248,7 @@ export default function StocksInfirmerie() {
                   filtered.map(s => (
                     <tr key={s.id} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition-colors">
                       <td className="px-4 py-3">
-                        <p className="text-white font-medium">{s.nom}</p>
+                        <p className="text-[var(--m15-white)] font-medium">{s.nom}</p>
                         <p className="text-slate-500 text-xs">Seuil : {s.seuil_alerte} {s.unite}</p>
                       </td>
                       <td className="px-4 py-3">
@@ -257,7 +257,7 @@ export default function StocksInfirmerie() {
                         </Badge>
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <span className={`font-semibold ${s.quantite === 0 ? "text-red-400" : s.quantite <= s.seuil_alerte ? "text-orange-400" : "text-white"}`}>
+                        <span className={`font-semibold ${s.quantite === 0 ? "text-red-400" : s.quantite <= s.seuil_alerte ? "text-orange-400" : "text-[var(--m15-white)]"}`}>
                           {s.quantite}
                         </span>
                         <span className="text-slate-400 text-xs ml-1">{s.unite}</span>
@@ -283,7 +283,7 @@ export default function StocksInfirmerie() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openMouvement(s)}
-                            className="text-slate-400 hover:text-white h-7 px-2 gap-1"
+                            className="text-slate-400 hover:text-[var(--m15-white)] h-7 px-2 gap-1"
                             title="Mouvement stock"
                           >
                             <ArrowUpDown className="h-3 w-3" />
@@ -292,7 +292,7 @@ export default function StocksInfirmerie() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openEdit(s)}
-                            className="text-slate-400 hover:text-white h-7 px-2"
+                            className="text-slate-400 hover:text-[var(--m15-white)] h-7 px-2"
                             title="Modifier"
                           >
                             <Edit2 className="h-3 w-3" />
@@ -310,9 +310,9 @@ export default function StocksInfirmerie() {
 
       {/* Dialog Ajouter/Modifier */}
       <Dialog open={showAddDialog} onOpenChange={open => { setShowAddDialog(open); if (!open) setEditingStock(null); }}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
+        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)] max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-white">{editingStock ? "Modifier l'article" : "Ajouter un article"}</DialogTitle>
+            <DialogTitle className="text-[var(--m15-white)]">{editingStock ? "Modifier l'article" : "Ajouter un article"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
@@ -321,19 +321,19 @@ export default function StocksInfirmerie() {
                 value={form.nom}
                 onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
                 placeholder="Paracétamol 500mg…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
               />
             </div>
             <div className="space-y-2">
               <Label className="text-slate-300">Catégorie *</Label>
               <Select value={form.categorie} onValueChange={v => setForm(f => ({ ...f, categorie: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
-                  <SelectItem value="medicament" className="text-white focus:bg-slate-700">Médicament</SelectItem>
-                  <SelectItem value="materiel" className="text-white focus:bg-slate-700">Matériel</SelectItem>
-                  <SelectItem value="consommable" className="text-white focus:bg-slate-700">Consommable</SelectItem>
+                  <SelectItem value="medicament" className="text-[var(--m15-white)] focus:bg-slate-700">Médicament</SelectItem>
+                  <SelectItem value="materiel" className="text-[var(--m15-white)] focus:bg-slate-700">Matériel</SelectItem>
+                  <SelectItem value="consommable" className="text-[var(--m15-white)] focus:bg-slate-700">Consommable</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -345,7 +345,7 @@ export default function StocksInfirmerie() {
                   min={0}
                   value={form.quantite}
                   onChange={e => setForm(f => ({ ...f, quantite: parseInt(e.target.value) || 0 }))}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
@@ -354,7 +354,7 @@ export default function StocksInfirmerie() {
                   value={form.unite}
                   onChange={e => setForm(f => ({ ...f, unite: e.target.value }))}
                   placeholder="comprimés, ml…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function StocksInfirmerie() {
                   min={0}
                   value={form.seuil_alerte}
                   onChange={e => setForm(f => ({ ...f, seuil_alerte: parseInt(e.target.value) || 0 }))}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
@@ -375,7 +375,7 @@ export default function StocksInfirmerie() {
                   type="date"
                   value={form.date_expiration}
                   onChange={e => setForm(f => ({ ...f, date_expiration: e.target.value }))}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
                 />
               </div>
             </div>
@@ -387,7 +387,7 @@ export default function StocksInfirmerie() {
             <Button
               onClick={handleAddOrEdit}
               disabled={isAdding || isUpdating || !form.nom || !form.unite}
-              className="bg-orange-600 hover:bg-orange-700 text-white"
+              className="bg-orange-600 hover:bg-orange-700 text-[var(--m15-white)]"
             >
               {isAdding || isUpdating ? "Sauvegarde…" : editingStock ? "Modifier" : "Ajouter"}
             </Button>
@@ -397,27 +397,27 @@ export default function StocksInfirmerie() {
 
       {/* Dialog Mouvement */}
       <Dialog open={showMouvementDialog} onOpenChange={setShowMouvementDialog}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-sm">
+        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)] max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-white">Mouvement de stock</DialogTitle>
+            <DialogTitle className="text-[var(--m15-white)]">Mouvement de stock</DialogTitle>
           </DialogHeader>
           {selectedStock && (
             <div className="space-y-4 py-2">
               <div className="p-3 bg-slate-700/50 rounded-lg">
-                <p className="text-white font-medium">{selectedStock.nom}</p>
+                <p className="text-[var(--m15-white)] font-medium">{selectedStock.nom}</p>
                 <p className="text-slate-400 text-sm">Stock actuel : {selectedStock.quantite} {selectedStock.unite}</p>
               </div>
               <div className="space-y-2">
                 <Label className="text-slate-300">Type de mouvement</Label>
                 <Select value={mouvementForm.type} onValueChange={v => setMouvementForm(m => ({ ...m, type: v }))}>
-                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-800 border-slate-700">
-                    <SelectItem value="entree" className="text-white focus:bg-slate-700">
+                    <SelectItem value="entree" className="text-[var(--m15-white)] focus:bg-slate-700">
                       <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-emerald-400" /> Entrée</div>
                     </SelectItem>
-                    <SelectItem value="sortie" className="text-white focus:bg-slate-700">
+                    <SelectItem value="sortie" className="text-[var(--m15-white)] focus:bg-slate-700">
                       <div className="flex items-center gap-2"><TrendingDown className="h-4 w-4 text-red-400" /> Sortie</div>
                     </SelectItem>
                   </SelectContent>
@@ -430,7 +430,7 @@ export default function StocksInfirmerie() {
                   min={1}
                   value={mouvementForm.quantite}
                   onChange={e => setMouvementForm(m => ({ ...m, quantite: parseInt(e.target.value) || 1 }))}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
                 />
               </div>
               <div className="space-y-2">
@@ -439,7 +439,7 @@ export default function StocksInfirmerie() {
                   value={mouvementForm.motif}
                   onChange={e => setMouvementForm(m => ({ ...m, motif: e.target.value }))}
                   placeholder="Raison du mouvement…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -451,7 +451,7 @@ export default function StocksInfirmerie() {
             <Button
               onClick={handleMouvement}
               disabled={isMouvPending}
-              className={mouvementForm.type === "sortie" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-emerald-600 hover:bg-emerald-700 text-white"}
+              className={mouvementForm.type === "sortie" ? "bg-red-600 hover:bg-red-700 text-[var(--m15-white)]" : "bg-emerald-600 hover:bg-emerald-700 text-[var(--m15-white)]"}
             >
               {isMouvPending ? "En cours…" : mouvementForm.type === "sortie" ? "Enregistrer la sortie" : "Enregistrer l'entrée"}
             </Button>

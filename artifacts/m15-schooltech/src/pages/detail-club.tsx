@@ -109,7 +109,7 @@ export default function DetailClub() {
     <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/clubs")} className="text-slate-400 hover:text-white gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/clubs")} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
@@ -133,7 +133,7 @@ export default function DetailClub() {
             <div className="flex-1">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h1 className="text-2xl font-bold text-white">{club.nom}</h1>
+                  <h1 className="text-2xl font-bold text-[var(--m15-white)]">{club.nom}</h1>
                   <p className="text-slate-400">{club.responsable_nom} {club.responsable_prenoms}</p>
                   <Badge variant="outline" className="mt-2" style={{ borderColor: couleur + "66", color: couleur }}>
                     {CATEGORIES_LABELS[club.categorie] ?? club.categorie}
@@ -179,7 +179,7 @@ export default function DetailClub() {
           ] : []),
         ].map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key as any)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all flex-1 justify-center ${activeTab === tab.key ? "bg-slate-600 text-white" : "text-slate-400 hover:text-white"}`}>
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all flex-1 justify-center ${activeTab === tab.key ? "bg-slate-600 text-[var(--m15-white)]" : "text-slate-400 hover:text-[var(--m15-white)]"}`}>
             <tab.icon className="h-4 w-4" /> {tab.label}
           </button>
         ))}
@@ -200,7 +200,7 @@ export default function DetailClub() {
           {membres.length > 0 && (
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <Users className="h-4 w-4 text-cyan-400" /> Membres
                 </CardTitle>
               </CardHeader>
@@ -210,12 +210,12 @@ export default function DetailClub() {
                     {m.eleve_photo ? (
                       <img src={m.eleve_photo} alt="" className="h-8 w-8 rounded-full object-cover" />
                     ) : (
-                      <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center text-xs text-white">
+                      <div className="h-8 w-8 rounded-full bg-slate-600 flex items-center justify-center text-xs text-[var(--m15-white)]">
                         {(m.eleve_nom ?? "?")[0]}
                       </div>
                     )}
                     <div className="flex-1">
-                      <p className="text-white text-sm">{m.eleve_nom} {m.eleve_prenoms}</p>
+                      <p className="text-[var(--m15-white)] text-sm">{m.eleve_nom} {m.eleve_prenoms}</p>
                       {m.classe_nom && <p className="text-slate-500 text-xs">{m.classe_nom}</p>}
                     </div>
                     <Badge variant="outline" className={ROLE_COLORS[m.role_membre] ?? ""}>{m.role_membre}</Badge>
@@ -230,7 +230,7 @@ export default function DetailClub() {
           {((club.distinctions_recentes as any[]) ?? []).length > 0 && (
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <Star className="h-4 w-4 text-yellow-400" /> Distinctions récentes
                 </CardTitle>
               </CardHeader>
@@ -269,12 +269,12 @@ export default function DetailClub() {
               <Card key={a.id} className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-colors cursor-pointer"
                 onClick={() => navigate(`/clubs/activite/${a.id}`)}>
                 <CardContent className="p-4 flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
+                  <div className="h-12 w-12 rounded-xl flex items-center justify-center text-[var(--m15-white)] text-xs font-bold shrink-0"
                     style={{ backgroundColor: couleur + "22" }}>
                     <Activity className="h-5 w-5" style={{ color: couleur }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-medium truncate">{a.titre}</p>
+                    <p className="text-[var(--m15-white)] font-medium truncate">{a.titre}</p>
                     <p className="text-slate-400 text-sm">
                       {new Date(a.date_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })} · {a.heure_debut}
                     </p>
@@ -297,7 +297,7 @@ export default function DetailClub() {
           {enAttente.length > 0 && (
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-white text-base flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                   <UserCheck className="h-4 w-4 text-yellow-400" />
                   Demandes en attente ({enAttente.length})
                 </CardTitle>
@@ -306,12 +306,12 @@ export default function DetailClub() {
                 {enAttente.map(m => (
                   <div key={m.id} className="flex items-center gap-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium">{m.eleve_nom} {m.eleve_prenoms}</p>
+                      <p className="text-[var(--m15-white)] text-sm font-medium">{m.eleve_nom} {m.eleve_prenoms}</p>
                       {m.classe_nom && <p className="text-slate-400 text-xs">{m.classe_nom}</p>}
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <Button size="sm" onClick={() => handleTraiter(m.id, "accepte")}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1 h-7 text-xs px-2">
+                        className="bg-emerald-600 hover:bg-emerald-700 text-[var(--m15-white)] gap-1 h-7 text-xs px-2">
                         <CheckCircle className="h-3 w-3" /> Accepter
                       </Button>
                       <Button size="sm" variant="outline" onClick={() => handleTraiter(m.id, "refuse")}
@@ -328,7 +328,7 @@ export default function DetailClub() {
           {/* Membres acceptés */}
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-base flex items-center gap-2">
+              <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
                 <Users className="h-4 w-4 text-cyan-400" /> Membres ({membres.length})
               </CardTitle>
             </CardHeader>
@@ -340,12 +340,12 @@ export default function DetailClub() {
                   {m.eleve_photo ? (
                     <img src={m.eleve_photo} alt="" className="h-9 w-9 rounded-full object-cover" />
                   ) : (
-                    <div className="h-9 w-9 rounded-full bg-slate-600 flex items-center justify-center text-xs text-white">
+                    <div className="h-9 w-9 rounded-full bg-slate-600 flex items-center justify-center text-xs text-[var(--m15-white)]">
                       {(m.eleve_nom ?? "?")[0]}
                     </div>
                   )}
                   <div className="flex-1">
-                    <p className="text-white text-sm">{m.eleve_nom} {m.eleve_prenoms}</p>
+                    <p className="text-[var(--m15-white)] text-sm">{m.eleve_nom} {m.eleve_prenoms}</p>
                     {m.classe_nom && <p className="text-slate-500 text-xs">{m.classe_nom}</p>}
                   </div>
                   <Badge variant="outline" className={ROLE_COLORS[m.role_membre] ?? ""}>{m.role_membre}</Badge>

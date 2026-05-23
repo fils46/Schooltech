@@ -15,7 +15,7 @@ function BadgeStatutIncident({ statut }: { statut: string }) {
     traite: { color: "#00C9A7", label: "Traité" },
     escalade: { color: "#FF4D6D", label: "Escaladé" },
   };
-  const { color, label } = map[statut] ?? { color: "#8B9DC3", label: statut };
+  const { color, label } = map[statut] ?? { color: "var(--m15-muted)", label: statut };
   return <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ background: `${color}18`, color }}>{label}</span>;
 }
 

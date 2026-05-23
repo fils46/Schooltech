@@ -284,7 +284,7 @@ export default function Utilisateurs() {
                     <div className="text-xs text-muted-foreground">{u.email}</div>
                   </TableCell>
                   <TableCell>
-                    <Badge className={`${roleColors[u.role] || 'bg-slate-500'} hover:opacity-80 text-white capitalize`}>
+                    <Badge className={`${roleColors[u.role] || 'bg-slate-500'} hover:opacity-80 text-[var(--m15-white)] capitalize`}>
                       {u.role}
                     </Badge>
                   </TableCell>

@@ -30,7 +30,7 @@ const STATUT_BADGE: Record<string, { label: string; color: string }> = {
   non_justifiee: { label: "Non justifiée", color: "#FF4D6D" },
   en_attente:    { label: "En attente",    color: "#F5C842" },
   justifiee:     { label: "Justifiée",     color: "#00C9A7" },
-  rejetee:       { label: "Rejetée",       color: "#8B9DC3" },
+  rejetee:       { label: "Rejetée",       color: "var(--m15-muted)" },
 };
 
 export default function AbsencesParent() {
@@ -149,7 +149,7 @@ export default function AbsencesParent() {
         ) : (
           <div className="divide-y" style={{ borderColor: "var(--m15-border)" }}>
             {absences.map(a => {
-              const badge = STATUT_BADGE[a.statut] ?? { label: a.statut, color: "#8B9DC3" };
+              const badge = STATUT_BADGE[a.statut] ?? { label: a.statut, color: "var(--m15-muted)" };
               const peutJustifier = a.statut === "non_justifiee" || a.statut === "rejetee";
               return (
                 <div key={a.id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3">

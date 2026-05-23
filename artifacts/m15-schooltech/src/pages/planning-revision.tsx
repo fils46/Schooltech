@@ -29,7 +29,7 @@ interface CompletionData {
 }
 
 const STATUT_CONFIG = {
-  planifie: { label: "Planifié",  color: "#8B9DC3", bg: "rgba(139,157,195,0.12)" },
+  planifie: { label: "Planifié",  color: "var(--m15-muted)", bg: "rgba(139,157,195,0.12)" },
   fait:     { label: "Fait",      color: "#00C9A7", bg: "rgba(0,201,167,0.12)" },
   saute:    { label: "Sauté",     color: "#FF4D6D", bg: "rgba(255,77,109,0.12)" },
 };
@@ -106,29 +106,29 @@ function ModalGenerer({ eleveId, onClose, onGenerated }: { eleveId: string; onCl
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
-      <div style={{ background: "#111E35" }} className="w-full max-w-md rounded-2xl p-6 border border-white/10 shadow-2xl" onClick={e => e.stopPropagation()}>
+      <div style={{ background: "var(--m15-card)" }} className="w-full max-w-md rounded-2xl p-6 border border-[var(--m15-border)] shadow-2xl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-white">Générer mon planning</h2>
-          <button onClick={onClose} className="text-[#8B9DC3] hover:text-white"><X size={20} /></button>
+          <h2 className="text-lg font-bold text-[var(--m15-white)]">Générer mon planning</h2>
+          <button onClick={onClose} className="text-[var(--m15-muted)] hover:text-[var(--m15-white)]"><X size={20} /></button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs text-[#8B9DC3] mb-1">Date de l'examen *</label>
+            <label className="block text-xs text-[var(--m15-muted)] mb-1">Date de l'examen *</label>
             <input
               type="date"
               required
               value={form.date_examen}
               onChange={e => setForm(f => ({ ...f, date_examen: e.target.value }))}
               min={new Date().toISOString().split("T")[0]}
-              className="w-full bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#8B9DC3] mb-1">Heures de révision par jour</label>
+            <label className="block text-xs text-[var(--m15-muted)] mb-1">Heures de révision par jour</label>
             <select
               value={form.nb_heures_par_jour}
               onChange={e => setForm(f => ({ ...f, nb_heures_par_jour: e.target.value }))}
-              className="w-full bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               {[1.5, 2, 3, 4, 5, 6].map(h => (
                 <option key={h} value={String(h)}>{h}h / jour</option>
@@ -136,21 +136,21 @@ function ModalGenerer({ eleveId, onClose, onGenerated }: { eleveId: string; onCl
             </select>
           </div>
           <div>
-            <label className="block text-xs text-[#8B9DC3] mb-1">Matières prioritaires (optionnel)</label>
+            <label className="block text-xs text-[var(--m15-muted)] mb-1">Matières prioritaires (optionnel)</label>
             <input
               type="text"
               value={form.matieres}
               onChange={e => setForm(f => ({ ...f, matieres: e.target.value }))}
               placeholder="ex: Mathématiques, Physique-Chimie, SVT"
-              className="w-full bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
-            <p className="text-xs text-[#8B9DC3] mt-1">Séparées par des virgules. Si vide, basé sur vos résultats.</p>
+            <p className="text-xs text-[var(--m15-muted)] mt-1">Séparées par des virgules. Si vide, basé sur vos résultats.</p>
           </div>
-          <div style={{ background: "rgba(0,201,167,0.08)", border: "1px solid rgba(0,201,167,0.2)" }} className="rounded-lg p-3 text-xs text-[#8B9DC3]">
+          <div style={{ background: "rgba(0,201,167,0.08)", border: "1px solid rgba(0,201,167,0.2)" }} className="rounded-lg p-3 text-xs text-[var(--m15-muted)]">
             ✨ Le planning est intelligent : les matières où vous êtes moins performant auront plus de sessions.
           </div>
           <div className="flex gap-3 pt-2">
-            <Button type="button" variant="outline" className="flex-1 border-white/10 text-[#8B9DC3]" onClick={onClose}>Annuler</Button>
+            <Button type="button" variant="outline" className="flex-1 border-[var(--m15-border)] text-[var(--m15-muted)]" onClick={onClose}>Annuler</Button>
             <Button type="submit" disabled={saving} className="flex-1 bg-[#00C9A7] hover:bg-[#00a88a] text-[#0A1628] font-semibold">
               {saving ? <Loader2 size={16} className="animate-spin mr-1" /> : <Zap size={16} className="mr-1" />}
               Générer
@@ -212,8 +212,8 @@ export default function PlanningRevision() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Planning de Révision</h1>
-          <p className="text-[#8B9DC3] text-sm">Votre programme de révision personnalisé</p>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Planning de Révision</h1>
+          <p className="text-[var(--m15-muted)] text-sm">Votre programme de révision personnalisé</p>
         </div>
         {isEleve && (
           <Button
@@ -227,9 +227,9 @@ export default function PlanningRevision() {
 
       {/* Stats de complétion */}
       {completion && completion.total > 0 && (
-        <div style={{ background: "#111E35" }} className="rounded-xl p-5 border border-white/5">
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-5 border border-[var(--m15-border)]">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white">Progression globale</h3>
+            <h3 className="text-sm font-semibold text-[var(--m15-white)]">Progression globale</h3>
             <span style={{ color: "#00C9A7" }} className="text-2xl font-bold">{completion.taux_completion}%</span>
           </div>
           <div className="w-full bg-[#0A1628] rounded-full h-2 mb-4">
@@ -241,12 +241,12 @@ export default function PlanningRevision() {
           <div className="grid grid-cols-3 gap-3">
             {[
               { label: "Faites", val: completion.fait,     color: "#00C9A7" },
-              { label: "Planifiées", val: completion.planifie, color: "#8B9DC3" },
+              { label: "Planifiées", val: completion.planifie, color: "var(--m15-muted)" },
               { label: "Sautées", val: completion.saute,   color: "#FF4D6D" },
             ].map(s => (
-              <div key={s.label} style={{ background: "#0A1628" }} className="rounded-lg p-3 text-center">
+              <div key={s.label} style={{ background: "var(--m15-navy)" }} className="rounded-lg p-3 text-center">
                 <p style={{ color: s.color }} className="text-xl font-bold">{s.val}</p>
-                <p className="text-xs text-[#8B9DC3]">{s.label}</p>
+                <p className="text-xs text-[var(--m15-muted)]">{s.label}</p>
               </div>
             ))}
           </div>
@@ -256,7 +256,7 @@ export default function PlanningRevision() {
                 const color = getMatiereColor(m.matiere, matieres);
                 return (
                   <div key={m.matiere} className="flex items-center gap-3">
-                    <span className="text-xs text-[#8B9DC3] w-36 truncate">{m.matiere}</span>
+                    <span className="text-xs text-[var(--m15-muted)] w-36 truncate">{m.matiere}</span>
                     <div className="flex-1 bg-[#0A1628] rounded-full h-1.5">
                       <div style={{ width: `${m.taux}%`, background: color }} className="h-1.5 rounded-full transition-all" />
                     </div>
@@ -273,10 +273,10 @@ export default function PlanningRevision() {
       {isLoading ? (
         <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
       ) : sessions.length === 0 ? (
-        <div style={{ background: "#111E35" }} className="rounded-xl p-12 border border-white/5 text-center">
-          <Calendar size={40} className="text-[#8B9DC3] mx-auto mb-3" />
-          <p className="text-white font-medium mb-1">Aucun planning généré</p>
-          <p className="text-[#8B9DC3] text-sm mb-4">Générez votre planning personnalisé pour commencer à réviser.</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-12 border border-[var(--m15-border)] text-center">
+          <Calendar size={40} className="text-[var(--m15-muted)] mx-auto mb-3" />
+          <p className="text-[var(--m15-white)] font-medium mb-1">Aucun planning généré</p>
+          <p className="text-[var(--m15-muted)] text-sm mb-4">Générez votre planning personnalisé pour commencer à réviser.</p>
           {isEleve && (
             <Button onClick={() => setModalGenerer(true)} className="bg-[#00C9A7] hover:bg-[#00a88a] text-[#0A1628] font-semibold">
               <Zap size={16} className="mr-2" /> Générer mon planning
@@ -284,21 +284,21 @@ export default function PlanningRevision() {
           )}
         </div>
       ) : (
-        <div style={{ background: "#111E35" }} className="rounded-xl border border-white/5 overflow-hidden">
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl border border-[var(--m15-border)] overflow-hidden">
           {/* Header navigation semaine */}
-          <div className="flex items-center justify-between p-4 border-b border-white/5">
+          <div className="flex items-center justify-between p-4 border-b border-[var(--m15-border)]">
             <button
               onClick={() => setWeekStart(addDays(weekStart, -7))}
-              className="text-[#8B9DC3] hover:text-white p-1"
+              className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] p-1"
             >
               <ChevronLeft size={20} />
             </button>
-            <span className="text-white font-medium text-sm">
+            <span className="text-[var(--m15-white)] font-medium text-sm">
               {fmtDateShort(weekStart)} — {fmtDateShort(addDays(weekStart, 5))}
             </span>
             <button
               onClick={() => setWeekStart(addDays(weekStart, 7))}
-              className="text-[#8B9DC3] hover:text-white p-1"
+              className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] p-1"
             >
               <ChevronRight size={20} />
             </button>
@@ -314,7 +314,7 @@ export default function PlanningRevision() {
                 <div key={day} className="mb-3">
                   <div className="flex items-center gap-2 mb-2">
                     <span
-                      style={isToday ? { background: "#00C9A7", color: "#0A1628" } : { color: isPast ? "#4B5563" : "#8B9DC3" }}
+                      style={isToday ? { background: "#00C9A7", color: "var(--m15-navy)" } : { color: isPast ? "#4B5563" : "#8B9DC3" }}
                       className={`text-xs font-medium px-2 py-0.5 rounded-full ${isToday ? "" : ""}`}
                     >
                       {fmtDate(day)}
@@ -331,12 +331,12 @@ export default function PlanningRevision() {
                         return (
                           <div
                             key={s.id}
-                            style={{ borderLeft: `3px solid ${color}`, background: "#0A1628" }}
+                            style={{ borderLeft: `3px solid ${color}`, background: "var(--m15-navy)" }}
                             className="rounded-r-lg p-3 flex items-center justify-between"
                           >
                             <div>
-                              <p className="text-white text-sm font-medium">{s.matiere}</p>
-                              <p className="text-xs text-[#8B9DC3] flex items-center gap-1">
+                              <p className="text-[var(--m15-white)] text-sm font-medium">{s.matiere}</p>
+                              <p className="text-xs text-[var(--m15-muted)] flex items-center gap-1">
                                 <Clock size={10} /> {s.heure_debut} – {s.heure_fin}
                               </p>
                             </div>

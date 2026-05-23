@@ -67,14 +67,14 @@ export default function NouveauClub() {
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/clubs")} className="text-slate-400 hover:text-white gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/clubs")} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
 
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-[var(--m15-white)] flex items-center gap-2">
             <Trophy className="h-5 w-5 text-yellow-400" /> Créer un nouveau club
           </CardTitle>
         </CardHeader>
@@ -85,19 +85,19 @@ export default function NouveauClub() {
               <Label className="text-slate-300">Nom du club *</Label>
               <Input value={form.nom} onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
                 placeholder="Ex : Club de football, Troupe théâtre…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" required />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" required />
             </div>
 
             {/* Catégorie */}
             <div className="space-y-2">
               <Label className="text-slate-300">Catégorie *</Label>
               <Select value={form.categorie} onValueChange={v => setForm(f => ({ ...f, categorie: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {CATEGORIES.map(c => (
-                    <SelectItem key={c.value} value={c.value} className="text-white focus:bg-slate-700">{c.label}</SelectItem>
+                    <SelectItem key={c.value} value={c.value} className="text-[var(--m15-white)] focus:bg-slate-700">{c.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -108,19 +108,19 @@ export default function NouveauClub() {
               <Label className="text-slate-300">Description</Label>
               <Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Présentation du club, activités proposées…"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
 
             {/* Responsable */}
             <div className="space-y-2">
               <Label className="text-slate-300">Responsable (professeur) *</Label>
               <Select value={form.responsable_id} onValueChange={v => setForm(f => ({ ...f, responsable_id: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue placeholder="Sélectionner un responsable…" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {professeurs.map(p => (
-                    <SelectItem key={p.id} value={p.id} className="text-white focus:bg-slate-700">
+                    <SelectItem key={p.id} value={p.id} className="text-[var(--m15-white)] focus:bg-slate-700">
                       {p.nom} {p.prenoms}
                     </SelectItem>
                   ))}
@@ -132,12 +132,12 @@ export default function NouveauClub() {
             <div className="space-y-2">
               <Label className="text-slate-300">Année scolaire *</Label>
               <Select value={form.annee_scolaire_id} onValueChange={v => setForm(f => ({ ...f, annee_scolaire_id: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue placeholder="Sélectionner une année…" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {annees.map(a => (
-                    <SelectItem key={a.id} value={a.id} className="text-white focus:bg-slate-700">
+                    <SelectItem key={a.id} value={a.id} className="text-[var(--m15-white)] focus:bg-slate-700">
                       {a.libelle}{a.actif ? " (active)" : ""}
                     </SelectItem>
                   ))}
@@ -151,7 +151,7 @@ export default function NouveauClub() {
               <Input type="number" min="1" value={form.capacite_max}
                 onChange={e => setForm(f => ({ ...f, capacite_max: e.target.value }))}
                 placeholder="Pas de limite si vide"
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
 
             {/* Couleur */}

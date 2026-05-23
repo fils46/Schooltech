@@ -67,13 +67,13 @@ export default function ParentDashboard() {
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
                 i === activeEnfant
-                  ? "text-white shadow-md"
+                  ? "text-[var(--m15-white)] shadow-md"
                   : "bg-muted text-muted-foreground hover:bg-muted/70"
               )}
               style={i === activeEnfant ? { background: "linear-gradient(135deg, #0080FF, #00C9A7)" } : {}}
             >
               <Avatar className="h-6 w-6">
-                <AvatarFallback className="text-xs" style={{ background: "#0A1628", color: "#00C9A7" }}>
+                <AvatarFallback className="text-xs" style={{ background: "var(--m15-navy)", color: "#00C9A7" }}>
                   {e.nom[0]}{e.prenoms[0]}
                 </AvatarFallback>
               </Avatar>
@@ -91,7 +91,7 @@ export default function ParentDashboard() {
             <CardContent className="p-5">
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarFallback className="text-xl font-bold" style={{ background: "#0A1628", color: "#00C9A7" }}>
+                  <AvatarFallback className="text-xl font-bold" style={{ background: "var(--m15-navy)", color: "#00C9A7" }}>
                     {enfant.nom[0]}{enfant.prenoms[0]}
                   </AvatarFallback>
                 </Avatar>

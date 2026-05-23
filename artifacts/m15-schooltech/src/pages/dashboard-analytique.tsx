@@ -59,7 +59,7 @@ function KpiCard({
           <div className="mt-3 flex items-center gap-1">
             {trend === "up" && <ArrowUpRight className="w-3 h-3" style={{ color: "#00C9A7" }} />}
             {trend === "down" && <ArrowDownRight className="w-3 h-3" style={{ color: "#FF4D6D" }} />}
-            {trend === "neutral" && <Minus className="w-3 h-3" style={{ color: "#8B9DC3" }} />}
+            {trend === "neutral" && <Minus className="w-3 h-3" style={{ color: "var(--m15-muted)" }} />}
           </div>
         )}
       </CardContent>
@@ -155,7 +155,7 @@ export default function DashboardAnalytique() {
           </Button>
 
           <Button size="sm" onClick={() => navigate("/rapports-exports")}
-            style={{ background: "#00C9A7", color: "#0A1628", fontWeight: 600 }}>
+            style={{ background: "#00C9A7", color: "var(--m15-navy)", fontWeight: 600 }}>
             <FileDown className="w-4 h-4 mr-2" />
             Rapport
           </Button>
@@ -236,7 +236,7 @@ export default function DashboardAnalytique() {
                   <XAxis dataKey="nom_classe" tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <YAxis domain={[0, 20]} tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
+                    contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
                     labelStyle={{ color: "#fff" }}
                     itemStyle={{ color: "#00C9A7" }}
                   />
@@ -271,10 +271,10 @@ export default function DashboardAnalytique() {
                   />
                   <YAxis tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
+                    contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
                     labelStyle={{ color: "#fff" }}
                   />
-                  <Legend wrapperStyle={{ color: "#8B9DC3", fontSize: 12 }} />
+                  <Legend wrapperStyle={{ color: "var(--m15-muted)", fontSize: 12 }} />
                   <Bar dataKey="justifiee" name="Justifiées" stackId="a" fill="#00C9A7" radius={[0, 0, 0, 0]} />
                   <Bar dataKey="non_justifiee" name="Non justifiées" stackId="a" fill="#FF4D6D" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -381,7 +381,7 @@ export default function DashboardAnalytique() {
           { label: "Analyse pédagogique", href: "/analyse-pedagogique", icon: BarChart3, color: "#00C9A7" },
           { label: "Analyse présences", href: "/analyse-presences", icon: Users, color: "#0080FF" },
           { label: "Rapports & Exports", href: "/rapports-exports", icon: FileDown, color: "#F5C842" },
-          { label: "Clubs & Infirmerie", href: "/analytics-complementaires", icon: Award, color: "#8B9DC3" },
+          { label: "Clubs & Infirmerie", href: "/analytics-complementaires", icon: Award, color: "var(--m15-muted)" },
         ].map(link => (
           <Button key={link.href} variant="outline" className="h-16 flex flex-col gap-1"
             onClick={() => navigate(link.href)}

@@ -200,8 +200,8 @@ export default function DepotRessource() {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-syne text-2xl font-bold text-white">Mes dépôts</h1>
-          <p className="text-[#8B9DC3] text-sm mt-1">Gérez vos ressources déposées dans la bibliothèque</p>
+          <h1 className="font-syne text-2xl font-bold text-[var(--m15-white)]">Mes dépôts</h1>
+          <p className="text-[var(--m15-muted)] text-sm mt-1">Gérez vos ressources déposées dans la bibliothèque</p>
         </div>
         <Button
           onClick={() => { setEditingId(null); setForm(DEFAULT_FORM); setShowModal(true); }}
@@ -216,7 +216,7 @@ export default function DepotRessource() {
           {[1, 2, 3].map((i) => <div key={i} className="h-14 bg-[#111E35] rounded-xl animate-pulse" />)}
         </div>
       ) : mesRessources.length === 0 ? (
-        <div className="text-center py-20 text-[#8B9DC3] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.15)]">
+        <div className="text-center py-20 text-[var(--m15-muted)] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.15)]">
           <Upload className="h-12 w-12 mx-auto mb-3 opacity-20" />
           <p className="text-lg font-medium mb-1">Aucune ressource déposée</p>
           <p className="text-sm mb-4">Partagez vos cours, fiches et exercices avec vos élèves</p>
@@ -232,11 +232,11 @@ export default function DepotRessource() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[rgba(0,201,167,0.1)]">
-                <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Titre</th>
-                <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Type</th>
-                <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Niveaux</th>
-                <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Statut</th>
-                <th className="text-right px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Consult.</th>
+                <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Titre</th>
+                <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Type</th>
+                <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Niveaux</th>
+                <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Statut</th>
+                <th className="text-right px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Consult.</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -246,18 +246,18 @@ export default function DepotRessource() {
                 return (
                   <tr key={r.id} className="border-b border-[rgba(0,201,167,0.05)] last:border-0 hover:bg-[rgba(0,201,167,0.03)]">
                     <td className="px-4 py-3">
-                      <p className="text-white text-sm font-medium truncate max-w-[220px]">{r.titre}</p>
-                      {r.auteur && <p className="text-xs text-[#8B9DC3]">{r.auteur}</p>}
+                      <p className="text-[var(--m15-white)] text-sm font-medium truncate max-w-[220px]">{r.titre}</p>
+                      {r.auteur && <p className="text-xs text-[var(--m15-muted)]">{r.auteur}</p>}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5 text-[#8B9DC3] text-sm">
+                      <div className="flex items-center gap-1.5 text-[var(--m15-muted)] text-sm">
                         {TYPE_ICONS[type]} {TYPE_LABELS[type]}
                       </div>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
                         {(r.niveau ?? []).slice(0, 3).map((n) => (
-                          <span key={n} className="text-xs bg-[#1a2a44] text-[#8B9DC3] px-1.5 py-0.5 rounded">{n}</span>
+                          <span key={n} className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-1.5 py-0.5 rounded">{n}</span>
                         ))}
                       </div>
                     </td>
@@ -266,33 +266,33 @@ export default function DepotRessource() {
                         {getStatutLabel(r)}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3 text-right text-sm text-[#8B9DC3]">{r.nb_consultations ?? 0}</td>
+                    <td className="px-4 py-3 text-right text-sm text-[var(--m15-muted)]">{r.nb_consultations ?? 0}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2 justify-end">
                         <button
                           onClick={() => navigate(`/bibliotheque/ressource/${r.id}`)}
-                          className="p-1.5 text-[#8B9DC3] hover:text-[#00C9A7] transition-colors"
+                          className="p-1.5 text-[var(--m15-muted)] hover:text-[#00C9A7] transition-colors"
                           title="Voir"
                         >
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => navigate(`/bibliotheque/ressource/${r.id}/stats`)}
-                          className="p-1.5 text-[#8B9DC3] hover:text-[#F5C842] transition-colors"
+                          className="p-1.5 text-[var(--m15-muted)] hover:text-[#F5C842] transition-colors"
                           title="Statistiques"
                         >
                           <BarChart2 className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => openEdit(r)}
-                          className="p-1.5 text-[#8B9DC3] hover:text-white transition-colors"
+                          className="p-1.5 text-[var(--m15-muted)] hover:text-[var(--m15-white)] transition-colors"
                           title="Modifier"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => r.id && setDeleteId(r.id)}
-                          className="p-1.5 text-[#8B9DC3] hover:text-red-400 transition-colors"
+                          className="p-1.5 text-[var(--m15-muted)] hover:text-red-400 transition-colors"
                           title="Supprimer"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -309,7 +309,7 @@ export default function DepotRessource() {
 
       {/* Modal dépôt / modification */}
       <Dialog open={showModal} onOpenChange={(o) => { if (!o) { setShowModal(false); setEditingId(null); } }}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-syne text-lg">
               {editingId ? "Modifier la ressource" : "Déposer une ressource"}
@@ -318,25 +318,25 @@ export default function DepotRessource() {
 
           <div className="space-y-4 py-2">
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Titre <span className="text-red-400">*</span></Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Titre <span className="text-red-400">*</span></Label>
               <Input
                 value={form.titre}
                 onChange={(e) => setForm((f) => ({ ...f, titre: e.target.value }))}
                 placeholder="Titre de la ressource"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-[#8B9DC3] text-xs mb-1.5">Type <span className="text-red-400">*</span></Label>
+                <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Type <span className="text-red-400">*</span></Label>
                 <Select value={form.type} onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}>
-                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white">
+                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
                     <SelectValue placeholder="Choisir un type" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)]">
                     {Object.entries(TYPE_LABELS).map(([v, l]) => (
-                      <SelectItem key={v} value={v} className="text-white focus:bg-[#111E35]">
+                      <SelectItem key={v} value={v} className="text-[var(--m15-white)] focus:bg-[#111E35]">
                         <span className="flex items-center gap-2">{TYPE_ICONS[v]} {l}</span>
                       </SelectItem>
                     ))}
@@ -345,14 +345,14 @@ export default function DepotRessource() {
               </div>
 
               <div>
-                <Label className="text-[#8B9DC3] text-xs mb-1.5">Langue</Label>
+                <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Langue</Label>
                 <Select value={form.langue} onValueChange={(v) => setForm((f) => ({ ...f, langue: v }))}>
-                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white">
+                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)]">
                     {LANGUES.map((l) => (
-                      <SelectItem key={l.value} value={l.value} className="text-white focus:bg-[#111E35]">{l.label}</SelectItem>
+                      <SelectItem key={l.value} value={l.value} className="text-[var(--m15-white)] focus:bg-[#111E35]">{l.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -360,7 +360,7 @@ export default function DepotRessource() {
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Niveaux <span className="text-red-400">*</span></Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Niveaux <span className="text-red-400">*</span></Label>
               <div className="flex flex-wrap gap-2">
                 {NIVEAUX.map((n) => (
                   <label key={n} className="flex items-center gap-1.5 cursor-pointer">
@@ -374,81 +374,81 @@ export default function DepotRessource() {
                       }
                       className="border-[rgba(0,201,167,0.3)] data-[state=checked]:bg-[#00C9A7] data-[state=checked]:border-[#00C9A7]"
                     />
-                    <span className="text-sm text-[#8B9DC3]">{n}</span>
+                    <span className="text-sm text-[var(--m15-muted)]">{n}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Auteur du document</Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Auteur du document</Label>
               <Input
                 value={form.auteur}
                 onChange={(e) => setForm((f) => ({ ...f, auteur: e.target.value }))}
                 placeholder="Auteur du document (optionnel)"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3]"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Description</Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Description</Label>
               <Textarea
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                 placeholder="Description du contenu (optionnel)"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3] resize-none h-20"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none h-20"
               />
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">URL du fichier <span className="text-red-400">*</span></Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">URL du fichier <span className="text-red-400">*</span></Label>
               <Input
                 value={form.fichier_url}
                 onChange={(e) => setForm((f) => ({ ...f, fichier_url: e.target.value }))}
                 placeholder="https://drive.google.com/... ou URL directe"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3]"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Nom du fichier <span className="text-red-400">*</span></Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Nom du fichier <span className="text-red-400">*</span></Label>
               <Input
                 value={form.fichier_nom}
                 onChange={(e) => setForm((f) => ({ ...f, fichier_nom: e.target.value }))}
                 placeholder="ex: manuel_maths_3eme.pdf"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3]"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Image de couverture (optionnel)</Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Image de couverture (optionnel)</Label>
               <Input
                 value={form.couverture_url}
                 onChange={(e) => setForm((f) => ({ ...f, couverture_url: e.target.value }))}
                 placeholder="URL de l'image de couverture"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3]"
+                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
             <div>
-              <Label className="text-[#8B9DC3] text-xs mb-1.5">Mots-clés</Label>
+              <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Mots-clés</Label>
               <div className="flex gap-2 mb-2">
                 <Input
                   value={motCleInput}
                   onChange={(e) => setMotCleInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addMotCle(); } }}
                   placeholder="Ajouter un mot-clé (Entrée)"
-                  className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-white placeholder:text-[#8B9DC3]"
+                  className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
                 <Button type="button" variant="outline" onClick={addMotCle}
-                  className="border-[rgba(0,201,167,0.3)] text-[#8B9DC3] hover:text-white shrink-0">
+                  className="border-[rgba(0,201,167,0.3)] text-[var(--m15-muted)] hover:text-[var(--m15-white)] shrink-0">
                   <Tag className="h-4 w-4" />
                 </Button>
               </div>
               {form.mots_cles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {form.mots_cles.map((kw) => (
-                    <span key={kw} className="flex items-center gap-1 text-xs bg-[#1a2a44] text-[#8B9DC3] px-2 py-1 rounded-full border border-[rgba(0,201,167,0.2)]">
+                    <span key={kw} className="flex items-center gap-1 text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-2 py-1 rounded-full border border-[rgba(0,201,167,0.2)]">
                       #{kw}
                       <button onClick={() => setForm((f) => ({ ...f, mots_cles: f.mots_cles.filter((k) => k !== kw) }))}>
                         <X className="h-3 w-3 hover:text-red-400" />
@@ -462,7 +462,7 @@ export default function DepotRessource() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => { setShowModal(false); setEditingId(null); }}
-              className="border-[rgba(0,201,167,0.2)] text-[#8B9DC3] hover:text-white">
+              className="border-[rgba(0,201,167,0.2)] text-[var(--m15-muted)] hover:text-[var(--m15-white)]">
               Annuler
             </Button>
             <Button
@@ -479,20 +479,20 @@ export default function DepotRessource() {
       </Dialog>
 
       <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-white">
+        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer cette ressource ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[#8B9DC3]">
+            <AlertDialogDescription className="text-[var(--m15-muted)]">
               Cette action est irréversible. La ressource sera retirée de la bibliothèque.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-[rgba(0,201,167,0.2)] text-[#8B9DC3] hover:text-white bg-transparent">
+            <AlertDialogCancel className="border-[rgba(0,201,167,0.2)] text-[var(--m15-muted)] hover:text-[var(--m15-white)] bg-transparent">
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteId && supprimer.mutate({ id: deleteId })}
-              className="bg-red-500 hover:bg-red-600 text-white"
+              className="bg-red-500 hover:bg-red-600 text-[var(--m15-white)]"
             >
               Supprimer
             </AlertDialogAction>

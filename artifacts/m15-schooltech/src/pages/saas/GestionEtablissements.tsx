@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 const C = {
-  navy: "#0A1628", card: "#111E35", cyan: "#00C9A7", gold: "#F5C842",
+  navy: "var(--m15-navy)", card: "var(--m15-card)", cyan: "#00C9A7", gold: "#F5C842",
   blue: "#0080FF", red: "#FF4D6D", muted: "#8B9DC3", border: "rgba(0,201,167,0.15)",
 };
 
@@ -62,7 +62,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  const inputCls = "w-full px-3 py-2.5 rounded-lg text-sm text-white border outline-none focus:ring-1 transition-all";
+  const inputCls = "w-full px-3 py-2.5 rounded-lg text-sm text-[var(--m15-white)] border outline-none focus:ring-1 transition-all";
   const inputStyle = { backgroundColor: C.navy, borderColor: C.border, outline: "none" };
   const labelCls = "block text-xs font-medium mb-1.5";
 
@@ -72,7 +72,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b sticky top-0" style={{ backgroundColor: C.card, borderColor: C.border }}>
           <div>
-            <h2 className="text-lg font-bold text-white">Nouvel établissement</h2>
+            <h2 className="text-lg font-bold text-[var(--m15-white)]">Nouvel établissement</h2>
             {step < 4 && <p className="text-xs mt-0.5" style={{ color: C.muted }}>Étape {step}/3</p>}
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center transition-all" style={{ backgroundColor: "rgba(255,77,109,.1)", color: C.red }}>
@@ -122,7 +122,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
                 </div>
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => setStep(2)} disabled={!form.nom} className="px-5 py-2.5 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ backgroundColor: C.cyan }}>
+                <button onClick={() => setStep(2)} disabled={!form.nom} className="px-5 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50" style={{ backgroundColor: C.cyan }}>
                   Suivant →
                 </button>
               </div>
@@ -150,7 +150,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
               </div>
               <div className="flex justify-between mt-4">
                 <button onClick={() => setStep(1)} className="px-5 py-2.5 rounded-lg text-sm font-medium" style={{ color: C.muted, border: `1px solid ${C.border}` }}>← Retour</button>
-                <button onClick={() => setStep(3)} disabled={!form.email_directeur || !form.nom_directeur} className="px-5 py-2.5 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ backgroundColor: C.cyan }}>Suivant →</button>
+                <button onClick={() => setStep(3)} disabled={!form.email_directeur || !form.nom_directeur} className="px-5 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50" style={{ backgroundColor: C.cyan }}>Suivant →</button>
               </div>
             </div>
           )}
@@ -190,7 +190,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
               </div>
               <div className="flex justify-between mt-4">
                 <button onClick={() => setStep(2)} className="px-5 py-2.5 rounded-lg text-sm font-medium" style={{ color: C.muted, border: `1px solid ${C.border}` }}>← Retour</button>
-                <button onClick={submit} disabled={loading || !form.montant_licence} className="px-5 py-2.5 rounded-lg text-sm font-medium text-white disabled:opacity-50 flex items-center gap-2" style={{ backgroundColor: C.cyan }}>
+                <button onClick={submit} disabled={loading || !form.montant_licence} className="px-5 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50 flex items-center gap-2" style={{ backgroundColor: C.cyan }}>
                   {loading ? <div className="w-4 h-4 rounded-full border-2 animate-spin" style={{ borderColor: "white", borderTopColor: "transparent" }} /> : null}
                   Créer l'établissement
                 </button>
@@ -204,7 +204,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: "rgba(0,201,167,.15)" }}>
                 <Check className="w-8 h-8" style={{ color: C.cyan }} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-1">{result.etablissement?.nom} créé !</h3>
+              <h3 className="text-lg font-bold text-[var(--m15-white)] mb-1">{result.etablissement?.nom} créé !</h3>
               <p className="text-sm mb-6" style={{ color: C.muted }}>Le compte directeur a été créé et la licence est active.</p>
 
               <div className="rounded-xl p-5 mb-4 border text-left" style={{ backgroundColor: C.navy, borderColor: "rgba(245,200,66,.3)" }}>
@@ -212,7 +212,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs mb-1" style={{ color: C.muted }}>Directeur : {result.directeur?.email}</p>
-                    <p className="text-xl font-mono font-bold text-white tracking-wider">{result.mot_de_passe_temporaire}</p>
+                    <p className="text-xl font-mono font-bold text-[var(--m15-white)] tracking-wider">{result.mot_de_passe_temporaire}</p>
                   </div>
                   <button onClick={copyMdp} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all" style={{ backgroundColor: copied ? "rgba(0,201,167,.15)" : "rgba(245,200,66,.1)", color: copied ? C.cyan : C.gold }}>
                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -222,7 +222,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
                 <p className="text-xs mt-3 italic" style={{ color: C.muted }}>Ce mot de passe ne sera plus affiché après fermeture.</p>
               </div>
 
-              <button onClick={() => { onCreated(); onClose(); }} className="px-6 py-2.5 rounded-lg text-sm font-medium text-white" style={{ backgroundColor: C.cyan }}>
+              <button onClick={() => { onCreated(); onClose(); }} className="px-6 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)]" style={{ backgroundColor: C.cyan }}>
                 Fermer
               </button>
             </div>
@@ -295,12 +295,12 @@ export default function GestionEtablissements() {
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Établissements</h1>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Établissements</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>{etabs.length} établissement(s) au total</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)]"
           style={{ backgroundColor: C.cyan }}
         >
           <Plus className="w-4 h-4" /> Nouvel établissement
@@ -312,7 +312,7 @@ export default function GestionEtablissements() {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: C.muted }} />
           <input
-            className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm text-white border outline-none"
+            className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm text-[var(--m15-white)] border outline-none"
             style={{ backgroundColor: C.card, borderColor: C.border }}
             placeholder="Rechercher un établissement…"
             value={search}
@@ -359,7 +359,7 @@ export default function GestionEtablissements() {
                   </td>
                   <td className="px-4 py-3 text-sm capitalize" style={{ color: C.muted }}>{e.type ?? "—"}</td>
                   <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{e.ville ?? "—"}</td>
-                  <td className="px-4 py-3 text-sm text-white">—</td>
+                  <td className="px-4 py-3 text-sm text-[var(--m15-white)]">—</td>
                   <td className="px-4 py-3">
                     <Badge actif={e.licence_active} type={e.licence?.type} />
                   </td>

@@ -157,7 +157,7 @@ export default function DashboardProfesseurAnalytique() {
                   <XAxis dataKey="nom" tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <YAxis domain={[0, 20]} tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
+                    contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }}
                     labelStyle={{ color: "#fff" }}
                     formatter={(value: number) => [`${value.toFixed(2)}/20`, "Moyenne"]}
                   />

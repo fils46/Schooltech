@@ -147,12 +147,12 @@ export default function GestionConsultation() {
             variant="ghost"
             size="sm"
             onClick={() => navigate("/infirmerie/consultations")}
-            className="text-slate-400 hover:text-white gap-2"
+            className="text-slate-400 hover:text-[var(--m15-white)] gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
             Retour
           </Button>
-          <h1 className="text-xl font-bold text-white">Consultation</h1>
+          <h1 className="text-xl font-bold text-[var(--m15-white)]">Consultation</h1>
           <Badge className={STATUT_COLORS[consultation.statut] ?? ""} variant="outline">
             {STATUT_LABELS[consultation.statut] ?? consultation.statut}
           </Badge>
@@ -170,7 +170,7 @@ export default function GestionConsultation() {
           {/* Infos élève */}
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
+              <CardTitle className="text-[var(--m15-white)] text-sm flex items-center gap-2">
                 <User className="h-4 w-4 text-cyan-400" />
                 Élève
               </CardTitle>
@@ -185,14 +185,14 @@ export default function GestionConsultation() {
                   </div>
                 )}
                 <div>
-                  <p className="text-white font-semibold">{consultation.eleve_nom} {consultation.eleve_prenoms}</p>
+                  <p className="text-[var(--m15-white)] font-semibold">{consultation.eleve_nom} {consultation.eleve_prenoms}</p>
                   <p className="text-slate-400 text-sm">{consultation.classe_nom ?? "—"}</p>
                 </div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full border-slate-600 text-slate-300 hover:text-white text-xs gap-2"
+                className="w-full border-slate-600 text-slate-300 hover:text-[var(--m15-white)] text-xs gap-2"
                 onClick={() => navigate(`/infirmerie/dossier/${consultation.eleve_id}`)}
               >
                 <FileText className="h-3 w-3" />
@@ -205,7 +205,7 @@ export default function GestionConsultation() {
           {dossier && (
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-white text-sm flex items-center gap-2">
+                <CardTitle className="text-[var(--m15-white)] text-sm flex items-center gap-2">
                   <Heart className="h-4 w-4 text-rose-400" />
                   Dossier médical
                 </CardTitle>
@@ -251,7 +251,7 @@ export default function GestionConsultation() {
           {/* Horaires */}
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
+              <CardTitle className="text-[var(--m15-white)] text-sm flex items-center gap-2">
                 <Clock className="h-4 w-4 text-yellow-400" />
                 Horaires
               </CardTitle>
@@ -287,7 +287,7 @@ export default function GestionConsultation() {
         <div className="md:col-span-2 space-y-4">
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-white text-base">Motif : {consultation.motif}</CardTitle>
+              <CardTitle className="text-[var(--m15-white)] text-base">Motif : {consultation.motif}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -297,7 +297,7 @@ export default function GestionConsultation() {
                   onChange={e => setSymptomes(e.target.value)}
                   disabled={!isEditable}
                   placeholder="Décrire les symptômes…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none disabled:opacity-60"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none disabled:opacity-60"
                   rows={3}
                 />
               </div>
@@ -312,7 +312,7 @@ export default function GestionConsultation() {
                   onChange={e => setTraitement(e.target.value)}
                   disabled={!isEditable}
                   placeholder="Soins effectués…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none disabled:opacity-60"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none disabled:opacity-60"
                   rows={3}
                 />
               </div>
@@ -324,20 +324,20 @@ export default function GestionConsultation() {
                   onChange={e => setMedicaments(e.target.value)}
                   disabled={!isEditable}
                   placeholder="Ex: Paracétamol 500mg × 2…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 disabled:opacity-60"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 disabled:opacity-60"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label className="text-slate-300">Statut</Label>
                 <Select value={statut} onValueChange={setStatut} disabled={!isEditable}>
-                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white disabled:opacity-60">
+                  <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)] disabled:opacity-60">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-800 border-slate-700">
-                    <SelectItem value="en_cours" className="text-white focus:bg-slate-700">En cours</SelectItem>
-                    <SelectItem value="renvoye_domicile" className="text-white focus:bg-slate-700">Renvoyé à domicile</SelectItem>
-                    <SelectItem value="hospitalise" className="text-white focus:bg-slate-700">Hospitalisé</SelectItem>
+                    <SelectItem value="en_cours" className="text-[var(--m15-white)] focus:bg-slate-700">En cours</SelectItem>
+                    <SelectItem value="renvoye_domicile" className="text-[var(--m15-white)] focus:bg-slate-700">Renvoyé à domicile</SelectItem>
+                    <SelectItem value="hospitalise" className="text-[var(--m15-white)] focus:bg-slate-700">Hospitalisé</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -349,7 +349,7 @@ export default function GestionConsultation() {
                   onChange={e => setObservations(e.target.value)}
                   disabled={!isEditable}
                   placeholder="Notes supplémentaires…"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none disabled:opacity-60"
+                  className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none disabled:opacity-60"
                   rows={2}
                 />
               </div>
@@ -361,7 +361,7 @@ export default function GestionConsultation() {
                     onClick={handleSave}
                     disabled={isUpdating}
                     variant="outline"
-                    className="flex-1 border-slate-600 text-slate-300 hover:text-white gap-2"
+                    className="flex-1 border-slate-600 text-slate-300 hover:text-[var(--m15-white)] gap-2"
                   >
                     {saved ? (
                       <><CheckCircle className="h-4 w-4 text-emerald-400" /> Sauvegardé</>
@@ -373,7 +373,7 @@ export default function GestionConsultation() {
                     type="button"
                     onClick={handleCloturer}
                     disabled={isCloturing}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-[var(--m15-white)] gap-2"
                   >
                     <CheckCircle className="h-4 w-4" />
                     {isCloturing ? "Clôture…" : "Clôturer et notifier"}

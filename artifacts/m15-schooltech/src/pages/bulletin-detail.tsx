@@ -180,7 +180,7 @@ export default function BulletinDetail() {
             </button>
           )}
           {canPublish && !bulletin.publie && (
-            <button onClick={handlePublier} disabled={publier.isPending} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "#0A1628" }}>
+            <button onClick={handlePublier} disabled={publier.isPending} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
               {publier.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
               Publier
             </button>
@@ -332,7 +332,7 @@ export default function BulletinDetail() {
                 onClick={handleSauvegarderAppreciation}
                 disabled={ajouterApp.isPending}
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold"
-                style={{ background: "#00C9A7", color: "#0A1628" }}
+                style={{ background: "#00C9A7", color: "var(--m15-navy)" }}
               >
                 {ajouterApp.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 Enregistrer

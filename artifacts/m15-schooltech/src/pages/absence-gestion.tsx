@@ -54,7 +54,7 @@ const STATUT_BADGE: Record<string, { label: string; color: string }> = {
   non_justifiee: { label: "Non justifiée", color: "#FF4D6D" },
   en_attente:    { label: "En attente",    color: "#F5C842" },
   justifiee:     { label: "Justifiée",     color: "#00C9A7" },
-  rejetee:       { label: "Rejetée",       color: "#8B9DC3" },
+  rejetee:       { label: "Rejetée",       color: "var(--m15-muted)" },
 };
 
 export default function AbsenceGestion() {
@@ -173,7 +173,7 @@ export default function AbsenceGestion() {
               <span className="hidden sm:inline">{t.label}</span>
               {t.id === "justifs" && justifs.length > 0 && (
                 <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold ml-1"
-                  style={{ background: "#F5C842", color: "#0A1628" }}>{justifs.length}</span>
+                  style={{ background: "#F5C842", color: "var(--m15-navy)" }}>{justifs.length}</span>
               )}
               {t.id === "risque" && elevesRisque.length > 0 && (
                 <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold ml-1"
@@ -249,7 +249,7 @@ export default function AbsenceGestion() {
                   {absences.length === 0 ? (
                     <tr><td colSpan={6} className="px-4 py-8 text-center" style={{ color: "var(--m15-muted)" }}>Aucune absence.</td></tr>
                   ) : absences.map(a => {
-                    const badge = STATUT_BADGE[a.statut] ?? { label: a.statut, color: "#8B9DC3" };
+                    const badge = STATUT_BADGE[a.statut] ?? { label: a.statut, color: "var(--m15-muted)" };
                     return (
                       <tr key={a.id} style={{ borderBottom: "1px solid var(--m15-border)" }}
                         className="transition-colors hover:opacity-90"

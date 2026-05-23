@@ -106,7 +106,7 @@ export default function Censeurs() {
         <button
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
-          style={{ background: "#00C9A7", color: "#0A1628", fontFamily: "'Syne', sans-serif" }}
+          style={{ background: "#00C9A7", color: "var(--m15-navy)", fontFamily: "'Syne', sans-serif" }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "#00b396"}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "#00C9A7"}
         >
@@ -276,7 +276,7 @@ export default function Censeurs() {
               <button
                 onClick={() => { setOpen(false); setNewPassword(null); }}
                 className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all"
-                style={{ background: "#00C9A7", color: "#0A1628" }}>
+                style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
                 Fermer
               </button>
             </div>
@@ -318,7 +318,7 @@ export default function Censeurs() {
                 </button>
                 <button type="submit" disabled={createMutation.isPending}
                   className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: "#00C9A7", color: "#0A1628" }}>
+                  style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
                   {createMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                   Enregistrer
                 </button>

@@ -3,7 +3,7 @@ import { saasApi } from "@/services/saasApi";
 import { RefreshCw, Filter, Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 const C = {
-  navy: "#0A1628", card: "#111E35", cyan: "#00C9A7", gold: "#F5C842",
+  navy: "var(--m15-navy)", card: "var(--m15-card)", cyan: "#00C9A7", gold: "#F5C842",
   blue: "#0080FF", red: "#FF4D6D", muted: "#8B9DC3", border: "rgba(0,201,167,0.15)",
 };
 
@@ -77,7 +77,7 @@ export default function LogsSaas() {
     <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Logs & Activité SaaS</h1>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Logs & Activité SaaS</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>
             {pagination?.total ?? 0} événement(s) au total
           </p>
@@ -169,7 +169,7 @@ export default function LogsSaas() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <p className="text-sm font-medium text-white">
+                          <p className="text-sm font-medium text-[var(--m15-white)]">
                             {l.action.replace(/_/g, " ")}
                           </p>
                           {etabNom && (

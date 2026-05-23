@@ -14,7 +14,7 @@ function BadgeStatut({ statut }: { statut: string }) {
     traite: { color: "#00C9A7", label: "Traité" },
     escalade: { color: "#FF4D6D", label: "Escaladé" },
   };
-  const { color, label } = map[statut] ?? { color: "#8B9DC3", label: statut };
+  const { color, label } = map[statut] ?? { color: "var(--m15-muted)", label: statut };
   return <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ background: `${color}18`, color }}>{label}</span>;
 }
 
@@ -23,9 +23,9 @@ function BadgeSanctionStatut({ statut }: { statut: string }) {
     en_attente: { color: "#F5C842", label: "En attente" },
     validee: { color: "#00C9A7", label: "Validée" },
     executee: { color: "#0080FF", label: "Exécutée" },
-    annulee: { color: "#8B9DC3", label: "Annulée" },
+    annulee: { color: "var(--m15-muted)", label: "Annulée" },
   };
-  const { color, label } = map[statut] ?? { color: "#8B9DC3", label: statut };
+  const { color, label } = map[statut] ?? { color: "var(--m15-muted)", label: statut };
   return <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ background: `${color}18`, color }}>{label}</span>;
 }
 

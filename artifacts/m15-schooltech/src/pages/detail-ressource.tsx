@@ -83,7 +83,7 @@ export default function DetailRessource() {
 
   if (!ressource) {
     return (
-      <div className="min-h-screen bg-[#0A1628] flex flex-col items-center justify-center text-[#8B9DC3]">
+      <div className="min-h-screen bg-[#0A1628] flex flex-col items-center justify-center text-[var(--m15-muted)]">
         <p className="text-lg mb-4">Ressource introuvable</p>
         <Button onClick={() => navigate("/bibliotheque")} variant="outline">
           ← Retour au catalogue
@@ -100,10 +100,10 @@ export default function DetailRessource() {
     : "—";
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white px-6 py-8">
+    <div className="min-h-screen bg-[#0A1628] text-[var(--m15-white)] px-6 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-[#8B9DC3] mb-6">
+        <div className="flex items-center gap-2 text-sm text-[var(--m15-muted)] mb-6">
           <button onClick={() => navigate("/bibliotheque")} className="hover:text-[#00C9A7] flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" /> Bibliothèque
           </button>
@@ -119,7 +119,7 @@ export default function DetailRessource() {
             </>
           )}
           <span>/</span>
-          <span className="text-white truncate">{ressource.titre}</span>
+          <span className="text-[var(--m15-white)] truncate">{ressource.titre}</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -144,7 +144,7 @@ export default function DetailRessource() {
             <Button
               variant="outline"
               className={`w-full border-[rgba(0,201,167,0.3)] h-10 ${
-                ressource.est_favori ? "text-yellow-400 border-yellow-400/30" : "text-[#8B9DC3] hover:text-yellow-400"
+                ressource.est_favori ? "text-yellow-400 border-yellow-400/30" : "text-[var(--m15-muted)] hover:text-yellow-400"
               }`}
               onClick={() => toggleFavori.mutate({ id: id! })}
             >
@@ -153,21 +153,21 @@ export default function DetailRessource() {
             </Button>
 
             <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl p-4 space-y-2 text-sm">
-              <div className="flex justify-between text-[#8B9DC3]">
+              <div className="flex justify-between text-[var(--m15-muted)]">
                 <span>Format</span>
-                <span className="text-white">{ressource.fichier_type ?? "—"}</span>
+                <span className="text-[var(--m15-white)]">{ressource.fichier_type ?? "—"}</span>
               </div>
-              <div className="flex justify-between text-[#8B9DC3]">
+              <div className="flex justify-between text-[var(--m15-muted)]">
                 <span>Taille</span>
-                <span className="text-white">
+                <span className="text-[var(--m15-white)]">
                   {ressource.fichier_taille
                     ? `${Math.round((ressource.fichier_taille / 1024) * 10) / 10} Mo`
                     : "—"}
                 </span>
               </div>
-              <div className="flex justify-between text-[#8B9DC3]">
+              <div className="flex justify-between text-[var(--m15-muted)]">
                 <span>Langue</span>
-                <span className="text-white flex items-center gap-1">
+                <span className="text-[var(--m15-white)] flex items-center gap-1">
                   <Globe className="h-3 w-3" />
                   {ressource.langue === "fr" ? "Français" : (ressource.langue ?? "—")}
                 </span>
@@ -183,48 +183,48 @@ export default function DetailRessource() {
                   {TYPE_LABELS[type]}
                 </Badge>
                 {(ressource.niveau ?? []).map((n) => (
-                  <Badge key={n} className="bg-[#1a2a44] text-[#8B9DC3] border-[rgba(0,201,167,0.2)]">{n}</Badge>
+                  <Badge key={n} className="bg-[#1a2a44] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">{n}</Badge>
                 ))}
               </div>
 
-              <h1 className="font-syne text-2xl font-bold text-white mb-2">{ressource.titre}</h1>
+              <h1 className="font-syne text-2xl font-bold text-[var(--m15-white)] mb-2">{ressource.titre}</h1>
 
               {ressource.auteur && (
-                <p className="text-[#8B9DC3] text-sm mb-1">
-                  Document rédigé par <span className="text-white">{ressource.auteur}</span>
+                <p className="text-[var(--m15-muted)] text-sm mb-1">
+                  Document rédigé par <span className="text-[var(--m15-white)]">{ressource.auteur}</span>
                 </p>
               )}
               {ressource.auteur_nom && (
-                <p className="text-[#8B9DC3] text-sm">
-                  Ajouté par <span className="text-white">{ressource.auteur_nom}</span>
-                  {ressource.auteur_role && <span className="text-[#8B9DC3]"> · {ressource.auteur_role}</span>}
+                <p className="text-[var(--m15-muted)] text-sm">
+                  Ajouté par <span className="text-[var(--m15-white)]">{ressource.auteur_nom}</span>
+                  {ressource.auteur_role && <span className="text-[var(--m15-muted)]"> · {ressource.auteur_role}</span>}
                 </p>
               )}
             </div>
 
             {ressource.description && (
               <div>
-                <h3 className="text-sm font-semibold text-[#8B9DC3] uppercase tracking-wide mb-2">Description</h3>
-                <p className="text-[#8B9DC3] leading-relaxed">{ressource.description}</p>
+                <h3 className="text-sm font-semibold text-[var(--m15-muted)] uppercase tracking-wide mb-2">Description</h3>
+                <p className="text-[var(--m15-muted)] leading-relaxed">{ressource.description}</p>
               </div>
             )}
 
             {ressource.matiere_nom && (
               <div>
-                <h3 className="text-sm font-semibold text-[#8B9DC3] uppercase tracking-wide mb-2">Matière</h3>
+                <h3 className="text-sm font-semibold text-[var(--m15-muted)] uppercase tracking-wide mb-2">Matière</h3>
                 <Badge className="bg-[#1a2a44] text-[#00C9A7] border-[rgba(0,201,167,0.3)]">{ressource.matiere_nom}</Badge>
               </div>
             )}
 
             {ressource.mots_cles && ressource.mots_cles.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-[#8B9DC3] uppercase tracking-wide mb-2">Mots-clés</h3>
+                <h3 className="text-sm font-semibold text-[var(--m15-muted)] uppercase tracking-wide mb-2">Mots-clés</h3>
                 <div className="flex flex-wrap gap-2">
                   {ressource.mots_cles.map((kw) => (
                     <button
                       key={kw}
                       onClick={() => navigate(`/bibliotheque?q=${encodeURIComponent(kw)}`)}
-                      className="text-xs bg-[#1a2a44] text-[#8B9DC3] px-2.5 py-1 rounded-full border border-[rgba(0,201,167,0.15)] hover:border-[#00C9A7] hover:text-white transition-colors"
+                      className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-2.5 py-1 rounded-full border border-[rgba(0,201,167,0.15)] hover:border-[#00C9A7] hover:text-[var(--m15-white)] transition-colors"
                     >
                       #{kw}
                     </button>
@@ -233,7 +233,7 @@ export default function DetailRessource() {
               </div>
             )}
 
-            <div className="flex items-center gap-6 text-sm text-[#8B9DC3]">
+            <div className="flex items-center gap-6 text-sm text-[var(--m15-muted)]">
               <span className="flex items-center gap-1.5">
                 <Eye className="h-4 w-4" /> {ressource.nb_consultations ?? 0} consultation{(ressource.nb_consultations ?? 0) !== 1 ? "s" : ""}
               </span>
@@ -264,8 +264,8 @@ export default function DetailRessource() {
                       <div className="h-20 rounded-lg bg-[#1a2a44] flex items-center justify-center text-[#00C9A7] mb-2">
                         <div className="opacity-40">{TYPE_ICONS[rType]}</div>
                       </div>
-                      <p className="text-xs font-semibold text-white line-clamp-2">{r.titre}</p>
-                      <p className="text-xs text-[#8B9DC3] mt-1">{TYPE_LABELS[rType]}</p>
+                      <p className="text-xs font-semibold text-[var(--m15-white)] line-clamp-2">{r.titre}</p>
+                      <p className="text-xs text-[var(--m15-muted)] mt-1">{TYPE_LABELS[rType]}</p>
                     </CardContent>
                   </Card>
                 );

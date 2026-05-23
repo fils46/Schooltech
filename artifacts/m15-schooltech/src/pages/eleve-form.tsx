@@ -169,7 +169,7 @@ function EtapeParent({ data, onChange }: { data: ParentData; onChange: (d: Parti
           onClick={() => onChange({ est_principal: !data.est_principal })}>
           <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-all"
             style={{ background: data.est_principal ? "#00C9A7" : "transparent", border: `2px solid ${data.est_principal ? "#00C9A7" : "var(--m15-border)"}` }}>
-            {data.est_principal && <Check className="w-3 h-3 text-white" />}
+            {data.est_principal && <Check className="w-3 h-3 text-[var(--m15-white)]" />}
           </div>
           <span className="text-sm" style={{ color: "var(--m15-muted)" }}>Est le contact principal</span>
         </div>
@@ -252,7 +252,7 @@ function EtapeRecap({
         onClick={() => setConfirme(!confirme)}>
         <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
           style={{ background: confirme ? "#00C9A7" : "transparent", border: `2px solid ${confirme ? "#00C9A7" : "var(--m15-border)"}` }}>
-          {confirme && <Check className="w-3 h-3 text-white" />}
+          {confirme && <Check className="w-3 h-3 text-[var(--m15-white)]" />}
         </div>
         <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
           Je confirme l'exactitude des informations saisies et autorise la création des comptes élève et parent.

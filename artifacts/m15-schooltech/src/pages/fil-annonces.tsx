@@ -272,7 +272,7 @@ function AnnonceCard({ annonce, onClick }: { annonce: AnnonceItem; onClick: (id:
               {annonce.titre}
               {!annonce.lu && (
                 <span className="ml-2 px-1.5 py-0.5 rounded-full text-xs font-bold"
-                  style={{ background: "#00C9A7", color: "#0A1628" }}>
+                  style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
                   Nouveau
                 </span>
               )}

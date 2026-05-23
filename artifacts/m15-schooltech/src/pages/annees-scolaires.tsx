@@ -23,7 +23,7 @@ function Badge({ active }: { active: boolean }) {
     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
       style={active
         ? { background: "rgba(0,201,167,0.15)", color: "#00C9A7" }
-        : { background: "rgba(139,157,195,0.12)", color: "#8B9DC3" }}>
+        : { background: "rgba(139,157,195,0.12)", color: "var(--m15-muted)" }}>
       {active ? <CheckCircle className="w-3 h-3" /> : <Circle className="w-3 h-3" />}
       {active ? "En cours" : "Inactive"}
     </span>

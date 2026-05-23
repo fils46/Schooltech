@@ -45,7 +45,7 @@ export default function MesClubs() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
           <Trophy className="h-7 w-7 text-yellow-400" /> Mes Clubs
         </h1>
         <p className="text-slate-400 text-sm mt-1">Vos activités parascolaires</p>
@@ -53,7 +53,7 @@ export default function MesClubs() {
 
       {/* Clubs actifs */}
       <section className="space-y-3">
-        <h2 className="text-white font-semibold text-lg flex items-center gap-2">
+        <h2 className="text-[var(--m15-white)] font-semibold text-lg flex items-center gap-2">
           <Users className="h-5 w-5 text-cyan-400" /> Mes clubs actifs
         </h2>
         {clubsActifs.length === 0 ? (
@@ -85,7 +85,7 @@ export default function MesClubs() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-white font-semibold truncate">{club.nom}</p>
+                        <p className="text-[var(--m15-white)] font-semibold truncate">{club.nom}</p>
                         <p className="text-slate-400 text-xs">{club.responsable_nom}</p>
                       </div>
                       <Badge variant="outline" className={ROLE_COLORS[club.mon_role] ?? ""}>{club.mon_role}</Badge>
@@ -104,7 +104,7 @@ export default function MesClubs() {
                       <div className="bg-slate-700/50 rounded-lg p-2">
                         {club.prochaine_activite ? (
                           <>
-                            <p className="text-white font-bold text-sm">{new Date(club.prochaine_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</p>
+                            <p className="text-[var(--m15-white)] font-bold text-sm">{new Date(club.prochaine_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</p>
                             <p className="text-slate-400 text-xs">Prochaine</p>
                           </>
                         ) : (
@@ -126,7 +126,7 @@ export default function MesClubs() {
       {/* Demandes en attente */}
       {demandesEnAttente.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-white font-semibold text-lg flex items-center gap-2">
+          <h2 className="text-[var(--m15-white)] font-semibold text-lg flex items-center gap-2">
             <Clock className="h-5 w-5 text-yellow-400" /> Demandes en attente ({demandesEnAttente.length})
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -134,7 +134,7 @@ export default function MesClubs() {
               <Card key={club.id} className="bg-slate-800 border-yellow-500/30 border">
                 <CardContent className="p-4 flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-white font-medium">{club.nom}</p>
+                    <p className="text-[var(--m15-white)] font-medium">{club.nom}</p>
                     <p className="text-slate-400 text-sm">{club.responsable_nom}</p>
                   </div>
                   <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30 shrink-0" variant="outline">En attente</Badge>
@@ -148,7 +148,7 @@ export default function MesClubs() {
       {/* Mes distinctions */}
       {distinctions.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-white font-semibold text-lg flex items-center gap-2">
+          <h2 className="text-[var(--m15-white)] font-semibold text-lg flex items-center gap-2">
             <Star className="h-5 w-5 text-yellow-400" /> Mes distinctions
           </h2>
           <div className="space-y-3">

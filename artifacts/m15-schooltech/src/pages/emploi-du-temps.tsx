@@ -65,7 +65,7 @@ function Select({
       >
         {placeholder && <option value="">{placeholder}</option>}
         {options.map(o => (
-          <option key={o.value} value={o.value} style={{ background: "#111E35", color: "#fff" }}>
+          <option key={o.value} value={o.value} style={{ background: "var(--m15-card)", color: "#fff" }}>
             {o.label}
           </option>
         ))}
@@ -1289,25 +1289,25 @@ export default function EmploiDuTemps() {
       <Tabs defaultValue="grille" className="space-y-5">
         <TabsList className="rounded-xl p-1 gap-1"
           style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
-          <TabsTrigger value="grille" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-white"
+          <TabsTrigger value="grille" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-[var(--m15-white)]"
             style={{ fontFamily: "'DM Sans', sans-serif" }}>
             <Calendar className="w-4 h-4" />
             Grille
           </TabsTrigger>
           {canManageInfra && (
-            <TabsTrigger value="creneaux" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-white">
+            <TabsTrigger value="creneaux" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-[var(--m15-white)]">
               <Clock className="w-4 h-4" />
               Créneaux
             </TabsTrigger>
           )}
           {canManageInfra && (
-            <TabsTrigger value="salles" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-white">
+            <TabsTrigger value="salles" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-[var(--m15-white)]">
               <Building2 className="w-4 h-4" />
               Salles
             </TabsTrigger>
           )}
           {canManageInfra && (
-            <TabsTrigger value="conflits" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-white">
+            <TabsTrigger value="conflits" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all data-[state=active]:text-[var(--m15-white)]">
               <AlertTriangle className="w-4 h-4" />
               Conflits
             </TabsTrigger>

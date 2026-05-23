@@ -145,8 +145,8 @@ export default function AnalysePresences() {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.15)" />
                   <XAxis dataKey="semaine" tick={{ fill: "#8B9DC3", fontSize: 10 }} tickFormatter={(v: string) => v.slice(5)} />
                   <YAxis tick={{ fill: "#8B9DC3", fontSize: 11 }} />
-                  <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} />
-                  <Legend wrapperStyle={{ color: "#8B9DC3", fontSize: 12 }} />
+                  <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} />
+                  <Legend wrapperStyle={{ color: "var(--m15-muted)", fontSize: 12 }} />
                   <Bar dataKey="justifiee" name="Justifiées" stackId="a" fill="#00C9A7" />
                   <Bar dataKey="non_justifiee" name="Non justifiées" stackId="a" fill="#FF4D6D" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -173,7 +173,7 @@ export default function AnalysePresences() {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.15)" />
                   <XAxis dataKey="jour" tick={{ fill: "#8B9DC3", fontSize: 11 }} tickFormatter={(v: string) => v.slice(0, 3)} />
                   <YAxis tick={{ fill: "#8B9DC3", fontSize: 11 }} />
-                  <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#0080FF" }} />
+                  <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#0080FF" }} />
                   <Bar dataKey="count" name="Nb absences" fill="#0080FF" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -194,7 +194,7 @@ export default function AnalysePresences() {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.15)" />
                 <XAxis type="number" tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                 <YAxis type="category" dataKey="matiere" tick={{ fill: "#8B9DC3", fontSize: 11 }} width={100} />
-                <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#F5C842" }} />
+                <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#F5C842" }} />
                 <Bar dataKey="count" name="Nb absences" fill="#F5C842" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>

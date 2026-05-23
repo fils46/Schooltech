@@ -25,7 +25,7 @@ function moyenneColor(moy: number | null): string {
 }
 
 function moyenneBadge(moy: number | null) {
-  if (moy == null) return { label: "—", color: "#8B9DC3" };
+  if (moy == null) return { label: "—", color: "var(--m15-muted)" };
   if (moy < 8) return { label: "Critique", color: "#FF4D6D" };
   if (moy < 10) return { label: "Insuffisant", color: "#F5C842" };
   if (moy < 12) return { label: "Passable", color: "#00C9A7" };
@@ -155,7 +155,7 @@ export default function AnalysePedagogique() {
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.15)" />
                       <XAxis dataKey="nom" tick={{ fill: "#8B9DC3", fontSize: 11 }} angle={-30} textAnchor="end" />
                       <YAxis domain={[0, 20]} tick={{ fill: "#8B9DC3", fontSize: 11 }} />
-                      <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#00C9A7" }} />
+                      <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#00C9A7" }} />
                       <ReferenceLine y={10} stroke="#FF4D6D" strokeDasharray="4 4" label={{ value: "10", fill: "#FF4D6D", fontSize: 11 }} />
                       <Bar dataKey="moyenne" name="Moyenne /20" fill="#00C9A7" radius={[4, 4, 0, 0]} />
                     </BarChart>
@@ -212,7 +212,7 @@ export default function AnalysePedagogique() {
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.15)" />
                       <XAxis type="number" domain={[0, 20]} tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                       <YAxis type="category" dataKey="matiere" tick={{ fill: "#8B9DC3", fontSize: 11 }} width={90} />
-                      <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#F5C842" }} />
+                      <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} labelStyle={{ color: "#fff" }} itemStyle={{ color: "#F5C842" }} />
                       <ReferenceLine x={10} stroke="#FF4D6D" strokeDasharray="4 4" />
                       <Bar dataKey="moyenne" name="Moyenne /20" fill="#F5C842" radius={[0, 4, 4, 0]} />
                     </BarChart>

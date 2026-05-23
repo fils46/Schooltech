@@ -107,8 +107,8 @@ export default function AdminBibliotheque() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="mb-6">
-        <h1 className="font-syne text-2xl font-bold text-white">Administration bibliothèque</h1>
-        <p className="text-[#8B9DC3] text-sm mt-1">Validation, gestion et statistiques des ressources</p>
+        <h1 className="font-syne text-2xl font-bold text-[var(--m15-white)]">Administration bibliothèque</h1>
+        <p className="text-[var(--m15-muted)] text-sm mt-1">Validation, gestion et statistiques des ressources</p>
       </div>
 
       {/* Stats cards */}
@@ -118,7 +118,7 @@ export default function AdminBibliotheque() {
             <CardContent className="p-4">
               <div className={`${s.color} mb-2`}>{s.icon}</div>
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-xs text-[#8B9DC3] mt-0.5">{s.label}</p>
+              <p className="text-xs text-[var(--m15-muted)] mt-0.5">{s.label}</p>
             </CardContent>
           </Card>
         ))}
@@ -133,7 +133,7 @@ export default function AdminBibliotheque() {
             className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               tab === t
                 ? "border-[#00C9A7] text-[#00C9A7]"
-                : "border-transparent text-[#8B9DC3] hover:text-white"
+                : "border-transparent text-[var(--m15-muted)] hover:text-[var(--m15-white)]"
             }`}
           >
             {t === "attente" ? `En attente (${enAttente.length})` : t === "toutes" ? "Toutes les ressources" : "Statistiques"}
@@ -148,7 +148,7 @@ export default function AdminBibliotheque() {
             {[1, 2].map((i) => <div key={i} className="h-32 bg-[#111E35] rounded-xl animate-pulse" />)}
           </div>
         ) : enAttente.length === 0 ? (
-          <div className="text-center py-16 text-[#8B9DC3] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.1)]">
+          <div className="text-center py-16 text-[var(--m15-muted)] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.1)]">
             <Check className="h-10 w-10 mx-auto mb-3 opacity-20" />
             <p className="font-medium">Aucune ressource en attente</p>
           </div>
@@ -164,14 +164,14 @@ export default function AdminBibliotheque() {
                         {TYPE_ICONS[type]}
                       </div>
                       <div className="min-w-0">
-                        <p className="font-semibold text-white truncate">{r.titre}</p>
-                        <p className="text-sm text-[#8B9DC3]">
-                          {TYPE_LABELS[type]} · {(r.niveau ?? []).join(", ")} · par <span className="text-white">{r.auteur_nom ?? "—"}</span>
+                        <p className="font-semibold text-[var(--m15-white)] truncate">{r.titre}</p>
+                        <p className="text-sm text-[var(--m15-muted)]">
+                          {TYPE_LABELS[type]} · {(r.niveau ?? []).join(", ")} · par <span className="text-[var(--m15-white)]">{r.auteur_nom ?? "—"}</span>
                         </p>
                         {r.description && (
-                          <p className="text-xs text-[#8B9DC3] mt-1 line-clamp-2">{r.description}</p>
+                          <p className="text-xs text-[var(--m15-muted)] mt-1 line-clamp-2">{r.description}</p>
                         )}
-                        <p className="text-xs text-[#8B9DC3] mt-1">
+                        <p className="text-xs text-[var(--m15-muted)] mt-1">
                           Déposé le {r.created_at ? new Date(r.created_at).toLocaleDateString("fr-FR") : "—"}
                         </p>
                       </div>
@@ -187,7 +187,7 @@ export default function AdminBibliotheque() {
                       </Button>
                       <button
                         onClick={() => r.id && setDeleteId(r.id)}
-                        className="p-1.5 text-[#8B9DC3] hover:text-red-400 transition-colors"
+                        className="p-1.5 text-[var(--m15-muted)] hover:text-red-400 transition-colors"
                         title="Refuser et supprimer"
                       >
                         <X className="h-4 w-4" />
@@ -212,11 +212,11 @@ export default function AdminBibliotheque() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[rgba(0,201,167,0.1)]">
-                  <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Titre</th>
-                  <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Type</th>
-                  <th className="text-left px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Statut</th>
-                  <th className="text-right px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">Consult.</th>
-                  <th className="text-right px-4 py-3 text-xs text-[#8B9DC3] uppercase tracking-wide">DL</th>
+                  <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Titre</th>
+                  <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Type</th>
+                  <th className="text-left px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Statut</th>
+                  <th className="text-right px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">Consult.</th>
+                  <th className="text-right px-4 py-3 text-xs text-[var(--m15-muted)] uppercase tracking-wide">DL</th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>
@@ -224,10 +224,10 @@ export default function AdminBibliotheque() {
                 {toutes.map((r) => (
                   <tr key={r.id} className="border-b border-[rgba(0,201,167,0.05)] last:border-0 hover:bg-[rgba(0,201,167,0.03)]">
                     <td className="px-4 py-3">
-                      <p className="text-white text-sm font-medium truncate max-w-[200px]">{r.titre}</p>
-                      <p className="text-xs text-[#8B9DC3]">{r.auteur_nom}</p>
+                      <p className="text-[var(--m15-white)] text-sm font-medium truncate max-w-[200px]">{r.titre}</p>
+                      <p className="text-xs text-[var(--m15-muted)]">{r.auteur_nom}</p>
                     </td>
-                    <td className="px-4 py-3 text-sm text-[#8B9DC3]">{TYPE_LABELS[r.type ?? "autre"]}</td>
+                    <td className="px-4 py-3 text-sm text-[var(--m15-muted)]">{TYPE_LABELS[r.type ?? "autre"]}</td>
                     <td className="px-4 py-3">
                       <div className="flex flex-col gap-1">
                         <Badge className={`text-xs border w-fit ${r.valide ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/30" : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"}`}>
@@ -238,8 +238,8 @@ export default function AdminBibliotheque() {
                         </Badge>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right text-sm text-[#8B9DC3]">{r.nb_consultations ?? 0}</td>
-                    <td className="px-4 py-3 text-right text-sm text-[#8B9DC3]">{r.nb_telechargements ?? 0}</td>
+                    <td className="px-4 py-3 text-right text-sm text-[var(--m15-muted)]">{r.nb_consultations ?? 0}</td>
+                    <td className="px-4 py-3 text-right text-sm text-[var(--m15-muted)]">{r.nb_telechargements ?? 0}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5 justify-end">
                         <button
@@ -254,11 +254,11 @@ export default function AdminBibliotheque() {
                         </button>
                         <button
                           onClick={() => navigate(`/bibliotheque/ressource/${r.id}/stats`)}
-                          className="p-1.5 text-[#8B9DC3] hover:text-[#F5C842]"
+                          className="p-1.5 text-[var(--m15-muted)] hover:text-[#F5C842]"
                         >
                           <BarChart2 className="h-4 w-4" />
                         </button>
-                        <button onClick={() => r.id && setDeleteId(r.id)} className="p-1.5 text-[#8B9DC3] hover:text-red-400">
+                        <button onClick={() => r.id && setDeleteId(r.id)} className="p-1.5 text-[var(--m15-muted)] hover:text-red-400">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -282,7 +282,7 @@ export default function AdminBibliotheque() {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(139,157,195,0.1)" />
                   <XAxis dataKey="date" tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                   <YAxis tick={{ fill: "#8B9DC3", fontSize: 11 }} />
-                  <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} />
+                  <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} />
                   <Legend />
                   <Line type="monotone" dataKey="consultations" stroke="#00C9A7" name="Consultations" dot={false} strokeWidth={2} />
                   <Line type="monotone" dataKey="telechargements" stroke="#F5C842" name="Téléchargements" dot={false} strokeWidth={2} />
@@ -301,7 +301,7 @@ export default function AdminBibliotheque() {
                     <XAxis type="number" tick={{ fill: "#8B9DC3", fontSize: 11 }} />
                     <YAxis dataKey="type" type="category" tick={{ fill: "#8B9DC3", fontSize: 11 }} width={70}
                       tickFormatter={(v: string) => TYPE_LABELS[v] ?? v} />
-                    <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} />
+                    <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.2)", borderRadius: 8 }} />
                     <Bar dataKey="total" fill="#00C9A7" radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -319,10 +319,10 @@ export default function AdminBibliotheque() {
                     const consult = r.nb_consultations ?? 0;
                     return (
                       <div key={r.id} className="flex items-center gap-3">
-                        <span className="text-lg font-bold text-[#8B9DC3] w-5 shrink-0">{i + 1}</span>
+                        <span className="text-lg font-bold text-[var(--m15-muted)] w-5 shrink-0">{i + 1}</span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white truncate">{r.titre}</p>
-                          <p className="text-xs text-[#8B9DC3]">{consult} consultations</p>
+                          <p className="text-sm text-[var(--m15-white)] truncate">{r.titre}</p>
+                          <p className="text-xs text-[var(--m15-muted)]">{consult} consultations</p>
                         </div>
                         <div className="h-1.5 bg-[#1a2a44] rounded-full w-20 shrink-0">
                           <div
@@ -341,20 +341,20 @@ export default function AdminBibliotheque() {
       )}
 
       <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-white">
+        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer cette ressource ?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[#8B9DC3]">
+            <AlertDialogDescription className="text-[var(--m15-muted)]">
               Cette action est irréversible. La ressource sera définitivement retirée de la bibliothèque.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-[rgba(0,201,167,0.2)] text-[#8B9DC3] hover:text-white bg-transparent">
+            <AlertDialogCancel className="border-[rgba(0,201,167,0.2)] text-[var(--m15-muted)] hover:text-[var(--m15-white)] bg-transparent">
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteId && supprimer.mutate({ id: deleteId })}
-              className="bg-red-500 hover:bg-red-600 text-white"
+              className="bg-red-500 hover:bg-red-600 text-[var(--m15-white)]"
             >
               Supprimer
             </AlertDialogAction>

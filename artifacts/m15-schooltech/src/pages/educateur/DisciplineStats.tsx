@@ -20,7 +20,7 @@ function StatCard({ label, value, icon: Icon, color, badge }: { label: string; v
           </div>
           {badge !== undefined && badge > 0 && (
             <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold animate-pulse"
-              style={{ background: color, color: "#0A1628" }}>
+              style={{ background: color, color: "var(--m15-navy)" }}>
               {badge}
             </span>
           )}
@@ -93,7 +93,7 @@ export default function DisciplineStats() {
               <BarChart data={parType} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                 <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#8B9DC3" }} />
                 <YAxis tick={{ fontSize: 10, fill: "#8B9DC3" }} allowDecimals={false} />
-                <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
+                <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                   {parType.map((_: any, i: number) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Bar>
@@ -114,7 +114,7 @@ export default function DisciplineStats() {
               <LineChart data={parMois} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                 <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#8B9DC3" }} />
                 <YAxis tick={{ fontSize: 10, fill: "#8B9DC3" }} allowDecimals={false} />
-                <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
+                <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
                 <Line type="monotone" dataKey="value" stroke="#FF4D6D" strokeWidth={2} dot={{ fill: "#FF4D6D", r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
@@ -134,7 +134,7 @@ export default function DisciplineStats() {
                 <Pie data={sanctionsType} cx="50%" cy="50%" innerRadius={55} outerRadius={85} paddingAngle={3} dataKey="value">
                   {sanctionsType.map((_: any, i: number) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Pie>
-                <Tooltip contentStyle={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
+                <Tooltip contentStyle={{ background: "var(--m15-card)", border: "1px solid rgba(0,201,167,0.15)", borderRadius: 12, color: "#fff" }} />
               </PieChart>
             </ResponsiveContainer>
             <div className="flex-1 space-y-2">

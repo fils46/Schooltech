@@ -117,7 +117,7 @@ export default function GestionActivite() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-white gap-2">
+        <Button variant="ghost" size="sm" onClick={() => navigate(`/clubs/${clubId}`)} className="text-slate-400 hover:text-[var(--m15-white)] gap-2">
           <ArrowLeft className="h-4 w-4" /> Retour
         </Button>
       </div>
@@ -129,7 +129,7 @@ export default function GestionActivite() {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-slate-400 text-sm">{activite.club_nom}</p>
-              <h1 className="text-xl font-bold text-white">{activite.titre}</h1>
+              <h1 className="text-xl font-bold text-[var(--m15-white)]">{activite.titre}</h1>
               <div className="flex flex-wrap gap-2 mt-2">
                 <span className="text-slate-400 text-sm">
                   📅 {new Date(activite.date_activite).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" })}
@@ -172,11 +172,11 @@ export default function GestionActivite() {
       {/* Présences */}
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader className="pb-3 flex flex-row items-center justify-between">
-          <CardTitle className="text-white text-base flex items-center gap-2">
+          <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
             <Users className="h-4 w-4 text-cyan-400" /> Présences
           </CardTitle>
           <Button onClick={handleSavePresences} disabled={isSaving || presences.length === 0}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 h-8">
+            className="bg-emerald-600 hover:bg-emerald-700 text-[var(--m15-white)] gap-2 h-8">
             {saved ? <CheckCircle className="h-4 w-4" /> : <Save className="h-4 w-4" />}
             {isSaving ? "Enregistrement…" : saved ? "Enregistré !" : "Enregistrer"}
           </Button>
@@ -191,19 +191,19 @@ export default function GestionActivite() {
                 {p.eleve_photo ? (
                   <img src={p.eleve_photo} alt="" className="h-9 w-9 rounded-full object-cover shrink-0" />
                 ) : (
-                  <div className="h-9 w-9 rounded-full bg-slate-600 flex items-center justify-center text-xs text-white shrink-0">
+                  <div className="h-9 w-9 rounded-full bg-slate-600 flex items-center justify-center text-xs text-[var(--m15-white)] shrink-0">
                     {(p.eleve_nom ?? "?")[0]}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium">{p.eleve_nom} {p.eleve_prenoms}</p>
+                  <p className="text-[var(--m15-white)] text-sm font-medium">{p.eleve_nom} {p.eleve_prenoms}</p>
                   {p.classe_nom && <p className="text-slate-500 text-xs">{p.classe_nom}</p>}
                   {!present && (
                     <Input
                       value={motifsLocaux[p.eleve_id] ?? p.motif_absence ?? ""}
                       onChange={e => setMotifsLocaux(prev => ({ ...prev, [p.eleve_id]: e.target.value }))}
                       placeholder="Motif d'absence (optionnel)"
-                      className="mt-1 h-7 text-xs bg-slate-700 border-slate-600 text-white placeholder:text-slate-500"
+                      className="mt-1 h-7 text-xs bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-500"
                     />
                   )}
                 </div>
@@ -226,14 +226,14 @@ export default function GestionActivite() {
       {/* Compte-rendu */}
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader className="pb-3">
-          <CardTitle className="text-white text-base">Compte-rendu de l'activité</CardTitle>
+          <CardTitle className="text-[var(--m15-white)] text-base">Compte-rendu de l'activité</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <Textarea
             value={notes || activite.notes_compte_rendu || ""}
             onChange={e => setNotes(e.target.value)}
             placeholder="Résumé, observations, résultats de l'activité…"
-            className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 min-h-28"
+            className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 min-h-28"
           />
           <div className="flex gap-3">
             <Button onClick={handleSaveNotes} disabled={isUpdating} variant="outline" className="border-slate-600 text-slate-300 gap-2">
@@ -248,7 +248,7 @@ export default function GestionActivite() {
 
       {/* Modal distinction */}
       <Dialog open={showDistinction} onOpenChange={setShowDistinction}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white">
+        <DialogContent className="bg-slate-800 border-slate-700 text-[var(--m15-white)]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-yellow-400">
               <Star className="h-5 w-5" /> Attribuer une distinction
@@ -258,12 +258,12 @@ export default function GestionActivite() {
             <div className="space-y-2">
               <Label className="text-slate-300">Membre</Label>
               <Select value={distForm.eleve_id} onValueChange={v => setDistForm(f => ({ ...f, eleve_id: v }))}>
-                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-[var(--m15-white)]">
                   <SelectValue placeholder="Sélectionner un membre…" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {presences.map(p => (
-                    <SelectItem key={p.eleve_id} value={p.eleve_id} className="text-white focus:bg-slate-700">
+                    <SelectItem key={p.eleve_id} value={p.eleve_id} className="text-[var(--m15-white)] focus:bg-slate-700">
                       {p.eleve_nom} {p.eleve_prenoms}
                     </SelectItem>
                   ))}
@@ -273,17 +273,17 @@ export default function GestionActivite() {
             <div className="space-y-2">
               <Label className="text-slate-300">Titre de la distinction</Label>
               <Input value={distForm.titre} onChange={e => setDistForm(f => ({ ...f, titre: e.target.value }))}
-                placeholder="Ex : Meilleur joueur, MVP…" className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                placeholder="Ex : Meilleur joueur, MVP…" className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
             <div className="space-y-2">
               <Label className="text-slate-300">Description (optionnel)</Label>
               <Textarea value={distForm.description} onChange={e => setDistForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Précisions sur la distinction…" className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400" />
+                placeholder="Précisions sur la distinction…" className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400" />
             </div>
             <div className="space-y-2">
               <Label className="text-slate-300">Date d'obtention</Label>
               <Input type="date" value={distForm.date_obtention} onChange={e => setDistForm(f => ({ ...f, date_obtention: e.target.value }))}
-                className="bg-slate-700 border-slate-600 text-white" />
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]" />
             </div>
           </div>
           <DialogFooter>

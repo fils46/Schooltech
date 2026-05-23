@@ -135,7 +135,7 @@ function ModalFiliere({
           </button>
           <button onClick={submit} disabled={creerMut.isPending || modifMut.isPending}
             className="flex-1 py-2.5 rounded-xl text-sm font-bold"
-            style={{ background: "#F5C842", color: "#0A1628" }}>
+            style={{ background: "#F5C842", color: "var(--m15-navy)" }}>
             {creerMut.isPending || modifMut.isPending ? "..." : isEdit ? "Modifier" : "Créer"}
           </button>
         </div>
@@ -193,7 +193,7 @@ export default function Filieres() {
         {canEdit && (
           <button onClick={() => setShowModal(true)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold"
-            style={{ background: "#F5C842", color: "#0A1628" }}>
+            style={{ background: "#F5C842", color: "var(--m15-navy)" }}>
             <Plus className="w-4 h-4" />
             Nouvelle filière
           </button>
@@ -253,7 +253,7 @@ export default function Filieres() {
                         {filiere.code}
                       </span>
                       {!filiere.actif && (
-                        <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "rgba(139,157,195,0.15)", color: "#8B9DC3" }}>
+                        <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "rgba(139,157,195,0.15)", color: "var(--m15-muted)" }}>
                           Inactive
                         </span>
                       )}

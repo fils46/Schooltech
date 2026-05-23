@@ -237,7 +237,7 @@ export default function MatiereConfig() {
                   onClick={handleAjouter}
                   disabled={configurer.isPending}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: "#00C9A7", color: "#0A1628" }}
+                  style={{ background: "#00C9A7", color: "var(--m15-navy)" }}
                 >
                   {configurer.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Enregistrer
@@ -338,7 +338,7 @@ export default function MatiereConfig() {
                   onClick={handleModifier}
                   disabled={modifier.isPending}
                   className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold"
-                  style={{ background: "#00C9A7", color: "#0A1628" }}
+                  style={{ background: "#00C9A7", color: "var(--m15-navy)" }}
                 >
                   {modifier.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Enregistrer

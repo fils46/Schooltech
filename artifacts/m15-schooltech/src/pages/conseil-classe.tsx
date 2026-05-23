@@ -196,7 +196,7 @@ export default function ConseilClasse() {
           <button
             onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm"
-            style={{ background: "#00C9A7", color: "#0A1628" }}
+            style={{ background: "#00C9A7", color: "var(--m15-navy)" }}
           >
             <Plus className="w-4 h-4" /> Planifier un conseil
           </button>
@@ -463,7 +463,7 @@ export default function ConseilClasse() {
                 Annuler
               </button>
               <button onClick={handlePlanifier} disabled={planifier.isPending}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "#0A1628" }}>
+                className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
                 {planifier.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calendar className="w-4 h-4" />}
                 Planifier
               </button>
@@ -492,7 +492,7 @@ export default function ConseilClasse() {
                 Annuler
               </button>
               <button onClick={handleTerminer} disabled={terminer.isPending}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "#0A1628" }}>
+                className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold" style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>
                 {terminer.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
                 Confirmer
               </button>

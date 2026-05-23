@@ -59,16 +59,16 @@ export default function MesRessources() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="mb-6">
-        <h1 className="font-syne text-2xl font-bold text-white">Mes ressources</h1>
-        <p className="text-[#8B9DC3] text-sm mt-1">Vos favoris et votre historique de consultation</p>
+        <h1 className="font-syne text-2xl font-bold text-[var(--m15-white)]">Mes ressources</h1>
+        <p className="text-[var(--m15-muted)] text-sm mt-1">Vos favoris et votre historique de consultation</p>
       </div>
 
       <Tabs defaultValue="favoris">
         <TabsList className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] mb-6">
-          <TabsTrigger value="favoris" className="data-[state=active]:bg-[#00C9A7] data-[state=active]:text-[#0A1628] text-[#8B9DC3]">
+          <TabsTrigger value="favoris" className="data-[state=active]:bg-[#00C9A7] data-[state=active]:text-[#0A1628] text-[var(--m15-muted)]">
             <Star className="h-4 w-4 mr-2" /> Mes favoris ({favoris.length})
           </TabsTrigger>
-          <TabsTrigger value="historique" className="data-[state=active]:bg-[#00C9A7] data-[state=active]:text-[#0A1628] text-[#8B9DC3]">
+          <TabsTrigger value="historique" className="data-[state=active]:bg-[#00C9A7] data-[state=active]:text-[#0A1628] text-[var(--m15-muted)]">
             <Clock className="h-4 w-4 mr-2" /> Mon historique ({historique.length})
           </TabsTrigger>
         </TabsList>
@@ -80,7 +80,7 @@ export default function MesRessources() {
               {[1, 2, 3].map((i) => <div key={i} className="h-20 bg-[#111E35] rounded-xl animate-pulse" />)}
             </div>
           ) : favoris.length === 0 ? (
-            <div className="text-center py-20 text-[#8B9DC3]">
+            <div className="text-center py-20 text-[var(--m15-muted)]">
               <Star className="h-12 w-12 mx-auto mb-3 opacity-20" />
               <p className="text-lg font-medium mb-1">Aucun favori</p>
               <p className="text-sm mb-4">Parcourez le catalogue et ajoutez des ressources à vos favoris</p>
@@ -104,19 +104,19 @@ export default function MesRessources() {
                       </div>
                       <button
                         onClick={(e) => { e.stopPropagation(); r.id && toggleFavori.mutate({ id: r.id }); }}
-                        className="text-yellow-400 hover:text-[#8B9DC3] transition-colors"
+                        className="text-yellow-400 hover:text-[var(--m15-muted)] transition-colors"
                         title="Retirer des favoris"
                       >
                         <HeartOff className="h-4 w-4" />
                       </button>
                     </div>
-                    <p className="font-semibold text-white text-sm line-clamp-2 mb-1">{r.titre}</p>
-                    {r.auteur && <p className="text-xs text-[#8B9DC3] mb-2">{r.auteur}</p>}
+                    <p className="font-semibold text-[var(--m15-white)] text-sm line-clamp-2 mb-1">{r.titre}</p>
+                    {r.auteur && <p className="text-xs text-[var(--m15-muted)] mb-2">{r.auteur}</p>}
                     <div className="flex items-center justify-between">
-                      <Badge className="text-xs bg-[#1a2a44] text-[#8B9DC3] border-[rgba(0,201,167,0.2)]">
+                      <Badge className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">
                         {TYPE_LABELS[type]}
                       </Badge>
-                      <span className="text-xs text-[#8B9DC3]">
+                      <span className="text-xs text-[var(--m15-muted)]">
                         {(r.niveau ?? []).slice(0, 2).join(", ")}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export default function MesRessources() {
                 className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
                   historiqueFilter === f
                     ? "bg-[#00C9A7] text-[#0A1628] border-[#00C9A7]"
-                    : "border-[rgba(0,201,167,0.2)] text-[#8B9DC3] hover:text-white"
+                    : "border-[rgba(0,201,167,0.2)] text-[var(--m15-muted)] hover:text-[var(--m15-white)]"
                 }`}
               >
                 {f === "tout" ? "Tout" : f === "consultation" ? "Consultations" : "Téléchargements"}
@@ -150,7 +150,7 @@ export default function MesRessources() {
               {[1, 2, 3].map((i) => <div key={i} className="h-16 bg-[#111E35] rounded-xl animate-pulse" />)}
             </div>
           ) : historique.length === 0 ? (
-            <div className="text-center py-20 text-[#8B9DC3]">
+            <div className="text-center py-20 text-[var(--m15-muted)]">
               <Clock className="h-12 w-12 mx-auto mb-3 opacity-20" />
               <p className="text-lg font-medium mb-1">Aucun historique</p>
               <p className="text-sm">Vos consultations et téléchargements apparaîtront ici</p>
@@ -170,8 +170,8 @@ export default function MesRessources() {
                     {h.action === "consultation" ? <Eye className="h-4 w-4" /> : <Download className="h-4 w-4" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium truncate">{h.ressource_titre}</p>
-                    <p className="text-xs text-[#8B9DC3]">
+                    <p className="text-sm text-[var(--m15-white)] font-medium truncate">{h.ressource_titre}</p>
+                    <p className="text-xs text-[var(--m15-muted)]">
                       {h.action === "consultation" ? "Consulté" : "Téléchargé"} ·{" "}
                       {h.created_at
                         ? formatDistanceToNow(new Date(h.created_at), { addSuffix: true, locale: fr })

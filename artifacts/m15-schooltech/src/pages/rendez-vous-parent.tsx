@@ -365,7 +365,7 @@ function DemandeRdvModal({ open, onClose, onSent }: { open: boolean; onClose: ()
                   onClick={() => { setInterlocuteurRole(r); setInterlocuteurId(""); }}
                   className={cn(
                     "flex-1 py-2 rounded-lg text-sm font-medium border transition-colors",
-                    interlocuteurRole === r ? "text-white border-transparent" : "hover:bg-muted"
+                    interlocuteurRole === r ? "text-[var(--m15-white)] border-transparent" : "hover:bg-muted"
                   )}
                   style={interlocuteurRole === r ? { background: "linear-gradient(135deg, #0A1628, #0080FF)" } : {}}
                 >

@@ -124,7 +124,7 @@ export default function Messagerie() {
                 onClick={() => { setTab(t); setSelectedId(null); }}
                 className={cn(
                   "flex-1 flex items-center justify-center gap-1.5 py-2 text-sm font-medium transition-colors",
-                  tab === t ? "text-white" : "text-muted-foreground hover:bg-muted"
+                  tab === t ? "text-[var(--m15-white)]" : "text-muted-foreground hover:bg-muted"
                 )}
                 style={tab === t ? { background: "linear-gradient(135deg, #0A1628, #0080FF)" } : {}}
               >
@@ -185,7 +185,7 @@ export default function Messagerie() {
                       )}
                     >
                       <Avatar className="h-9 w-9 flex-shrink-0">
-                        <AvatarFallback className="text-xs font-semibold" style={{ background: "#0A1628", color: "#00C9A7" }}>
+                        <AvatarFallback className="text-xs font-semibold" style={{ background: "var(--m15-navy)", color: "#00C9A7" }}>
                           {initiales}
                         </AvatarFallback>
                       </Avatar>

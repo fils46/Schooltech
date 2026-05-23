@@ -69,7 +69,7 @@ function ConsultationCard({ c }: { c: ConsultationItem }) {
           <div className="flex items-center gap-3">
             <div className={`h-2 w-2 rounded-full ${c.statut === "en_cours" ? "bg-yellow-400" : c.statut === "hospitalise" ? "bg-red-400" : "bg-emerald-400"}`} />
             <div>
-              <p className="text-white font-medium">{c.motif}</p>
+              <p className="text-[var(--m15-white)] font-medium">{c.motif}</p>
               <p className="text-slate-400 text-sm">
                 {new Date(c.heure_entree).toLocaleDateString("fr-FR", {
                   day: "2-digit",
@@ -171,7 +171,7 @@ export default function ConsultationParent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-[var(--m15-white)] flex items-center gap-2">
           <Heart className="h-7 w-7 text-rose-400" />
           Infirmerie
         </h1>
@@ -185,12 +185,12 @@ export default function ConsultationParent() {
             value={selectedEnfantId || enfantActif?.id || ""}
             onValueChange={setSelectedEnfantId}
           >
-            <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+            <SelectTrigger className="bg-slate-800 border-slate-700 text-[var(--m15-white)]">
               <SelectValue placeholder="Sélectionner un enfant" />
             </SelectTrigger>
             <SelectContent className="bg-slate-800 border-slate-700">
               {enfants.map(e => (
-                <SelectItem key={e.id} value={e.id} className="text-white focus:bg-slate-700">
+                <SelectItem key={e.id} value={e.id} className="text-[var(--m15-white)] focus:bg-slate-700">
                   {e.nom} {e.prenoms}
                 </SelectItem>
               ))}
@@ -210,7 +210,7 @@ export default function ConsultationParent() {
               </div>
             )}
             <div>
-              <p className="text-white text-lg font-bold">{enfantActif.nom} {enfantActif.prenoms}</p>
+              <p className="text-[var(--m15-white)] text-lg font-bold">{enfantActif.nom} {enfantActif.prenoms}</p>
               <p className="text-slate-400 text-sm">Mat. {enfantActif.matricule} · {enfantActif.classe_nom ?? "—"}</p>
             </div>
           </CardContent>
@@ -247,7 +247,7 @@ export default function ConsultationParent() {
 
       {/* Liste des consultations */}
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-[var(--m15-white)] flex items-center gap-2">
           <Activity className="h-5 w-5 text-cyan-400" />
           Historique des consultations
         </h2>

@@ -23,12 +23,12 @@ function StatCard({
   icon: React.ElementType; color: string;
 }) {
   return (
-    <div style={{ background: "#111E35" }} className="rounded-xl p-5 border border-white/5">
+    <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-5 border border-[var(--m15-border)]">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs text-[#8B9DC3] mb-1">{label}</p>
-          <p className="text-2xl font-bold text-white">{value}</p>
-          {sub && <p className="text-xs text-[#8B9DC3] mt-1">{sub}</p>}
+          <p className="text-xs text-[var(--m15-muted)] mb-1">{label}</p>
+          <p className="text-2xl font-bold text-[var(--m15-white)]">{value}</p>
+          {sub && <p className="text-xs text-[var(--m15-muted)] mt-1">{sub}</p>}
         </div>
         <div style={{ background: `${color}20` }} className="p-3 rounded-lg">
           <Icon size={20} style={{ color }} />
@@ -48,8 +48,8 @@ function ModuleCard({
   return (
     <button
       onClick={() => setLocation(path)}
-      style={{ background: "#111E35" }}
-      className="w-full rounded-xl p-5 border border-white/5 hover:border-white/20 transition-all text-left group"
+      style={{ background: "var(--m15-card)" }}
+      className="w-full rounded-xl p-5 border border-[var(--m15-border)] hover:border-[var(--m15-border)] transition-all text-left group"
     >
       <div className="flex items-center justify-between mb-4">
         <div style={{ background: `${color}20` }} className="p-3 rounded-lg">
@@ -61,9 +61,9 @@ function ModuleCard({
           </span>
         )}
       </div>
-      <h3 className="text-white font-semibold mb-1 group-hover:text-[#00C9A7] transition-colors">{titre}</h3>
-      <p className="text-[#8B9DC3] text-sm leading-relaxed">{description}</p>
-      <div className="flex items-center gap-1 mt-3 text-[#8B9DC3] text-xs group-hover:text-[#00C9A7] transition-colors">
+      <h3 className="text-[var(--m15-white)] font-semibold mb-1 group-hover:text-[#00C9A7] transition-colors">{titre}</h3>
+      <p className="text-[var(--m15-muted)] text-sm leading-relaxed">{description}</p>
+      <div className="flex items-center gap-1 mt-3 text-[var(--m15-muted)] text-xs group-hover:text-[#00C9A7] transition-colors">
         <span>Ouvrir</span><ChevronRight size={12} />
       </div>
     </button>
@@ -116,8 +116,8 @@ export default function ExamensDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white mb-1">Préparation aux Examens</h1>
-        <p className="text-[#8B9DC3] text-sm">
+        <h1 className="text-2xl font-bold text-[var(--m15-white)] mb-1">Préparation aux Examens</h1>
+        <p className="text-[var(--m15-muted)] text-sm">
           {isGestionnaire
             ? "Gérez la bibliothèque de sujets, les épreuves blanches et suivez la progression des élèves."
             : "Accédez aux sujets BEPC/BAC, vos épreuves blanches et votre planning de révision."}
@@ -190,8 +190,8 @@ export default function ExamensDashboard() {
           className="rounded-xl p-4 flex items-start gap-3">
           <AlertCircle size={20} className="text-[#FF4D6D] mt-0.5 shrink-0" />
           <div>
-            <p className="text-white font-medium text-sm">Points à améliorer</p>
-            <p className="text-[#8B9DC3] text-xs mt-1">
+            <p className="text-[var(--m15-white)] font-medium text-sm">Points à améliorer</p>
+            <p className="text-[var(--m15-muted)] text-xs mt-1">
               Matières sous la moyenne : {ptsFaibles.join(", ")}. Travaille-les en priorité dans ton planning.
             </p>
           </div>
@@ -200,7 +200,7 @@ export default function ExamensDashboard() {
 
       {/* Modules */}
       <div>
-        <h2 className="text-sm font-semibold text-[#8B9DC3] uppercase tracking-wider mb-4">Modules</h2>
+        <h2 className="text-sm font-semibold text-[var(--m15-muted)] uppercase tracking-wider mb-4">Modules</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ModuleCard
             titre="Bibliothèque de Sujets"

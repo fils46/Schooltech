@@ -103,13 +103,13 @@ function ModalSujet({
   function field(key: keyof typeof form, label: string, opts?: { type?: string; placeholder?: string }) {
     return (
       <div>
-        <label className="block text-xs text-[#8B9DC3] mb-1">{label}</label>
+        <label className="block text-xs text-[var(--m15-muted)] mb-1">{label}</label>
         <input
           type={opts?.type ?? "text"}
           value={String(form[key])}
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
           placeholder={opts?.placeholder}
-          className="w-full bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+          className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
         />
       </div>
     );
@@ -118,11 +118,11 @@ function ModalSujet({
   function sel(key: keyof typeof form, label: string, options: { id: string; label: string }[]) {
     return (
       <div>
-        <label className="block text-xs text-[#8B9DC3] mb-1">{label}</label>
+        <label className="block text-xs text-[var(--m15-muted)] mb-1">{label}</label>
         <select
           value={String(form[key])}
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-          className="w-full bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+          className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
         >
           {options.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
         </select>
@@ -133,15 +133,15 @@ function ModalSujet({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
       <div
-        style={{ background: "#111E35" }}
-        className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-6 border border-white/10 shadow-2xl"
+        style={{ background: "var(--m15-card)" }}
+        className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-6 border border-[var(--m15-border)] shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-white">
+          <h2 className="text-lg font-bold text-[var(--m15-white)]">
             {initial?.id ? "Modifier le sujet" : "Ajouter un sujet"}
           </h2>
-          <button onClick={onClose} className="text-[#8B9DC3] hover:text-white">
+          <button onClick={onClose} className="text-[var(--m15-muted)] hover:text-[var(--m15-white)]">
             <X size={20} />
           </button>
         </div>
@@ -167,10 +167,10 @@ function ModalSujet({
               onChange={e => setForm(f => ({ ...f, publie: e.target.checked }))}
               className="accent-[#00C9A7]"
             />
-            <span className="text-sm text-[#8B9DC3]">Publier immédiatement</span>
+            <span className="text-sm text-[var(--m15-muted)]">Publier immédiatement</span>
           </label>
           <div className="flex gap-3 pt-2">
-            <Button type="button" variant="outline" className="flex-1 border-white/10 text-[#8B9DC3]" onClick={onClose}>
+            <Button type="button" variant="outline" className="flex-1 border-[var(--m15-border)] text-[var(--m15-muted)]" onClick={onClose}>
               Annuler
             </Button>
             <Button type="submit" disabled={saving} className="flex-1 bg-[#00C9A7] hover:bg-[#00a88a] text-[#0A1628] font-semibold">
@@ -261,8 +261,8 @@ export default function BibliothequeSujets() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Bibliothèque de Sujets</h1>
-          <p className="text-[#8B9DC3] text-sm">Sujets BEPC/BAC et entraînements</p>
+          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Bibliothèque de Sujets</h1>
+          <p className="text-[var(--m15-muted)] text-sm">Sujets BEPC/BAC et entraînements</p>
         </div>
         {canManage && (
           <Button
@@ -275,15 +275,15 @@ export default function BibliothequeSujets() {
       </div>
 
       {/* Filtres */}
-      <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
+      <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
         <div className="flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-48">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B9DC3]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--m15-muted)]" />
             <input
               value={q}
               onChange={e => setQ(e.target.value)}
               placeholder="Rechercher..."
-              className="w-full bg-[#0A1628] border border-white/10 rounded-lg pl-9 pr-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg pl-9 pr-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
           </div>
           {[
@@ -295,7 +295,7 @@ export default function BibliothequeSujets() {
               key={f.label}
               value={f.state}
               onChange={e => f.set(e.target.value)}
-              className="bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               {f.opts.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
             </select>
@@ -304,7 +304,7 @@ export default function BibliothequeSujets() {
             <select
               value={pubFilter}
               onChange={e => setPubFilter(e.target.value)}
-              className="bg-[#0A1628] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               <option value="">Tous</option>
               <option value="true">Publiés</option>
@@ -320,9 +320,9 @@ export default function BibliothequeSujets() {
           {[1, 2, 3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}
         </div>
       ) : sujets.length === 0 ? (
-        <div style={{ background: "#111E35" }} className="rounded-xl p-12 border border-white/5 text-center">
-          <BookOpen size={40} className="text-[#8B9DC3] mx-auto mb-3" />
-          <p className="text-[#8B9DC3]">Aucun sujet trouvé.</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-12 border border-[var(--m15-border)] text-center">
+          <BookOpen size={40} className="text-[var(--m15-muted)] mx-auto mb-3" />
+          <p className="text-[var(--m15-muted)]">Aucun sujet trouvé.</p>
           {canManage && (
             <Button
               onClick={() => { setEditing(null); setModalOpen(true); }}
@@ -337,8 +337,8 @@ export default function BibliothequeSujets() {
           {sujets.map((s) => (
             <div
               key={s.id}
-              style={{ background: "#111E35" }}
-              className="rounded-xl p-4 border border-white/5 hover:border-white/10 transition-all"
+              style={{ background: "var(--m15-card)" }}
+              className="rounded-xl p-4 border border-[var(--m15-border)] hover:border-[var(--m15-border)] transition-all"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-3 min-w-0">
@@ -348,17 +348,17 @@ export default function BibliothequeSujets() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <TypeBadge type={s.type_examen} />
-                      <span className="text-xs text-[#8B9DC3]">{s.niveau}</span>
-                      {s.serie && <span className="text-xs text-[#8B9DC3]">Série {s.serie}</span>}
-                      {s.annee && <span className="text-xs text-[#8B9DC3]">{s.annee}</span>}
+                      <span className="text-xs text-[var(--m15-muted)]">{s.niveau}</span>
+                      {s.serie && <span className="text-xs text-[var(--m15-muted)]">Série {s.serie}</span>}
+                      {s.annee && <span className="text-xs text-[var(--m15-muted)]">{s.annee}</span>}
                       {!s.publie && canManage && (
                         <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400">
                           Brouillon
                         </span>
                       )}
                     </div>
-                    <p className="text-white font-medium text-sm truncate">{s.titre}</p>
-                    <p className="text-[#8B9DC3] text-xs mt-0.5">
+                    <p className="text-[var(--m15-white)] font-medium text-sm truncate">{s.titre}</p>
+                    <p className="text-[var(--m15-muted)] text-xs mt-0.5">
                       {s.matiere} · Ajouté par {s.auteur_nom} · {fmtDate(s.created_at)}
                       {s.nb_telechargements > 0 && ` · ${s.nb_telechargements} téléch.`}
                     </p>
@@ -369,7 +369,7 @@ export default function BibliothequeSujets() {
                     href={s.fichier_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[#8B9DC3] hover:text-[#00C9A7] transition-colors"
+                    className="text-[var(--m15-muted)] hover:text-[#00C9A7] transition-colors"
                     title="Télécharger le sujet"
                   >
                     <Download size={16} />
@@ -379,7 +379,7 @@ export default function BibliothequeSujets() {
                       href={s.corrige_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[#8B9DC3] hover:text-[#F5C842] transition-colors"
+                      className="text-[var(--m15-muted)] hover:text-[#F5C842] transition-colors"
                       title="Voir le corrigé"
                     >
                       <Eye size={16} />
@@ -388,7 +388,7 @@ export default function BibliothequeSujets() {
                   {canManage && (
                     <button
                       onClick={() => { setEditing(s); setModalOpen(true); }}
-                      className="text-[#8B9DC3] hover:text-white transition-colors"
+                      className="text-[var(--m15-muted)] hover:text-[var(--m15-white)] transition-colors"
                     >
                       <Pencil size={15} />
                     </button>
@@ -396,7 +396,7 @@ export default function BibliothequeSujets() {
                   {canPublish && !s.publie && (
                     <button
                       onClick={() => handlePublier(s.id)}
-                      className="text-[#8B9DC3] hover:text-[#00C9A7] transition-colors"
+                      className="text-[var(--m15-muted)] hover:text-[#00C9A7] transition-colors"
                       title="Publier"
                     >
                       <Send size={15} />
@@ -405,7 +405,7 @@ export default function BibliothequeSujets() {
                   {["dev", "directeur"].includes(role) && (
                     <button
                       onClick={() => handleDelete(s.id)}
-                      className="text-[#8B9DC3] hover:text-[#FF4D6D] transition-colors"
+                      className="text-[var(--m15-muted)] hover:text-[#FF4D6D] transition-colors"
                     >
                       <Trash2 size={15} />
                     </button>

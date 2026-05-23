@@ -21,7 +21,7 @@ import {
 /* ─── Badge statut ───────────────────────────────────────── */
 const STATUT_STYLES: Record<string, { bg: string; color: string; label: string }> = {
   actif:    { bg: "rgba(0,201,167,0.12)",  color: "#00C9A7", label: "Actif" },
-  inactif:  { bg: "rgba(139,157,195,0.12)", color: "#8B9DC3", label: "Inactif" },
+  inactif:  { bg: "rgba(139,157,195,0.12)", color: "var(--m15-muted)", label: "Inactif" },
   transfere:{ bg: "rgba(0,128,255,0.12)",  color: "#0080FF", label: "Transféré" },
   exclu:    { bg: "rgba(255,77,109,0.12)", color: "#FF4D6D", label: "Exclu" },
 };

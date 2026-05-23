@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 const C = {
-  navy: "#0A1628", card: "#111E35", cyan: "#00C9A7", gold: "#F5C842",
+  navy: "var(--m15-navy)", card: "var(--m15-card)", cyan: "#00C9A7", gold: "#F5C842",
   blue: "#0080FF", red: "#FF4D6D", muted: "#8B9DC3", border: "rgba(0,201,167,0.15)",
 };
 
@@ -54,14 +54,14 @@ function ModalPaiement({ licenceId, onClose, onSaved }: ModalPaiementProps) {
     } catch (e: any) { setError(e.message); } finally { setLoading(false); }
   }
 
-  const inp = "w-full px-3 py-2.5 rounded-lg text-sm text-white border outline-none";
+  const inp = "w-full px-3 py-2.5 rounded-lg text-sm text-[var(--m15-white)] border outline-none";
   const is = { backgroundColor: C.navy, borderColor: C.border };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,.7)" }}>
       <div className="rounded-2xl w-full max-w-md" style={{ backgroundColor: C.card, border: `1px solid ${C.border}` }}>
         <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: C.border }}>
-          <h3 className="font-semibold text-white">Enregistrer un paiement</h3>
+          <h3 className="font-semibold text-[var(--m15-white)]">Enregistrer un paiement</h3>
           <button onClick={onClose} className="w-7 h-7 rounded flex items-center justify-center" style={{ color: C.muted }}>
             <X className="w-4 h-4" />
           </button>
@@ -102,7 +102,7 @@ function ModalPaiement({ licenceId, onClose, onSaved }: ModalPaiementProps) {
           </div>
           <div className="flex justify-end gap-3 mt-2">
             <button onClick={onClose} className="px-4 py-2 rounded-lg text-sm" style={{ color: C.muted, border: `1px solid ${C.border}` }}>Annuler</button>
-            <button onClick={submit} disabled={loading} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50 flex gap-2 items-center" style={{ backgroundColor: C.cyan }}>
+            <button onClick={submit} disabled={loading} className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50 flex gap-2 items-center" style={{ backgroundColor: C.cyan }}>
               {loading && <div className="w-3.5 h-3.5 rounded-full border-2 animate-spin" style={{ borderColor: "white", borderTopColor: "transparent" }} />}
               Enregistrer
             </button>
@@ -196,7 +196,7 @@ export default function FicheEtablissement() {
     </div>
   );
 
-  const inp = "w-full px-3 py-2.5 rounded-lg text-sm text-white border outline-none";
+  const inp = "w-full px-3 py-2.5 rounded-lg text-sm text-[var(--m15-white)] border outline-none";
   const is = { backgroundColor: C.navy, borderColor: C.border };
 
   return (
@@ -214,7 +214,7 @@ export default function FicheEtablissement() {
         </Link>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-white">{etab.nom}</h1>
+            <h1 className="text-xl font-bold text-[var(--m15-white)]">{etab.nom}</h1>
             {etab.licence_active
               ? <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: "rgba(0,201,167,.15)", color: C.cyan }}>Actif</span>
               : <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: "rgba(255,77,109,.15)", color: C.red }}>Suspendu</span>
@@ -252,11 +252,11 @@ export default function FicheEtablissement() {
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-2 rounded-xl border p-5" style={{ backgroundColor: C.card, borderColor: C.border }}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-white">Informations établissement</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)]">Informations établissement</h3>
               {editMode
                 ? <div className="flex gap-2">
                   <button onClick={() => setEditMode(false)} className="text-xs px-3 py-1.5 rounded-lg" style={{ color: C.muted, border: `1px solid ${C.border}` }}>Annuler</button>
-                  <button onClick={saveEdit} className="text-xs px-3 py-1.5 rounded-lg text-white font-medium" style={{ backgroundColor: C.cyan }}>Enregistrer</button>
+                  <button onClick={saveEdit} className="text-xs px-3 py-1.5 rounded-lg text-[var(--m15-white)] font-medium" style={{ backgroundColor: C.cyan }}>Enregistrer</button>
                 </div>
                 : <button onClick={() => setEditMode(true)} className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg" style={{ color: C.cyan, border: `1px solid ${C.border}` }}>
                   <Edit2 className="w-3 h-3" /> Modifier
@@ -277,7 +277,7 @@ export default function FicheEtablissement() {
                 {[["Nom", etab.nom], ["Type", etab.type], ["Ville", etab.ville], ["Adresse", etab.adresse], ["Téléphone", etab.telephone], ["Email", etab.email]].map(([l, v]) => (
                   <div key={l as string}>
                     <p className="text-xs mb-0.5" style={{ color: C.muted }}>{l}</p>
-                    <p className="text-sm text-white">{(v as string) ?? "—"}</p>
+                    <p className="text-sm text-[var(--m15-white)]">{(v as string) ?? "—"}</p>
                   </div>
                 ))}
               </div>
@@ -289,17 +289,17 @@ export default function FicheEtablissement() {
             <div className="rounded-xl border p-4" style={{ backgroundColor: C.card, borderColor: C.border }}>
               <div className="flex items-center gap-2 mb-3">
                 <User className="w-4 h-4" style={{ color: C.cyan }} />
-                <h3 className="text-sm font-semibold text-white">Directeur actif</h3>
+                <h3 className="text-sm font-semibold text-[var(--m15-white)]">Directeur actif</h3>
               </div>
               {data?.directeur ? (
                 <>
-                  <p className="text-sm font-medium text-white">{data.directeur.nom} {data.directeur.prenoms}</p>
+                  <p className="text-sm font-medium text-[var(--m15-white)]">{data.directeur.nom} {data.directeur.prenoms}</p>
                   <p className="text-xs mt-0.5" style={{ color: C.muted }}>{data.directeur.email}</p>
                   {reinitResult ? (
                     <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: C.navy, border: `1px solid ${C.border}` }}>
                       <p className="text-xs mb-1" style={{ color: C.gold }}>Nouveau mot de passe :</p>
                       <div className="flex items-center gap-2">
-                        <code className="text-sm font-mono text-white">{reinitResult}</code>
+                        <code className="text-sm font-mono text-[var(--m15-white)]">{reinitResult}</code>
                         <button onClick={() => { navigator.clipboard.writeText(reinitResult); setCopiedMdp(true); setTimeout(() => setCopiedMdp(false), 2000); }}>
                           {copiedMdp ? <Check className="w-3.5 h-3.5" style={{ color: C.cyan }} /> : <Copy className="w-3.5 h-3.5" style={{ color: C.muted }} />}
                         </button>
@@ -318,7 +318,7 @@ export default function FicheEtablissement() {
 
             {/* Stats utilisation */}
             <div className="rounded-xl border p-4" style={{ backgroundColor: C.card, borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white mb-3">Stats d'utilisation</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-3">Stats d'utilisation</h3>
               {Object.keys(stats).length === 0
                 ? <p className="text-sm" style={{ color: C.muted }}>Aucun utilisateur</p>
                 : Object.entries(stats).map(([role, nb]) => (
@@ -341,7 +341,7 @@ export default function FicheEtablissement() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <CreditCard className="w-4 h-4" style={{ color: C.cyan }} />
-                <h3 className="text-sm font-semibold text-white">Licence active</h3>
+                <h3 className="text-sm font-semibold text-[var(--m15-white)]">Licence active</h3>
               </div>
               {licence && (
                 <div className="flex gap-2">
@@ -370,7 +370,7 @@ export default function FicheEtablissement() {
                 ].map(([l, v]) => (
                   <div key={l as string}>
                     <p className="text-xs mb-1" style={{ color: C.muted }}>{l}</p>
-                    <p className="text-sm font-medium text-white capitalize">{v}</p>
+                    <p className="text-sm font-medium text-[var(--m15-white)] capitalize">{v}</p>
                   </div>
                 ))}
               </div>
@@ -382,7 +382,7 @@ export default function FicheEtablissement() {
           {/* Historique paiements */}
           <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: C.card, borderColor: C.border }}>
             <div className="px-5 py-4 border-b" style={{ borderColor: C.border }}>
-              <h3 className="text-sm font-semibold text-white">Historique des paiements</h3>
+              <h3 className="text-sm font-semibold text-[var(--m15-white)]">Historique des paiements</h3>
             </div>
             <table className="w-full">
               <thead>
@@ -400,7 +400,7 @@ export default function FicheEtablissement() {
                     return (
                       <tr key={p.id} className="border-b" style={{ borderColor: C.border }}>
                         <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{new Date(p.date_paiement).toLocaleDateString("fr-FR")}</td>
-                        <td className="px-4 py-3 text-sm font-medium text-white">{Number(p.montant).toLocaleString("fr-FR")} FCFA</td>
+                        <td className="px-4 py-3 text-sm font-medium text-[var(--m15-white)]">{Number(p.montant).toLocaleString("fr-FR")} FCFA</td>
                         <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{MODES[p.mode_paiement] ?? p.mode_paiement}</td>
                         <td className="px-4 py-3 text-sm" style={{ color: C.muted }}>{p.reference ?? "—"}</td>
                         <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${s.color}20`, color: s.color }}>{s.label}</span></td>
@@ -419,7 +419,7 @@ export default function FicheEtablissement() {
       {onglet === "logs" && (
         <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: C.card, borderColor: C.border }}>
           <div className="px-5 py-4 border-b" style={{ borderColor: C.border }}>
-            <h3 className="text-sm font-semibold text-white">Logs d'activité SaaS</h3>
+            <h3 className="text-sm font-semibold text-[var(--m15-white)]">Logs d'activité SaaS</h3>
           </div>
           {logs.length === 0 ? (
             <p className="px-5 py-8 text-center text-sm" style={{ color: C.muted }}>Aucun log disponible</p>
@@ -429,7 +429,7 @@ export default function FicheEtablissement() {
                 <div key={l.id} className="flex gap-3">
                   <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: C.cyan }} />
                   <div>
-                    <p className="text-sm text-white">{l.action.replace(/_/g, " ")}</p>
+                    <p className="text-sm text-[var(--m15-white)]">{l.action.replace(/_/g, " ")}</p>
                     {l.details && <p className="text-xs mt-0.5" style={{ color: C.muted }}>{JSON.stringify(l.details)}</p>}
                     <p className="text-xs mt-0.5" style={{ color: C.muted }}>{new Date(l.created_at).toLocaleString("fr-FR")}</p>
                   </div>

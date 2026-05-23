@@ -168,7 +168,7 @@ export default function EducateurDashboard() {
               <Clock className="w-4 h-4" style={{ color: "#F5C842" }} />
               <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>Sanctions en attente de validation</h3>
               <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold animate-pulse"
-                style={{ background: "#F5C842", color: "#0A1628" }}>
+                style={{ background: "#F5C842", color: "var(--m15-navy)" }}>
                 {sanctionsAttente.length}
               </span>
             </div>

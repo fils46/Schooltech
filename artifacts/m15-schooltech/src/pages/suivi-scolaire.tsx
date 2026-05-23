@@ -150,7 +150,7 @@ export default function SuiviScolaire() {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
             <Avatar className="h-12 w-12">
-              <AvatarFallback style={{ background: "#0A1628", color: "#00C9A7" }} className="font-bold">
+              <AvatarFallback style={{ background: "var(--m15-navy)", color: "#00C9A7" }} className="font-bold">
                 {enfantActif.nom[0]}{enfantActif.prenoms[0]}
               </AvatarFallback>
             </Avatar>

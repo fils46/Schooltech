@@ -86,19 +86,19 @@ export default function NouvelleConsultation() {
           variant="ghost"
           size="sm"
           onClick={() => navigate("/infirmerie")}
-          className="text-slate-400 hover:text-white gap-2"
+          className="text-slate-400 hover:text-[var(--m15-white)] gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour
         </Button>
-        <h1 className="text-xl font-bold text-white">Nouvelle consultation</h1>
+        <h1 className="text-xl font-bold text-[var(--m15-white)]">Nouvelle consultation</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Sélection élève */}
         <Card className="bg-slate-800 border-slate-700">
           <CardHeader className="pb-3">
-            <CardTitle className="text-white text-base flex items-center gap-2">
+            <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
               <User className="h-4 w-4 text-cyan-400" />
               Élève
             </CardTitle>
@@ -115,7 +115,7 @@ export default function NouvelleConsultation() {
                     </div>
                   )}
                   <div>
-                    <p className="text-white font-medium">{selectedEleve.nom} {selectedEleve.prenoms}</p>
+                    <p className="text-[var(--m15-white)] font-medium">{selectedEleve.nom} {selectedEleve.prenoms}</p>
                     <p className="text-slate-400 text-sm">Mat. {selectedEleve.matricule}</p>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function NouvelleConsultation() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedEleve(null)}
-                  className="text-slate-400 hover:text-white text-xs"
+                  className="text-slate-400 hover:text-[var(--m15-white)] text-xs"
                 >
                   Changer
                 </Button>
@@ -137,7 +137,7 @@ export default function NouvelleConsultation() {
                     placeholder="Rechercher un élève (nom, matricule)…"
                     value={searchEleve}
                     onChange={e => setSearchEleve(e.target.value)}
-                    className="pl-9 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                    className="pl-9 bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
                   />
                 </div>
                 {searchEleve.length >= 2 && (
@@ -156,7 +156,7 @@ export default function NouvelleConsultation() {
                             <User className="h-4 w-4 text-slate-400" />
                           </div>
                           <div>
-                            <p className="text-white text-sm font-medium">{el.nom} {el.prenoms}</p>
+                            <p className="text-[var(--m15-white)] text-sm font-medium">{el.nom} {el.prenoms}</p>
                             <p className="text-slate-400 text-xs">Mat. {el.matricule}</p>
                           </div>
                           <Plus className="h-4 w-4 text-cyan-400 ml-auto" />
@@ -173,7 +173,7 @@ export default function NouvelleConsultation() {
         {/* Détails consultation */}
         <Card className="bg-slate-800 border-slate-700">
           <CardHeader className="pb-3">
-            <CardTitle className="text-white text-base">Détails de la consultation</CardTitle>
+            <CardTitle className="text-[var(--m15-white)] text-base">Détails de la consultation</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -182,7 +182,7 @@ export default function NouvelleConsultation() {
                 type="datetime-local"
                 value={heureEntree}
                 onChange={e => setHeureEntree(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-white"
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)]"
                 required
               />
             </div>
@@ -193,7 +193,7 @@ export default function NouvelleConsultation() {
                 placeholder="Ex: Maux de tête, douleur abdominale, blessure…"
                 value={motif}
                 onChange={e => setMotif(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400"
                 required
               />
             </div>
@@ -204,7 +204,7 @@ export default function NouvelleConsultation() {
                 placeholder="Description des symptômes…"
                 value={symptomes}
                 onChange={e => setSymptomes(e.target.value)}
-                className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none"
+                className="bg-slate-700 border-slate-600 text-[var(--m15-white)] placeholder:text-slate-400 resize-none"
                 rows={3}
               />
             </div>
@@ -223,14 +223,14 @@ export default function NouvelleConsultation() {
             type="button"
             variant="outline"
             onClick={() => navigate("/infirmerie")}
-            className="flex-1 border-slate-600 text-slate-300 hover:text-white"
+            className="flex-1 border-slate-600 text-slate-300 hover:text-[var(--m15-white)]"
           >
             Annuler
           </Button>
           <Button
             type="submit"
             disabled={isPending || !selectedEleve || !motif.trim()}
-            className="flex-1 bg-rose-600 hover:bg-rose-700 text-white"
+            className="flex-1 bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)]"
           >
             {isPending ? "Ouverture…" : "Ouvrir la consultation"}
           </Button>

@@ -121,7 +121,7 @@ export default function RapportsExports() {
             <RefreshCw className="w-4 h-4" />
           </Button>
           <Button size="sm" onClick={() => setModalOpen(true)}
-            style={{ background: "#00C9A7", color: "#0A1628", fontWeight: 600 }}>
+            style={{ background: "#00C9A7", color: "var(--m15-navy)", fontWeight: 600 }}>
             <FilePlus className="w-4 h-4 mr-2" />
             Nouveau rapport
           </Button>
@@ -184,7 +184,7 @@ export default function RapportsExports() {
             </div>
           ) : rapports.length === 0 ? (
             <div className="py-16 text-center">
-              <FileDown className="w-12 h-12 mx-auto mb-3 opacity-30" style={{ color: "#8B9DC3" }} />
+              <FileDown className="w-12 h-12 mx-auto mb-3 opacity-30" style={{ color: "var(--m15-muted)" }} />
               <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Aucun rapport généré</p>
               <p className="text-xs mt-1" style={{ color: "var(--m15-muted)" }}>Cliquez sur "Nouveau rapport" pour commencer</p>
             </div>
@@ -355,7 +355,7 @@ export default function RapportsExports() {
               Annuler
             </Button>
             <Button onClick={handleGenerer} disabled={isGenerating}
-              style={{ background: "#00C9A7", color: "#0A1628", fontWeight: 600 }}>
+              style={{ background: "#00C9A7", color: "var(--m15-navy)", fontWeight: 600 }}>
               {isGenerating ? (
                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>
               ) : (

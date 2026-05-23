@@ -145,7 +145,7 @@ export default function NotificationsCentre() {
             <p style={{ color: "var(--m15-white)" }}>Aucune notification.</p>
           </div>
         ) : notifications.map(n => {
-          const meta = TYPE_ICON[n.type] ?? { icon: Bell, color: "#8B9DC3" };
+          const meta = TYPE_ICON[n.type] ?? { icon: Bell, color: "var(--m15-muted)" };
           const Icon = meta.icon;
           return (
             <div key={n.id}
@@ -169,7 +169,7 @@ export default function NotificationsCentre() {
                     {n.titre}
                     {!n.lu && (
                       <span className="ml-2 px-1.5 py-0.5 rounded-full text-xs font-bold"
-                        style={{ background: "#00C9A7", color: "#0A1628" }}>Nouveau</span>
+                        style={{ background: "#00C9A7", color: "var(--m15-navy)" }}>Nouveau</span>
                     )}
                   </p>
                   <div className="flex items-center gap-2 flex-shrink-0">

@@ -56,7 +56,7 @@ function getNoteColor(note: number, bareme: number): string {
 function TendanceIcon({ tendance }: { tendance: string }) {
   if (tendance === "hausse") return <TrendingUp size={14} className="text-[#00C9A7]" />;
   if (tendance === "baisse") return <TrendingDown size={14} className="text-[#FF4D6D]" />;
-  return <Minus size={14} className="text-[#8B9DC3]" />;
+  return <Minus size={14} className="text-[var(--m15-muted)]" />;
 }
 
 function fmtDate(d: string) {
@@ -124,7 +124,7 @@ export default function ResultatsProgression() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-white">Résultats & Progression</h1>
+        <h1 className="text-2xl font-bold text-[var(--m15-white)]">Résultats & Progression</h1>
         <div className="space-y-3">{[1,2,3,4].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
       </div>
     );
@@ -133,11 +133,11 @@ export default function ResultatsProgression() {
   if (!progression || progression.par_matiere.length === 0) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-white">Résultats & Progression</h1>
-        <div style={{ background: "#111E35" }} className="rounded-xl p-12 border border-white/5 text-center">
-          <BarChart3 size={40} className="text-[#8B9DC3] mx-auto mb-3" />
-          <p className="text-white font-medium mb-1">Aucun résultat disponible</p>
-          <p className="text-[#8B9DC3] text-sm">Les résultats apparaîtront après vos premières épreuves blanches corrigées.</p>
+        <h1 className="text-2xl font-bold text-[var(--m15-white)]">Résultats & Progression</h1>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-12 border border-[var(--m15-border)] text-center">
+          <BarChart3 size={40} className="text-[var(--m15-muted)] mx-auto mb-3" />
+          <p className="text-[var(--m15-white)] font-medium mb-1">Aucun résultat disponible</p>
+          <p className="text-[var(--m15-muted)] text-sm">Les résultats apparaîtront après vos premières épreuves blanches corrigées.</p>
         </div>
       </div>
     );
@@ -150,29 +150,29 @@ export default function ResultatsProgression() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Résultats & Progression</h1>
-        <p className="text-[#8B9DC3] text-sm">Suivi de vos performances aux épreuves blanches</p>
+        <h1 className="text-2xl font-bold text-[var(--m15-white)]">Résultats & Progression</h1>
+        <p className="text-[var(--m15-muted)] text-sm">Suivi de vos performances aux épreuves blanches</p>
       </div>
 
       {/* Stats résumé */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
-          <p className="text-xs text-[#8B9DC3] mb-1">Moyenne générale</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
+          <p className="text-xs text-[var(--m15-muted)] mb-1">Moyenne générale</p>
           <p style={{ color: getNoteColor(moy_generale, 20) }} className="text-2xl font-bold">{moy_generale}/20</p>
         </div>
-        <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
-          <p className="text-xs text-[#8B9DC3] mb-1">Matières évaluées</p>
-          <p className="text-2xl font-bold text-white">{progression.par_matiere.length}</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
+          <p className="text-xs text-[var(--m15-muted)] mb-1">Matières évaluées</p>
+          <p className="text-2xl font-bold text-[var(--m15-white)]">{progression.par_matiere.length}</p>
         </div>
-        <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
-          <p className="text-xs text-[#8B9DC3] mb-1">Points forts</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
+          <p className="text-xs text-[var(--m15-muted)] mb-1">Points forts</p>
           <p className="text-2xl font-bold text-[#00C9A7]">{progression.points_forts.length}</p>
-          <p className="text-xs text-[#8B9DC3] truncate">{progression.points_forts.join(", ") || "—"}</p>
+          <p className="text-xs text-[var(--m15-muted)] truncate">{progression.points_forts.join(", ") || "—"}</p>
         </div>
-        <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
-          <p className="text-xs text-[#8B9DC3] mb-1">À améliorer</p>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
+          <p className="text-xs text-[var(--m15-muted)] mb-1">À améliorer</p>
           <p className="text-2xl font-bold text-[#FF4D6D]">{progression.points_faibles.length}</p>
-          <p className="text-xs text-[#8B9DC3] truncate">{progression.points_faibles.join(", ") || "—"}</p>
+          <p className="text-xs text-[var(--m15-muted)] truncate">{progression.points_faibles.join(", ") || "—"}</p>
         </div>
       </div>
 
@@ -182,8 +182,8 @@ export default function ResultatsProgression() {
           className="rounded-xl p-4 flex items-start gap-3">
           <AlertCircle size={18} className="text-[#FF4D6D] mt-0.5 shrink-0" />
           <div>
-            <p className="text-white font-medium text-sm">Matières à renforcer</p>
-            <p className="text-[#8B9DC3] text-xs mt-0.5">
+            <p className="text-[var(--m15-white)] font-medium text-sm">Matières à renforcer</p>
+            <p className="text-[var(--m15-muted)] text-xs mt-0.5">
               {progression.points_faibles.join(", ")} — moyenne sous 10/20. Consacrez plus de temps à ces matières dans votre planning.
             </p>
           </div>
@@ -191,19 +191,19 @@ export default function ResultatsProgression() {
       )}
 
       {/* Filtre matière + tabs */}
-      <div style={{ background: "#111E35" }} className="rounded-xl p-4 border border-white/5">
+      <div style={{ background: "var(--m15-card)" }} className="rounded-xl p-4 border border-[var(--m15-border)]">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex gap-2">
             <button
               onClick={() => setViewHistorique(false)}
-              style={!viewHistorique ? { background: "#00C9A7", color: "#0A1628" } : { background: "#0A1628", color: "#8B9DC3" }}
+              style={!viewHistorique ? { background: "#00C9A7", color: "var(--m15-navy)" } : { background: "var(--m15-navy)", color: "var(--m15-muted)" }}
               className="text-xs px-3 py-1.5 rounded-full font-medium transition-all"
             >
               Par matière
             </button>
             <button
               onClick={() => setViewHistorique(true)}
-              style={viewHistorique ? { background: "#00C9A7", color: "#0A1628" } : { background: "#0A1628", color: "#8B9DC3" }}
+              style={viewHistorique ? { background: "#00C9A7", color: "var(--m15-navy)" } : { background: "var(--m15-navy)", color: "var(--m15-muted)" }}
               className="text-xs px-3 py-1.5 rounded-full font-medium transition-all"
             >
               Historique
@@ -212,7 +212,7 @@ export default function ResultatsProgression() {
           <select
             value={filtreMatiere}
             onChange={e => setFiltreMatiere(e.target.value)}
-            className="bg-[#0A1628] border border-white/10 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-[#00C9A7]"
+            className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-1.5 text-[var(--m15-white)] text-xs focus:outline-none focus:border-[#00C9A7]"
           >
             <option value="">Toutes les matières</option>
             {matieres.map(m => <option key={m} value={m}>{m}</option>)}
@@ -233,8 +233,8 @@ export default function ResultatsProgression() {
             return (
               <div
                 key={m.matiere}
-                style={{ background: "#111E35", borderLeft: `3px solid ${color}` }}
-                className="rounded-xl border border-white/5"
+                style={{ background: "var(--m15-card)", borderLeft: `3px solid ${color}` }}
+                className="rounded-xl border border-[var(--m15-border)]"
               >
                 <button
                   className="w-full p-4 text-left"
@@ -244,7 +244,7 @@ export default function ResultatsProgression() {
                     <div className="flex items-center gap-3">
                       <div>
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-white font-medium text-sm">{m.matiere}</span>
+                          <span className="text-[var(--m15-white)] font-medium text-sm">{m.matiere}</span>
                           <TendanceIcon tendance={m.tendance} />
                           {progression.points_forts.includes(m.matiere) && (
                             <Award size={13} className="text-[#F5C842]" />
@@ -253,7 +253,7 @@ export default function ResultatsProgression() {
                             <AlertCircle size={13} className="text-[#FF4D6D]" />
                           )}
                         </div>
-                        <p className="text-xs text-[#8B9DC3]">
+                        <p className="text-xs text-[var(--m15-muted)]">
                           {m.nb_epreuves} épreuve{m.nb_epreuves > 1 ? "s" : ""} · Dernière : {m.derniere_note}/20
                         </p>
                       </div>
@@ -264,24 +264,24 @@ export default function ResultatsProgression() {
                       )}
                       <div className="text-right mr-2">
                         <p style={{ color }} className="text-xl font-bold">{m.moyenne_blancs}</p>
-                        <p className="text-xs text-[#8B9DC3]">/20</p>
+                        <p className="text-xs text-[var(--m15-muted)]">/20</p>
                       </div>
-                      {isOpen ? <ChevronUp size={16} className="text-[#8B9DC3]" /> : <ChevronDown size={16} className="text-[#8B9DC3]" />}
+                      {isOpen ? <ChevronUp size={16} className="text-[var(--m15-muted)]" /> : <ChevronDown size={16} className="text-[var(--m15-muted)]" />}
                     </div>
                   </div>
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-4 border-t border-white/5 pt-4">
+                  <div className="px-4 pb-4 border-t border-[var(--m15-border)] pt-4">
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       {[
                         { label: "Moyenne", value: m.moyenne_blancs, color },
                         { label: "Meilleure note", value: m.meilleure_note, color: "#F5C842" },
                         { label: "Dernière note", value: m.derniere_note, color: "#0080FF" },
-                        { label: "Épreuves", value: m.nb_epreuves, color: "#8B9DC3" },
+                        { label: "Épreuves", value: m.nb_epreuves, color: "var(--m15-muted)" },
                       ].map(s => (
-                        <div key={s.label} style={{ background: "#0A1628" }} className="rounded-lg p-3 text-center">
-                          <p className="text-xs text-[#8B9DC3] mb-1">{s.label}</p>
+                        <div key={s.label} style={{ background: "var(--m15-navy)" }} className="rounded-lg p-3 text-center">
+                          <p className="text-xs text-[var(--m15-muted)] mb-1">{s.label}</p>
                           <p style={{ color: s.color }} className="text-xl font-bold">{s.value}</p>
                         </div>
                       ))}
@@ -290,10 +290,10 @@ export default function ResultatsProgression() {
                     {/* Historique de la matière */}
                     <div className="mt-4 space-y-2">
                       {historiqueFiltred.filter(h => h.matiere === m.matiere).map((h, i) => (
-                        <div key={i} style={{ background: "#0A1628" }} className="flex items-center gap-3 p-2 rounded-lg">
-                          <Calendar size={12} className="text-[#8B9DC3] shrink-0" />
-                          <span className="text-xs text-[#8B9DC3] w-28 shrink-0">{fmtDate(h.date_epreuve)}</span>
-                          <span className="flex-1 text-xs text-white truncate">{h.titre}</span>
+                        <div key={i} style={{ background: "var(--m15-navy)" }} className="flex items-center gap-3 p-2 rounded-lg">
+                          <Calendar size={12} className="text-[var(--m15-muted)] shrink-0" />
+                          <span className="text-xs text-[var(--m15-muted)] w-28 shrink-0">{fmtDate(h.date_epreuve)}</span>
+                          <span className="flex-1 text-xs text-[var(--m15-white)] truncate">{h.titre}</span>
                           <div style={{ background: getNoteBg(h.note, parseFloat(h.bareme_total)), color: getNoteColor(h.note, parseFloat(h.bareme_total)) }}
                             className="text-xs font-bold px-2 py-0.5 rounded-full">
                             {h.note}/{h.bareme_total}
@@ -311,12 +311,12 @@ export default function ResultatsProgression() {
 
       {/* Vue historique chronologique */}
       {viewHistorique && (
-        <div style={{ background: "#111E35" }} className="rounded-xl border border-white/5 overflow-hidden">
-          <div className="p-4 border-b border-white/5">
-            <h3 className="text-sm font-semibold text-white">Historique chronologique</h3>
+        <div style={{ background: "var(--m15-card)" }} className="rounded-xl border border-[var(--m15-border)] overflow-hidden">
+          <div className="p-4 border-b border-[var(--m15-border)]">
+            <h3 className="text-sm font-semibold text-[var(--m15-white)]">Historique chronologique</h3>
           </div>
           {historiqueFiltred.length === 0 ? (
-            <p className="text-[#8B9DC3] text-center py-8 text-sm">Aucun résultat.</p>
+            <p className="text-[var(--m15-muted)] text-center py-8 text-sm">Aucun résultat.</p>
           ) : (
             <div className="divide-y divide-white/5">
               {historiqueFiltred.map((h, i) => {
@@ -328,8 +328,8 @@ export default function ResultatsProgression() {
                       <BarChart3 size={14} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium truncate">{h.titre}</p>
-                      <p className="text-xs text-[#8B9DC3]">{h.matiere} · {fmtDate(h.date_epreuve)}</p>
+                      <p className="text-[var(--m15-white)] text-sm font-medium truncate">{h.titre}</p>
+                      <p className="text-xs text-[var(--m15-muted)]">{h.matiere} · {fmtDate(h.date_epreuve)}</p>
                     </div>
                     <div style={{ background: getNoteBg(h.note, bareme), color: getNoteColor(h.note, bareme) }}
                       className="text-sm font-bold px-3 py-1 rounded-full shrink-0">
