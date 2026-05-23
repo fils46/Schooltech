@@ -1261,6 +1261,436 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /creneaux/liste:
+    get:
+      operationId: listerCreneaux
+      tags: [creneaux]
+      summary: Lister les créneaux horaires
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: etablissement_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Liste des créneaux
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreneauxListeResponse"
+
+  /creneaux/creer:
+    post:
+      operationId: creerCreneau
+      tags: [creneaux]
+      summary: Créer un créneau horaire
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreneauInput"
+      responses:
+        "201":
+          description: Créneau créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Creneau"
+        "400":
+          description: Données invalides ou chevauchement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /creneaux/{id}/modifier:
+    put:
+      operationId: modifierCreneau
+      tags: [creneaux]
+      summary: Modifier un créneau horaire
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreneauInput"
+      responses:
+        "200":
+          description: Créneau modifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Creneau"
+        "400":
+          description: Erreur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /creneaux/{id}/supprimer:
+    delete:
+      operationId: supprimerCreneau
+      tags: [creneaux]
+      summary: Supprimer un créneau horaire
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Créneau supprimé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Créneau utilisé par des cours
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /salles/liste:
+    get:
+      operationId: listerSalles
+      tags: [salles]
+      summary: Lister les salles
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: etablissement_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Liste des salles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SallesListeResponse"
+
+  /salles/creer:
+    post:
+      operationId: creerSalle
+      tags: [salles]
+      summary: Créer une salle
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SalleInput"
+      responses:
+        "201":
+          description: Salle créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Salle"
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /salles/{id}/modifier:
+    put:
+      operationId: modifierSalle
+      tags: [salles]
+      summary: Modifier une salle
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SalleInput"
+      responses:
+        "200":
+          description: Salle modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Salle"
+
+  /salles/{id}/desactiver:
+    put:
+      operationId: desactiverSalle
+      tags: [salles]
+      summary: Désactiver une salle
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Salle désactivée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Salle"
+        "400":
+          description: Salle utilisée par des cours actifs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /emploi-du-temps/creer:
+    post:
+      operationId: creerCours
+      tags: [emploi-du-temps]
+      summary: Créer un cours dans l'emploi du temps
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoursInput"
+      responses:
+        "201":
+          description: Cours créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoursDetail"
+        "400":
+          description: Conflit ou données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /emploi-du-temps/{id}/modifier:
+    put:
+      operationId: modifierCours
+      tags: [emploi-du-temps]
+      summary: Modifier un cours
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoursInput"
+      responses:
+        "200":
+          description: Cours modifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoursDetail"
+        "400":
+          description: Conflit détecté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /emploi-du-temps/{id}/supprimer:
+    delete:
+      operationId: supprimerCours
+      tags: [emploi-du-temps]
+      summary: Supprimer un cours
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cours supprimé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /emploi-du-temps/classe/{classeId}:
+    get:
+      operationId: getEmploiClasse
+      tags: [emploi-du-temps]
+      summary: Emploi du temps d'une classe (grille semaine)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: annee_scolaire_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Grille hebdomadaire de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmploiGrilleResponse"
+
+  /emploi-du-temps/professeur/{profId}:
+    get:
+      operationId: getEmploiProfesseur
+      tags: [emploi-du-temps]
+      summary: Emploi du temps d'un professeur
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: profId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: annee_scolaire_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Grille hebdomadaire du professeur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmploiGrilleResponse"
+
+  /emploi-du-temps/salle/{salleId}:
+    get:
+      operationId: getEmploiSalle
+      tags: [emploi-du-temps]
+      summary: Cours planifiés dans une salle
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: salleId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: annee_scolaire_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cours dans la salle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmploiGrilleResponse"
+
+  /emploi-du-temps/conflits:
+    get:
+      operationId: verifierConflits
+      tags: [emploi-du-temps]
+      summary: Vérifier les conflits dans l'emploi du temps
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: annee_scolaire_id
+          in: query
+          schema:
+            type: string
+        - name: etablissement_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Rapport des conflits
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflitsResponse"
+
+  /emploi-du-temps/dupliquer:
+    post:
+      operationId: dupliquerEmploi
+      tags: [emploi-du-temps]
+      summary: Dupliquer l'emploi du temps d'une classe vers une autre
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DupliquerEmploiInput"
+      responses:
+        "200":
+          description: Résultat de la duplication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DupliquerEmploiResponse"
+
+  /emploi-du-temps/verifier-disponibilite:
+    post:
+      operationId: verifierDisponibilite
+      tags: [emploi-du-temps]
+      summary: Vérifier la disponibilité avant création d'un cours
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifierDisponibiliteInput"
+      responses:
+        "200":
+          description: Résultat de la vérification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerifierDisponibiliteResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -2038,3 +2468,263 @@ components:
           type: string
         eleves_transferes:
           type: integer
+
+    Creneau:
+      type: object
+      required: [id, etablissement_id, heure_debut, heure_fin, libelle, ordre, actif]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        heure_debut:
+          type: string
+        heure_fin:
+          type: string
+        libelle:
+          type: string
+        ordre:
+          type: integer
+        actif:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    CreneauInput:
+      type: object
+      required: [heure_debut, heure_fin, libelle]
+      properties:
+        heure_debut:
+          type: string
+        heure_fin:
+          type: string
+        libelle:
+          type: string
+        ordre:
+          type: integer
+        actif:
+          type: boolean
+        etablissement_id:
+          type: string
+
+    CreneauxListeResponse:
+      type: object
+      required: [creneaux, total]
+      properties:
+        creneaux:
+          type: array
+          items:
+            $ref: "#/components/schemas/Creneau"
+        total:
+          type: integer
+
+    Salle:
+      type: object
+      required: [id, etablissement_id, nom, type, actif]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        nom:
+          type: string
+        capacite:
+          type: ["integer", "null"]
+        type:
+          type: string
+          enum: [classe, laboratoire, salle_info, gymnase, autre]
+        actif:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    SalleInput:
+      type: object
+      required: [nom, type]
+      properties:
+        nom:
+          type: string
+        capacite:
+          type: integer
+        type:
+          type: string
+          enum: [classe, laboratoire, salle_info, gymnase, autre]
+        actif:
+          type: boolean
+        etablissement_id:
+          type: string
+
+    SallesListeResponse:
+      type: object
+      required: [salles, total]
+      properties:
+        salles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Salle"
+        total:
+          type: integer
+
+    CoursInput:
+      type: object
+      required: [classe_id, professeur_id, matiere, jour, creneau_id, annee_scolaire_id]
+      properties:
+        classe_id:
+          type: string
+        professeur_id:
+          type: string
+        salle_id:
+          type: string
+        matiere:
+          type: string
+        jour:
+          type: string
+          enum: [lundi, mardi, mercredi, jeudi, vendredi, samedi]
+        creneau_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        couleur:
+          type: string
+        etablissement_id:
+          type: string
+
+    CoursDetail:
+      type: object
+      required: [id, classe_id, professeur_id, matiere, jour, creneau_id, annee_scolaire_id]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        classe_id:
+          type: string
+        classe_nom:
+          type: ["string", "null"]
+        professeur_id:
+          type: string
+        professeur_nom:
+          type: ["string", "null"]
+        salle_id:
+          type: ["string", "null"]
+        salle_nom:
+          type: ["string", "null"]
+        matiere:
+          type: string
+        jour:
+          type: string
+        creneau_id:
+          type: string
+        creneau_libelle:
+          type: ["string", "null"]
+        creneau_debut:
+          type: ["string", "null"]
+        creneau_fin:
+          type: ["string", "null"]
+        creneau_ordre:
+          type: ["integer", "null"]
+        couleur:
+          type: ["string", "null"]
+
+    EmploiGrilleResponse:
+      type: object
+      required: [grille, creneaux]
+      properties:
+        grille:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: "#/components/schemas/CoursDetail"
+        creneaux:
+          type: array
+          items:
+            $ref: "#/components/schemas/Creneau"
+
+    ConflitItem:
+      type: object
+      required: [type, description, cours]
+      properties:
+        type:
+          type: string
+          enum: [professeur, classe, salle]
+        description:
+          type: string
+        cours:
+          type: array
+          items:
+            $ref: "#/components/schemas/CoursDetail"
+
+    ConflitsResponse:
+      type: object
+      required: [conflits, total]
+      properties:
+        conflits:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConflitItem"
+        total:
+          type: integer
+
+    DupliquerEmploiInput:
+      type: object
+      required: [classe_source_id, classe_destination_id, annee_scolaire_id]
+      properties:
+        classe_source_id:
+          type: string
+        classe_destination_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+
+    DupliquerEmploiResponse:
+      type: object
+      required: [message, copies, conflits]
+      properties:
+        message:
+          type: string
+        copies:
+          type: integer
+        conflits:
+          type: array
+          items:
+            type: string
+
+    VerifierDisponibiliteInput:
+      type: object
+      required: [classe_id, professeur_id, jour, creneau_id, annee_scolaire_id]
+      properties:
+        classe_id:
+          type: string
+        professeur_id:
+          type: string
+        salle_id:
+          type: string
+        jour:
+          type: string
+        creneau_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        exclude_id:
+          type: string
+
+    VerifierDisponibiliteResponse:
+      type: object
+      required: [disponible, conflits]
+      properties:
+        disponible:
+          type: boolean
+        conflits:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              message:
+                type: string

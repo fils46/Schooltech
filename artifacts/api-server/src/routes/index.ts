@@ -8,6 +8,9 @@ import elevesRouter from "./eleves";
 import classesRouter from "./classes";
 import anneesScolairesRouter from "./anneesScolaires";
 import filieresRouter from "./filieres";
+import creneauxRouter from "./creneaux";
+import sallesRouter from "./salles";
+import emploisDuTempsRouter from "./emploisDuTemps";
 
 const router: IRouter = Router();
 
@@ -19,6 +22,9 @@ router.use(statsRouter);
 router.use(elevesRouter);
 router.use(anneesScolairesRouter);
 router.use(filieresRouter);
+router.use(creneauxRouter);
+router.use(sallesRouter);
+router.use(emploisDuTempsRouter);
 router.use(classesRouter);
 
 export default router;

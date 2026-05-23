@@ -980,3 +980,429 @@ export const DesactiverFiliereResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les créneaux horaires
+ */
+export const ListerCreneauxQueryParams = zod.object({
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const ListerCreneauxResponse = zod.object({
+  "creneaux": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Créer un créneau horaire
+ */
+export const CreerCreneauBody = zod.object({
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number().optional(),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier un créneau horaire
+ */
+export const ModifierCreneauParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierCreneauBody = zod.object({
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number().optional(),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierCreneauResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Supprimer un créneau horaire
+ */
+export const SupprimerCreneauParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerCreneauResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les salles
+ */
+export const ListerSallesQueryParams = zod.object({
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const ListerSallesResponse = zod.object({
+  "salles": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "capacite": zod.number().nullish(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Créer une salle
+ */
+export const CreerSalleBody = zod.object({
+  "nom": zod.string(),
+  "capacite": zod.number().optional(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier une salle
+ */
+export const ModifierSalleParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierSalleBody = zod.object({
+  "nom": zod.string(),
+  "capacite": zod.number().optional(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierSalleResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "capacite": zod.number().nullish(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Désactiver une salle
+ */
+export const DesactiverSalleParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DesactiverSalleResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "capacite": zod.number().nullish(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Créer un cours dans l'emploi du temps
+ */
+export const CreerCoursBody = zod.object({
+  "classe_id": zod.string(),
+  "professeur_id": zod.string(),
+  "salle_id": zod.string().optional(),
+  "matiere": zod.string(),
+  "jour": zod.enum(['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']),
+  "creneau_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier un cours
+ */
+export const ModifierCoursParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierCoursBody = zod.object({
+  "classe_id": zod.string(),
+  "professeur_id": zod.string(),
+  "salle_id": zod.string().optional(),
+  "matiere": zod.string(),
+  "jour": zod.enum(['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']),
+  "creneau_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "couleur": zod.string().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierCoursResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "classe_nom": zod.string().nullish(),
+  "professeur_id": zod.string(),
+  "professeur_nom": zod.string().nullish(),
+  "salle_id": zod.string().nullish(),
+  "salle_nom": zod.string().nullish(),
+  "matiere": zod.string(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "creneau_libelle": zod.string().nullish(),
+  "creneau_debut": zod.string().nullish(),
+  "creneau_fin": zod.string().nullish(),
+  "creneau_ordre": zod.number().nullish(),
+  "couleur": zod.string().nullish()
+})
+
+
+/**
+ * @summary Supprimer un cours
+ */
+export const SupprimerCoursParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerCoursResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Emploi du temps d'une classe (grille semaine)
+ */
+export const GetEmploiClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetEmploiClasseQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetEmploiClasseResponse = zod.object({
+  "grille": zod.record(zod.string(), zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "classe_nom": zod.string().nullish(),
+  "professeur_id": zod.string(),
+  "professeur_nom": zod.string().nullish(),
+  "salle_id": zod.string().nullish(),
+  "salle_nom": zod.string().nullish(),
+  "matiere": zod.string(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "creneau_libelle": zod.string().nullish(),
+  "creneau_debut": zod.string().nullish(),
+  "creneau_fin": zod.string().nullish(),
+  "creneau_ordre": zod.number().nullish(),
+  "couleur": zod.string().nullish()
+}))),
+  "creneaux": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+}))
+})
+
+
+/**
+ * @summary Emploi du temps d'un professeur
+ */
+export const GetEmploiProfesseurParams = zod.object({
+  "profId": zod.coerce.string()
+})
+
+export const GetEmploiProfesseurQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetEmploiProfesseurResponse = zod.object({
+  "grille": zod.record(zod.string(), zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "classe_nom": zod.string().nullish(),
+  "professeur_id": zod.string(),
+  "professeur_nom": zod.string().nullish(),
+  "salle_id": zod.string().nullish(),
+  "salle_nom": zod.string().nullish(),
+  "matiere": zod.string(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "creneau_libelle": zod.string().nullish(),
+  "creneau_debut": zod.string().nullish(),
+  "creneau_fin": zod.string().nullish(),
+  "creneau_ordre": zod.number().nullish(),
+  "couleur": zod.string().nullish()
+}))),
+  "creneaux": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+}))
+})
+
+
+/**
+ * @summary Cours planifiés dans une salle
+ */
+export const GetEmploiSalleParams = zod.object({
+  "salleId": zod.coerce.string()
+})
+
+export const GetEmploiSalleQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetEmploiSalleResponse = zod.object({
+  "grille": zod.record(zod.string(), zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "classe_nom": zod.string().nullish(),
+  "professeur_id": zod.string(),
+  "professeur_nom": zod.string().nullish(),
+  "salle_id": zod.string().nullish(),
+  "salle_nom": zod.string().nullish(),
+  "matiere": zod.string(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "creneau_libelle": zod.string().nullish(),
+  "creneau_debut": zod.string().nullish(),
+  "creneau_fin": zod.string().nullish(),
+  "creneau_ordre": zod.number().nullish(),
+  "couleur": zod.string().nullish()
+}))),
+  "creneaux": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "heure_debut": zod.string(),
+  "heure_fin": zod.string(),
+  "libelle": zod.string(),
+  "ordre": zod.number(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+}))
+})
+
+
+/**
+ * @summary Vérifier les conflits dans l'emploi du temps
+ */
+export const VerifierConflitsQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const VerifierConflitsResponse = zod.object({
+  "conflits": zod.array(zod.object({
+  "type": zod.enum(['professeur', 'classe', 'salle']),
+  "description": zod.string(),
+  "cours": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "classe_nom": zod.string().nullish(),
+  "professeur_id": zod.string(),
+  "professeur_nom": zod.string().nullish(),
+  "salle_id": zod.string().nullish(),
+  "salle_nom": zod.string().nullish(),
+  "matiere": zod.string(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "creneau_libelle": zod.string().nullish(),
+  "creneau_debut": zod.string().nullish(),
+  "creneau_fin": zod.string().nullish(),
+  "creneau_ordre": zod.number().nullish(),
+  "couleur": zod.string().nullish()
+}))
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Dupliquer l'emploi du temps d'une classe vers une autre
+ */
+export const DupliquerEmploiBody = zod.object({
+  "classe_source_id": zod.string(),
+  "classe_destination_id": zod.string(),
+  "annee_scolaire_id": zod.string()
+})
+
+export const DupliquerEmploiResponse = zod.object({
+  "message": zod.string(),
+  "copies": zod.number(),
+  "conflits": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Vérifier la disponibilité avant création d'un cours
+ */
+export const VerifierDisponibiliteBody = zod.object({
+  "classe_id": zod.string(),
+  "professeur_id": zod.string(),
+  "salle_id": zod.string().optional(),
+  "jour": zod.string(),
+  "creneau_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "exclude_id": zod.string().optional()
+})
+
+export const VerifierDisponibiliteResponse = zod.object({
+  "disponible": zod.boolean(),
+  "conflits": zod.array(zod.object({
+  "type": zod.string().optional(),
+  "message": zod.string().optional()
+}))
+})
+
+

@@ -9,3 +9,6 @@ export * from "./anneesScolaires";
 export * from "./filieres";
 export * from "./eleveClasses";
 export * from "./professeurClasses";
+export * from "./creneauxHoraires";
+export * from "./salles";
+export * from "./emploisDuTemps";

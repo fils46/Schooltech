@@ -506,6 +506,189 @@ export interface MonteeClasseResponse {
   eleves_transferes: number;
 }
 
+export interface Creneau {
+  id: string;
+  etablissement_id: string;
+  heure_debut: string;
+  heure_fin: string;
+  libelle: string;
+  ordre: number;
+  actif: boolean;
+  created_at?: string;
+}
+
+export interface CreneauInput {
+  heure_debut: string;
+  heure_fin: string;
+  libelle: string;
+  ordre?: number;
+  actif?: boolean;
+  etablissement_id?: string;
+}
+
+export interface CreneauxListeResponse {
+  creneaux: Creneau[];
+  total: number;
+}
+
+export type SalleType = typeof SalleType[keyof typeof SalleType];
+
+
+export const SalleType = {
+  classe: 'classe',
+  laboratoire: 'laboratoire',
+  salle_info: 'salle_info',
+  gymnase: 'gymnase',
+  autre: 'autre',
+} as const;
+
+export interface Salle {
+  id: string;
+  etablissement_id: string;
+  nom: string;
+  /** @nullable */
+  capacite?: number | null;
+  type: SalleType;
+  actif: boolean;
+  created_at?: string;
+}
+
+export type SalleInputType = typeof SalleInputType[keyof typeof SalleInputType];
+
+
+export const SalleInputType = {
+  classe: 'classe',
+  laboratoire: 'laboratoire',
+  salle_info: 'salle_info',
+  gymnase: 'gymnase',
+  autre: 'autre',
+} as const;
+
+export interface SalleInput {
+  nom: string;
+  capacite?: number;
+  type: SalleInputType;
+  actif?: boolean;
+  etablissement_id?: string;
+}
+
+export interface SallesListeResponse {
+  salles: Salle[];
+  total: number;
+}
+
+export type CoursInputJour = typeof CoursInputJour[keyof typeof CoursInputJour];
+
+
+export const CoursInputJour = {
+  lundi: 'lundi',
+  mardi: 'mardi',
+  mercredi: 'mercredi',
+  jeudi: 'jeudi',
+  vendredi: 'vendredi',
+  samedi: 'samedi',
+} as const;
+
+export interface CoursInput {
+  classe_id: string;
+  professeur_id: string;
+  salle_id?: string;
+  matiere: string;
+  jour: CoursInputJour;
+  creneau_id: string;
+  annee_scolaire_id: string;
+  couleur?: string;
+  etablissement_id?: string;
+}
+
+export interface CoursDetail {
+  id: string;
+  etablissement_id?: string;
+  annee_scolaire_id: string;
+  classe_id: string;
+  /** @nullable */
+  classe_nom?: string | null;
+  professeur_id: string;
+  /** @nullable */
+  professeur_nom?: string | null;
+  /** @nullable */
+  salle_id?: string | null;
+  /** @nullable */
+  salle_nom?: string | null;
+  matiere: string;
+  jour: string;
+  creneau_id: string;
+  /** @nullable */
+  creneau_libelle?: string | null;
+  /** @nullable */
+  creneau_debut?: string | null;
+  /** @nullable */
+  creneau_fin?: string | null;
+  /** @nullable */
+  creneau_ordre?: number | null;
+  /** @nullable */
+  couleur?: string | null;
+}
+
+export type EmploiGrilleResponseGrille = {[key: string]: CoursDetail[]};
+
+export interface EmploiGrilleResponse {
+  grille: EmploiGrilleResponseGrille;
+  creneaux: Creneau[];
+}
+
+export type ConflitItemType = typeof ConflitItemType[keyof typeof ConflitItemType];
+
+
+export const ConflitItemType = {
+  professeur: 'professeur',
+  classe: 'classe',
+  salle: 'salle',
+} as const;
+
+export interface ConflitItem {
+  type: ConflitItemType;
+  description: string;
+  cours: CoursDetail[];
+}
+
+export interface ConflitsResponse {
+  conflits: ConflitItem[];
+  total: number;
+}
+
+export interface DupliquerEmploiInput {
+  classe_source_id: string;
+  classe_destination_id: string;
+  annee_scolaire_id: string;
+}
+
+export interface DupliquerEmploiResponse {
+  message: string;
+  copies: number;
+  conflits: string[];
+}
+
+export interface VerifierDisponibiliteInput {
+  classe_id: string;
+  professeur_id: string;
+  salle_id?: string;
+  jour: string;
+  creneau_id: string;
+  annee_scolaire_id: string;
+  exclude_id?: string;
+}
+
+export type VerifierDisponibiliteResponseConflitsItem = {
+  type?: string;
+  message?: string;
+};
+
+export interface VerifierDisponibiliteResponse {
+  disponible: boolean;
+  conflits: VerifierDisponibiliteResponseConflitsItem[];
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -531,5 +714,30 @@ export type ListerClassesParams = {
 annee_scolaire?: number;
 annee_scolaire_id?: string;
 niveau?: string;
+};
+
+export type ListerCreneauxParams = {
+etablissement_id?: string;
+};
+
+export type ListerSallesParams = {
+etablissement_id?: string;
+};
+
+export type GetEmploiClasseParams = {
+annee_scolaire_id?: string;
+};
+
+export type GetEmploiProfesseurParams = {
+annee_scolaire_id?: string;
+};
+
+export type GetEmploiSalleParams = {
+annee_scolaire_id?: string;
+};
+
+export type VerifierConflitsParams = {
+annee_scolaire_id?: string;
+etablissement_id?: string;
 };
 

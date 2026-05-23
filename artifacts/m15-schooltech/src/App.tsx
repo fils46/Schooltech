@@ -25,6 +25,7 @@ import ClasseDetail from "@/pages/classe-detail";
 import AnneesScolaires from "@/pages/annees-scolaires";
 import Filieres from "@/pages/filieres";
 import EnConstruction from "@/pages/en-construction";
+import EmploiDuTemps from "@/pages/emploi-du-temps";
 
 const queryClient = new QueryClient();
 
@@ -130,11 +131,19 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      <Route path="/emploi-du-temps">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EmploiDuTemps />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/paiements", "/rapports",
-        "/professeurs", "/emploi-du-temps", "/absences",
+        "/professeurs", "/absences",
         "/mes-classes", "/evaluations", "/cahier-de-textes", "/appel", "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",
       ].map((path) => (

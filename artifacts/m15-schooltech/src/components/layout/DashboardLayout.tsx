@@ -31,6 +31,7 @@ const navConfig: Record<string, Section[]> = {
         { label: "Classes",          href: "/classes",          icon: UsersRound },
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
+        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
       ],
     },
     {
@@ -56,6 +57,7 @@ const navConfig: Record<string, Section[]> = {
         { label: "Élèves",           href: "/eleves",           icon: UserSquare },
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
+        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
       ],
     },
     {
