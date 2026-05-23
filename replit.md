@@ -58,11 +58,19 @@ Le directeur est responsable de créer tous les membres de son école.
 
 Module 01 — Authentification complet :
 - Login JWT avec vérification compte actif + message d'erreur FR
-- Dashboards adaptatifs selon 6 rôles (dev, directeur, censeur, professeur, eleve, parent)
+- Dashboards adaptatifs selon 7 rôles (dev, directeur, censeur, professeur, eleve, parent, infirmier)
 - CRUD utilisateurs avec permissions hiérarchiques
 - CRUD établissements (dev uniquement)
 - Statistiques globales et par établissement
 - Thème Bleu marine / Cyan / Or + Poppins + mode sombre/clair
+
+Module 16 — Infirmerie Numérique (complet) :
+- 4 tables DB : dossiers_medicaux, consultations_infirmerie, stocks_infirmerie, mouvements_stocks
+- 15 endpoints API REST sous /api/infirmerie/...
+- Rôle infirmier : sidebar dédiée, accès complet infirmerie
+- Pages : tableau de bord infirmerie, nouvelle consultation, gestion consultation, dossiers médicaux, stocks infirmerie, liste consultations, vue parent
+- Notifications parents automatiques à la clôture de consultation
+- Alertes de stock (seuil configurable par article)
 
 ## User preferences
 

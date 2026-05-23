@@ -31,3 +31,4 @@ export * from "./conseilDeliberations";
 export * from "./conseilInterventions";
 export * from "./examens";
 export * from "./bibliotheque";
+export * from "./infirmerie";

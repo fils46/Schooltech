@@ -59,6 +59,13 @@ import DetailRessource from "@/pages/detail-ressource";
 import MesRessources from "@/pages/mes-ressources";
 import DepotRessource from "@/pages/depot-ressource";
 import AdminBibliotheque from "@/pages/admin-bibliotheque";
+import InfirmerieDashboard from "@/pages/infirmerie-dashboard";
+import NouvelleConsultation from "@/pages/nouvelle-consultation";
+import GestionConsultation from "@/pages/gestion-consultation";
+import DossiersMedicaux from "@/pages/dossiers-medicaux";
+import StocksInfirmerie from "@/pages/stocks-infirmerie";
+import ConsultationParent from "@/pages/consultation-parent";
+import ConsultationsInfirmerie from "@/pages/consultations-infirmerie";
 
 const queryClient = new QueryClient();
 
@@ -453,6 +460,71 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <AdminBibliotheque />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Infirmerie */}
+      <Route path="/infirmerie/nouvelle-consultation">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <NouvelleConsultation />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/consultation/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <GestionConsultation />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/consultations">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConsultationsInfirmerie />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/dossier/:eleveId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DossiersMedicaux />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/dossiers">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DossiersMedicaux />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/stocks">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <StocksInfirmerie />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie/parent">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConsultationParent />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/infirmerie">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <InfirmerieDashboard />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

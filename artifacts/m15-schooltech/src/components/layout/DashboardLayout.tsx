@@ -12,6 +12,7 @@ import {
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
+  Heart, Stethoscope, Package,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -61,6 +62,15 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "INFIRMERIE",
+      links: [
+        { label: "Tableau de bord",   href: "/infirmerie",                    icon: Heart },
+        { label: "Consultations",     href: "/infirmerie/consultations",      icon: Stethoscope },
+        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",           icon: FileText },
+        { label: "Stocks médicaux",   href: "/infirmerie/stocks",             icon: Package },
       ],
     },
     {
@@ -123,6 +133,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "INFIRMERIE",
+      links: [
+        { label: "Tableau de bord",   href: "/infirmerie",                    icon: Heart },
+        { label: "Consultations",     href: "/infirmerie/consultations",      icon: Stethoscope },
+        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",           icon: FileText },
+        { label: "Stocks médicaux",   href: "/infirmerie/stocks",             icon: Package },
+      ],
+    },
+    {
       title: "BIBLIOTHÈQUE",
       links: [
         { label: "Catalogue",      href: "/bibliotheque",       icon: Library },
@@ -169,6 +188,15 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "INFIRMERIE",
+      links: [
+        { label: "Tableau de bord",   href: "/infirmerie",               icon: Heart },
+        { label: "Consultations",     href: "/infirmerie/consultations", icon: Stethoscope },
+        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",      icon: FileText },
+        { label: "Stocks médicaux",   href: "/infirmerie/stocks",        icon: Package },
       ],
     },
     {
@@ -270,6 +298,25 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
   ],
+  infirmier: [
+    {
+      title: "INFIRMERIE",
+      links: [
+        { label: "Tableau de bord",      href: "/infirmerie",                       icon: Heart },
+        { label: "Nouvelle consultation", href: "/infirmerie/nouvelle-consultation", icon: Stethoscope },
+        { label: "Toutes les consult.",  href: "/infirmerie/consultations",         icon: ClipboardList },
+        { label: "Dossiers médicaux",    href: "/infirmerie/dossiers",              icon: FileText },
+        { label: "Stocks médicaux",      href: "/infirmerie/stocks",                icon: Package },
+      ],
+    },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
+      ],
+    },
+  ],
   parent: [
     {
       title: "TABLEAU DE BORD",
@@ -299,6 +346,12 @@ const navConfig: Record<string, Section[]> = {
         { label: "Catalogue",  href: "/bibliotheque",   icon: Library },
         { label: "Favoris",    href: "/mes-ressources", icon: Star },
         { label: "Historique", href: "/mes-ressources", icon: Clock },
+      ],
+    },
+    {
+      title: "INFIRMERIE",
+      links: [
+        { label: "Consultations enfant", href: "/infirmerie/parent", icon: Heart },
       ],
     },
     {
@@ -365,6 +418,12 @@ const PAGE_TITLES: Record<string, string> = {
   "/mes-ressources":          "Mes Ressources",
   "/depot-ressource":         "Mes Dépôts",
   "/admin-bibliotheque":      "Administration Bibliothèque",
+  "/infirmerie":                         "Infirmerie — Tableau de bord",
+  "/infirmerie/nouvelle-consultation":   "Nouvelle consultation",
+  "/infirmerie/consultations":           "Consultations",
+  "/infirmerie/dossiers":                "Dossiers médicaux",
+  "/infirmerie/stocks":                  "Stocks infirmerie",
+  "/infirmerie/parent":                  "Infirmerie — Mon enfant",
 };
 
 const ROLE_LABELS: Record<string, string> = {
@@ -374,6 +433,7 @@ const ROLE_LABELS: Record<string, string> = {
   professeur: "PROFESSEUR",
   eleve:      "ÉLÈVE",
   parent:     "PARENT",
+  infirmier:  "INFIRMIER(E)",
 };
 
 /* ─── Composant NavLinks ─────────────────────────────────── */

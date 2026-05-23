@@ -2355,6 +2355,211 @@ export interface BibliothequeStatsGlobalesResponse {
   activite_30j?: BibliothequeStatsGlobalesResponseActivite30jItem[];
 }
 
+export interface DossierMedicalInput {
+  groupe_sanguin?: string;
+  allergies?: string[];
+  antecedents?: string;
+  medicaments_autorises?: string;
+  medicaments_interdits?: string;
+  medecin_nom?: string;
+  medecin_contact?: string;
+  assurance_nom?: string;
+  assurance_numero?: string;
+  contact_urgence_nom?: string;
+  contact_urgence_tel?: string;
+  contact_urgence_lien?: string;
+  observations_generales?: string;
+}
+
+export interface DossierMedicalItem {
+  id?: string;
+  eleve_id?: string;
+  etablissement_id?: string;
+  groupe_sanguin?: string;
+  allergies?: string[];
+  antecedents?: string;
+  medicaments_autorises?: string;
+  medicaments_interdits?: string;
+  medecin_nom?: string;
+  medecin_contact?: string;
+  assurance_nom?: string;
+  assurance_numero?: string;
+  contact_urgence_nom?: string;
+  contact_urgence_tel?: string;
+  contact_urgence_lien?: string;
+  observations_generales?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export type DossierMedicalResponseEleve = {
+  id?: string;
+  nom?: string;
+  prenoms?: string;
+  matricule?: string;
+  photo_url?: string;
+  classe_nom?: string;
+};
+
+export interface DossierMedicalResponse {
+  dossier?: DossierMedicalItem;
+  eleve?: DossierMedicalResponseEleve;
+}
+
+export interface ConsultationItem {
+  id?: string;
+  etablissement_id?: string;
+  eleve_id?: string;
+  infirmier_id?: string;
+  motif?: string;
+  symptomes?: string;
+  traitement_administre?: string;
+  medicaments_donnes?: string;
+  heure_entree?: string;
+  heure_sortie?: string;
+  statut?: string;
+  parent_notifie?: boolean;
+  observations?: string;
+  created_at?: string;
+  updated_at?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_photo?: string;
+  classe_nom?: string;
+  infirmier_nom?: string;
+}
+
+export type ConsultationDetailResponseDossierResume = {
+  groupe_sanguin?: string;
+  allergies?: string[];
+  medicaments_interdits?: string;
+  nb_visites?: number;
+  derniere_visite?: string;
+};
+
+export interface ConsultationDetailResponse {
+  consultation?: ConsultationItem;
+  dossier_resume?: ConsultationDetailResponseDossierResume;
+}
+
+export interface ConsultationsListeResponse {
+  consultations?: ConsultationItem[];
+  total?: number;
+  page?: number;
+  totalPages?: number;
+}
+
+export interface OuvrirConsultationInput {
+  eleve_id: string;
+  motif: string;
+  symptomes?: string;
+  heure_entree: string;
+}
+
+export interface UpdateConsultationInput {
+  symptomes?: string;
+  traitement_administre?: string;
+  medicaments_donnes?: string;
+  observations?: string;
+  statut?: string;
+  heure_sortie?: string;
+}
+
+export type ConsultationsEleveResponseStatsMotifsFrequentsItem = {
+  motif?: string;
+  count?: number;
+};
+
+export type ConsultationsEleveResponseStats = {
+  nb_visites?: number;
+  motifs_frequents?: ConsultationsEleveResponseStatsMotifsFrequentsItem[];
+};
+
+export interface ConsultationsEleveResponse {
+  consultations?: ConsultationItem[];
+  stats?: ConsultationsEleveResponseStats;
+}
+
+export type InfirmerieStatsResponseMotifsFrequentsItem = {
+  motif?: string;
+  count?: number;
+};
+
+export type InfirmerieStatsResponseConsultationsParClasseItem = {
+  classe_nom?: string;
+  count?: number;
+};
+
+export type InfirmerieStatsResponseActivite30jItem = {
+  date?: string;
+  count?: number;
+};
+
+export interface InfirmerieStatsResponse {
+  consultations_aujourd_hui?: number;
+  consultations_en_cours?: number;
+  consultations_mois?: number;
+  consultations_trimestre?: number;
+  articles_en_alerte?: number;
+  motifs_frequents?: InfirmerieStatsResponseMotifsFrequentsItem[];
+  consultations_par_classe?: InfirmerieStatsResponseConsultationsParClasseItem[];
+  activite_30j?: InfirmerieStatsResponseActivite30jItem[];
+}
+
+export interface StockItem {
+  id?: string;
+  etablissement_id?: string;
+  nom?: string;
+  categorie?: string;
+  quantite?: number;
+  unite?: string;
+  seuil_alerte?: number;
+  date_expiration?: string;
+  statut_stock?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface StocksListeResponse {
+  stocks?: StockItem[];
+  total?: number;
+  en_alerte?: number;
+  en_rupture?: number;
+}
+
+export interface StockInput {
+  nom: string;
+  categorie: string;
+  quantite: number;
+  unite: string;
+  seuil_alerte: number;
+  date_expiration?: string;
+}
+
+export interface MouvementStockInput {
+  type: string;
+  quantite: number;
+  motif?: string;
+  consultation_id?: string;
+}
+
+export interface MouvementStockItem {
+  id?: string;
+  stock_id?: string;
+  consultation_id?: string;
+  type?: string;
+  quantite?: number;
+  motif?: string;
+  effectue_par?: string;
+  effectue_par_nom?: string;
+  created_at?: string;
+}
+
+export interface MouvementsListeResponse {
+  mouvements?: MouvementStockItem[];
+  stock?: StockItem;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -2674,5 +2879,20 @@ export type GetBibliothequeHistoriqueParams = {
 action?: string;
 date_debut?: string;
 date_fin?: string;
+};
+
+export type GetInfirmerieConsultationsParams = {
+eleve_id?: string;
+statut?: string;
+date_debut?: string;
+date_fin?: string;
+classe_id?: string;
+page?: number;
+limit?: number;
+};
+
+export type GetInfirmerieStocksParams = {
+categorie?: string;
+alerte_stock?: boolean;
 };
 

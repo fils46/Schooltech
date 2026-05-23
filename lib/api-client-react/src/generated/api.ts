@@ -66,6 +66,9 @@ import type {
   ConseilEnCoursResponse,
   ConseilParticipantsResponse,
   ConseilsListeResponse,
+  ConsultationDetailResponse,
+  ConsultationsEleveResponse,
+  ConsultationsListeResponse,
   ContactsResponse,
   CoursDetail,
   CoursInput,
@@ -78,6 +81,8 @@ import type {
   DevoirsResponse,
   DocumentEleve,
   DossierEnfantResponse,
+  DossierMedicalInput,
+  DossierMedicalResponse,
   DupliquerEmploiInput,
   DupliquerEmploiResponse,
   EleveDetail,
@@ -123,6 +128,8 @@ import type {
   GetExamensPlanningEleveIdParams,
   GetExamensSujetsParams,
   GetHistoriqueAppelsParams,
+  GetInfirmerieConsultationsParams,
+  GetInfirmerieStocksParams,
   GetMatiereClasseParams,
   GetMesNotificationsParams,
   GetMoyennesClasseParams,
@@ -135,6 +142,7 @@ import type {
   GetStatistiquesNotesParams,
   HealthStatus,
   HistoriqueResponse,
+  InfirmerieStatsResponse,
   InscrireEleveInput,
   InscrireEleveResponse,
   JustificationInput,
@@ -166,6 +174,8 @@ import type {
   ModifierRessourceInput,
   MonteeClasseInput,
   MonteeClasseResponse,
+  MouvementStockInput,
+  MouvementsListeResponse,
   MoyennesClasseResponse,
   NoteCreeeResponse,
   NoteGroupeInput,
@@ -176,6 +186,7 @@ import type {
   NotesGroupeResponse,
   NotificationCountResponse,
   NotificationsListeResponse,
+  OuvrirConsultationInput,
   ParentDashboardResponse,
   PlanifierConseilInput,
   PlanningListeResponse,
@@ -211,6 +222,9 @@ import type {
   StatsEtablissement,
   StatsGlobal,
   StatsNotesResponse,
+  StockInput,
+  StockItem,
+  StocksListeResponse,
   SujetExamenInput,
   SujetExamenResponse,
   SujetsListeResponse,
@@ -218,6 +232,7 @@ import type {
   SupprimerSeance200,
   TerminerConseilInput,
   TraiterJustificationInput,
+  UpdateConsultationInput,
   UpdateSessionInput,
   Utilisateur,
   UtilisateurCreatedResponse,
@@ -14791,6 +14806,1136 @@ export function useGetBibliothequeStats<TData = Awaited<ReturnType<typeof getBib
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetBibliothequeStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetInfirmerieDossierEleveIdUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/infirmerie/dossier/${eleveId}`
+}
+
+/**
+ * @summary Obtenir ou créer le dossier médical d'un élève
+ */
+export const getInfirmerieDossierEleveId = async (eleveId: string, options?: RequestInit): Promise<DossierMedicalResponse> => {
+
+  return customFetch<DossierMedicalResponse>(getGetInfirmerieDossierEleveIdUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieDossierEleveIdQueryKey = (eleveId: string,) => {
+    return [
+    `/api/infirmerie/dossier/${eleveId}`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieDossierEleveIdQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieDossierEleveIdQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>> = ({ signal }) => getInfirmerieDossierEleveId(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieDossierEleveIdQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>>
+export type GetInfirmerieDossierEleveIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir ou créer le dossier médical d'un élève
+ */
+
+export function useGetInfirmerieDossierEleveId<TData = Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieDossierEleveId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieDossierEleveIdQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutInfirmerieDossierEleveIdUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/infirmerie/dossier/${eleveId}`
+}
+
+/**
+ * @summary Mettre à jour le dossier médical
+ */
+export const putInfirmerieDossierEleveId = async (eleveId: string,
+    dossierMedicalInput: DossierMedicalInput, options?: RequestInit): Promise<DossierMedicalResponse> => {
+
+  return customFetch<DossierMedicalResponse>(getPutInfirmerieDossierEleveIdUrl(eleveId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      dossierMedicalInput,)
+  }
+);}
+
+
+
+
+export const getPutInfirmerieDossierEleveIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>, TError,{eleveId: string;data: BodyType<DossierMedicalInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>, TError,{eleveId: string;data: BodyType<DossierMedicalInput>}, TContext> => {
+
+const mutationKey = ['putInfirmerieDossierEleveId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>, {eleveId: string;data: BodyType<DossierMedicalInput>}> = (props) => {
+          const {eleveId,data} = props ?? {};
+
+          return  putInfirmerieDossierEleveId(eleveId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutInfirmerieDossierEleveIdMutationResult = NonNullable<Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>>
+    export type PutInfirmerieDossierEleveIdMutationBody = BodyType<DossierMedicalInput>
+    export type PutInfirmerieDossierEleveIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Mettre à jour le dossier médical
+ */
+export const usePutInfirmerieDossierEleveId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>, TError,{eleveId: string;data: BodyType<DossierMedicalInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putInfirmerieDossierEleveId>>,
+        TError,
+        {eleveId: string;data: BodyType<DossierMedicalInput>},
+        TContext
+      > => {
+      return useMutation(getPutInfirmerieDossierEleveIdMutationOptions(options));
+    }
+
+export const getGetInfirmerieConsultationsUrl = (params?: GetInfirmerieConsultationsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/infirmerie/consultations?${stringifiedParams}` : `/api/infirmerie/consultations`
+}
+
+/**
+ * @summary Lister les consultations
+ */
+export const getInfirmerieConsultations = async (params?: GetInfirmerieConsultationsParams, options?: RequestInit): Promise<ConsultationsListeResponse> => {
+
+  return customFetch<ConsultationsListeResponse>(getGetInfirmerieConsultationsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieConsultationsQueryKey = (params?: GetInfirmerieConsultationsParams,) => {
+    return [
+    `/api/infirmerie/consultations`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetInfirmerieConsultationsQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieConsultations>>, TError = ErrorType<unknown>>(params?: GetInfirmerieConsultationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieConsultationsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieConsultations>>> = ({ signal }) => getInfirmerieConsultations(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultations>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieConsultationsQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieConsultations>>>
+export type GetInfirmerieConsultationsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les consultations
+ */
+
+export function useGetInfirmerieConsultations<TData = Awaited<ReturnType<typeof getInfirmerieConsultations>>, TError = ErrorType<unknown>>(
+ params?: GetInfirmerieConsultationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieConsultationsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostInfirmerieConsultationsUrl = () => {
+
+
+
+
+  return `/api/infirmerie/consultations`
+}
+
+/**
+ * @summary Ouvrir une nouvelle consultation
+ */
+export const postInfirmerieConsultations = async (ouvrirConsultationInput: OuvrirConsultationInput, options?: RequestInit): Promise<ConsultationDetailResponse> => {
+
+  return customFetch<ConsultationDetailResponse>(getPostInfirmerieConsultationsUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      ouvrirConsultationInput,)
+  }
+);}
+
+
+
+
+export const getPostInfirmerieConsultationsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieConsultations>>, TError,{data: BodyType<OuvrirConsultationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieConsultations>>, TError,{data: BodyType<OuvrirConsultationInput>}, TContext> => {
+
+const mutationKey = ['postInfirmerieConsultations'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postInfirmerieConsultations>>, {data: BodyType<OuvrirConsultationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postInfirmerieConsultations(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostInfirmerieConsultationsMutationResult = NonNullable<Awaited<ReturnType<typeof postInfirmerieConsultations>>>
+    export type PostInfirmerieConsultationsMutationBody = BodyType<OuvrirConsultationInput>
+    export type PostInfirmerieConsultationsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Ouvrir une nouvelle consultation
+ */
+export const usePostInfirmerieConsultations = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieConsultations>>, TError,{data: BodyType<OuvrirConsultationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postInfirmerieConsultations>>,
+        TError,
+        {data: BodyType<OuvrirConsultationInput>},
+        TContext
+      > => {
+      return useMutation(getPostInfirmerieConsultationsMutationOptions(options));
+    }
+
+export const getGetInfirmerieConsultationsIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/consultations/${id}`
+}
+
+/**
+ * @summary Détail d'une consultation
+ */
+export const getInfirmerieConsultationsId = async (id: string, options?: RequestInit): Promise<ConsultationDetailResponse> => {
+
+  return customFetch<ConsultationDetailResponse>(getGetInfirmerieConsultationsIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieConsultationsIdQueryKey = (id: string,) => {
+    return [
+    `/api/infirmerie/consultations/${id}`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieConsultationsIdQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieConsultationsId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultationsId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieConsultationsIdQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieConsultationsId>>> = ({ signal }) => getInfirmerieConsultationsId(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultationsId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieConsultationsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieConsultationsId>>>
+export type GetInfirmerieConsultationsIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Détail d'une consultation
+ */
+
+export function useGetInfirmerieConsultationsId<TData = Awaited<ReturnType<typeof getInfirmerieConsultationsId>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieConsultationsId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieConsultationsIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutInfirmerieConsultationsIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/consultations/${id}`
+}
+
+/**
+ * @summary Mettre à jour une consultation
+ */
+export const putInfirmerieConsultationsId = async (id: string,
+    updateConsultationInput: UpdateConsultationInput, options?: RequestInit): Promise<ConsultationDetailResponse> => {
+
+  return customFetch<ConsultationDetailResponse>(getPutInfirmerieConsultationsIdUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      updateConsultationInput,)
+  }
+);}
+
+
+
+
+export const getPutInfirmerieConsultationsIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsId>>, TError,{id: string;data: BodyType<UpdateConsultationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsId>>, TError,{id: string;data: BodyType<UpdateConsultationInput>}, TContext> => {
+
+const mutationKey = ['putInfirmerieConsultationsId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putInfirmerieConsultationsId>>, {id: string;data: BodyType<UpdateConsultationInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putInfirmerieConsultationsId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutInfirmerieConsultationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putInfirmerieConsultationsId>>>
+    export type PutInfirmerieConsultationsIdMutationBody = BodyType<UpdateConsultationInput>
+    export type PutInfirmerieConsultationsIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Mettre à jour une consultation
+ */
+export const usePutInfirmerieConsultationsId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsId>>, TError,{id: string;data: BodyType<UpdateConsultationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putInfirmerieConsultationsId>>,
+        TError,
+        {id: string;data: BodyType<UpdateConsultationInput>},
+        TContext
+      > => {
+      return useMutation(getPutInfirmerieConsultationsIdMutationOptions(options));
+    }
+
+export const getPutInfirmerieConsultationsIdCloturerUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/consultations/${id}/cloturer`
+}
+
+/**
+ * @summary Clôturer une consultation
+ */
+export const putInfirmerieConsultationsIdCloturer = async (id: string, options?: RequestInit): Promise<ConsultationDetailResponse> => {
+
+  return customFetch<ConsultationDetailResponse>(getPutInfirmerieConsultationsIdCloturerUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getPutInfirmerieConsultationsIdCloturerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['putInfirmerieConsultationsIdCloturer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  putInfirmerieConsultationsIdCloturer(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutInfirmerieConsultationsIdCloturerMutationResult = NonNullable<Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>>
+
+    export type PutInfirmerieConsultationsIdCloturerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Clôturer une consultation
+ */
+export const usePutInfirmerieConsultationsIdCloturer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putInfirmerieConsultationsIdCloturer>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPutInfirmerieConsultationsIdCloturerMutationOptions(options));
+    }
+
+export const getGetInfirmerieEleveEleveIdConsultationsUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/infirmerie/eleve/${eleveId}/consultations`
+}
+
+/**
+ * @summary Historique des consultations d'un élève
+ */
+export const getInfirmerieEleveEleveIdConsultations = async (eleveId: string, options?: RequestInit): Promise<ConsultationsEleveResponse> => {
+
+  return customFetch<ConsultationsEleveResponse>(getGetInfirmerieEleveEleveIdConsultationsUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieEleveEleveIdConsultationsQueryKey = (eleveId: string,) => {
+    return [
+    `/api/infirmerie/eleve/${eleveId}/consultations`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieEleveEleveIdConsultationsQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieEleveEleveIdConsultationsQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>> = ({ signal }) => getInfirmerieEleveEleveIdConsultations(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieEleveEleveIdConsultationsQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>>
+export type GetInfirmerieEleveEleveIdConsultationsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Historique des consultations d'un élève
+ */
+
+export function useGetInfirmerieEleveEleveIdConsultations<TData = Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieEleveEleveIdConsultations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieEleveEleveIdConsultationsQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetInfirmerieStatsUrl = () => {
+
+
+
+
+  return `/api/infirmerie/stats`
+}
+
+/**
+ * @summary Statistiques infirmerie
+ */
+export const getInfirmerieStats = async ( options?: RequestInit): Promise<InfirmerieStatsResponse> => {
+
+  return customFetch<InfirmerieStatsResponse>(getGetInfirmerieStatsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieStatsQueryKey = () => {
+    return [
+    `/api/infirmerie/stats`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieStatsQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieStats>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieStatsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieStats>>> = ({ signal }) => getInfirmerieStats({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStats>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieStats>>>
+export type GetInfirmerieStatsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Statistiques infirmerie
+ */
+
+export function useGetInfirmerieStats<TData = Awaited<ReturnType<typeof getInfirmerieStats>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieStatsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetInfirmerieStocksUrl = (params?: GetInfirmerieStocksParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/infirmerie/stocks?${stringifiedParams}` : `/api/infirmerie/stocks`
+}
+
+/**
+ * @summary Lister les stocks infirmerie
+ */
+export const getInfirmerieStocks = async (params?: GetInfirmerieStocksParams, options?: RequestInit): Promise<StocksListeResponse> => {
+
+  return customFetch<StocksListeResponse>(getGetInfirmerieStocksUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieStocksQueryKey = (params?: GetInfirmerieStocksParams,) => {
+    return [
+    `/api/infirmerie/stocks`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetInfirmerieStocksQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieStocks>>, TError = ErrorType<unknown>>(params?: GetInfirmerieStocksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieStocksQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieStocks>>> = ({ signal }) => getInfirmerieStocks(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocks>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieStocksQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieStocks>>>
+export type GetInfirmerieStocksQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les stocks infirmerie
+ */
+
+export function useGetInfirmerieStocks<TData = Awaited<ReturnType<typeof getInfirmerieStocks>>, TError = ErrorType<unknown>>(
+ params?: GetInfirmerieStocksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieStocksQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostInfirmerieStocksUrl = () => {
+
+
+
+
+  return `/api/infirmerie/stocks`
+}
+
+/**
+ * @summary Ajouter un article au stock
+ */
+export const postInfirmerieStocks = async (stockInput: StockInput, options?: RequestInit): Promise<StockItem> => {
+
+  return customFetch<StockItem>(getPostInfirmerieStocksUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      stockInput,)
+  }
+);}
+
+
+
+
+export const getPostInfirmerieStocksMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocks>>, TError,{data: BodyType<StockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocks>>, TError,{data: BodyType<StockInput>}, TContext> => {
+
+const mutationKey = ['postInfirmerieStocks'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postInfirmerieStocks>>, {data: BodyType<StockInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postInfirmerieStocks(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostInfirmerieStocksMutationResult = NonNullable<Awaited<ReturnType<typeof postInfirmerieStocks>>>
+    export type PostInfirmerieStocksMutationBody = BodyType<StockInput>
+    export type PostInfirmerieStocksMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Ajouter un article au stock
+ */
+export const usePostInfirmerieStocks = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocks>>, TError,{data: BodyType<StockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postInfirmerieStocks>>,
+        TError,
+        {data: BodyType<StockInput>},
+        TContext
+      > => {
+      return useMutation(getPostInfirmerieStocksMutationOptions(options));
+    }
+
+export const getGetInfirmerieStocksAlertesUrl = () => {
+
+
+
+
+  return `/api/infirmerie/stocks/alertes`
+}
+
+/**
+ * @summary Articles en alerte ou rupture
+ */
+export const getInfirmerieStocksAlertes = async ( options?: RequestInit): Promise<StocksListeResponse> => {
+
+  return customFetch<StocksListeResponse>(getGetInfirmerieStocksAlertesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieStocksAlertesQueryKey = () => {
+    return [
+    `/api/infirmerie/stocks/alertes`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieStocksAlertesQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieStocksAlertesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>> = ({ signal }) => getInfirmerieStocksAlertes({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieStocksAlertesQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>>
+export type GetInfirmerieStocksAlertesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Articles en alerte ou rupture
+ */
+
+export function useGetInfirmerieStocksAlertes<TData = Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksAlertes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieStocksAlertesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutInfirmerieStocksIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/stocks/${id}`
+}
+
+/**
+ * @summary Modifier un article du stock
+ */
+export const putInfirmerieStocksId = async (id: string,
+    stockInput: StockInput, options?: RequestInit): Promise<StockItem> => {
+
+  return customFetch<StockItem>(getPutInfirmerieStocksIdUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      stockInput,)
+  }
+);}
+
+
+
+
+export const getPutInfirmerieStocksIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieStocksId>>, TError,{id: string;data: BodyType<StockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieStocksId>>, TError,{id: string;data: BodyType<StockInput>}, TContext> => {
+
+const mutationKey = ['putInfirmerieStocksId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putInfirmerieStocksId>>, {id: string;data: BodyType<StockInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putInfirmerieStocksId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutInfirmerieStocksIdMutationResult = NonNullable<Awaited<ReturnType<typeof putInfirmerieStocksId>>>
+    export type PutInfirmerieStocksIdMutationBody = BodyType<StockInput>
+    export type PutInfirmerieStocksIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier un article du stock
+ */
+export const usePutInfirmerieStocksId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putInfirmerieStocksId>>, TError,{id: string;data: BodyType<StockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putInfirmerieStocksId>>,
+        TError,
+        {id: string;data: BodyType<StockInput>},
+        TContext
+      > => {
+      return useMutation(getPutInfirmerieStocksIdMutationOptions(options));
+    }
+
+export const getPostInfirmerieStocksIdMouvementUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/stocks/${id}/mouvement`
+}
+
+/**
+ * @summary Effectuer un mouvement de stock
+ */
+export const postInfirmerieStocksIdMouvement = async (id: string,
+    mouvementStockInput: MouvementStockInput, options?: RequestInit): Promise<StockItem> => {
+
+  return customFetch<StockItem>(getPostInfirmerieStocksIdMouvementUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      mouvementStockInput,)
+  }
+);}
+
+
+
+
+export const getPostInfirmerieStocksIdMouvementMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>, TError,{id: string;data: BodyType<MouvementStockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>, TError,{id: string;data: BodyType<MouvementStockInput>}, TContext> => {
+
+const mutationKey = ['postInfirmerieStocksIdMouvement'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>, {id: string;data: BodyType<MouvementStockInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  postInfirmerieStocksIdMouvement(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostInfirmerieStocksIdMouvementMutationResult = NonNullable<Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>>
+    export type PostInfirmerieStocksIdMouvementMutationBody = BodyType<MouvementStockInput>
+    export type PostInfirmerieStocksIdMouvementMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Effectuer un mouvement de stock
+ */
+export const usePostInfirmerieStocksIdMouvement = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>, TError,{id: string;data: BodyType<MouvementStockInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postInfirmerieStocksIdMouvement>>,
+        TError,
+        {id: string;data: BodyType<MouvementStockInput>},
+        TContext
+      > => {
+      return useMutation(getPostInfirmerieStocksIdMouvementMutationOptions(options));
+    }
+
+export const getGetInfirmerieStocksIdHistoriqueUrl = (id: string,) => {
+
+
+
+
+  return `/api/infirmerie/stocks/${id}/historique`
+}
+
+/**
+ * @summary Historique des mouvements d'un article
+ */
+export const getInfirmerieStocksIdHistorique = async (id: string, options?: RequestInit): Promise<MouvementsListeResponse> => {
+
+  return customFetch<MouvementsListeResponse>(getGetInfirmerieStocksIdHistoriqueUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetInfirmerieStocksIdHistoriqueQueryKey = (id: string,) => {
+    return [
+    `/api/infirmerie/stocks/${id}/historique`
+    ] as const;
+    }
+
+
+export const getGetInfirmerieStocksIdHistoriqueQueryOptions = <TData = Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInfirmerieStocksIdHistoriqueQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>> = ({ signal }) => getInfirmerieStocksIdHistorique(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetInfirmerieStocksIdHistoriqueQueryResult = NonNullable<Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>>
+export type GetInfirmerieStocksIdHistoriqueQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Historique des mouvements d'un article
+ */
+
+export function useGetInfirmerieStocksIdHistorique<TData = Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInfirmerieStocksIdHistorique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetInfirmerieStocksIdHistoriqueQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

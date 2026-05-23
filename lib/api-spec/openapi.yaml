@@ -4080,6 +4080,237 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/BibliothequeStatsGlobalesResponse" }
 
+  /infirmerie/dossier/{eleveId}:
+    get:
+      tags: [Infirmerie]
+      summary: Obtenir ou créer le dossier médical d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Dossier médical
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DossierMedicalResponse" }
+    put:
+      tags: [Infirmerie]
+      summary: Mettre à jour le dossier médical
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DossierMedicalInput" }
+      responses:
+        "200":
+          description: Dossier mis à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DossierMedicalResponse" }
+
+  /infirmerie/consultations:
+    get:
+      tags: [Infirmerie]
+      summary: Lister les consultations
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleve_id, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des consultations
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationsListeResponse" }
+    post:
+      tags: [Infirmerie]
+      summary: Ouvrir une nouvelle consultation
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OuvrirConsultationInput" }
+      responses:
+        "201":
+          description: Consultation créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationDetailResponse" }
+
+  /infirmerie/consultations/{id}:
+    get:
+      tags: [Infirmerie]
+      summary: Détail d'une consultation
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Consultation
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationDetailResponse" }
+    put:
+      tags: [Infirmerie]
+      summary: Mettre à jour une consultation
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateConsultationInput" }
+      responses:
+        "200":
+          description: Consultation mise à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationDetailResponse" }
+
+  /infirmerie/consultations/{id}/cloturer:
+    put:
+      tags: [Infirmerie]
+      summary: Clôturer une consultation
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Consultation clôturée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationDetailResponse" }
+
+  /infirmerie/eleve/{eleveId}/consultations:
+    get:
+      tags: [Infirmerie]
+      summary: Historique des consultations d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Consultations de l'élève
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConsultationsEleveResponse" }
+
+  /infirmerie/stats:
+    get:
+      tags: [Infirmerie]
+      summary: Statistiques infirmerie
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Statistiques
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/InfirmerieStatsResponse" }
+
+  /infirmerie/stocks:
+    get:
+      tags: [Infirmerie]
+      summary: Lister les stocks infirmerie
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: categorie, in: query, schema: { type: string } }
+        - { name: alerte_stock, in: query, schema: { type: boolean } }
+      responses:
+        "200":
+          description: Liste des stocks
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StocksListeResponse" }
+    post:
+      tags: [Infirmerie]
+      summary: Ajouter un article au stock
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/StockInput" }
+      responses:
+        "201":
+          description: Article créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StockItem" }
+
+  /infirmerie/stocks/alertes:
+    get:
+      tags: [Infirmerie]
+      summary: Articles en alerte ou rupture
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Alertes stocks
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StocksListeResponse" }
+
+  /infirmerie/stocks/{id}:
+    put:
+      tags: [Infirmerie]
+      summary: Modifier un article du stock
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/StockInput" }
+      responses:
+        "200":
+          description: Article mis à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StockItem" }
+
+  /infirmerie/stocks/{id}/mouvement:
+    post:
+      tags: [Infirmerie]
+      summary: Effectuer un mouvement de stock
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MouvementStockInput" }
+      responses:
+        "200":
+          description: Stock mis à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StockItem" }
+
+  /infirmerie/stocks/{id}/historique:
+    get:
+      tags: [Infirmerie]
+      summary: Historique des mouvements d'un article
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Historique mouvements
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MouvementsListeResponse" }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -6899,3 +7130,242 @@ components:
               date: { type: string }
               consultations: { type: integer }
               telechargements: { type: integer }
+
+    DossierMedicalInput:
+      type: object
+      properties:
+        groupe_sanguin: { type: string }
+        allergies:
+          type: array
+          items: { type: string }
+        antecedents: { type: string }
+        medicaments_autorises: { type: string }
+        medicaments_interdits: { type: string }
+        medecin_nom: { type: string }
+        medecin_contact: { type: string }
+        assurance_nom: { type: string }
+        assurance_numero: { type: string }
+        contact_urgence_nom: { type: string }
+        contact_urgence_tel: { type: string }
+        contact_urgence_lien: { type: string }
+        observations_generales: { type: string }
+
+    DossierMedicalItem:
+      type: object
+      properties:
+        id: { type: string }
+        eleve_id: { type: string }
+        etablissement_id: { type: string }
+        groupe_sanguin: { type: string }
+        allergies:
+          type: array
+          items: { type: string }
+        antecedents: { type: string }
+        medicaments_autorises: { type: string }
+        medicaments_interdits: { type: string }
+        medecin_nom: { type: string }
+        medecin_contact: { type: string }
+        assurance_nom: { type: string }
+        assurance_numero: { type: string }
+        contact_urgence_nom: { type: string }
+        contact_urgence_tel: { type: string }
+        contact_urgence_lien: { type: string }
+        observations_generales: { type: string }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    DossierMedicalResponse:
+      type: object
+      properties:
+        dossier: { $ref: "#/components/schemas/DossierMedicalItem" }
+        eleve:
+          type: object
+          properties:
+            id: { type: string }
+            nom: { type: string }
+            prenoms: { type: string }
+            matricule: { type: string }
+            photo_url: { type: string }
+            classe_nom: { type: string }
+
+    ConsultationItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        eleve_id: { type: string }
+        infirmier_id: { type: string }
+        motif: { type: string }
+        symptomes: { type: string }
+        traitement_administre: { type: string }
+        medicaments_donnes: { type: string }
+        heure_entree: { type: string }
+        heure_sortie: { type: string }
+        statut: { type: string }
+        parent_notifie: { type: boolean }
+        observations: { type: string }
+        created_at: { type: string }
+        updated_at: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        eleve_photo: { type: string }
+        classe_nom: { type: string }
+        infirmier_nom: { type: string }
+
+    ConsultationDetailResponse:
+      type: object
+      properties:
+        consultation: { $ref: "#/components/schemas/ConsultationItem" }
+        dossier_resume:
+          type: object
+          properties:
+            groupe_sanguin: { type: string }
+            allergies:
+              type: array
+              items: { type: string }
+            medicaments_interdits: { type: string }
+            nb_visites: { type: integer }
+            derniere_visite: { type: string }
+
+    ConsultationsListeResponse:
+      type: object
+      properties:
+        consultations:
+          type: array
+          items: { $ref: "#/components/schemas/ConsultationItem" }
+        total: { type: integer }
+        page: { type: integer }
+        totalPages: { type: integer }
+
+    OuvrirConsultationInput:
+      type: object
+      required: [eleve_id, motif, heure_entree]
+      properties:
+        eleve_id: { type: string }
+        motif: { type: string }
+        symptomes: { type: string }
+        heure_entree: { type: string }
+
+    UpdateConsultationInput:
+      type: object
+      properties:
+        symptomes: { type: string }
+        traitement_administre: { type: string }
+        medicaments_donnes: { type: string }
+        observations: { type: string }
+        statut: { type: string }
+        heure_sortie: { type: string }
+
+    ConsultationsEleveResponse:
+      type: object
+      properties:
+        consultations:
+          type: array
+          items: { $ref: "#/components/schemas/ConsultationItem" }
+        stats:
+          type: object
+          properties:
+            nb_visites: { type: integer }
+            motifs_frequents:
+              type: array
+              items:
+                type: object
+                properties:
+                  motif: { type: string }
+                  count: { type: integer }
+
+    InfirmerieStatsResponse:
+      type: object
+      properties:
+        consultations_aujourd_hui: { type: integer }
+        consultations_en_cours: { type: integer }
+        consultations_mois: { type: integer }
+        consultations_trimestre: { type: integer }
+        articles_en_alerte: { type: integer }
+        motifs_frequents:
+          type: array
+          items:
+            type: object
+            properties:
+              motif: { type: string }
+              count: { type: integer }
+        consultations_par_classe:
+          type: array
+          items:
+            type: object
+            properties:
+              classe_nom: { type: string }
+              count: { type: integer }
+        activite_30j:
+          type: array
+          items:
+            type: object
+            properties:
+              date: { type: string }
+              count: { type: integer }
+
+    StockItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        nom: { type: string }
+        categorie: { type: string }
+        quantite: { type: integer }
+        unite: { type: string }
+        seuil_alerte: { type: integer }
+        date_expiration: { type: string }
+        statut_stock: { type: string }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    StocksListeResponse:
+      type: object
+      properties:
+        stocks:
+          type: array
+          items: { $ref: "#/components/schemas/StockItem" }
+        total: { type: integer }
+        en_alerte: { type: integer }
+        en_rupture: { type: integer }
+
+    StockInput:
+      type: object
+      required: [nom, categorie, quantite, unite, seuil_alerte]
+      properties:
+        nom: { type: string }
+        categorie: { type: string }
+        quantite: { type: integer }
+        unite: { type: string }
+        seuil_alerte: { type: integer }
+        date_expiration: { type: string }
+
+    MouvementStockInput:
+      type: object
+      required: [type, quantite]
+      properties:
+        type: { type: string }
+        quantite: { type: integer }
+        motif: { type: string }
+        consultation_id: { type: string }
+
+    MouvementStockItem:
+      type: object
+      properties:
+        id: { type: string }
+        stock_id: { type: string }
+        consultation_id: { type: string }
+        type: { type: string }
+        quantite: { type: integer }
+        motif: { type: string }
+        effectue_par: { type: string }
+        effectue_par_nom: { type: string }
+        created_at: { type: string }
+
+    MouvementsListeResponse:
+      type: object
+      properties:
+        mouvements:
+          type: array
+          items: { $ref: "#/components/schemas/MouvementStockItem" }
+        stock: { $ref: "#/components/schemas/StockItem" }

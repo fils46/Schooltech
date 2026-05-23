@@ -4976,3 +4976,502 @@ export const GetBibliothequeStatsResponse = zod.object({
 })
 
 
+/**
+ * @summary Obtenir ou créer le dossier médical d'un élève
+ */
+export const GetInfirmerieDossierEleveIdParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetInfirmerieDossierEleveIdResponse = zod.object({
+  "dossier": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "antecedents": zod.string().optional(),
+  "medicaments_autorises": zod.string().optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "medecin_nom": zod.string().optional(),
+  "medecin_contact": zod.string().optional(),
+  "assurance_nom": zod.string().optional(),
+  "assurance_numero": zod.string().optional(),
+  "contact_urgence_nom": zod.string().optional(),
+  "contact_urgence_tel": zod.string().optional(),
+  "contact_urgence_lien": zod.string().optional(),
+  "observations_generales": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}).optional(),
+  "eleve": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "matricule": zod.string().optional(),
+  "photo_url": zod.string().optional(),
+  "classe_nom": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Mettre à jour le dossier médical
+ */
+export const PutInfirmerieDossierEleveIdParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const PutInfirmerieDossierEleveIdBody = zod.object({
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "antecedents": zod.string().optional(),
+  "medicaments_autorises": zod.string().optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "medecin_nom": zod.string().optional(),
+  "medecin_contact": zod.string().optional(),
+  "assurance_nom": zod.string().optional(),
+  "assurance_numero": zod.string().optional(),
+  "contact_urgence_nom": zod.string().optional(),
+  "contact_urgence_tel": zod.string().optional(),
+  "contact_urgence_lien": zod.string().optional(),
+  "observations_generales": zod.string().optional()
+})
+
+export const PutInfirmerieDossierEleveIdResponse = zod.object({
+  "dossier": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "antecedents": zod.string().optional(),
+  "medicaments_autorises": zod.string().optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "medecin_nom": zod.string().optional(),
+  "medecin_contact": zod.string().optional(),
+  "assurance_nom": zod.string().optional(),
+  "assurance_numero": zod.string().optional(),
+  "contact_urgence_nom": zod.string().optional(),
+  "contact_urgence_tel": zod.string().optional(),
+  "contact_urgence_lien": zod.string().optional(),
+  "observations_generales": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}).optional(),
+  "eleve": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "matricule": zod.string().optional(),
+  "photo_url": zod.string().optional(),
+  "classe_nom": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les consultations
+ */
+export const GetInfirmerieConsultationsQueryParams = zod.object({
+  "eleve_id": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetInfirmerieConsultationsResponse = zod.object({
+  "consultations": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "infirmier_id": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "heure_entree": zod.string().optional(),
+  "heure_sortie": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "parent_notifie": zod.boolean().optional(),
+  "observations": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "infirmier_nom": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "page": zod.number().optional(),
+  "totalPages": zod.number().optional()
+})
+
+
+/**
+ * @summary Ouvrir une nouvelle consultation
+ */
+export const PostInfirmerieConsultationsBody = zod.object({
+  "eleve_id": zod.string(),
+  "motif": zod.string(),
+  "symptomes": zod.string().optional(),
+  "heure_entree": zod.string()
+})
+
+
+/**
+ * @summary Détail d'une consultation
+ */
+export const GetInfirmerieConsultationsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetInfirmerieConsultationsIdResponse = zod.object({
+  "consultation": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "infirmier_id": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "heure_entree": zod.string().optional(),
+  "heure_sortie": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "parent_notifie": zod.boolean().optional(),
+  "observations": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "infirmier_nom": zod.string().optional()
+}).optional(),
+  "dossier_resume": zod.object({
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "nb_visites": zod.number().optional(),
+  "derniere_visite": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Mettre à jour une consultation
+ */
+export const PutInfirmerieConsultationsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutInfirmerieConsultationsIdBody = zod.object({
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "heure_sortie": zod.string().optional()
+})
+
+export const PutInfirmerieConsultationsIdResponse = zod.object({
+  "consultation": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "infirmier_id": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "heure_entree": zod.string().optional(),
+  "heure_sortie": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "parent_notifie": zod.boolean().optional(),
+  "observations": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "infirmier_nom": zod.string().optional()
+}).optional(),
+  "dossier_resume": zod.object({
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "nb_visites": zod.number().optional(),
+  "derniere_visite": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Clôturer une consultation
+ */
+export const PutInfirmerieConsultationsIdCloturerParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutInfirmerieConsultationsIdCloturerResponse = zod.object({
+  "consultation": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "infirmier_id": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "heure_entree": zod.string().optional(),
+  "heure_sortie": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "parent_notifie": zod.boolean().optional(),
+  "observations": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "infirmier_nom": zod.string().optional()
+}).optional(),
+  "dossier_resume": zod.object({
+  "groupe_sanguin": zod.string().optional(),
+  "allergies": zod.array(zod.string()).optional(),
+  "medicaments_interdits": zod.string().optional(),
+  "nb_visites": zod.number().optional(),
+  "derniere_visite": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Historique des consultations d'un élève
+ */
+export const GetInfirmerieEleveEleveIdConsultationsParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetInfirmerieEleveEleveIdConsultationsResponse = zod.object({
+  "consultations": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "infirmier_id": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "symptomes": zod.string().optional(),
+  "traitement_administre": zod.string().optional(),
+  "medicaments_donnes": zod.string().optional(),
+  "heure_entree": zod.string().optional(),
+  "heure_sortie": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "parent_notifie": zod.boolean().optional(),
+  "observations": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_photo": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "infirmier_nom": zod.string().optional()
+})).optional(),
+  "stats": zod.object({
+  "nb_visites": zod.number().optional(),
+  "motifs_frequents": zod.array(zod.object({
+  "motif": zod.string().optional(),
+  "count": zod.number().optional()
+})).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Statistiques infirmerie
+ */
+export const GetInfirmerieStatsResponse = zod.object({
+  "consultations_aujourd_hui": zod.number().optional(),
+  "consultations_en_cours": zod.number().optional(),
+  "consultations_mois": zod.number().optional(),
+  "consultations_trimestre": zod.number().optional(),
+  "articles_en_alerte": zod.number().optional(),
+  "motifs_frequents": zod.array(zod.object({
+  "motif": zod.string().optional(),
+  "count": zod.number().optional()
+})).optional(),
+  "consultations_par_classe": zod.array(zod.object({
+  "classe_nom": zod.string().optional(),
+  "count": zod.number().optional()
+})).optional(),
+  "activite_30j": zod.array(zod.object({
+  "date": zod.string().optional(),
+  "count": zod.number().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Lister les stocks infirmerie
+ */
+export const GetInfirmerieStocksQueryParams = zod.object({
+  "categorie": zod.coerce.string().optional(),
+  "alerte_stock": zod.coerce.boolean().optional()
+})
+
+export const GetInfirmerieStocksResponse = zod.object({
+  "stocks": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "unite": zod.string().optional(),
+  "seuil_alerte": zod.number().optional(),
+  "date_expiration": zod.string().optional(),
+  "statut_stock": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "en_alerte": zod.number().optional(),
+  "en_rupture": zod.number().optional()
+})
+
+
+/**
+ * @summary Ajouter un article au stock
+ */
+export const PostInfirmerieStocksBody = zod.object({
+  "nom": zod.string(),
+  "categorie": zod.string(),
+  "quantite": zod.number(),
+  "unite": zod.string(),
+  "seuil_alerte": zod.number(),
+  "date_expiration": zod.string().optional()
+})
+
+
+/**
+ * @summary Articles en alerte ou rupture
+ */
+export const GetInfirmerieStocksAlertesResponse = zod.object({
+  "stocks": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "unite": zod.string().optional(),
+  "seuil_alerte": zod.number().optional(),
+  "date_expiration": zod.string().optional(),
+  "statut_stock": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "en_alerte": zod.number().optional(),
+  "en_rupture": zod.number().optional()
+})
+
+
+/**
+ * @summary Modifier un article du stock
+ */
+export const PutInfirmerieStocksIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutInfirmerieStocksIdBody = zod.object({
+  "nom": zod.string(),
+  "categorie": zod.string(),
+  "quantite": zod.number(),
+  "unite": zod.string(),
+  "seuil_alerte": zod.number(),
+  "date_expiration": zod.string().optional()
+})
+
+export const PutInfirmerieStocksIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "unite": zod.string().optional(),
+  "seuil_alerte": zod.number().optional(),
+  "date_expiration": zod.string().optional(),
+  "statut_stock": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Effectuer un mouvement de stock
+ */
+export const PostInfirmerieStocksIdMouvementParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PostInfirmerieStocksIdMouvementBody = zod.object({
+  "type": zod.string(),
+  "quantite": zod.number(),
+  "motif": zod.string().optional(),
+  "consultation_id": zod.string().optional()
+})
+
+export const PostInfirmerieStocksIdMouvementResponse = zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "unite": zod.string().optional(),
+  "seuil_alerte": zod.number().optional(),
+  "date_expiration": zod.string().optional(),
+  "statut_stock": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Historique des mouvements d'un article
+ */
+export const GetInfirmerieStocksIdHistoriqueParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetInfirmerieStocksIdHistoriqueResponse = zod.object({
+  "mouvements": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "stock_id": zod.string().optional(),
+  "consultation_id": zod.string().optional(),
+  "type": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "motif": zod.string().optional(),
+  "effectue_par": zod.string().optional(),
+  "effectue_par_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "stock": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "quantite": zod.number().optional(),
+  "unite": zod.string().optional(),
+  "seuil_alerte": zod.number().optional(),
+  "date_expiration": zod.string().optional(),
+  "statut_stock": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}).optional()
+})
+
+
