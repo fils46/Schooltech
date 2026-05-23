@@ -4,8 +4,14 @@ import { z } from "zod";
 import { useLocation, Link } from "wouter";
 import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2, Lock, Eye, EyeOff } from "lucide-react";
+
+const SLIDES = [
+  { src: "/hero-classe.png",   alt: "Élèves en classe" },
+  { src: "/hero-eleve-1.png",  alt: "Élève au travail" },
+  { src: "/hero-eleve-2.png",  alt: "Élève concentré"  },
+];
 
 const loginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -20,7 +26,15 @@ export default function Login() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
   const loginMutation = useLogin();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex(i => (i + 1) % SLIDES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -44,71 +58,67 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full flex" style={{ background: "var(--m15-navy)", fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* ── Colonne gauche ── */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, var(--m15-navy) 0%, var(--m15-card2) 100%)" }}>
+      {/* ── Colonne gauche — Slideshow ── */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col relative overflow-hidden">
 
-        {/* Grille de fond */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: "linear-gradient(rgba(0,201,167,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,201,167,0.04) 1px, transparent 1px)",
-          backgroundSize: "48px 48px"
+        {/* Photos en fond — défilement par fondu */}
+        {SLIDES.map((slide, i) => (
+          <div
+            key={slide.src}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: i === slideIndex ? 1 : 0 }}
+          >
+            <img
+              src={slide.src}
+              alt={slide.alt}
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+        ))}
+
+        {/* Overlay dégradé sombre pour lisibilité du texte */}
+        <div className="absolute inset-0" style={{
+          background: "linear-gradient(to bottom, rgba(10,22,40,0.55) 0%, rgba(10,22,40,0.30) 40%, rgba(10,22,40,0.75) 100%)"
         }} />
 
-        {/* Glow radial */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full pointer-events-none" style={{
-          background: "radial-gradient(circle, rgba(0,201,167,0.12) 0%, transparent 70%)"
-        }} />
-
+        {/* Contenu en premier plan */}
         <div className="relative z-10 flex flex-col h-full p-12">
           {/* Logo */}
           <div className="mb-auto">
-            <img src="/logo.png" alt="M15-SchoolTech" className="h-16 w-auto mb-2" />
-            <p className="text-xs pl-1" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
+            <img src="/logo.png" alt="M15-SchoolTech" className="h-16 w-auto mb-2 drop-shadow-lg" />
+            <p className="text-xs pl-1 text-white/70">v1.0 — Collège & Lycée</p>
           </div>
 
           {/* Hero text */}
           <div className="mb-10">
-            <h2 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
+            <h2 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: "'Syne', sans-serif", color: "#ffffff" }}>
               La gestion scolaire<br />
               <span style={{ color: "#00C9A7" }}>simplifiée</span> pour la<br />
               Côte d'Ivoire
             </h2>
-            <p className="text-base leading-relaxed" style={{ color: "var(--m15-muted)" }}>
+            <p className="text-base leading-relaxed text-white/75">
               Une plateforme complète pour administrer vos établissements, suivre les élèves et communiquer avec les familles.
             </p>
           </div>
 
-          {/* Photo collage */}
-          <div className="flex flex-col gap-3">
-            {/* Image large — classe entière */}
-            <div className="w-full rounded-2xl overflow-hidden shadow-lg" style={{ height: "190px" }}>
-              <img
-                src="/hero-classe.png"
-                alt="Élèves en classe"
-                className="w-full h-full object-cover object-top"
+          {/* Indicateurs de slide */}
+          <div className="flex items-center gap-2 mb-6">
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSlideIndex(i)}
+                className="transition-all duration-300 rounded-full"
+                style={{
+                  width: i === slideIndex ? "24px" : "8px",
+                  height: "8px",
+                  background: i === slideIndex ? "#00C9A7" : "rgba(255,255,255,0.4)",
+                }}
               />
-            </div>
-            {/* Deux portraits côte à côte */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl overflow-hidden shadow-md" style={{ height: "150px" }}>
-                <img
-                  src="/hero-eleve-1.png"
-                  alt="Élève au travail"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-md" style={{ height: "150px" }}>
-                <img
-                  src="/hero-eleve-2.png"
-                  alt="Élève concentré"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Footer */}
-          <p className="mt-6 text-xs" style={{ color: "var(--m15-muted)" }}>
+          <p className="text-xs text-white/50">
             © {new Date().getFullYear()} M15 Tech. Tous droits réservés.
           </p>
         </div>
