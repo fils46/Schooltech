@@ -12,3 +12,7 @@ export * from "./professeurClasses";
 export * from "./creneauxHoraires";
 export * from "./salles";
 export * from "./emploisDuTemps";
+export * from "./cahierTextes";
+export * from "./appels";
+export * from "./appelDetails";
+export * from "./notes";

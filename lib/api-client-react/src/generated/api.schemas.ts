@@ -689,6 +689,291 @@ export interface VerifierDisponibiliteResponse {
   conflits: VerifierDisponibiliteResponseConflitsItem[];
 }
 
+export interface SeanceInput {
+  classe_id: string;
+  annee_scolaire_id: string;
+  matiere: string;
+  date_seance: string;
+  creneau_id?: string;
+  titre_lecon: string;
+  contenu_lecon?: string;
+  travaux_donnes?: string;
+  devoir_a_rendre?: boolean;
+  date_remise_devoir?: string;
+}
+
+export interface SeanceItem {
+  id?: string;
+  etablissement_id?: string;
+  professeur_id?: string;
+  classe_id?: string;
+  annee_scolaire_id?: string;
+  matiere?: string;
+  date_seance?: string;
+  creneau_id?: string;
+  titre_lecon?: string;
+  contenu_lecon?: string;
+  travaux_donnes?: string;
+  devoir_a_rendre?: boolean;
+  date_remise_devoir?: string;
+  professeur_nom?: string;
+  classe_nom?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SeancesListeResponse {
+  seances: SeanceItem[];
+  total: number;
+}
+
+export interface SeanceDetailResponse {
+  seance: SeanceItem;
+}
+
+export interface SeanceCreeeResponse {
+  message: string;
+  seance: SeanceItem;
+}
+
+export interface DevoirsResponse {
+  devoirs: SeanceItem[];
+}
+
+export interface AppelInput {
+  classe_id: string;
+  matiere: string;
+  annee_scolaire_id: string;
+  date_appel: string;
+  creneau_id?: string;
+}
+
+export interface AppelDetailItem {
+  id?: string;
+  eleve_id?: string;
+  statut?: string;
+  motif?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_matricule?: string;
+  eleve_photo_url?: string;
+}
+
+export type AppelItemResume = {
+  presents?: number;
+  absents?: number;
+  retards?: number;
+  excused?: number;
+};
+
+export interface AppelItem {
+  id?: string;
+  etablissement_id?: string;
+  professeur_id?: string;
+  classe_id?: string;
+  matiere?: string;
+  annee_scolaire_id?: string;
+  date_appel?: string;
+  creneau_id?: string;
+  statut?: string;
+  classe_nom?: string;
+  professeur_nom?: string;
+  resume?: AppelItemResume;
+  details?: AppelDetailItem[];
+  created_at?: string;
+}
+
+export interface AppelCreeResponse {
+  message: string;
+  appel: AppelItem;
+}
+
+export interface AppelDetailResponse {
+  appel: AppelItem;
+}
+
+export interface AppelsHistoriqueResponse {
+  appels: AppelItem[];
+  total: number;
+}
+
+export interface PresenceUpdateInput {
+  eleve_id: string;
+  statut: string;
+  motif?: string;
+}
+
+export type PresenceEleveResponsePresencesItem = { [key: string]: unknown };
+
+export type PresenceEleveResponseTauxParMatiereItem = {
+  matiere?: string;
+  taux?: number;
+  presents?: number;
+  total?: number;
+};
+
+export interface PresenceEleveResponse {
+  presences: PresenceEleveResponsePresencesItem[];
+  taux_par_matiere: PresenceEleveResponseTauxParMatiereItem[];
+}
+
+export type NoteInputTypeEvaluation = typeof NoteInputTypeEvaluation[keyof typeof NoteInputTypeEvaluation];
+
+
+export const NoteInputTypeEvaluation = {
+  devoir: 'devoir',
+  interrogation: 'interrogation',
+  composition: 'composition',
+  examen_blanc: 'examen_blanc',
+} as const;
+
+export type NoteInputTrimestre = typeof NoteInputTrimestre[keyof typeof NoteInputTrimestre];
+
+
+export const NoteInputTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export interface NoteInput {
+  eleve_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  matiere: string;
+  type_evaluation: NoteInputTypeEvaluation;
+  trimestre: NoteInputTrimestre;
+  intitule: string;
+  note: number;
+  note_sur?: number;
+  coefficient?: number;
+  date_evaluation: string;
+  observations?: string;
+}
+
+export type NoteGroupeInputTypeEvaluation = typeof NoteGroupeInputTypeEvaluation[keyof typeof NoteGroupeInputTypeEvaluation];
+
+
+export const NoteGroupeInputTypeEvaluation = {
+  devoir: 'devoir',
+  interrogation: 'interrogation',
+  composition: 'composition',
+  examen_blanc: 'examen_blanc',
+} as const;
+
+export type NoteGroupeInputTrimestre = typeof NoteGroupeInputTrimestre[keyof typeof NoteGroupeInputTrimestre];
+
+
+export const NoteGroupeInputTrimestre = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
+
+export type NoteGroupeInputNotesItem = {
+  eleve_id: string;
+  note: number;
+  observations?: string;
+};
+
+export interface NoteGroupeInput {
+  classe_id: string;
+  matiere: string;
+  type_evaluation: NoteGroupeInputTypeEvaluation;
+  trimestre: NoteGroupeInputTrimestre;
+  intitule: string;
+  annee_scolaire_id?: string;
+  note_sur: number;
+  coefficient?: number;
+  date_evaluation: string;
+  notes: NoteGroupeInputNotesItem[];
+}
+
+export interface NoteItem {
+  id?: string;
+  eleve_id?: string;
+  classe_id?: string;
+  matiere?: string;
+  type_evaluation?: string;
+  trimestre?: string;
+  intitule?: string;
+  note?: number;
+  note_sur?: number;
+  coefficient?: number;
+  date_evaluation?: string;
+  observations?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  created_at?: string;
+}
+
+export interface NoteCreeeResponse {
+  message: string;
+  note: NoteItem;
+}
+
+export type NotesGroupeResponseErreursItem = { [key: string]: unknown };
+
+export interface NotesGroupeResponse {
+  saisies: number;
+  erreurs: NotesGroupeResponseErreursItem[];
+}
+
+export type NotesClasseResponseStats = {
+  moyenne_classe?: number;
+  note_max?: number;
+  note_min?: number;
+  total?: number;
+};
+
+export interface NotesClasseResponse {
+  notes: NoteItem[];
+  stats: NotesClasseResponseStats;
+}
+
+export type NotesEleveResponseMoyennesItem = {
+  matiere?: string;
+  trimestre?: string;
+  moyenne?: number;
+  coefficient_total?: number;
+};
+
+export interface NotesEleveResponse {
+  notes: NoteItem[];
+  moyennes: NotesEleveResponseMoyennesItem[];
+}
+
+export type MoyennesClasseResponseClassementItemMoyennesMatieresItem = { [key: string]: unknown };
+
+export type MoyennesClasseResponseClassementItem = {
+  rang?: number;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  moyenne_generale?: number;
+  moyennes_matieres?: MoyennesClasseResponseClassementItemMoyennesMatieresItem[];
+};
+
+export interface MoyennesClasseResponse {
+  classement: MoyennesClasseResponseClassementItem[];
+}
+
+export type StatsNotesResponseStatistiquesItem = {
+  matiere?: string;
+  trimestre?: string;
+  moyenne?: number;
+  mediane?: number;
+  note_max?: number;
+  note_min?: number;
+  nb_sup_10?: number;
+  nb_inf_10?: number;
+  ecart_type?: number;
+};
+
+export interface StatsNotesResponse {
+  statistiques: StatsNotesResponseStatistiquesItem[];
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -739,5 +1024,62 @@ annee_scolaire_id?: string;
 export type VerifierConflitsParams = {
 annee_scolaire_id?: string;
 etablissement_id?: string;
+};
+
+export type ListerSeancesParams = {
+classe_id?: string;
+matiere?: string;
+date_debut?: string;
+date_fin?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetDevoirsAVenirParams = {
+classe_id?: string;
+eleve_id?: string;
+};
+
+export type SupprimerSeance200 = {
+  message?: string;
+};
+
+export type GetHistoriqueAppelsParams = {
+classe_id?: string;
+matiere?: string;
+date_debut?: string;
+date_fin?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetPresencesEleveParams = {
+matiere?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetNotesClasseParams = {
+matiere?: string;
+trimestre?: string;
+type_evaluation?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetNotesEleveParams = {
+matiere?: string;
+trimestre?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetMoyennesClasseParams = {
+trimestre?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetStatistiquesNotesParams = {
+trimestre?: string;
+annee_scolaire_id?: string;
+};
+
+export type SupprimerNote200 = {
+  message?: string;
 };
 

@@ -26,6 +26,11 @@ import AnneesScolaires from "@/pages/annees-scolaires";
 import Filieres from "@/pages/filieres";
 import EnConstruction from "@/pages/en-construction";
 import EmploiDuTemps from "@/pages/emploi-du-temps";
+import ProfesseurDashboard from "@/pages/professeur-dashboard";
+import FaireAppel from "@/pages/faire-appel";
+import CahierTextesProfPage from "@/pages/cahier-textes-prof";
+import SaisieNotes from "@/pages/saisie-notes";
+import NoteEleveDetail from "@/pages/note-eleve-detail";
 
 const queryClient = new QueryClient();
 
@@ -139,12 +144,61 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      {/* ── Module 06 : Espace Professeur ── */}
+      <Route path="/mes-classes">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ProfesseurDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/appel">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <FaireAppel />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/cahier-de-textes">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <CahierTextesProfPage />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/evaluations">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <SaisieNotes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/notes/eleve/:eleveId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <NoteEleveDetail />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/notes/classe/:classeId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <SaisieNotes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/paiements", "/rapports",
         "/professeurs", "/absences",
-        "/mes-classes", "/evaluations", "/cahier-de-textes", "/appel", "/messages",
+        "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",
       ].map((path) => (
         <Route key={path} path={path}>

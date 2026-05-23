@@ -1691,6 +1691,458 @@ paths:
               schema:
                 $ref: "#/components/schemas/VerifierDisponibiliteResponse"
 
+  # ─── CAHIER DE TEXTES ─────────────────────────────────────
+  /api/cahier-textes/creer:
+    post:
+      operationId: creerSeance
+      summary: Créer une séance
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeanceInput"
+      responses:
+        "201":
+          description: Séance créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeanceCreeeResponse"
+
+  /api/cahier-textes/liste:
+    get:
+      operationId: listerSeances
+      summary: Lister les séances
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: classe_id
+          schema: { type: string }
+        - in: query
+          name: matiere
+          schema: { type: string }
+        - in: query
+          name: date_debut
+          schema: { type: string }
+        - in: query
+          name: date_fin
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des séances
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeancesListeResponse"
+
+  /api/cahier-textes/devoirs-a-venir:
+    get:
+      operationId: getDevoirsAVenir
+      summary: Devoirs à venir
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: classe_id
+          schema: { type: string }
+        - in: query
+          name: eleve_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Devoirs à rendre
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevoirsResponse"
+
+  /api/cahier-textes/{id}:
+    get:
+      operationId: getSeance
+      summary: Détail d'une séance
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Séance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeanceDetailResponse"
+
+  /api/cahier-textes/{id}/modifier:
+    put:
+      operationId: modifierSeance
+      summary: Modifier une séance
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeanceInput"
+      responses:
+        "200":
+          description: Séance modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeanceCreeeResponse"
+
+  /api/cahier-textes/{id}/supprimer:
+    delete:
+      operationId: supprimerSeance
+      summary: Supprimer une séance
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Supprimée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+
+  # ─── APPELS ───────────────────────────────────────────────
+  /api/appels/creer:
+    post:
+      operationId: creerAppel
+      summary: Créer un appel
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppelInput"
+      responses:
+        "201":
+          description: Appel créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppelCreeResponse"
+
+  /api/appels/historique:
+    get:
+      operationId: getHistoriqueAppels
+      summary: Historique des appels
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: classe_id
+          schema: { type: string }
+        - in: query
+          name: matiere
+          schema: { type: string }
+        - in: query
+          name: date_debut
+          schema: { type: string }
+        - in: query
+          name: date_fin
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Historique
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppelsHistoriqueResponse"
+
+  /api/appels/eleve/{eleveId}:
+    get:
+      operationId: getPresencesEleve
+      summary: Présences d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: eleveId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: matiere
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Présences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PresenceEleveResponse"
+
+  /api/appels/{id}:
+    get:
+      operationId: getAppel
+      summary: Détail d'un appel
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Appel
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppelDetailResponse"
+
+  /api/appels/{id}/presence:
+    put:
+      operationId: mettreAJourPresence
+      summary: Mettre à jour la présence d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenceUpdateInput"
+      responses:
+        "200":
+          description: Présence mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppelDetailResponse"
+
+  /api/appels/{id}/terminer:
+    put:
+      operationId: terminerAppel
+      summary: Terminer un appel
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Appel terminé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppelDetailResponse"
+
+  # ─── NOTES ────────────────────────────────────────────────
+  /api/notes/saisir:
+    post:
+      operationId: saisirNote
+      summary: Saisir une note
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteInput"
+      responses:
+        "201":
+          description: Note saisie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoteCreeeResponse"
+
+  /api/notes/saisir-groupe:
+    post:
+      operationId: saisirNotesGroupe
+      summary: Saisir les notes d'une classe
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteGroupeInput"
+      responses:
+        "200":
+          description: Notes saisies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotesGroupeResponse"
+
+  /api/notes/classe/{classeId}:
+    get:
+      operationId: getNotesClasse
+      summary: Notes d'une classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: classeId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: matiere
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string }
+        - in: query
+          name: type_evaluation
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Notes de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotesClasseResponse"
+
+  /api/notes/eleve/{eleveId}:
+    get:
+      operationId: getNotesEleve
+      summary: Notes d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: eleveId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: matiere
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Notes de l'élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotesEleveResponse"
+
+  /api/notes/moyennes/{classeId}:
+    get:
+      operationId: getMoyennesClasse
+      summary: Moyennes de la classe
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: classeId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Classement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoyennesClasseResponse"
+
+  /api/notes/statistiques/{classeId}:
+    get:
+      operationId: getStatistiquesNotes
+      summary: Statistiques des notes
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: classeId
+          required: true
+          schema: { type: string }
+        - in: query
+          name: trimestre
+          schema: { type: string }
+        - in: query
+          name: annee_scolaire_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Statistiques
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsNotesResponse"
+
+  /api/notes/{id}/modifier:
+    put:
+      operationId: modifierNote
+      summary: Modifier une note
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteInput"
+      responses:
+        "200":
+          description: Note modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoteCreeeResponse"
+
+  /api/notes/{id}/supprimer:
+    delete:
+      operationId: supprimerNote
+      summary: Supprimer une note
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Note supprimée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -2728,3 +3180,461 @@ components:
                 type: string
               message:
                 type: string
+
+    # ─── MODULE 06 ────────────────────────────────────────────
+
+    # Cahier de textes
+    SeanceInput:
+      type: object
+      required: [classe_id, annee_scolaire_id, matiere, date_seance, titre_lecon]
+      properties:
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        matiere:
+          type: string
+        date_seance:
+          type: string
+        creneau_id:
+          type: string
+        titre_lecon:
+          type: string
+        contenu_lecon:
+          type: string
+        travaux_donnes:
+          type: string
+        devoir_a_rendre:
+          type: boolean
+        date_remise_devoir:
+          type: string
+
+    SeanceItem:
+      type: object
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        professeur_id:
+          type: string
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        matiere:
+          type: string
+        date_seance:
+          type: string
+        creneau_id:
+          type: string
+        titre_lecon:
+          type: string
+        contenu_lecon:
+          type: string
+        travaux_donnes:
+          type: string
+        devoir_a_rendre:
+          type: boolean
+        date_remise_devoir:
+          type: string
+        professeur_nom:
+          type: string
+        classe_nom:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+
+    SeancesListeResponse:
+      type: object
+      required: [seances, total]
+      properties:
+        seances:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeanceItem'
+        total:
+          type: integer
+
+    SeanceDetailResponse:
+      type: object
+      required: [seance]
+      properties:
+        seance:
+          $ref: '#/components/schemas/SeanceItem'
+
+    SeanceCreeeResponse:
+      type: object
+      required: [message, seance]
+      properties:
+        message:
+          type: string
+        seance:
+          $ref: '#/components/schemas/SeanceItem'
+
+    DevoirsResponse:
+      type: object
+      required: [devoirs]
+      properties:
+        devoirs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeanceItem'
+
+    # Appels
+    AppelInput:
+      type: object
+      required: [classe_id, matiere, annee_scolaire_id, date_appel]
+      properties:
+        classe_id:
+          type: string
+        matiere:
+          type: string
+        annee_scolaire_id:
+          type: string
+        date_appel:
+          type: string
+        creneau_id:
+          type: string
+
+    AppelDetailItem:
+      type: object
+      properties:
+        id:
+          type: string
+        eleve_id:
+          type: string
+        statut:
+          type: string
+        motif:
+          type: string
+        eleve_nom:
+          type: string
+        eleve_prenoms:
+          type: string
+        eleve_matricule:
+          type: string
+        eleve_photo_url:
+          type: string
+
+    AppelItem:
+      type: object
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        professeur_id:
+          type: string
+        classe_id:
+          type: string
+        matiere:
+          type: string
+        annee_scolaire_id:
+          type: string
+        date_appel:
+          type: string
+        creneau_id:
+          type: string
+        statut:
+          type: string
+        classe_nom:
+          type: string
+        professeur_nom:
+          type: string
+        resume:
+          type: object
+          properties:
+            presents:
+              type: integer
+            absents:
+              type: integer
+            retards:
+              type: integer
+            excused:
+              type: integer
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppelDetailItem'
+        created_at:
+          type: string
+
+    AppelCreeResponse:
+      type: object
+      required: [message, appel]
+      properties:
+        message:
+          type: string
+        appel:
+          $ref: '#/components/schemas/AppelItem'
+
+    AppelDetailResponse:
+      type: object
+      required: [appel]
+      properties:
+        appel:
+          $ref: '#/components/schemas/AppelItem'
+
+    AppelsHistoriqueResponse:
+      type: object
+      required: [appels, total]
+      properties:
+        appels:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppelItem'
+        total:
+          type: integer
+
+    PresenceUpdateInput:
+      type: object
+      required: [eleve_id, statut]
+      properties:
+        eleve_id:
+          type: string
+        statut:
+          type: string
+        motif:
+          type: string
+
+    PresenceEleveResponse:
+      type: object
+      required: [presences, taux_par_matiere]
+      properties:
+        presences:
+          type: array
+          items:
+            type: object
+        taux_par_matiere:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere:
+                type: string
+              taux:
+                type: number
+              presents:
+                type: integer
+              total:
+                type: integer
+
+    # Notes
+    NoteInput:
+      type: object
+      required: [eleve_id, classe_id, annee_scolaire_id, matiere, type_evaluation, trimestre, intitule, note, date_evaluation]
+      properties:
+        eleve_id:
+          type: string
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        matiere:
+          type: string
+        type_evaluation:
+          type: string
+          enum: [devoir, interrogation, composition, examen_blanc]
+        trimestre:
+          type: string
+          enum: ["1", "2", "3"]
+        intitule:
+          type: string
+        note:
+          type: number
+        note_sur:
+          type: number
+        coefficient:
+          type: number
+        date_evaluation:
+          type: string
+        observations:
+          type: string
+
+    NoteGroupeInput:
+      type: object
+      required: [classe_id, matiere, type_evaluation, trimestre, intitule, note_sur, date_evaluation, notes]
+      properties:
+        classe_id:
+          type: string
+        matiere:
+          type: string
+        type_evaluation:
+          type: string
+          enum: [devoir, interrogation, composition, examen_blanc]
+        trimestre:
+          type: string
+          enum: ["1", "2", "3"]
+        intitule:
+          type: string
+        annee_scolaire_id:
+          type: string
+        note_sur:
+          type: number
+        coefficient:
+          type: number
+        date_evaluation:
+          type: string
+        notes:
+          type: array
+          items:
+            type: object
+            required: [eleve_id, note]
+            properties:
+              eleve_id:
+                type: string
+              note:
+                type: number
+              observations:
+                type: string
+
+    NoteItem:
+      type: object
+      properties:
+        id:
+          type: string
+        eleve_id:
+          type: string
+        classe_id:
+          type: string
+        matiere:
+          type: string
+        type_evaluation:
+          type: string
+        trimestre:
+          type: string
+        intitule:
+          type: string
+        note:
+          type: number
+        note_sur:
+          type: number
+        coefficient:
+          type: number
+        date_evaluation:
+          type: string
+        observations:
+          type: string
+        eleve_nom:
+          type: string
+        eleve_prenoms:
+          type: string
+        created_at:
+          type: string
+
+    NoteCreeeResponse:
+      type: object
+      required: [message, note]
+      properties:
+        message:
+          type: string
+        note:
+          $ref: '#/components/schemas/NoteItem'
+
+    NotesGroupeResponse:
+      type: object
+      required: [saisies, erreurs]
+      properties:
+        saisies:
+          type: integer
+        erreurs:
+          type: array
+          items:
+            type: object
+
+    NotesClasseResponse:
+      type: object
+      required: [notes, stats]
+      properties:
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteItem'
+        stats:
+          type: object
+          properties:
+            moyenne_classe:
+              type: number
+            note_max:
+              type: number
+            note_min:
+              type: number
+            total:
+              type: integer
+
+    NotesEleveResponse:
+      type: object
+      required: [notes, moyennes]
+      properties:
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteItem'
+        moyennes:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere:
+                type: string
+              trimestre:
+                type: string
+              moyenne:
+                type: number
+              coefficient_total:
+                type: number
+
+    MoyennesClasseResponse:
+      type: object
+      required: [classement]
+      properties:
+        classement:
+          type: array
+          items:
+            type: object
+            properties:
+              rang:
+                type: integer
+              eleve_id:
+                type: string
+              eleve_nom:
+                type: string
+              eleve_prenoms:
+                type: string
+              moyenne_generale:
+                type: number
+              moyennes_matieres:
+                type: array
+                items:
+                  type: object
+
+    StatsNotesResponse:
+      type: object
+      required: [statistiques]
+      properties:
+        statistiques:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere:
+                type: string
+              trimestre:
+                type: string
+              moyenne:
+                type: number
+              mediane:
+                type: number
+              note_max:
+                type: number
+              note_min:
+                type: number
+              nb_sup_10:
+                type: integer
+              nb_inf_10:
+                type: integer
+              ecart_type:
+                type: number

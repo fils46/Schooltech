@@ -11,6 +11,9 @@ import filieresRouter from "./filieres";
 import creneauxRouter from "./creneaux";
 import sallesRouter from "./salles";
 import emploisDuTempsRouter from "./emploisDuTemps";
+import cahierTextesRouter from "./cahierTextes";
+import appelsRouter from "./appels";
+import notesRouter from "./notes";
 
 const router: IRouter = Router();
 
@@ -26,5 +29,8 @@ router.use(creneauxRouter);
 router.use(sallesRouter);
 router.use(emploisDuTempsRouter);
 router.use(classesRouter);
+router.use(cahierTextesRouter);
+router.use(appelsRouter);
+router.use(notesRouter);
 
 export default router;

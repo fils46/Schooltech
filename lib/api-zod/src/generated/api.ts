@@ -1406,3 +1406,621 @@ export const VerifierDisponibiliteResponse = zod.object({
 })
 
 
+/**
+ * @summary Créer une séance
+ */
+export const CreerSeanceBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matiere": zod.string(),
+  "date_seance": zod.string(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional()
+})
+
+
+/**
+ * @summary Lister les séances
+ */
+export const ListerSeancesQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "matiere": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const ListerSeancesResponse = zod.object({
+  "seances": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "date_seance": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string().optional(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Devoirs à venir
+ */
+export const GetDevoirsAVenirQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "eleve_id": zod.coerce.string().optional()
+})
+
+export const GetDevoirsAVenirResponse = zod.object({
+  "devoirs": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "date_seance": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string().optional(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}))
+})
+
+
+/**
+ * @summary Détail d'une séance
+ */
+export const GetSeanceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetSeanceResponse = zod.object({
+  "seance": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "date_seance": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string().optional(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Modifier une séance
+ */
+export const ModifierSeanceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierSeanceBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matiere": zod.string(),
+  "date_seance": zod.string(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional()
+})
+
+export const ModifierSeanceResponse = zod.object({
+  "message": zod.string(),
+  "seance": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "date_seance": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "titre_lecon": zod.string().optional(),
+  "contenu_lecon": zod.string().optional(),
+  "travaux_donnes": zod.string().optional(),
+  "devoir_a_rendre": zod.boolean().optional(),
+  "date_remise_devoir": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Supprimer une séance
+ */
+export const SupprimerSeanceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerSeanceResponse = zod.object({
+  "message": zod.string().optional()
+})
+
+
+/**
+ * @summary Créer un appel
+ */
+export const CreerAppelBody = zod.object({
+  "classe_id": zod.string(),
+  "matiere": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "date_appel": zod.string(),
+  "creneau_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Historique des appels
+ */
+export const GetHistoriqueAppelsQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "matiere": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetHistoriqueAppelsResponse = zod.object({
+  "appels": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "date_appel": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "resume": zod.object({
+  "presents": zod.number().optional(),
+  "absents": zod.number().optional(),
+  "retards": zod.number().optional(),
+  "excused": zod.number().optional()
+}).optional(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo_url": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Présences d'un élève
+ */
+export const GetPresencesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetPresencesEleveQueryParams = zod.object({
+  "matiere": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetPresencesEleveResponse = zod.object({
+  "presences": zod.array(zod.object({
+
+}).passthrough()),
+  "taux_par_matiere": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "taux": zod.number().optional(),
+  "presents": zod.number().optional(),
+  "total": zod.number().optional()
+}))
+})
+
+
+/**
+ * @summary Détail d'un appel
+ */
+export const GetAppelParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetAppelResponse = zod.object({
+  "appel": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "date_appel": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "resume": zod.object({
+  "presents": zod.number().optional(),
+  "absents": zod.number().optional(),
+  "retards": zod.number().optional(),
+  "excused": zod.number().optional()
+}).optional(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo_url": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Mettre à jour la présence d'un élève
+ */
+export const MettreAJourPresenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const MettreAJourPresenceBody = zod.object({
+  "eleve_id": zod.string(),
+  "statut": zod.string(),
+  "motif": zod.string().optional()
+})
+
+export const MettreAJourPresenceResponse = zod.object({
+  "appel": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "date_appel": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "resume": zod.object({
+  "presents": zod.number().optional(),
+  "absents": zod.number().optional(),
+  "retards": zod.number().optional(),
+  "excused": zod.number().optional()
+}).optional(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo_url": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Terminer un appel
+ */
+export const TerminerAppelParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const TerminerAppelResponse = zod.object({
+  "appel": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "date_appel": zod.string().optional(),
+  "creneau_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "resume": zod.object({
+  "presents": zod.number().optional(),
+  "absents": zod.number().optional(),
+  "retards": zod.number().optional(),
+  "excused": zod.number().optional()
+}).optional(),
+  "details": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_photo_url": zod.string().optional()
+})).optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Saisir une note
+ */
+export const SaisirNoteBody = zod.object({
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matiere": zod.string(),
+  "type_evaluation": zod.enum(['devoir', 'interrogation', 'composition', 'examen_blanc']),
+  "trimestre": zod.enum(['1', '2', '3']),
+  "intitule": zod.string(),
+  "note": zod.number(),
+  "note_sur": zod.number().optional(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string(),
+  "observations": zod.string().optional()
+})
+
+
+/**
+ * @summary Saisir les notes d'une classe
+ */
+export const SaisirNotesGroupeBody = zod.object({
+  "classe_id": zod.string(),
+  "matiere": zod.string(),
+  "type_evaluation": zod.enum(['devoir', 'interrogation', 'composition', 'examen_blanc']),
+  "trimestre": zod.enum(['1', '2', '3']),
+  "intitule": zod.string(),
+  "annee_scolaire_id": zod.string().optional(),
+  "note_sur": zod.number(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string(),
+  "notes": zod.array(zod.object({
+  "eleve_id": zod.string(),
+  "note": zod.number(),
+  "observations": zod.string().optional()
+}))
+})
+
+export const SaisirNotesGroupeResponse = zod.object({
+  "saisies": zod.number(),
+  "erreurs": zod.array(zod.object({
+
+}).passthrough())
+})
+
+
+/**
+ * @summary Notes d'une classe
+ */
+export const GetNotesClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetNotesClasseQueryParams = zod.object({
+  "matiere": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.string().optional(),
+  "type_evaluation": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetNotesClasseResponse = zod.object({
+  "notes": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "type_evaluation": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "intitule": zod.string().optional(),
+  "note": zod.number().optional(),
+  "note_sur": zod.number().optional(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "created_at": zod.string().optional()
+})),
+  "stats": zod.object({
+  "moyenne_classe": zod.number().optional(),
+  "note_max": zod.number().optional(),
+  "note_min": zod.number().optional(),
+  "total": zod.number().optional()
+})
+})
+
+
+/**
+ * @summary Notes d'un élève
+ */
+export const GetNotesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetNotesEleveQueryParams = zod.object({
+  "matiere": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetNotesEleveResponse = zod.object({
+  "notes": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "type_evaluation": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "intitule": zod.string().optional(),
+  "note": zod.number().optional(),
+  "note_sur": zod.number().optional(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "created_at": zod.string().optional()
+})),
+  "moyennes": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "moyenne": zod.number().optional(),
+  "coefficient_total": zod.number().optional()
+}))
+})
+
+
+/**
+ * @summary Moyennes de la classe
+ */
+export const GetMoyennesClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetMoyennesClasseQueryParams = zod.object({
+  "trimestre": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetMoyennesClasseResponse = zod.object({
+  "classement": zod.array(zod.object({
+  "rang": zod.number().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "moyenne_generale": zod.number().optional(),
+  "moyennes_matieres": zod.array(zod.object({
+
+}).passthrough()).optional()
+}))
+})
+
+
+/**
+ * @summary Statistiques des notes
+ */
+export const GetStatistiquesNotesParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetStatistiquesNotesQueryParams = zod.object({
+  "trimestre": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetStatistiquesNotesResponse = zod.object({
+  "statistiques": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "moyenne": zod.number().optional(),
+  "mediane": zod.number().optional(),
+  "note_max": zod.number().optional(),
+  "note_min": zod.number().optional(),
+  "nb_sup_10": zod.number().optional(),
+  "nb_inf_10": zod.number().optional(),
+  "ecart_type": zod.number().optional()
+}))
+})
+
+
+/**
+ * @summary Modifier une note
+ */
+export const ModifierNoteParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierNoteBody = zod.object({
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matiere": zod.string(),
+  "type_evaluation": zod.enum(['devoir', 'interrogation', 'composition', 'examen_blanc']),
+  "trimestre": zod.enum(['1', '2', '3']),
+  "intitule": zod.string(),
+  "note": zod.number(),
+  "note_sur": zod.number().optional(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string(),
+  "observations": zod.string().optional()
+})
+
+export const ModifierNoteResponse = zod.object({
+  "message": zod.string(),
+  "note": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "type_evaluation": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "intitule": zod.string().optional(),
+  "note": zod.number().optional(),
+  "note_sur": zod.number().optional(),
+  "coefficient": zod.number().optional(),
+  "date_evaluation": zod.string().optional(),
+  "observations": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Supprimer une note
+ */
+export const SupprimerNoteParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerNoteResponse = zod.object({
+  "message": zod.string().optional()
+})
+
+
