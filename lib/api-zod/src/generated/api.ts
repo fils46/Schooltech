@@ -187,6 +187,8 @@ export const ListerEtablissementsResponseItem = zod.object({
   "telephone": zod.string().nullish(),
   "email": zod.string().nullish(),
   "logo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "nombre_eleves_max": zod.number().nullish(),
   "licence_active": zod.boolean(),
   "date_expiration_licence": zod.string().nullish(),
   "created_at": zod.coerce.date().optional(),
@@ -204,6 +206,8 @@ export const CreerEtablissementBody = zod.object({
   "ville": zod.string().nullish(),
   "telephone": zod.string().nullish(),
   "email": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "nombre_eleves_max": zod.number().nullish(),
   "date_expiration_licence": zod.string().nullish()
 })
 
@@ -223,6 +227,8 @@ export const GetEtablissementResponse = zod.object({
   "telephone": zod.string().nullish(),
   "email": zod.string().nullish(),
   "logo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "nombre_eleves_max": zod.number().nullish(),
   "licence_active": zod.boolean(),
   "date_expiration_licence": zod.string().nullish(),
   "created_at": zod.coerce.date().optional(),
@@ -243,6 +249,8 @@ export const UpdateEtablissementBody = zod.object({
   "ville": zod.string().nullish(),
   "telephone": zod.string().nullish(),
   "email": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "nombre_eleves_max": zod.number().nullish(),
   "licence_active": zod.boolean().optional(),
   "date_expiration_licence": zod.string().nullish()
 })
@@ -255,10 +263,36 @@ export const UpdateEtablissementResponse = zod.object({
   "telephone": zod.string().nullish(),
   "email": zod.string().nullish(),
   "logo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "nombre_eleves_max": zod.number().nullish(),
   "licence_active": zod.boolean(),
   "date_expiration_licence": zod.string().nullish(),
   "created_at": zod.coerce.date().optional(),
   "nbUtilisateurs": zod.number().nullish()
+})
+
+
+/**
+ * @summary Supprimer un établissement (dev only, aucun utilisateur actif)
+ */
+export const SupprimerEtablissementParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerEtablissementResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Activer la licence et réactiver tous les comptes
+ */
+export const ActiverEtablissementParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ActiverEtablissementResponse = zod.object({
+  "message": zod.string()
 })
 
 

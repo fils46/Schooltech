@@ -4,6 +4,7 @@ import { eq, and } from "drizzle-orm";
 import { db, utilisateursTable } from "@workspace/db";
 import { CreerUtilisateurBody } from "@workspace/api-zod";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
+import { verifierLicence } from "../middlewares/verifierLicence";
 import { generateTempPassword } from "../lib/auth";
 
 const router = Router();
@@ -20,6 +21,7 @@ const CREATION_PERMISSIONS: Record<string, string[]> = {
 router.post(
   "/utilisateurs/creer",
   authMiddleware,
+  verifierLicence,
   async (req, res): Promise<void> => {
     const parsed = CreerUtilisateurBody.safeParse(req.body);
     if (!parsed.success) {
@@ -99,6 +101,7 @@ router.post(
 router.get(
   "/utilisateurs/liste",
   authMiddleware,
+  verifierLicence,
   requireRole("dev", "directeur", "censeur"),
   async (req, res): Promise<void> => {
     const { role: filterRole, actif, etablissement_id } = req.query as Record<string, string>;
@@ -150,6 +153,7 @@ router.get(
 router.put(
   "/utilisateurs/:id/activer",
   authMiddleware,
+  verifierLicence,
   requireRole("dev", "directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -173,6 +177,7 @@ router.put(
 router.put(
   "/utilisateurs/:id/desactiver",
   authMiddleware,
+  verifierLicence,
   requireRole("dev", "directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

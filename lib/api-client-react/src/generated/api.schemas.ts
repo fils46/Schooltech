@@ -128,6 +128,10 @@ export interface Etablissement {
   email?: string | null;
   /** @nullable */
   logo_url?: string | null;
+  /** @nullable */
+  adresse?: string | null;
+  /** @nullable */
+  nombre_eleves_max?: number | null;
   licence_active: boolean;
   /** @nullable */
   date_expiration_licence?: string | null;
@@ -159,6 +163,10 @@ export interface EtablissementInput {
   /** @nullable */
   email?: string | null;
   /** @nullable */
+  adresse?: string | null;
+  /** @nullable */
+  nombre_eleves_max?: number | null;
+  /** @nullable */
   date_expiration_licence?: string | null;
 }
 
@@ -184,6 +192,10 @@ export interface EtablissementUpdate {
   telephone?: string | null;
   /** @nullable */
   email?: string | null;
+  /** @nullable */
+  adresse?: string | null;
+  /** @nullable */
+  nombre_eleves_max?: number | null;
   licence_active?: boolean;
   /** @nullable */
   date_expiration_licence?: string | null;

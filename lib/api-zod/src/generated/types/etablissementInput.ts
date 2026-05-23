@@ -18,5 +18,9 @@ export interface EtablissementInput {
   /** @nullable */
   email?: string | null;
   /** @nullable */
+  adresse?: string | null;
+  /** @nullable */
+  nombre_eleves_max?: number | null;
+  /** @nullable */
   date_expiration_licence?: string | null;
 }

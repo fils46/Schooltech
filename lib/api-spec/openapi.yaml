@@ -355,6 +355,53 @@ paths:
               schema:
                 $ref: "#/components/schemas/Etablissement"
 
+    delete:
+      operationId: supprimerEtablissement
+      tags: [etablissements]
+      summary: Supprimer un établissement (dev only, aucun utilisateur actif)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Établissement supprimé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Impossible de supprimer (utilisateurs actifs)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /etablissements/{id}/activer:
+    put:
+      operationId: activerEtablissement
+      tags: [etablissements]
+      summary: Activer la licence et réactiver tous les comptes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Établissement activé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
   /etablissements/{id}/desactiver:
     put:
       operationId: desactiverEtablissement
@@ -571,6 +618,10 @@ components:
           type: ["string", "null"]
         logo_url:
           type: ["string", "null"]
+        adresse:
+          type: ["string", "null"]
+        nombre_eleves_max:
+          type: ["integer", "null"]
         licence_active:
           type: boolean
         date_expiration_licence:
@@ -596,6 +647,10 @@ components:
           type: ["string", "null"]
         email:
           type: ["string", "null"]
+        adresse:
+          type: ["string", "null"]
+        nombre_eleves_max:
+          type: ["integer", "null"]
         date_expiration_licence:
           type: ["string", "null"]
 
@@ -613,6 +668,10 @@ components:
           type: ["string", "null"]
         email:
           type: ["string", "null"]
+        adresse:
+          type: ["string", "null"]
+        nombre_eleves_max:
+          type: ["integer", "null"]
         licence_active:
           type: boolean
         date_expiration_licence:

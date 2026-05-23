@@ -3,6 +3,7 @@ import { eq, count } from "drizzle-orm";
 import { db, etablissementsTable, utilisateursTable } from "@workspace/db";
 import { CreerEtablissementBody, UpdateEtablissementBody } from "@workspace/api-zod";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
+import { verifierLicence } from "../middlewares/verifierLicence";
 
 const router = Router();
 
@@ -165,6 +166,73 @@ router.put(
       .where(eq(utilisateursTable.etablissement_id, etab.id));
 
     res.json({ ...etab, nbUtilisateurs: Number(countResult?.count ?? 0) });
+  }
+);
+
+// DELETE /etablissements/:id
+router.delete(
+  "/etablissements/:id",
+  authMiddleware,
+  requireRole("dev"),
+  async (req, res): Promise<void> => {
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+
+    // Vérifier s'il y a des utilisateurs actifs
+    const [activeCount] = await db
+      .select({ count: count() })
+      .from(utilisateursTable)
+      .where(eq(utilisateursTable.etablissement_id, rawId));
+
+    if (Number(activeCount?.count ?? 0) > 0) {
+      res.status(400).json({
+        message:
+          "Impossible de supprimer cet établissement : il possède encore des utilisateurs. Désactivez d'abord la licence et supprimez les comptes.",
+      });
+      return;
+    }
+
+    const [deleted] = await db
+      .delete(etablissementsTable)
+      .where(eq(etablissementsTable.id, rawId))
+      .returning();
+
+    if (!deleted) {
+      res.status(404).json({ message: "Établissement introuvable." });
+      return;
+    }
+
+    res.json({ message: "Établissement supprimé avec succès." });
+  }
+);
+
+// PUT /etablissements/:id/activer
+router.put(
+  "/etablissements/:id/activer",
+  authMiddleware,
+  requireRole("dev"),
+  async (req, res): Promise<void> => {
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+
+    const [etab] = await db
+      .update(etablissementsTable)
+      .set({ licence_active: true })
+      .where(eq(etablissementsTable.id, rawId))
+      .returning();
+
+    if (!etab) {
+      res.status(404).json({ message: "Établissement introuvable." });
+      return;
+    }
+
+    // Réactivation en cascade de tous les comptes de l'établissement
+    await db
+      .update(utilisateursTable)
+      .set({ actif: true })
+      .where(eq(utilisateursTable.etablissement_id, rawId));
+
+    res.json({
+      message: "Licence activée et tous les comptes de l'établissement réactivés.",
+    });
   }
 );
 

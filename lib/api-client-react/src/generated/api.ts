@@ -1152,6 +1152,146 @@ export const useUpdateEtablissement = <TError = ErrorType<unknown>,
       return useMutation(getUpdateEtablissementMutationOptions(options));
     }
 
+export const getSupprimerEtablissementUrl = (id: string,) => {
+
+
+
+
+  return `/api/etablissements/${id}`
+}
+
+/**
+ * @summary Supprimer un établissement (dev only, aucun utilisateur actif)
+ */
+export const supprimerEtablissement = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getSupprimerEtablissementUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getSupprimerEtablissementMutationOptions = <TError = ErrorType<MessageResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerEtablissement>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof supprimerEtablissement>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['supprimerEtablissement'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof supprimerEtablissement>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  supprimerEtablissement(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SupprimerEtablissementMutationResult = NonNullable<Awaited<ReturnType<typeof supprimerEtablissement>>>
+
+    export type SupprimerEtablissementMutationError = ErrorType<MessageResponse>
+
+    /**
+ * @summary Supprimer un établissement (dev only, aucun utilisateur actif)
+ */
+export const useSupprimerEtablissement = <TError = ErrorType<MessageResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerEtablissement>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof supprimerEtablissement>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSupprimerEtablissementMutationOptions(options));
+    }
+
+export const getActiverEtablissementUrl = (id: string,) => {
+
+
+
+
+  return `/api/etablissements/${id}/activer`
+}
+
+/**
+ * @summary Activer la licence et réactiver tous les comptes
+ */
+export const activerEtablissement = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getActiverEtablissementUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getActiverEtablissementMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activerEtablissement>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof activerEtablissement>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['activerEtablissement'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof activerEtablissement>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  activerEtablissement(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActiverEtablissementMutationResult = NonNullable<Awaited<ReturnType<typeof activerEtablissement>>>
+
+    export type ActiverEtablissementMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Activer la licence et réactiver tous les comptes
+ */
+export const useActiverEtablissement = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activerEtablissement>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof activerEtablissement>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getActiverEtablissementMutationOptions(options));
+    }
+
 export const getDesactiverEtablissementUrl = (id: string,) => {
 
 
