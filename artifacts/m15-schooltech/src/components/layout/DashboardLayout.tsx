@@ -6,7 +6,7 @@ import {
   Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard,
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
-  Menu, Moon, Sun, LogOut, Bell, Search, X, ChevronRight,
+  Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -167,7 +167,7 @@ function NavLinks({ sections, location, onClose }: {
     <div className="space-y-6">
       {sections.map((section) => (
         <div key={section.title}>
-          <p className="px-3 mb-2 text-xs font-semibold tracking-widest" style={{ color: "#8B9DC3", opacity: 0.7 }}>
+          <p className="px-3 mb-2 text-xs font-semibold tracking-widest" style={{ color: "var(--m15-muted)", opacity: 0.7 }}>
             {section.title}
           </p>
           <div className="space-y-0.5">
@@ -181,19 +181,19 @@ function NavLinks({ sections, location, onClose }: {
                   onClick={onClose}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all relative"
                   style={{
-                    color:       isActive ? "#00C9A7" : "#8B9DC3",
+                    color:       isActive ? "#00C9A7" : "var(--m15-muted)",
                     background:  isActive ? "rgba(0,201,167,0.08)" : "transparent",
                     borderLeft:  isActive ? "3px solid #00C9A7" : "3px solid transparent",
                   }}
                   onMouseEnter={e => {
                     if (!isActive) {
-                      (e.currentTarget as HTMLElement).style.color = "#F0F4FF";
-                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
+                      (e.currentTarget as HTMLElement).style.color = "var(--m15-white)";
+                      (e.currentTarget as HTMLElement).style.background = "var(--elevate-2)";
                     }
                   }}
                   onMouseLeave={e => {
                     if (!isActive) {
-                      (e.currentTarget as HTMLElement).style.color = "#8B9DC3";
+                      (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)";
                       (e.currentTarget as HTMLElement).style.background = "transparent";
                     }
                   }}
@@ -227,19 +227,19 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
   };
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#111E35", borderRight: "1px solid rgba(0,201,167,0.15)" }}>
+    <div className="flex flex-col h-full" style={{ background: "var(--m15-card)", borderRight: "1px solid var(--m15-border)" }}>
       {/* Logo */}
-      <div className="p-6 pb-4" style={{ borderBottom: "1px solid rgba(0,201,167,0.1)" }}>
+      <div className="p-6 pb-4" style={{ borderBottom: "1px solid var(--m15-border)" }}>
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg flex items-center justify-center"
             style={{ background: "rgba(0,201,167,0.15)", border: "1px solid rgba(0,201,167,0.25)" }}>
             <GraduationCap className="w-5 h-5" style={{ color: "#00C9A7" }} />
           </div>
           <div>
-            <span className="font-bold text-base" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+            <span className="font-bold text-base" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
               M15-SchoolTech
             </span>
-            <p className="text-xs" style={{ color: "#8B9DC3" }}>v1.0 — Collège & Lycée</p>
+            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
           </div>
         </div>
       </div>
@@ -250,9 +250,9 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
       </nav>
 
       {/* Avatar utilisateur */}
-      <div className="p-4" style={{ borderTop: "1px solid rgba(0,201,167,0.1)" }}>
+      <div className="p-4" style={{ borderTop: "1px solid var(--m15-border)" }}>
         <div className="flex items-center gap-3 p-3 rounded-xl mb-3"
-          style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(0,201,167,0.08)" }}>
+          style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
           <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
             style={{
               background: "linear-gradient(135deg, #00C9A7, #0080FF)",
@@ -262,7 +262,7 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
             {initials}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold truncate" style={{ color: "#F0F4FF" }}>
+            <p className="text-sm font-semibold truncate" style={{ color: "var(--m15-white)" }}>
               {user?.prenoms} {user?.nom}
             </p>
             <p className="text-xs font-semibold" style={{ color: "#00C9A7", letterSpacing: "0.06em" }}>
@@ -299,7 +299,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pageTitle = PAGE_TITLES[location] || "M15-SchoolTech";
 
   return (
-    <div className="flex min-h-screen w-full" style={{ background: "var(--m15-navy, #0A1628)" }}>
+    <div className="flex min-h-screen w-full" style={{ background: "var(--m15-navy)" }}>
 
       {/* ── Desktop Sidebar ── */}
       <aside className="hidden md:block w-64 flex-shrink-0 h-screen sticky top-0">
@@ -310,15 +310,15 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         {/* ── Topbar ── */}
         <header className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-6 h-16"
           style={{
-            background: "#0D1F3C",
-            borderBottom: "1px solid rgba(0,201,167,0.15)",
+            background: "var(--m15-navy2)",
+            borderBottom: "1px solid var(--m15-border)",
           }}>
           {/* Gauche : hamburger mobile + titre */}
           <div className="flex items-center gap-4">
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild>
                 <button className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl transition-all"
-                  style={{ background: "rgba(255,255,255,0.05)", color: "#F0F4FF" }}>
+                  style={{ background: "var(--elevate-2)", color: "var(--m15-white)" }}>
                   <Menu className="w-5 h-5" />
                 </button>
               </SheetTrigger>
@@ -327,7 +327,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </SheetContent>
             </Sheet>
 
-            <h1 className="text-lg font-bold hidden sm:block" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+            <h1 className="text-lg font-bold hidden sm:block" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
               {pageTitle}
             </h1>
           </div>
@@ -336,21 +336,21 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2 md:gap-3">
             {/* Barre de recherche */}
             <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl"
-              style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.12)", minWidth: "200px" }}>
-              <Search className="w-4 h-4 flex-shrink-0" style={{ color: "#8B9DC3" }} />
+              style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", minWidth: "200px" }}>
+              <Search className="w-4 h-4 flex-shrink-0" style={{ color: "var(--m15-muted)" }} />
               <input
                 type="search"
                 placeholder="Rechercher..."
                 className="bg-transparent text-sm outline-none w-full"
-                style={{ color: "#F0F4FF", fontFamily: "'DM Sans', sans-serif" }}
+                style={{ color: "var(--m15-white)", fontFamily: "'DM Sans', sans-serif" }}
               />
             </div>
 
             {/* Cloche notifications */}
             <button className="relative w-9 h-9 flex items-center justify-center rounded-xl transition-all"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#8B9DC3" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#F0F4FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#8B9DC3"; }}>
+              style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-white)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; }}>
               <Bell className="w-4 h-4" />
               {notifCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-xs flex items-center justify-center font-bold"
@@ -364,9 +364,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="w-9 h-9 flex items-center justify-center rounded-xl transition-all"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#8B9DC3" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#F0F4FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#8B9DC3"; }}>
+              style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-white)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; }}>
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           </div>

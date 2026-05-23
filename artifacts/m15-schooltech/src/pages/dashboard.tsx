@@ -25,7 +25,7 @@ function StatCard({
     <div
       className="rounded-2xl p-5 flex flex-col gap-3 transition-all duration-200 cursor-default"
       style={{
-        background: "#111E35",
+        background: "var(--m15-card)",
         border: "1px solid rgba(0,201,167,0.08)",
         borderTop: `3px solid ${color}`,
       }}
@@ -40,7 +40,7 @@ function StatCard({
       }}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#8B9DC3" }}>
+        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--m15-muted)" }}>
           {label}
         </span>
         <div className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -49,7 +49,7 @@ function StatCard({
         </div>
       </div>
       {loading ? (
-        <div className="h-8 w-20 rounded-lg animate-pulse" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <div className="h-8 w-20 rounded-lg animate-pulse" style={{ background: "var(--elevate-2)" }} />
       ) : (
         <span className="text-3xl font-bold" style={{ fontFamily: "'Syne', sans-serif", color }}>
           {value}
@@ -109,21 +109,20 @@ function DevDashboard() {
       {/* ── Bannière de bienvenue ── */}
       <div className="relative rounded-2xl p-6 md:p-8 overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #162340 0%, rgba(0,201,167,0.08) 100%)",
+          background: "linear-gradient(135deg, var(--m15-card2) 0%, rgba(0,201,167,0.08) 100%)",
           border: "1px solid rgba(0,201,167,0.15)",
         }}>
-        {/* Glow radial */}
         <div className="absolute right-0 top-0 w-72 h-72 pointer-events-none"
           style={{ background: "radial-gradient(circle at top right, rgba(0,201,167,0.12) 0%, transparent 60%)" }} />
 
         <div className="relative z-10">
-          <p className="text-sm font-medium mb-1" style={{ color: "#8B9DC3" }}>
+          <p className="text-sm font-medium mb-1" style={{ color: "var(--m15-muted)" }}>
             {today.charAt(0).toUpperCase() + today.slice(1)}
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "#00C9A7" }}>
             Bonjour, {user?.prenoms || "Dev"} 👋
           </h2>
-          <p className="text-base" style={{ color: "#8B9DC3" }}>
+          <p className="text-base" style={{ color: "var(--m15-muted)" }}>
             Voici l'aperçu global de la plateforme M15-SchoolTech.
           </p>
         </div>
@@ -174,10 +173,10 @@ function DevDashboard() {
 
         {/* Table établissements */}
         <div className="rounded-2xl overflow-hidden"
-          style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.08)" }}>
+          style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
           <div className="flex items-center justify-between px-5 py-4"
-            style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-            <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+            style={{ borderBottom: "1px solid var(--m15-border)" }}>
+            <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
               Établissements récents
             </h3>
             <Link href="/etablissements" className="text-xs font-semibold hover:underline" style={{ color: "#00C9A7" }}>
@@ -188,36 +187,36 @@ function DevDashboard() {
             {etabsLoading ? (
               <div className="p-5 space-y-3">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: "rgba(255,255,255,0.04)" }} />
+                  <div key={i} className="h-10 rounded-lg animate-pulse" style={{ background: "var(--elevate-1)" }} />
                 ))}
               </div>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ background: "#162340" }}>
-                    <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "#8B9DC3" }}>Nom</th>
-                    <th className="text-left px-3 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "#8B9DC3" }}>Ville</th>
-                    <th className="text-left px-3 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "#8B9DC3" }}>Statut</th>
-                    <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "#8B9DC3" }}>Expiration</th>
+                  <tr style={{ background: "var(--m15-card2)" }}>
+                    <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>Nom</th>
+                    <th className="text-left px-3 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>Ville</th>
+                    <th className="text-left px-3 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>Statut</th>
+                    <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>Expiration</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {(etablissements ?? []).slice(0, 5).map((etab, i) => (
+                  {(etablissements ?? []).slice(0, 5).map((etab) => (
                     <tr key={etab.id}
-                      style={{ borderBottom: "1px solid rgba(255,255,255,0.03)" }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}
+                      style={{ borderBottom: "1px solid var(--m15-border)" }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--elevate-1)"; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}>
-                      <td className="px-5 py-3.5 font-medium" style={{ color: "#F0F4FF" }}>{etab.nom}</td>
-                      <td className="px-3 py-3.5" style={{ color: "#8B9DC3" }}>{etab.ville || "—"}</td>
+                      <td className="px-5 py-3.5 font-medium" style={{ color: "var(--m15-white)" }}>{etab.nom}</td>
+                      <td className="px-3 py-3.5" style={{ color: "var(--m15-muted)" }}>{etab.ville || "—"}</td>
                       <td className="px-3 py-3.5"><BadgeLicence active={!!etab.licence_active} /></td>
-                      <td className="px-5 py-3.5" style={{ color: "#8B9DC3" }}>
+                      <td className="px-5 py-3.5" style={{ color: "var(--m15-muted)" }}>
                         {etab.date_expiration_licence ? format(new Date(etab.date_expiration_licence), "dd/MM/yyyy") : "—"}
                       </td>
                     </tr>
                   ))}
                   {!etablissements?.length && (
                     <tr>
-                      <td colSpan={4} className="px-5 py-8 text-center text-sm" style={{ color: "#8B9DC3" }}>
+                      <td colSpan={4} className="px-5 py-8 text-center text-sm" style={{ color: "var(--m15-muted)" }}>
                         Aucun établissement enregistré
                       </td>
                     </tr>
@@ -233,22 +232,22 @@ function DevDashboard() {
 
           {/* Agenda */}
           <div className="rounded-2xl p-5"
-            style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.08)" }}>
+            style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" style={{ color: "#00C9A7" }} />
-                <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>Agenda du jour</h3>
+                <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>Agenda du jour</h3>
               </div>
               <span className="text-xs font-semibold hover:underline cursor-pointer" style={{ color: "#00C9A7" }}>Voir tout</span>
             </div>
             <div className="space-y-3">
               {agenda.map((item) => (
                 <div key={item.label} className="flex items-center gap-3">
-                  <span className="text-xs font-semibold tabular-nums flex-shrink-0 w-10" style={{ color: "#8B9DC3" }}>
+                  <span className="text-xs font-semibold tabular-nums flex-shrink-0 w-10" style={{ color: "var(--m15-muted)" }}>
                     {item.time}
                   </span>
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: item.color }} />
-                  <span className="text-sm" style={{ color: "#F0F4FF" }}>{item.label}</span>
+                  <span className="text-sm" style={{ color: "var(--m15-white)" }}>{item.label}</span>
                 </div>
               ))}
             </div>
@@ -256,11 +255,11 @@ function DevDashboard() {
 
           {/* Alertes */}
           <div className="rounded-2xl p-5"
-            style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.08)" }}>
+            style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4" style={{ color: "#F5C842" }} />
-                <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>Alertes</h3>
+                <h3 className="font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>Alertes</h3>
               </div>
               <span className="text-xs font-semibold hover:underline cursor-pointer" style={{ color: "#00C9A7" }}>Voir tout</span>
             </div>
@@ -269,7 +268,7 @@ function DevDashboard() {
                 <div key={alert.text} className="flex items-start gap-3 p-3 rounded-xl"
                   style={{ background: `${alert.color}0A`, border: `1px solid ${alert.color}20` }}>
                   <span className="text-base leading-none mt-0.5">{alert.icon}</span>
-                  <span className="text-sm" style={{ color: "#F0F4FF" }}>{alert.text}</span>
+                  <span className="text-sm" style={{ color: "var(--m15-white)" }}>{alert.text}</span>
                 </div>
               ))}
             </div>
@@ -288,22 +287,22 @@ function DirecteurDashboard() {
   return (
     <div className="space-y-6 page-fade-in">
       <div className="relative rounded-2xl p-6 md:p-8 overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #162340 0%, rgba(0,201,167,0.08) 100%)", border: "1px solid rgba(0,201,167,0.15)" }}>
+        style={{ background: "linear-gradient(135deg, var(--m15-card2) 0%, rgba(0,201,167,0.08) 100%)", border: "1px solid rgba(0,201,167,0.15)" }}>
         <div className="absolute right-0 top-0 w-72 h-72 pointer-events-none"
           style={{ background: "radial-gradient(circle at top right, rgba(0,201,167,0.12) 0%, transparent 60%)" }} />
         <div className="relative z-10">
-          <p className="text-sm mb-1" style={{ color: "#8B9DC3" }}>{today.charAt(0).toUpperCase() + today.slice(1)}</p>
+          <p className="text-sm mb-1" style={{ color: "var(--m15-muted)" }}>{today.charAt(0).toUpperCase() + today.slice(1)}</p>
           <h2 className="text-4xl font-bold mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "#00C9A7" }}>
             Bonjour, {user?.prenoms} 👋
           </h2>
-          <p className="text-base" style={{ color: "#8B9DC3" }}>Voici l'aperçu de votre établissement.</p>
+          <p className="text-base" style={{ color: "var(--m15-muted)" }}>Voici l'aperçu de votre établissement.</p>
         </div>
       </div>
-      <div className="rounded-2xl p-6" style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.08)" }}>
-        <h3 className="font-bold mb-3" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+      <div className="rounded-2xl p-6" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
+        <h3 className="font-bold mb-3" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
           Tableau de bord Direction
         </h3>
-        <p className="text-sm" style={{ color: "#8B9DC3" }}>
+        <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
           Les modules académiques sont en cours de développement — disponibles en Module 02.
         </p>
       </div>
@@ -319,19 +318,19 @@ function DefaultDashboard() {
   return (
     <div className="space-y-6 page-fade-in">
       <div className="relative rounded-2xl p-6 md:p-8 overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #162340 0%, rgba(0,201,167,0.08) 100%)", border: "1px solid rgba(0,201,167,0.15)" }}>
+        style={{ background: "linear-gradient(135deg, var(--m15-card2) 0%, rgba(0,201,167,0.08) 100%)", border: "1px solid rgba(0,201,167,0.15)" }}>
         <div className="absolute right-0 top-0 w-72 h-72 pointer-events-none"
           style={{ background: "radial-gradient(circle at top right, rgba(0,201,167,0.12) 0%, transparent 60%)" }} />
         <div className="relative z-10">
-          <p className="text-sm mb-1" style={{ color: "#8B9DC3" }}>{today.charAt(0).toUpperCase() + today.slice(1)}</p>
+          <p className="text-sm mb-1" style={{ color: "var(--m15-muted)" }}>{today.charAt(0).toUpperCase() + today.slice(1)}</p>
           <h2 className="text-4xl font-bold mb-2" style={{ fontFamily: "'Syne', sans-serif", color: "#00C9A7" }}>
             Bonjour, {user?.prenoms} 👋
           </h2>
-          <p className="text-base" style={{ color: "#8B9DC3" }}>Connecté en tant que <strong style={{ color: "#F5C842" }}>{user?.role}</strong>.</p>
+          <p className="text-base" style={{ color: "var(--m15-muted)" }}>Connecté en tant que <strong style={{ color: "#F5C842" }}>{user?.role}</strong>.</p>
         </div>
       </div>
-      <div className="rounded-2xl p-6" style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.08)" }}>
-        <p className="text-sm" style={{ color: "#8B9DC3" }}>Votre espace personnel sera disponible dans le Module 02.</p>
+      <div className="rounded-2xl p-6" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
+        <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Votre espace personnel sera disponible dans le Module 02.</p>
       </div>
     </div>
   );
