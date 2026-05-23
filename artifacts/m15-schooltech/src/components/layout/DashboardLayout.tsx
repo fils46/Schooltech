@@ -622,19 +622,8 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
   return (
     <div className="flex flex-col h-full" style={{ background: "var(--m15-card)", borderRight: "1px solid var(--m15-border)" }}>
       {/* Logo */}
-      <div className="p-6 pb-4" style={{ borderBottom: "1px solid var(--m15-border)" }}>
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-            style={{ background: "rgba(0,201,167,0.15)", border: "1px solid rgba(0,201,167,0.25)" }}>
-            <GraduationCap className="w-5 h-5" style={{ color: "#00C9A7" }} />
-          </div>
-          <div>
-            <span className="font-bold text-base" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
-              M15-SchoolTech
-            </span>
-            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
-          </div>
-        </div>
+      <div className="p-5 pb-4" style={{ borderBottom: "1px solid var(--m15-border)" }}>
+        <img src="/logo.png" alt="M15-SchoolTech" className="h-10 w-auto" />
       </div>
 
       {/* Nav */}

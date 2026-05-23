@@ -5,7 +5,7 @@ import { useLocation, Link } from "wouter";
 import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
-import { Loader2, Lock, GraduationCap, Eye, EyeOff } from "lucide-react";
+import { Loader2, Lock, Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -68,24 +68,8 @@ export default function Login() {
         <div className="relative z-10 flex flex-col h-full p-12">
           {/* Logo */}
           <div className="mb-auto">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
-                style={{ background: "rgba(0,201,167,0.15)", border: "1px solid rgba(0,201,167,0.3)" }}>
-                <GraduationCap className="w-6 h-6" style={{ color: "#00C9A7" }} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold" style={{
-                  fontFamily: "'Syne', sans-serif",
-                  background: "linear-gradient(135deg, #00C9A7, #F5C842)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text"
-                }}>
-                  M15-SchoolTech
-                </h1>
-                <p className="text-xs" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
-              </div>
-            </div>
+            <img src="/logo.png" alt="M15-SchoolTech" className="h-16 w-auto mb-2" />
+            <p className="text-xs pl-1" style={{ color: "var(--m15-muted)" }}>v1.0 — Collège & Lycée</p>
           </div>
 
           {/* Hero text */}
@@ -124,14 +108,8 @@ export default function Login() {
 
         {/* Logo mobile uniquement */}
         <div className="lg:hidden mb-8 text-center">
-          <h1 className="text-3xl font-bold" style={{
-            fontFamily: "'Syne', sans-serif",
-            background: "linear-gradient(135deg, #00C9A7, #F5C842)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text"
-          }}>M15-SchoolTech</h1>
-          <p className="text-sm mt-1" style={{ color: "var(--m15-muted)" }}>Portail de Gestion Scolaire</p>
+          <img src="/logo.png" alt="M15-SchoolTech" className="h-14 w-auto mx-auto" />
+          <p className="text-sm mt-2" style={{ color: "var(--m15-muted)" }}>Portail de Gestion Scolaire</p>
         </div>
 
         <div className="w-full max-w-md">

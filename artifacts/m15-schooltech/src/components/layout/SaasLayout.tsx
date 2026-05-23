@@ -6,7 +6,6 @@ import {
   CreditCard,
   ScrollText,
   LogOut,
-  Shield,
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,17 +29,9 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
         style={{ backgroundColor: "var(--m15-navy)", borderColor: "rgba(0,201,167,0.15)" }}
       >
         {/* Logo */}
-        <div className="px-6 py-5 flex items-center gap-3 border-b" style={{ borderColor: "rgba(0,201,167,0.15)" }}>
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: "rgba(0,201,167,0.15)" }}
-          >
-            <Shield className="w-5 h-5" style={{ color: "#00C9A7" }} />
-          </div>
-          <div>
-            <p className="text-[var(--m15-white)] font-semibold text-sm leading-tight">M15-SchoolTech</p>
-            <p className="text-xs font-medium" style={{ color: "#00C9A7" }}>Admin SaaS</p>
-          </div>
+        <div className="px-5 py-4 border-b" style={{ borderColor: "rgba(0,201,167,0.15)" }}>
+          <img src="/logo.png" alt="M15-SchoolTech" className="h-10 w-auto" />
+          <p className="text-xs font-medium mt-1 pl-1" style={{ color: "#00C9A7" }}>Admin SaaS</p>
         </div>
 
         {/* Nav */}
