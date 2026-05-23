@@ -213,10 +213,10 @@ export default function DepotRessource() {
 
       {isLoading ? (
         <div className="space-y-3">
-          {[1, 2, 3].map((i) => <div key={i} className="h-14 bg-[#111E35] rounded-xl animate-pulse" />)}
+          {[1, 2, 3].map((i) => <div key={i} className="h-14 bg-[var(--m15-card)] rounded-xl animate-pulse" />)}
         </div>
       ) : mesRessources.length === 0 ? (
-        <div className="text-center py-20 text-[var(--m15-muted)] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.15)]">
+        <div className="text-center py-20 text-[var(--m15-muted)] bg-[var(--m15-card)] rounded-xl border border-[rgba(0,201,167,0.15)]">
           <Upload className="h-12 w-12 mx-auto mb-3 opacity-20" />
           <p className="text-lg font-medium mb-1">Aucune ressource déposée</p>
           <p className="text-sm mb-4">Partagez vos cours, fiches et exercices avec vos élèves</p>
@@ -228,7 +228,7 @@ export default function DepotRessource() {
           </Button>
         </div>
       ) : (
-        <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl overflow-hidden">
+        <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl overflow-hidden">
           <table className="w-full">
             <thead>
               <tr className="border-b border-[rgba(0,201,167,0.1)]">
@@ -257,7 +257,7 @@ export default function DepotRessource() {
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
                         {(r.niveau ?? []).slice(0, 3).map((n) => (
-                          <span key={n} className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-1.5 py-0.5 rounded">{n}</span>
+                          <span key={n} className="text-xs bg-[var(--m15-card2)] text-[var(--m15-muted)] px-1.5 py-0.5 rounded">{n}</span>
                         ))}
                       </div>
                     </td>
@@ -309,7 +309,7 @@ export default function DepotRessource() {
 
       {/* Modal dépôt / modification */}
       <Dialog open={showModal} onOpenChange={(o) => { if (!o) { setShowModal(false); setEditingId(null); } }}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[var(--m15-card)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-syne text-lg">
               {editingId ? "Modifier la ressource" : "Déposer une ressource"}
@@ -323,7 +323,7 @@ export default function DepotRessource() {
                 value={form.titre}
                 onChange={(e) => setForm((f) => ({ ...f, titre: e.target.value }))}
                 placeholder="Titre de la ressource"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]"
               />
             </div>
 
@@ -331,12 +331,12 @@ export default function DepotRessource() {
               <div>
                 <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Type <span className="text-red-400">*</span></Label>
                 <Select value={form.type} onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}>
-                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
+                  <SelectTrigger className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
                     <SelectValue placeholder="Choisir un type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)]">
+                  <SelectContent className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)]">
                     {Object.entries(TYPE_LABELS).map(([v, l]) => (
-                      <SelectItem key={v} value={v} className="text-[var(--m15-white)] focus:bg-[#111E35]">
+                      <SelectItem key={v} value={v} className="text-[var(--m15-white)] focus:bg-[var(--m15-card)]">
                         <span className="flex items-center gap-2">{TYPE_ICONS[v]} {l}</span>
                       </SelectItem>
                     ))}
@@ -347,12 +347,12 @@ export default function DepotRessource() {
               <div>
                 <Label className="text-[var(--m15-muted)] text-xs mb-1.5">Langue</Label>
                 <Select value={form.langue} onValueChange={(v) => setForm((f) => ({ ...f, langue: v }))}>
-                  <SelectTrigger className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
+                  <SelectTrigger className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)]">
+                  <SelectContent className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)]">
                     {LANGUES.map((l) => (
-                      <SelectItem key={l.value} value={l.value} className="text-[var(--m15-white)] focus:bg-[#111E35]">{l.label}</SelectItem>
+                      <SelectItem key={l.value} value={l.value} className="text-[var(--m15-white)] focus:bg-[var(--m15-card)]">{l.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -386,7 +386,7 @@ export default function DepotRessource() {
                 value={form.auteur}
                 onChange={(e) => setForm((f) => ({ ...f, auteur: e.target.value }))}
                 placeholder="Auteur du document (optionnel)"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
@@ -396,7 +396,7 @@ export default function DepotRessource() {
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                 placeholder="Description du contenu (optionnel)"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none h-20"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)] resize-none h-20"
               />
             </div>
 
@@ -406,7 +406,7 @@ export default function DepotRessource() {
                 value={form.fichier_url}
                 onChange={(e) => setForm((f) => ({ ...f, fichier_url: e.target.value }))}
                 placeholder="https://drive.google.com/... ou URL directe"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
@@ -416,7 +416,7 @@ export default function DepotRessource() {
                 value={form.fichier_nom}
                 onChange={(e) => setForm((f) => ({ ...f, fichier_nom: e.target.value }))}
                 placeholder="ex: manuel_maths_3eme.pdf"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
@@ -426,7 +426,7 @@ export default function DepotRessource() {
                 value={form.couverture_url}
                 onChange={(e) => setForm((f) => ({ ...f, couverture_url: e.target.value }))}
                 placeholder="URL de l'image de couverture"
-                className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
+                className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
               />
             </div>
 
@@ -438,7 +438,7 @@ export default function DepotRessource() {
                   onChange={(e) => setMotCleInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addMotCle(); } }}
                   placeholder="Ajouter un mot-clé (Entrée)"
-                  className="bg-[#1a2a44] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
+                  className="bg-[var(--m15-card2)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)] placeholder:text-[var(--m15-muted)]"
                 />
                 <Button type="button" variant="outline" onClick={addMotCle}
                   className="border-[rgba(0,201,167,0.3)] text-[var(--m15-muted)] hover:text-[var(--m15-white)] shrink-0">
@@ -448,7 +448,7 @@ export default function DepotRessource() {
               {form.mots_cles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {form.mots_cles.map((kw) => (
-                    <span key={kw} className="flex items-center gap-1 text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-2 py-1 rounded-full border border-[rgba(0,201,167,0.2)]">
+                    <span key={kw} className="flex items-center gap-1 text-xs bg-[var(--m15-card2)] text-[var(--m15-muted)] px-2 py-1 rounded-full border border-[rgba(0,201,167,0.2)]">
                       #{kw}
                       <button onClick={() => setForm((f) => ({ ...f, mots_cles: f.mots_cles.filter((k) => k !== kw) }))}>
                         <X className="h-3 w-3 hover:text-red-400" />
@@ -479,7 +479,7 @@ export default function DepotRessource() {
       </Dialog>
 
       <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
+        <AlertDialogContent className="bg-[var(--m15-card)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer cette ressource ?</AlertDialogTitle>
             <AlertDialogDescription className="text-[var(--m15-muted)]">

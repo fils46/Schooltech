@@ -64,7 +64,7 @@ export default function MesRessources() {
       </div>
 
       <Tabs defaultValue="favoris">
-        <TabsList className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] mb-6">
+        <TabsList className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] mb-6">
           <TabsTrigger value="favoris" className="data-[state=active]:bg-[#00C9A7] data-[state=active]:text-[#0A1628] text-[var(--m15-muted)]">
             <Star className="h-4 w-4 mr-2" /> Mes favoris ({favoris.length})
           </TabsTrigger>
@@ -77,7 +77,7 @@ export default function MesRessources() {
         <TabsContent value="favoris">
           {favLoading ? (
             <div className="space-y-3">
-              {[1, 2, 3].map((i) => <div key={i} className="h-20 bg-[#111E35] rounded-xl animate-pulse" />)}
+              {[1, 2, 3].map((i) => <div key={i} className="h-20 bg-[var(--m15-card)] rounded-xl animate-pulse" />)}
             </div>
           ) : favoris.length === 0 ? (
             <div className="text-center py-20 text-[var(--m15-muted)]">
@@ -95,11 +95,11 @@ export default function MesRessources() {
                 return (
                   <div
                     key={r.id}
-                    className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] hover:border-[rgba(0,201,167,0.35)] rounded-xl p-4 cursor-pointer transition-all group"
+                    className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] hover:border-[rgba(0,201,167,0.35)] rounded-xl p-4 cursor-pointer transition-all group"
                     onClick={() => navigate(`/bibliotheque/ressource/${r.id}`)}
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#1a2a44] flex items-center justify-center text-[#00C9A7]">
+                      <div className="w-10 h-10 rounded-lg bg-[var(--m15-card2)] flex items-center justify-center text-[#00C9A7]">
                         {TYPE_ICONS[type] ?? <FileText className="h-5 w-5" />}
                       </div>
                       <button
@@ -113,7 +113,7 @@ export default function MesRessources() {
                     <p className="font-semibold text-[var(--m15-white)] text-sm line-clamp-2 mb-1">{r.titre}</p>
                     {r.auteur && <p className="text-xs text-[var(--m15-muted)] mb-2">{r.auteur}</p>}
                     <div className="flex items-center justify-between">
-                      <Badge className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">
+                      <Badge className="text-xs bg-[var(--m15-card2)] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">
                         {TYPE_LABELS[type]}
                       </Badge>
                       <span className="text-xs text-[var(--m15-muted)]">
@@ -147,7 +147,7 @@ export default function MesRessources() {
 
           {histLoading ? (
             <div className="space-y-3">
-              {[1, 2, 3].map((i) => <div key={i} className="h-16 bg-[#111E35] rounded-xl animate-pulse" />)}
+              {[1, 2, 3].map((i) => <div key={i} className="h-16 bg-[var(--m15-card)] rounded-xl animate-pulse" />)}
             </div>
           ) : historique.length === 0 ? (
             <div className="text-center py-20 text-[var(--m15-muted)]">
@@ -160,7 +160,7 @@ export default function MesRessources() {
               {historique.map((h) => (
                 <div
                   key={h.id}
-                  className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl px-4 py-3 flex items-center gap-4"
+                  className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl px-4 py-3 flex items-center gap-4"
                 >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                     h.action === "consultation"

@@ -114,7 +114,7 @@ export default function AdminBibliotheque() {
       {/* Stats cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {statCards.map((s) => (
-          <Card key={s.label} className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+          <Card key={s.label} className="bg-[var(--m15-card)] border-[rgba(0,201,167,0.15)]">
             <CardContent className="p-4">
               <div className={`${s.color} mb-2`}>{s.icon}</div>
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
@@ -145,10 +145,10 @@ export default function AdminBibliotheque() {
       {tab === "attente" && (
         attenteLoading ? (
           <div className="space-y-4">
-            {[1, 2].map((i) => <div key={i} className="h-32 bg-[#111E35] rounded-xl animate-pulse" />)}
+            {[1, 2].map((i) => <div key={i} className="h-32 bg-[var(--m15-card)] rounded-xl animate-pulse" />)}
           </div>
         ) : enAttente.length === 0 ? (
-          <div className="text-center py-16 text-[var(--m15-muted)] bg-[#111E35] rounded-xl border border-[rgba(0,201,167,0.1)]">
+          <div className="text-center py-16 text-[var(--m15-muted)] bg-[var(--m15-card)] rounded-xl border border-[rgba(0,201,167,0.1)]">
             <Check className="h-10 w-10 mx-auto mb-3 opacity-20" />
             <p className="font-medium">Aucune ressource en attente</p>
           </div>
@@ -157,10 +157,10 @@ export default function AdminBibliotheque() {
             {enAttente.map((r) => {
               const type = r.type ?? "autre";
               return (
-                <div key={r.id} className="bg-[#111E35] border border-yellow-500/20 rounded-xl p-4">
+                <div key={r.id} className="bg-[var(--m15-card)] border border-yellow-500/20 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <div className="w-10 h-10 rounded-lg bg-[#1a2a44] flex items-center justify-center text-[#00C9A7] shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-[var(--m15-card2)] flex items-center justify-center text-[#00C9A7] shrink-0">
                         {TYPE_ICONS[type]}
                       </div>
                       <div className="min-w-0">
@@ -205,10 +205,10 @@ export default function AdminBibliotheque() {
       {tab === "toutes" && (
         toutesLoading ? (
           <div className="space-y-3">
-            {[1, 2, 3].map((i) => <div key={i} className="h-12 bg-[#111E35] rounded-xl animate-pulse" />)}
+            {[1, 2, 3].map((i) => <div key={i} className="h-12 bg-[var(--m15-card)] rounded-xl animate-pulse" />)}
           </div>
         ) : (
-          <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl overflow-hidden">
+          <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl overflow-hidden">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[rgba(0,201,167,0.1)]">
@@ -275,7 +275,7 @@ export default function AdminBibliotheque() {
       {tab === "stats" && (
         <div className="space-y-8">
           {stats?.activite_30j && stats.activite_30j.length > 0 && (
-            <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
+            <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
               <h3 className="font-syne font-semibold mb-4">Activité — 30 derniers jours</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={stats.activite_30j}>
@@ -293,7 +293,7 @@ export default function AdminBibliotheque() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {stats?.par_type && (
-              <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
+              <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
                 <h3 className="font-syne font-semibold mb-4">Répartition par type</h3>
                 <ResponsiveContainer width="100%" height={160}>
                   <BarChart data={stats.par_type} layout="vertical">
@@ -309,7 +309,7 @@ export default function AdminBibliotheque() {
             )}
 
             {stats?.top_consultees && stats.top_consultees.length > 0 && (
-              <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
+              <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl p-5">
                 <h3 className="font-syne font-semibold mb-4 flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-[#00C9A7]" /> Top 5 consultées
                 </h3>
@@ -324,7 +324,7 @@ export default function AdminBibliotheque() {
                           <p className="text-sm text-[var(--m15-white)] truncate">{r.titre}</p>
                           <p className="text-xs text-[var(--m15-muted)]">{consult} consultations</p>
                         </div>
-                        <div className="h-1.5 bg-[#1a2a44] rounded-full w-20 shrink-0">
+                        <div className="h-1.5 bg-[var(--m15-card2)] rounded-full w-20 shrink-0">
                           <div
                             className="h-full bg-[#00C9A7] rounded-full"
                             style={{ width: `${Math.min(100, (consult / (maxConsult || 1)) * 100)}%` }}
@@ -341,7 +341,7 @@ export default function AdminBibliotheque() {
       )}
 
       <AlertDialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-        <AlertDialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
+        <AlertDialogContent className="bg-[var(--m15-card)] border-[rgba(0,201,167,0.2)] text-[var(--m15-white)]">
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer cette ressource ?</AlertDialogTitle>
             <AlertDialogDescription className="text-[var(--m15-muted)]">

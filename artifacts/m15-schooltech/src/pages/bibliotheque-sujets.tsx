@@ -109,7 +109,7 @@ function ModalSujet({
           value={String(form[key])}
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
           placeholder={opts?.placeholder}
-          className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+          className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
         />
       </div>
     );
@@ -122,7 +122,7 @@ function ModalSujet({
         <select
           value={String(form[key])}
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-          className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+          className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
         >
           {options.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
         </select>
@@ -283,7 +283,7 @@ export default function BibliothequeSujets() {
               value={q}
               onChange={e => setQ(e.target.value)}
               placeholder="Rechercher..."
-              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg pl-9 pr-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg pl-9 pr-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
           </div>
           {[
@@ -295,7 +295,7 @@ export default function BibliothequeSujets() {
               key={f.label}
               value={f.state}
               onChange={e => f.set(e.target.value)}
-              className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               {f.opts.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
             </select>
@@ -304,7 +304,7 @@ export default function BibliothequeSujets() {
             <select
               value={pubFilter}
               onChange={e => setPubFilter(e.target.value)}
-              className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               <option value="">Tous</option>
               <option value="true">Publiés</option>

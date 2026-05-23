@@ -120,7 +120,7 @@ function ModalGenerer({ eleveId, onClose, onGenerated }: { eleveId: string; onCl
               value={form.date_examen}
               onChange={e => setForm(f => ({ ...f, date_examen: e.target.value }))}
               min={new Date().toISOString().split("T")[0]}
-              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
           </div>
           <div>
@@ -128,7 +128,7 @@ function ModalGenerer({ eleveId, onClose, onGenerated }: { eleveId: string; onCl
             <select
               value={form.nb_heures_par_jour}
               onChange={e => setForm(f => ({ ...f, nb_heures_par_jour: e.target.value }))}
-              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             >
               {[1.5, 2, 3, 4, 5, 6].map(h => (
                 <option key={h} value={String(h)}>{h}h / jour</option>
@@ -142,7 +142,7 @@ function ModalGenerer({ eleveId, onClose, onGenerated }: { eleveId: string; onCl
               value={form.matieres}
               onChange={e => setForm(f => ({ ...f, matieres: e.target.value }))}
               placeholder="ex: Mathématiques, Physique-Chimie, SVT"
-              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+              className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
             />
             <p className="text-xs text-[var(--m15-muted)] mt-1">Séparées par des virgules. Si vide, basé sur vos résultats.</p>
           </div>
@@ -232,7 +232,7 @@ export default function PlanningRevision() {
             <h3 className="text-sm font-semibold text-[var(--m15-white)]">Progression globale</h3>
             <span style={{ color: "#00C9A7" }} className="text-2xl font-bold">{completion.taux_completion}%</span>
           </div>
-          <div className="w-full bg-[#0A1628] rounded-full h-2 mb-4">
+          <div className="w-full bg-[var(--m15-navy)] rounded-full h-2 mb-4">
             <div
               style={{ width: `${completion.taux_completion}%`, background: "#00C9A7" }}
               className="h-2 rounded-full transition-all duration-500"
@@ -257,7 +257,7 @@ export default function PlanningRevision() {
                 return (
                   <div key={m.matiere} className="flex items-center gap-3">
                     <span className="text-xs text-[var(--m15-muted)] w-36 truncate">{m.matiere}</span>
-                    <div className="flex-1 bg-[#0A1628] rounded-full h-1.5">
+                    <div className="flex-1 bg-[var(--m15-navy)] rounded-full h-1.5">
                       <div style={{ width: `${m.taux}%`, background: color }} className="h-1.5 rounded-full transition-all" />
                     </div>
                     <span className="text-xs font-medium" style={{ color }}>{m.taux}%</span>
@@ -320,7 +320,7 @@ export default function PlanningRevision() {
                       {fmtDate(day)}
                     </span>
                     {daySessions.length === 0 && (
-                      <span className="text-xs text-[#4B5563]">Repos</span>
+                      <span className="text-xs text-[var(--m15-muted)]">Repos</span>
                     )}
                   </div>
                   {daySessions.length > 0 && (
@@ -349,14 +349,14 @@ export default function PlanningRevision() {
                                   <button
                                     onClick={() => updateMut.mutateAsync({ id: s.id, data: { statut: "fait" } as Parameters<typeof updateMut.mutateAsync>[0]["data"] }).then(invalidate)}
                                     title="Marquer fait"
-                                    className={`p-1 rounded transition-colors ${s.statut === "fait" ? "text-[#00C9A7]" : "text-[#4B5563] hover:text-[#00C9A7]"}`}
+                                    className={`p-1 rounded transition-colors ${s.statut === "fait" ? "text-[#00C9A7]" : "text-[var(--m15-muted)] hover:text-[#00C9A7]"}`}
                                   >
                                     <CheckCircle2 size={16} />
                                   </button>
                                   <button
                                     onClick={() => updateMut.mutateAsync({ id: s.id, data: { statut: "saute" } as Parameters<typeof updateMut.mutateAsync>[0]["data"] }).then(invalidate)}
                                     title="Marquer sauté"
-                                    className={`p-1 rounded transition-colors ${s.statut === "saute" ? "text-[#FF4D6D]" : "text-[#4B5563] hover:text-[#FF4D6D]"}`}
+                                    className={`p-1 rounded transition-colors ${s.statut === "saute" ? "text-[#FF4D6D]" : "text-[var(--m15-muted)] hover:text-[#FF4D6D]"}`}
                                   >
                                     <XCircle size={16} />
                                   </button>

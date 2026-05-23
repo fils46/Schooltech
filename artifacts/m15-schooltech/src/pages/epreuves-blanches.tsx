@@ -89,7 +89,7 @@ function ModalCreer({ onClose, onSave }: { onClose: () => void; onSave: (d: Reco
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
           placeholder={opts?.placeholder}
           required={opts?.required}
-          className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
+          className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]"
         />
       </div>
     );
@@ -110,7 +110,7 @@ function ModalCreer({ onClose, onSave }: { onClose: () => void; onSave: (d: Reco
             <div>
               <label className="block text-xs text-[var(--m15-muted)] mb-1">Type</label>
               <select value={form.type_examen} onChange={e => setForm(f => ({ ...f, type_examen: e.target.value }))}
-                className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]">
+                className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7]">
                 <option value="blanc">Épreuve blanche</option>
                 <option value="BEPC">BEPC</option>
                 <option value="BAC">BAC</option>
@@ -128,7 +128,7 @@ function ModalCreer({ onClose, onSave }: { onClose: () => void; onSave: (d: Reco
               value={form.instructions}
               onChange={e => setForm(f => ({ ...f, instructions: e.target.value }))}
               rows={3}
-              className="w-full bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7] resize-none"
+              className="w-full bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-2 text-[var(--m15-white)] text-sm focus:outline-none focus:border-[#00C9A7] resize-none"
             />
           </div>
           <div className="flex gap-3 pt-2">
@@ -193,7 +193,7 @@ function ModalResultats({
               {statsData.resultats.map(r => {
                 const present = presences[r.eleve_id] !== undefined ? presences[r.eleve_id] : r.present;
                 return (
-                  <div key={r.eleve_id} className="flex items-center gap-3 p-3 bg-[#0A1628] rounded-lg">
+                  <div key={r.eleve_id} className="flex items-center gap-3 p-3 bg-[var(--m15-navy)] rounded-lg">
                     <input
                       type="checkbox"
                       checked={present}
@@ -211,7 +211,7 @@ function ModalResultats({
                       value={notes[r.eleve_id] !== undefined ? notes[r.eleve_id] : (r.note !== null ? String(r.note) : "")}
                       onChange={e => setNotes(n => ({ ...n, [r.eleve_id]: e.target.value }))}
                       placeholder="Note"
-                      className="w-20 bg-[#111E35] border border-[var(--m15-border)] rounded-lg px-2 py-1 text-[var(--m15-white)] text-sm text-center focus:outline-none focus:border-[#00C9A7] disabled:opacity-40"
+                      className="w-20 bg-[var(--m15-card)] border border-[var(--m15-border)] rounded-lg px-2 py-1 text-[var(--m15-white)] text-sm text-center focus:outline-none focus:border-[#00C9A7] disabled:opacity-40"
                     />
                     <span className="text-[var(--m15-muted)] text-sm">/ {bareme}</span>
                   </div>
@@ -274,7 +274,7 @@ function ModalStats({ epreuveId, titre, onClose }: { epreuveId: string; titre: s
             <h3 className="text-sm font-semibold text-[var(--m15-muted)] mb-3">Résultats individuels</h3>
             <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
               {stats.resultats.sort((a, b) => parseFloat(String(b.note ?? 0)) - parseFloat(String(a.note ?? 0))).map((r, i) => (
-                <div key={r.eleve_id} className="flex items-center gap-3 p-2 bg-[#0A1628] rounded-lg">
+                <div key={r.eleve_id} className="flex items-center gap-3 p-2 bg-[var(--m15-navy)] rounded-lg">
                   <span className="text-[var(--m15-muted)] text-xs w-6">{i + 1}</span>
                   <span className="flex-1 text-[var(--m15-white)] text-sm">{r.eleve_nom} {r.eleve_prenoms}</span>
                   <span className={`font-bold text-sm ${r.present ? "text-[var(--m15-white)]" : "text-[var(--m15-muted)]"}`}>

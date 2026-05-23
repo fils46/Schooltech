@@ -69,7 +69,7 @@ function NoteBarre({ note, bareme }: { note: number; bareme: number }) {
   const color = getNoteColor(note, bareme);
   return (
     <div className="flex items-center gap-3">
-      <div className="flex-1 bg-[#0A1628] rounded-full h-2">
+      <div className="flex-1 bg-[var(--m15-navy)] rounded-full h-2">
         <div style={{ width: `${pct}%`, background: color }} className="h-2 rounded-full transition-all duration-500" />
       </div>
       <span style={{ color }} className="text-sm font-bold w-14 text-right">
@@ -212,7 +212,7 @@ export default function ResultatsProgression() {
           <select
             value={filtreMatiere}
             onChange={e => setFiltreMatiere(e.target.value)}
-            className="bg-[#0A1628] border border-[var(--m15-border)] rounded-lg px-3 py-1.5 text-[var(--m15-white)] text-xs focus:outline-none focus:border-[#00C9A7]"
+            className="bg-[var(--m15-navy)] border border-[var(--m15-border)] rounded-lg px-3 py-1.5 text-[var(--m15-white)] text-xs focus:outline-none focus:border-[#00C9A7]"
           >
             <option value="">Toutes les matières</option>
             {matieres.map(m => <option key={m} value={m}>{m}</option>)}

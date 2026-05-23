@@ -75,7 +75,7 @@ export default function DetailRessource() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0A1628] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--m15-navy)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#00C9A7]" />
       </div>
     );
@@ -83,7 +83,7 @@ export default function DetailRessource() {
 
   if (!ressource) {
     return (
-      <div className="min-h-screen bg-[#0A1628] flex flex-col items-center justify-center text-[var(--m15-muted)]">
+      <div className="min-h-screen bg-[var(--m15-navy)] flex flex-col items-center justify-center text-[var(--m15-muted)]">
         <p className="text-lg mb-4">Ressource introuvable</p>
         <Button onClick={() => navigate("/bibliotheque")} variant="outline">
           ← Retour au catalogue
@@ -100,7 +100,7 @@ export default function DetailRessource() {
     : "—";
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-[var(--m15-white)] px-6 py-8">
+    <div className="min-h-screen bg-[var(--m15-navy)] text-[var(--m15-white)] px-6 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-[var(--m15-muted)] mb-6">
@@ -152,7 +152,7 @@ export default function DetailRessource() {
               {ressource.est_favori ? "Retirer des favoris" : "Ajouter aux favoris"}
             </Button>
 
-            <div className="bg-[#111E35] border border-[rgba(0,201,167,0.15)] rounded-xl p-4 space-y-2 text-sm">
+            <div className="bg-[var(--m15-card)] border border-[rgba(0,201,167,0.15)] rounded-xl p-4 space-y-2 text-sm">
               <div className="flex justify-between text-[var(--m15-muted)]">
                 <span>Format</span>
                 <span className="text-[var(--m15-white)]">{ressource.fichier_type ?? "—"}</span>
@@ -183,7 +183,7 @@ export default function DetailRessource() {
                   {TYPE_LABELS[type]}
                 </Badge>
                 {(ressource.niveau ?? []).map((n) => (
-                  <Badge key={n} className="bg-[#1a2a44] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">{n}</Badge>
+                  <Badge key={n} className="bg-[var(--m15-card2)] text-[var(--m15-muted)] border-[rgba(0,201,167,0.2)]">{n}</Badge>
                 ))}
               </div>
 
@@ -212,7 +212,7 @@ export default function DetailRessource() {
             {ressource.matiere_nom && (
               <div>
                 <h3 className="text-sm font-semibold text-[var(--m15-muted)] uppercase tracking-wide mb-2">Matière</h3>
-                <Badge className="bg-[#1a2a44] text-[#00C9A7] border-[rgba(0,201,167,0.3)]">{ressource.matiere_nom}</Badge>
+                <Badge className="bg-[var(--m15-card2)] text-[#00C9A7] border-[rgba(0,201,167,0.3)]">{ressource.matiere_nom}</Badge>
               </div>
             )}
 
@@ -224,7 +224,7 @@ export default function DetailRessource() {
                     <button
                       key={kw}
                       onClick={() => navigate(`/bibliotheque?q=${encodeURIComponent(kw)}`)}
-                      className="text-xs bg-[#1a2a44] text-[var(--m15-muted)] px-2.5 py-1 rounded-full border border-[rgba(0,201,167,0.15)] hover:border-[#00C9A7] hover:text-[var(--m15-white)] transition-colors"
+                      className="text-xs bg-[var(--m15-card2)] text-[var(--m15-muted)] px-2.5 py-1 rounded-full border border-[rgba(0,201,167,0.15)] hover:border-[#00C9A7] hover:text-[var(--m15-white)] transition-colors"
                     >
                       #{kw}
                     </button>
@@ -257,11 +257,11 @@ export default function DetailRessource() {
                 return (
                   <Card
                     key={r.id}
-                    className="bg-[#111E35] border-[rgba(0,201,167,0.15)] hover:border-[rgba(0,201,167,0.35)] cursor-pointer transition-all"
+                    className="bg-[var(--m15-card)] border-[rgba(0,201,167,0.15)] hover:border-[rgba(0,201,167,0.35)] cursor-pointer transition-all"
                     onClick={() => navigate(`/bibliotheque/ressource/${r.id}`)}
                   >
                     <CardContent className="p-3">
-                      <div className="h-20 rounded-lg bg-[#1a2a44] flex items-center justify-center text-[#00C9A7] mb-2">
+                      <div className="h-20 rounded-lg bg-[var(--m15-card2)] flex items-center justify-center text-[#00C9A7] mb-2">
                         <div className="opacity-40">{TYPE_ICONS[rType]}</div>
                       </div>
                       <p className="text-xs font-semibold text-[var(--m15-white)] line-clamp-2">{r.titre}</p>
