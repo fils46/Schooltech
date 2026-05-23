@@ -86,6 +86,22 @@ export function emitToConseil(conseilId: string, event: string, data: unknown) {
   io.to(`conseil_${conseilId}`).emit(event, data);
 }
 
+export function emitNouveauMessage(destinataireId: string, data: {
+  id: string;
+  expediteur_nom: string;
+  sujet: string;
+  apercu: string;
+  created_at: string;
+}) {
+  if (!io) return;
+  io.to(`user_${destinataireId}`).emit("nouveau_message", data);
+}
+
+export function emitBadgeMessages(destinataireId: string, count: number) {
+  if (!io) return;
+  io.to(`user_${destinataireId}`).emit("badge_messages", { count });
+}
+
 export async function emitNotification(destinataireId: string, data: {
   id: string;
   type: string;

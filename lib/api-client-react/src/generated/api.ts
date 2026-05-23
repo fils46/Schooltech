@@ -23,6 +23,7 @@ import type {
   AbsenceInput,
   AbsenceItemResponse,
   AbsenceUpdateInput,
+  AbsencesEnfantResponse,
   AbsencesListeResponse,
   AffecterEleveInput,
   AffecterProfesseurInput,
@@ -40,6 +41,8 @@ import type {
   BulletinDetailResponse,
   BulletinsClasseResponse,
   BulletinsEleveResponse,
+  BulletinsEnfantResponse,
+  CahierTextesEnfantResponse,
   ChangePasswordInput,
   ChangerStatutInput,
   Classe,
@@ -49,19 +52,23 @@ import type {
   ClassesListeResponse,
   ConfigurerMatieresInput,
   ConfirmerPresence200,
+  ConfirmerRendezVousInput,
   ConflitsResponse,
   ConseilClasseItemResponse,
   ConseilEnCoursResponse,
   ConseilParticipantsResponse,
   ConseilsListeResponse,
+  ContactsResponse,
   CoursDetail,
   CoursInput,
   Creneau,
   CreneauInput,
   CreneauxListeResponse,
   DeliberationsListeResponse,
+  DemanderRendezVousInput,
   DevoirsResponse,
   DocumentEleve,
+  DossierEnfantResponse,
   DupliquerEmploiInput,
   DupliquerEmploiResponse,
   EleveDetail,
@@ -70,7 +77,9 @@ import type {
   ElevesListeResponse,
   ElevesRisqueResponse,
   EmploiGrilleResponse,
+  EmploiTempsEnfantResponse,
   EnvoyerConvocations200,
+  EnvoyerMessageInput,
   ErrorResponse,
   Etablissement,
   EtablissementInput,
@@ -83,8 +92,11 @@ import type {
   GenererClasseInput,
   GenererClasseResponse,
   GenererPV200,
+  GetAbsencesEnfantParams,
+  GetBoiteReceptionParams,
   GetBulletinsClasseParams,
   GetBulletinsEleveParams,
+  GetCahierTextesEnfantParams,
   GetDevoirsAVenirParams,
   GetElevesARisqueParams,
   GetEmploiClasseParams,
@@ -96,6 +108,7 @@ import type {
   GetMoyennesClasseParams,
   GetNotesClasseParams,
   GetNotesEleveParams,
+  GetNotesEnfantParams,
   GetPresencesEleveParams,
   GetResumeAbsencesEleveParams,
   GetStatistiquesAbsencesParams,
@@ -113,6 +126,7 @@ import type {
   ListerCreneauxParams,
   ListerElevesParams,
   ListerJustificationsParams,
+  ListerRendezVousParams,
   ListerSallesParams,
   ListerSeancesParams,
   ListerUtilisateursParams,
@@ -120,7 +134,12 @@ import type {
   MatiereConfigInput,
   MatiereConfigItemResponse,
   MatieresConfigResponse,
+  MesEnfantsResponse,
+  MessageCountResponse,
+  MessageDetailResponse,
+  MessageItemResponse,
   MessageResponse,
+  MessagesListeResponse,
   ModifierConseilInput,
   ModifierEleveInput,
   MonteeClasseInput,
@@ -131,14 +150,19 @@ import type {
   NoteInput,
   NotesClasseResponse,
   NotesEleveResponse,
+  NotesEnfantResponse,
   NotesGroupeResponse,
   NotificationCountResponse,
   NotificationsListeResponse,
+  ParentDashboardResponse,
   PlanifierConseilInput,
   PresenceEleveResponse,
   PresenceUpdateInput,
   PublierClasseResponse,
   RechercherElevesParams,
+  RendezVousItemResponse,
+  RendezVousListeResponse,
+  RepondreMessageInput,
   ResetPasswordInput,
   ResumeAbsencesEleveResponse,
   SaisirDeliberation200,
@@ -10188,5 +10212,1629 @@ export const useSupprimerNotification = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getSupprimerNotificationMutationOptions(options));
+    }
+
+export const getGetParentDashboardUrl = () => {
+
+
+
+
+  return `/api/parent/dashboard`
+}
+
+/**
+ * @summary Dashboard parent — tous les enfants
+ */
+export const getParentDashboard = async ( options?: RequestInit): Promise<ParentDashboardResponse> => {
+
+  return customFetch<ParentDashboardResponse>(getGetParentDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetParentDashboardQueryKey = () => {
+    return [
+    `/api/parent/dashboard`
+    ] as const;
+    }
+
+
+export const getGetParentDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getParentDashboard>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getParentDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetParentDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getParentDashboard>>> = ({ signal }) => getParentDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getParentDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetParentDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getParentDashboard>>>
+export type GetParentDashboardQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Dashboard parent — tous les enfants
+ */
+
+export function useGetParentDashboard<TData = Awaited<ReturnType<typeof getParentDashboard>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getParentDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetParentDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMesEnfantsUrl = () => {
+
+
+
+
+  return `/api/parent/mes-enfants`
+}
+
+/**
+ * @summary Liste des enfants du parent connecté
+ */
+export const getMesEnfants = async ( options?: RequestInit): Promise<MesEnfantsResponse> => {
+
+  return customFetch<MesEnfantsResponse>(getGetMesEnfantsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMesEnfantsQueryKey = () => {
+    return [
+    `/api/parent/mes-enfants`
+    ] as const;
+    }
+
+
+export const getGetMesEnfantsQueryOptions = <TData = Awaited<ReturnType<typeof getMesEnfants>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMesEnfants>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMesEnfantsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMesEnfants>>> = ({ signal }) => getMesEnfants({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMesEnfants>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMesEnfantsQueryResult = NonNullable<Awaited<ReturnType<typeof getMesEnfants>>>
+export type GetMesEnfantsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Liste des enfants du parent connecté
+ */
+
+export function useGetMesEnfants<TData = Awaited<ReturnType<typeof getMesEnfants>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMesEnfants>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMesEnfantsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDossierEnfantUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/parent/enfant/${eleveId}`
+}
+
+/**
+ * @summary Dossier complet d'un enfant
+ */
+export const getDossierEnfant = async (eleveId: string, options?: RequestInit): Promise<DossierEnfantResponse> => {
+
+  return customFetch<DossierEnfantResponse>(getGetDossierEnfantUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDossierEnfantQueryKey = (eleveId: string,) => {
+    return [
+    `/api/parent/enfant/${eleveId}`
+    ] as const;
+    }
+
+
+export const getGetDossierEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getDossierEnfant>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDossierEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDossierEnfantQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDossierEnfant>>> = ({ signal }) => getDossierEnfant(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDossierEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDossierEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getDossierEnfant>>>
+export type GetDossierEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Dossier complet d'un enfant
+ */
+
+export function useGetDossierEnfant<TData = Awaited<ReturnType<typeof getDossierEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDossierEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDossierEnfantQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetNotesEnfantUrl = (eleveId: string,
+    params?: GetNotesEnfantParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/parent/enfant/${eleveId}/notes?${stringifiedParams}` : `/api/parent/enfant/${eleveId}/notes`
+}
+
+/**
+ * @summary Notes d'un enfant par trimestre
+ */
+export const getNotesEnfant = async (eleveId: string,
+    params?: GetNotesEnfantParams, options?: RequestInit): Promise<NotesEnfantResponse> => {
+
+  return customFetch<NotesEnfantResponse>(getGetNotesEnfantUrl(eleveId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetNotesEnfantQueryKey = (eleveId: string,
+    params?: GetNotesEnfantParams,) => {
+    return [
+    `/api/parent/enfant/${eleveId}/notes`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetNotesEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getNotesEnfant>>, TError = ErrorType<unknown>>(eleveId: string,
+    params?: GetNotesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNotesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNotesEnfantQueryKey(eleveId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotesEnfant>>> = ({ signal }) => getNotesEnfant(eleveId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotesEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetNotesEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getNotesEnfant>>>
+export type GetNotesEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Notes d'un enfant par trimestre
+ */
+
+export function useGetNotesEnfant<TData = Awaited<ReturnType<typeof getNotesEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string,
+    params?: GetNotesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNotesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetNotesEnfantQueryOptions(eleveId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBulletinsEnfantUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/parent/enfant/${eleveId}/bulletins`
+}
+
+/**
+ * @summary Bulletins publiés d'un enfant
+ */
+export const getBulletinsEnfant = async (eleveId: string, options?: RequestInit): Promise<BulletinsEnfantResponse> => {
+
+  return customFetch<BulletinsEnfantResponse>(getGetBulletinsEnfantUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBulletinsEnfantQueryKey = (eleveId: string,) => {
+    return [
+    `/api/parent/enfant/${eleveId}/bulletins`
+    ] as const;
+    }
+
+
+export const getGetBulletinsEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getBulletinsEnfant>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBulletinsEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBulletinsEnfantQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBulletinsEnfant>>> = ({ signal }) => getBulletinsEnfant(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBulletinsEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBulletinsEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getBulletinsEnfant>>>
+export type GetBulletinsEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Bulletins publiés d'un enfant
+ */
+
+export function useGetBulletinsEnfant<TData = Awaited<ReturnType<typeof getBulletinsEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBulletinsEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBulletinsEnfantQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetAbsencesEnfantUrl = (eleveId: string,
+    params?: GetAbsencesEnfantParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/parent/enfant/${eleveId}/absences?${stringifiedParams}` : `/api/parent/enfant/${eleveId}/absences`
+}
+
+/**
+ * @summary Absences d'un enfant avec résumé
+ */
+export const getAbsencesEnfant = async (eleveId: string,
+    params?: GetAbsencesEnfantParams, options?: RequestInit): Promise<AbsencesEnfantResponse> => {
+
+  return customFetch<AbsencesEnfantResponse>(getGetAbsencesEnfantUrl(eleveId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAbsencesEnfantQueryKey = (eleveId: string,
+    params?: GetAbsencesEnfantParams,) => {
+    return [
+    `/api/parent/enfant/${eleveId}/absences`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAbsencesEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getAbsencesEnfant>>, TError = ErrorType<unknown>>(eleveId: string,
+    params?: GetAbsencesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAbsencesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAbsencesEnfantQueryKey(eleveId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAbsencesEnfant>>> = ({ signal }) => getAbsencesEnfant(eleveId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAbsencesEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAbsencesEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getAbsencesEnfant>>>
+export type GetAbsencesEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Absences d'un enfant avec résumé
+ */
+
+export function useGetAbsencesEnfant<TData = Awaited<ReturnType<typeof getAbsencesEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string,
+    params?: GetAbsencesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAbsencesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAbsencesEnfantQueryOptions(eleveId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetCahierTextesEnfantUrl = (eleveId: string,
+    params?: GetCahierTextesEnfantParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/parent/enfant/${eleveId}/cahier-textes?${stringifiedParams}` : `/api/parent/enfant/${eleveId}/cahier-textes`
+}
+
+/**
+ * @summary Cahier de textes de la classe de l'enfant
+ */
+export const getCahierTextesEnfant = async (eleveId: string,
+    params?: GetCahierTextesEnfantParams, options?: RequestInit): Promise<CahierTextesEnfantResponse> => {
+
+  return customFetch<CahierTextesEnfantResponse>(getGetCahierTextesEnfantUrl(eleveId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCahierTextesEnfantQueryKey = (eleveId: string,
+    params?: GetCahierTextesEnfantParams,) => {
+    return [
+    `/api/parent/enfant/${eleveId}/cahier-textes`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetCahierTextesEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getCahierTextesEnfant>>, TError = ErrorType<unknown>>(eleveId: string,
+    params?: GetCahierTextesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCahierTextesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCahierTextesEnfantQueryKey(eleveId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCahierTextesEnfant>>> = ({ signal }) => getCahierTextesEnfant(eleveId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCahierTextesEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCahierTextesEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getCahierTextesEnfant>>>
+export type GetCahierTextesEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Cahier de textes de la classe de l'enfant
+ */
+
+export function useGetCahierTextesEnfant<TData = Awaited<ReturnType<typeof getCahierTextesEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string,
+    params?: GetCahierTextesEnfantParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCahierTextesEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCahierTextesEnfantQueryOptions(eleveId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetEmploiTempsEnfantUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/parent/enfant/${eleveId}/emploi-du-temps`
+}
+
+/**
+ * @summary Emploi du temps de la classe de l'enfant
+ */
+export const getEmploiTempsEnfant = async (eleveId: string, options?: RequestInit): Promise<EmploiTempsEnfantResponse> => {
+
+  return customFetch<EmploiTempsEnfantResponse>(getGetEmploiTempsEnfantUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetEmploiTempsEnfantQueryKey = (eleveId: string,) => {
+    return [
+    `/api/parent/enfant/${eleveId}/emploi-du-temps`
+    ] as const;
+    }
+
+
+export const getGetEmploiTempsEnfantQueryOptions = <TData = Awaited<ReturnType<typeof getEmploiTempsEnfant>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEmploiTempsEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEmploiTempsEnfantQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmploiTempsEnfant>>> = ({ signal }) => getEmploiTempsEnfant(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEmploiTempsEnfant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetEmploiTempsEnfantQueryResult = NonNullable<Awaited<ReturnType<typeof getEmploiTempsEnfant>>>
+export type GetEmploiTempsEnfantQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Emploi du temps de la classe de l'enfant
+ */
+
+export function useGetEmploiTempsEnfant<TData = Awaited<ReturnType<typeof getEmploiTempsEnfant>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEmploiTempsEnfant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetEmploiTempsEnfantQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetContactsDisponiblesUrl = () => {
+
+
+
+
+  return `/api/messages/contacts`
+}
+
+/**
+ * @summary Contacts disponibles selon rôle
+ */
+export const getContactsDisponibles = async ( options?: RequestInit): Promise<ContactsResponse> => {
+
+  return customFetch<ContactsResponse>(getGetContactsDisponiblesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetContactsDisponiblesQueryKey = () => {
+    return [
+    `/api/messages/contacts`
+    ] as const;
+    }
+
+
+export const getGetContactsDisponiblesQueryOptions = <TData = Awaited<ReturnType<typeof getContactsDisponibles>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getContactsDisponibles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetContactsDisponiblesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getContactsDisponibles>>> = ({ signal }) => getContactsDisponibles({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getContactsDisponibles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetContactsDisponiblesQueryResult = NonNullable<Awaited<ReturnType<typeof getContactsDisponibles>>>
+export type GetContactsDisponiblesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Contacts disponibles selon rôle
+ */
+
+export function useGetContactsDisponibles<TData = Awaited<ReturnType<typeof getContactsDisponibles>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getContactsDisponibles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetContactsDisponiblesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetNbMessagesNonLusUrl = () => {
+
+
+
+
+  return `/api/messages/non-lus/count`
+}
+
+/**
+ * @summary Nombre de messages non lus
+ */
+export const getNbMessagesNonLus = async ( options?: RequestInit): Promise<MessageCountResponse> => {
+
+  return customFetch<MessageCountResponse>(getGetNbMessagesNonLusUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetNbMessagesNonLusQueryKey = () => {
+    return [
+    `/api/messages/non-lus/count`
+    ] as const;
+    }
+
+
+export const getGetNbMessagesNonLusQueryOptions = <TData = Awaited<ReturnType<typeof getNbMessagesNonLus>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNbMessagesNonLus>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNbMessagesNonLusQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNbMessagesNonLus>>> = ({ signal }) => getNbMessagesNonLus({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNbMessagesNonLus>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetNbMessagesNonLusQueryResult = NonNullable<Awaited<ReturnType<typeof getNbMessagesNonLus>>>
+export type GetNbMessagesNonLusQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Nombre de messages non lus
+ */
+
+export function useGetNbMessagesNonLus<TData = Awaited<ReturnType<typeof getNbMessagesNonLus>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNbMessagesNonLus>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetNbMessagesNonLusQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBoiteReceptionUrl = (params?: GetBoiteReceptionParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/messages/reception?${stringifiedParams}` : `/api/messages/reception`
+}
+
+/**
+ * @summary Boîte de réception
+ */
+export const getBoiteReception = async (params?: GetBoiteReceptionParams, options?: RequestInit): Promise<MessagesListeResponse> => {
+
+  return customFetch<MessagesListeResponse>(getGetBoiteReceptionUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBoiteReceptionQueryKey = (params?: GetBoiteReceptionParams,) => {
+    return [
+    `/api/messages/reception`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetBoiteReceptionQueryOptions = <TData = Awaited<ReturnType<typeof getBoiteReception>>, TError = ErrorType<unknown>>(params?: GetBoiteReceptionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBoiteReception>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBoiteReceptionQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBoiteReception>>> = ({ signal }) => getBoiteReception(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBoiteReception>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBoiteReceptionQueryResult = NonNullable<Awaited<ReturnType<typeof getBoiteReception>>>
+export type GetBoiteReceptionQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Boîte de réception
+ */
+
+export function useGetBoiteReception<TData = Awaited<ReturnType<typeof getBoiteReception>>, TError = ErrorType<unknown>>(
+ params?: GetBoiteReceptionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBoiteReception>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBoiteReceptionQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBoiteEnvoiUrl = () => {
+
+
+
+
+  return `/api/messages/envoi`
+}
+
+/**
+ * @summary Boîte d'envoi
+ */
+export const getBoiteEnvoi = async ( options?: RequestInit): Promise<MessagesListeResponse> => {
+
+  return customFetch<MessagesListeResponse>(getGetBoiteEnvoiUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBoiteEnvoiQueryKey = () => {
+    return [
+    `/api/messages/envoi`
+    ] as const;
+    }
+
+
+export const getGetBoiteEnvoiQueryOptions = <TData = Awaited<ReturnType<typeof getBoiteEnvoi>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBoiteEnvoi>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBoiteEnvoiQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBoiteEnvoi>>> = ({ signal }) => getBoiteEnvoi({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBoiteEnvoi>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBoiteEnvoiQueryResult = NonNullable<Awaited<ReturnType<typeof getBoiteEnvoi>>>
+export type GetBoiteEnvoiQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Boîte d'envoi
+ */
+
+export function useGetBoiteEnvoi<TData = Awaited<ReturnType<typeof getBoiteEnvoi>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBoiteEnvoi>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBoiteEnvoiQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getEnvoyerMessageUrl = () => {
+
+
+
+
+  return `/api/messages/envoyer`
+}
+
+/**
+ * @summary Envoyer un nouveau message
+ */
+export const envoyerMessage = async (envoyerMessageInput: EnvoyerMessageInput, options?: RequestInit): Promise<MessageItemResponse> => {
+
+  return customFetch<MessageItemResponse>(getEnvoyerMessageUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      envoyerMessageInput,)
+  }
+);}
+
+
+
+
+export const getEnvoyerMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof envoyerMessage>>, TError,{data: BodyType<EnvoyerMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof envoyerMessage>>, TError,{data: BodyType<EnvoyerMessageInput>}, TContext> => {
+
+const mutationKey = ['envoyerMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof envoyerMessage>>, {data: BodyType<EnvoyerMessageInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  envoyerMessage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnvoyerMessageMutationResult = NonNullable<Awaited<ReturnType<typeof envoyerMessage>>>
+    export type EnvoyerMessageMutationBody = BodyType<EnvoyerMessageInput>
+    export type EnvoyerMessageMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Envoyer un nouveau message
+ */
+export const useEnvoyerMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof envoyerMessage>>, TError,{data: BodyType<EnvoyerMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof envoyerMessage>>,
+        TError,
+        {data: BodyType<EnvoyerMessageInput>},
+        TContext
+      > => {
+      return useMutation(getEnvoyerMessageMutationOptions(options));
+    }
+
+export const getGetMessageUrl = (id: string,) => {
+
+
+
+
+  return `/api/messages/${id}`
+}
+
+/**
+ * @summary Lire un message (marque comme lu)
+ */
+export const getMessage = async (id: string, options?: RequestInit): Promise<MessageDetailResponse> => {
+
+  return customFetch<MessageDetailResponse>(getGetMessageUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMessageQueryKey = (id: string,) => {
+    return [
+    `/api/messages/${id}`
+    ] as const;
+    }
+
+
+export const getGetMessageQueryOptions = <TData = Awaited<ReturnType<typeof getMessage>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMessage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMessageQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMessage>>> = ({ signal }) => getMessage(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMessage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMessageQueryResult = NonNullable<Awaited<ReturnType<typeof getMessage>>>
+export type GetMessageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lire un message (marque comme lu)
+ */
+
+export function useGetMessage<TData = Awaited<ReturnType<typeof getMessage>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMessage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMessageQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getRepondreMessageUrl = (id: string,) => {
+
+
+
+
+  return `/api/messages/${id}/repondre`
+}
+
+/**
+ * @summary Répondre à un message
+ */
+export const repondreMessage = async (id: string,
+    repondreMessageInput: RepondreMessageInput, options?: RequestInit): Promise<MessageItemResponse> => {
+
+  return customFetch<MessageItemResponse>(getRepondreMessageUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      repondreMessageInput,)
+  }
+);}
+
+
+
+
+export const getRepondreMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof repondreMessage>>, TError,{id: string;data: BodyType<RepondreMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof repondreMessage>>, TError,{id: string;data: BodyType<RepondreMessageInput>}, TContext> => {
+
+const mutationKey = ['repondreMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof repondreMessage>>, {id: string;data: BodyType<RepondreMessageInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  repondreMessage(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RepondreMessageMutationResult = NonNullable<Awaited<ReturnType<typeof repondreMessage>>>
+    export type RepondreMessageMutationBody = BodyType<RepondreMessageInput>
+    export type RepondreMessageMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Répondre à un message
+ */
+export const useRepondreMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof repondreMessage>>, TError,{id: string;data: BodyType<RepondreMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof repondreMessage>>,
+        TError,
+        {id: string;data: BodyType<RepondreMessageInput>},
+        TContext
+      > => {
+      return useMutation(getRepondreMessageMutationOptions(options));
+    }
+
+export const getArchiverMessageUrl = (id: string,) => {
+
+
+
+
+  return `/api/messages/${id}/archiver`
+}
+
+/**
+ * @summary Archiver un message
+ */
+export const archiverMessage = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getArchiverMessageUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getArchiverMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof archiverMessage>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof archiverMessage>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['archiverMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof archiverMessage>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  archiverMessage(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ArchiverMessageMutationResult = NonNullable<Awaited<ReturnType<typeof archiverMessage>>>
+
+    export type ArchiverMessageMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Archiver un message
+ */
+export const useArchiverMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof archiverMessage>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof archiverMessage>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getArchiverMessageMutationOptions(options));
+    }
+
+export const getListerRendezVousUrl = (params?: ListerRendezVousParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/rendez-vous/liste?${stringifiedParams}` : `/api/rendez-vous/liste`
+}
+
+/**
+ * @summary Lister les rendez-vous selon rôle
+ */
+export const listerRendezVous = async (params?: ListerRendezVousParams, options?: RequestInit): Promise<RendezVousListeResponse> => {
+
+  return customFetch<RendezVousListeResponse>(getListerRendezVousUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerRendezVousQueryKey = (params?: ListerRendezVousParams,) => {
+    return [
+    `/api/rendez-vous/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerRendezVousQueryOptions = <TData = Awaited<ReturnType<typeof listerRendezVous>>, TError = ErrorType<unknown>>(params?: ListerRendezVousParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerRendezVous>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerRendezVousQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerRendezVous>>> = ({ signal }) => listerRendezVous(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerRendezVous>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerRendezVousQueryResult = NonNullable<Awaited<ReturnType<typeof listerRendezVous>>>
+export type ListerRendezVousQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les rendez-vous selon rôle
+ */
+
+export function useListerRendezVous<TData = Awaited<ReturnType<typeof listerRendezVous>>, TError = ErrorType<unknown>>(
+ params?: ListerRendezVousParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerRendezVous>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerRendezVousQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getDemanderRendezVousUrl = () => {
+
+
+
+
+  return `/api/rendez-vous/demander`
+}
+
+/**
+ * @summary Demander un rendez-vous
+ */
+export const demanderRendezVous = async (demanderRendezVousInput: DemanderRendezVousInput, options?: RequestInit): Promise<RendezVousItemResponse> => {
+
+  return customFetch<RendezVousItemResponse>(getDemanderRendezVousUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      demanderRendezVousInput,)
+  }
+);}
+
+
+
+
+export const getDemanderRendezVousMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof demanderRendezVous>>, TError,{data: BodyType<DemanderRendezVousInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof demanderRendezVous>>, TError,{data: BodyType<DemanderRendezVousInput>}, TContext> => {
+
+const mutationKey = ['demanderRendezVous'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof demanderRendezVous>>, {data: BodyType<DemanderRendezVousInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  demanderRendezVous(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DemanderRendezVousMutationResult = NonNullable<Awaited<ReturnType<typeof demanderRendezVous>>>
+    export type DemanderRendezVousMutationBody = BodyType<DemanderRendezVousInput>
+    export type DemanderRendezVousMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Demander un rendez-vous
+ */
+export const useDemanderRendezVous = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof demanderRendezVous>>, TError,{data: BodyType<DemanderRendezVousInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof demanderRendezVous>>,
+        TError,
+        {data: BodyType<DemanderRendezVousInput>},
+        TContext
+      > => {
+      return useMutation(getDemanderRendezVousMutationOptions(options));
+    }
+
+export const getConfirmerRendezVousUrl = (id: string,) => {
+
+
+
+
+  return `/api/rendez-vous/${id}/confirmer`
+}
+
+/**
+ * @summary Confirmer un rendez-vous
+ */
+export const confirmerRendezVous = async (id: string,
+    confirmerRendezVousInput: ConfirmerRendezVousInput, options?: RequestInit): Promise<RendezVousItemResponse> => {
+
+  return customFetch<RendezVousItemResponse>(getConfirmerRendezVousUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      confirmerRendezVousInput,)
+  }
+);}
+
+
+
+
+export const getConfirmerRendezVousMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmerRendezVous>>, TError,{id: string;data: BodyType<ConfirmerRendezVousInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof confirmerRendezVous>>, TError,{id: string;data: BodyType<ConfirmerRendezVousInput>}, TContext> => {
+
+const mutationKey = ['confirmerRendezVous'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof confirmerRendezVous>>, {id: string;data: BodyType<ConfirmerRendezVousInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  confirmerRendezVous(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfirmerRendezVousMutationResult = NonNullable<Awaited<ReturnType<typeof confirmerRendezVous>>>
+    export type ConfirmerRendezVousMutationBody = BodyType<ConfirmerRendezVousInput>
+    export type ConfirmerRendezVousMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Confirmer un rendez-vous
+ */
+export const useConfirmerRendezVous = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmerRendezVous>>, TError,{id: string;data: BodyType<ConfirmerRendezVousInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof confirmerRendezVous>>,
+        TError,
+        {id: string;data: BodyType<ConfirmerRendezVousInput>},
+        TContext
+      > => {
+      return useMutation(getConfirmerRendezVousMutationOptions(options));
+    }
+
+export const getAnnulerRendezVousUrl = (id: string,) => {
+
+
+
+
+  return `/api/rendez-vous/${id}/annuler`
+}
+
+/**
+ * @summary Annuler un rendez-vous
+ */
+export const annulerRendezVous = async (id: string, options?: RequestInit): Promise<RendezVousItemResponse> => {
+
+  return customFetch<RendezVousItemResponse>(getAnnulerRendezVousUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getAnnulerRendezVousMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof annulerRendezVous>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof annulerRendezVous>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['annulerRendezVous'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof annulerRendezVous>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  annulerRendezVous(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AnnulerRendezVousMutationResult = NonNullable<Awaited<ReturnType<typeof annulerRendezVous>>>
+
+    export type AnnulerRendezVousMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Annuler un rendez-vous
+ */
+export const useAnnulerRendezVous = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof annulerRendezVous>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof annulerRendezVous>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getAnnulerRendezVousMutationOptions(options));
+    }
+
+export const getTerminerRendezVousUrl = (id: string,) => {
+
+
+
+
+  return `/api/rendez-vous/${id}/terminer`
+}
+
+/**
+ * @summary Marquer un rendez-vous comme terminé
+ */
+export const terminerRendezVous = async (id: string, options?: RequestInit): Promise<RendezVousItemResponse> => {
+
+  return customFetch<RendezVousItemResponse>(getTerminerRendezVousUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getTerminerRendezVousMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof terminerRendezVous>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof terminerRendezVous>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['terminerRendezVous'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof terminerRendezVous>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  terminerRendezVous(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type TerminerRendezVousMutationResult = NonNullable<Awaited<ReturnType<typeof terminerRendezVous>>>
+
+    export type TerminerRendezVousMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Marquer un rendez-vous comme terminé
+ */
+export const useTerminerRendezVous = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof terminerRendezVous>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof terminerRendezVous>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getTerminerRendezVousMutationOptions(options));
     }
 

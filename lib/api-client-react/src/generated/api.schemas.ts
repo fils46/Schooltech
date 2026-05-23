@@ -1582,6 +1582,251 @@ export interface NotificationCountResponse {
   count: number;
 }
 
+export type ParentDashboardResponseEnfantsItemCoursDuJourItem = { [key: string]: unknown };
+
+export type ParentDashboardResponseEnfantsItemDernieresAbsencesItem = { [key: string]: unknown };
+
+export type ParentDashboardResponseEnfantsItemProchainsDevoirsItem = { [key: string]: unknown };
+
+export type ParentDashboardResponseEnfantsItem = {
+  eleve_id?: string;
+  nom?: string;
+  prenoms?: string;
+  matricule?: string;
+  classe_nom?: string;
+  filiere_nom?: string | null;
+  annee_scolaire?: string;
+  moyenne_generale?: number | null;
+  rang?: number | null;
+  effectif?: number | null;
+  nb_absences?: number;
+  nb_messages_non_lus?: number;
+  bulletins_disponibles?: number;
+  cours_du_jour?: ParentDashboardResponseEnfantsItemCoursDuJourItem[];
+  dernieres_absences?: ParentDashboardResponseEnfantsItemDernieresAbsencesItem[];
+  prochains_devoirs?: ParentDashboardResponseEnfantsItemProchainsDevoirsItem[];
+};
+
+export interface ParentDashboardResponse {
+  enfants?: ParentDashboardResponseEnfantsItem[];
+}
+
+export type MesEnfantsResponseEnfantsItem = {
+  id?: string;
+  eleve_id?: string;
+  nom?: string;
+  prenoms?: string;
+  matricule?: string;
+  photo_url?: string | null;
+  classe_nom?: string;
+  annee_scolaire?: string;
+  lien?: string;
+  est_principal?: boolean;
+};
+
+export interface MesEnfantsResponse {
+  enfants?: MesEnfantsResponseEnfantsItem[];
+}
+
+export type DossierEnfantResponseEleve = { [key: string]: unknown };
+
+export type DossierEnfantResponseClasse = { [key: string]: unknown };
+
+export type DossierEnfantResponseFiliere = { [key: string]: unknown } | null;
+
+export type DossierEnfantResponseAnneeScolaire = { [key: string]: unknown };
+
+export interface DossierEnfantResponse {
+  eleve?: DossierEnfantResponseEleve;
+  classe?: DossierEnfantResponseClasse;
+  filiere?: DossierEnfantResponseFiliere;
+  annee_scolaire?: DossierEnfantResponseAnneeScolaire;
+}
+
+export type NotesEnfantResponseMatieresItemNotesItem = { [key: string]: unknown };
+
+export type NotesEnfantResponseMatieresItem = {
+  matiere?: string;
+  coefficient?: number;
+  notes?: NotesEnfantResponseMatieresItemNotesItem[];
+  moyenne?: number | null;
+  appreciation?: string | null;
+};
+
+export interface NotesEnfantResponse {
+  matieres?: NotesEnfantResponseMatieresItem[];
+  moyenne_generale?: number | null;
+  rang?: number | null;
+  trimestre?: string;
+  annee_scolaire_id?: string;
+}
+
+export type BulletinsEnfantResponseBulletinsItem = {
+  id?: string;
+  trimestre?: string;
+  annee_scolaire?: string;
+  moyenne_generale?: number | null;
+  rang?: number | null;
+  publie?: boolean;
+  created_at?: string;
+};
+
+export interface BulletinsEnfantResponse {
+  bulletins?: BulletinsEnfantResponseBulletinsItem[];
+}
+
+export type AbsencesEnfantResponseAbsencesItem = { [key: string]: unknown };
+
+export type AbsencesEnfantResponseResume = {
+  total?: number;
+  justifiees?: number;
+  non_justifiees?: number;
+  taux_presence?: number;
+};
+
+export interface AbsencesEnfantResponse {
+  absences?: AbsencesEnfantResponseAbsencesItem[];
+  resume?: AbsencesEnfantResponseResume;
+}
+
+export type CahierTextesEnfantResponseSeancesItem = { [key: string]: unknown };
+
+export type CahierTextesEnfantResponseDevoirsAVenirItem = { [key: string]: unknown };
+
+export interface CahierTextesEnfantResponse {
+  seances?: CahierTextesEnfantResponseSeancesItem[];
+  devoirs_a_venir?: CahierTextesEnfantResponseDevoirsAVenirItem[];
+}
+
+export type EmploiTempsEnfantResponseCreneauxItem = { [key: string]: unknown };
+
+export interface EmploiTempsEnfantResponse {
+  creneaux?: EmploiTempsEnfantResponseCreneauxItem[];
+  classe_id?: string;
+}
+
+export interface MessageItem {
+  id?: string;
+  etablissement_id?: string;
+  expediteur_id?: string;
+  expediteur_nom?: string;
+  expediteur_prenoms?: string;
+  expediteur_role?: string;
+  destinataire_id?: string;
+  destinataire_nom?: string;
+  destinataire_prenoms?: string;
+  sujet?: string;
+  contenu?: string;
+  lu?: boolean;
+  date_lecture?: string | null;
+  piece_jointe_url?: string | null;
+  piece_jointe_nom?: string | null;
+  parent_message_id?: string | null;
+  archive_expediteur?: boolean;
+  archive_destinataire?: boolean;
+  created_at?: string;
+}
+
+export interface MessagesListeResponse {
+  messages: MessageItem[];
+  total: number;
+}
+
+export interface MessageItemResponse {
+  message?: MessageItem;
+}
+
+export interface MessageDetailResponse {
+  message?: MessageItem;
+  reponses?: MessageItem[];
+}
+
+export interface EnvoyerMessageInput {
+  destinataire_id: string;
+  sujet: string;
+  contenu: string;
+  piece_jointe_url?: string;
+  piece_jointe_nom?: string;
+  parent_message_id?: string;
+}
+
+export interface RepondreMessageInput {
+  contenu: string;
+  piece_jointe_url?: string;
+  piece_jointe_nom?: string;
+}
+
+export interface ContactItem {
+  id?: string;
+  nom?: string;
+  prenoms?: string;
+  role?: string;
+  photo_url?: string | null;
+}
+
+export interface ContactsResponse {
+  contacts: ContactItem[];
+}
+
+export interface MessageCountResponse {
+  count: number;
+}
+
+export type RendezVousItemStatut = typeof RendezVousItemStatut[keyof typeof RendezVousItemStatut];
+
+
+export const RendezVousItemStatut = {
+  en_attente: 'en_attente',
+  confirme: 'confirme',
+  annule: 'annule',
+  termine: 'termine',
+} as const;
+
+export interface RendezVousItem {
+  id?: string;
+  etablissement_id?: string;
+  parent_id?: string;
+  parent_nom?: string;
+  parent_prenoms?: string;
+  professeur_id?: string | null;
+  professeur_nom?: string | null;
+  directeur_id?: string | null;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  motif?: string;
+  date_rdv?: string;
+  heure_rdv?: string;
+  duree_minutes?: number;
+  statut?: RendezVousItemStatut;
+  lieu?: string | null;
+  notes_rdv?: string | null;
+  created_at?: string;
+}
+
+export interface RendezVousItemResponse {
+  rdv?: RendezVousItem;
+}
+
+export interface RendezVousListeResponse {
+  rdvs: RendezVousItem[];
+}
+
+export interface DemanderRendezVousInput {
+  professeur_id?: string;
+  directeur_id?: string;
+  eleve_id: string;
+  motif: string;
+  date_rdv: string;
+  heure_rdv: string;
+  duree_minutes?: number;
+}
+
+export interface ConfirmerRendezVousInput {
+  lieu?: string;
+  notes_rdv?: string;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -1801,5 +2046,30 @@ lu?: boolean;
 type?: string;
 page?: number;
 limit?: number;
+};
+
+export type GetNotesEnfantParams = {
+trimestre?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetAbsencesEnfantParams = {
+trimestre?: string;
+statut?: string;
+};
+
+export type GetCahierTextesEnfantParams = {
+matiere?: string;
+};
+
+export type GetBoiteReceptionParams = {
+lu?: string;
+page?: number;
+};
+
+export type ListerRendezVousParams = {
+statut?: string;
+date_debut?: string;
+date_fin?: string;
 };
 

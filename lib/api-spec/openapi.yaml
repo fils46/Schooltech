@@ -28,6 +28,12 @@ tags:
     description: Gestion des justifications d'absences
   - name: notifications
     description: Notifications temps réel
+  - name: portail-parent
+    description: Portail parents — suivi scolaire enfants
+  - name: messages
+    description: Messagerie interne établissement
+  - name: rendez-vous
+    description: Prise de rendez-vous parents/professeurs
 
 paths:
   /healthz:
@@ -3015,6 +3021,419 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  # ── Portail Parent ──────────────────────────────────────────
+  /parent/dashboard:
+    get:
+      operationId: getParentDashboard
+      tags: [portail-parent]
+      summary: Dashboard parent — tous les enfants
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Dashboard multi-enfants
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParentDashboardResponse"
+
+  /parent/mes-enfants:
+    get:
+      operationId: getMesEnfants
+      tags: [portail-parent]
+      summary: Liste des enfants du parent connecté
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste des enfants
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MesEnfantsResponse"
+
+  /parent/enfant/{eleveId}:
+    get:
+      operationId: getDossierEnfant
+      tags: [portail-parent]
+      summary: Dossier complet d'un enfant
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Dossier enfant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DossierEnfantResponse"
+
+  /parent/enfant/{eleveId}/notes:
+    get:
+      operationId: getNotesEnfant
+      tags: [portail-parent]
+      summary: Notes d'un enfant par trimestre
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: trimestre
+          in: query
+          schema: { type: string }
+        - name: annee_scolaire_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Notes et moyennes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotesEnfantResponse"
+
+  /parent/enfant/{eleveId}/bulletins:
+    get:
+      operationId: getBulletinsEnfant
+      tags: [portail-parent]
+      summary: Bulletins publiés d'un enfant
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bulletins publiés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulletinsEnfantResponse"
+
+  /parent/enfant/{eleveId}/absences:
+    get:
+      operationId: getAbsencesEnfant
+      tags: [portail-parent]
+      summary: Absences d'un enfant avec résumé
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: trimestre
+          in: query
+          schema: { type: string }
+        - name: statut
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Absences et résumé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsencesEnfantResponse"
+
+  /parent/enfant/{eleveId}/cahier-textes:
+    get:
+      operationId: getCahierTextesEnfant
+      tags: [portail-parent]
+      summary: Cahier de textes de la classe de l'enfant
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: matiere
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Cahier de textes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CahierTextesEnfantResponse"
+
+  /parent/enfant/{eleveId}/emploi-du-temps:
+    get:
+      operationId: getEmploiTempsEnfant
+      tags: [portail-parent]
+      summary: Emploi du temps de la classe de l'enfant
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Grille emploi du temps
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmploiTempsEnfantResponse"
+
+  # ── Messages ─────────────────────────────────────────────────
+  /messages/contacts:
+    get:
+      operationId: getContactsDisponibles
+      tags: [messages]
+      summary: Contacts disponibles selon rôle
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste des contacts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactsResponse"
+
+  /messages/non-lus/count:
+    get:
+      operationId: getNbMessagesNonLus
+      tags: [messages]
+      summary: Nombre de messages non lus
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Compteur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageCountResponse"
+
+  /messages/reception:
+    get:
+      operationId: getBoiteReception
+      tags: [messages]
+      summary: Boîte de réception
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: lu
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Messages reçus
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessagesListeResponse"
+
+  /messages/envoi:
+    get:
+      operationId: getBoiteEnvoi
+      tags: [messages]
+      summary: Boîte d'envoi
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Messages envoyés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessagesListeResponse"
+
+  /messages/envoyer:
+    post:
+      operationId: envoyerMessage
+      tags: [messages]
+      summary: Envoyer un nouveau message
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnvoyerMessageInput"
+      responses:
+        "201":
+          description: Message envoyé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageItemResponse"
+
+  /messages/{id}:
+    get:
+      operationId: getMessage
+      tags: [messages]
+      summary: Lire un message (marque comme lu)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Message avec réponses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageDetailResponse"
+
+  /messages/{id}/repondre:
+    post:
+      operationId: repondreMessage
+      tags: [messages]
+      summary: Répondre à un message
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RepondreMessageInput"
+      responses:
+        "201":
+          description: Réponse envoyée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageItemResponse"
+
+  /messages/{id}/archiver:
+    put:
+      operationId: archiverMessage
+      tags: [messages]
+      summary: Archiver un message
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Message archivé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ── Rendez-vous ───────────────────────────────────────────────
+  /rendez-vous/liste:
+    get:
+      operationId: listerRendezVous
+      tags: [rendez-vous]
+      summary: Lister les rendez-vous selon rôle
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: statut
+          in: query
+          schema: { type: string }
+        - name: date_debut
+          in: query
+          schema: { type: string }
+        - name: date_fin
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des rendez-vous
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RendezVousListeResponse"
+
+  /rendez-vous/demander:
+    post:
+      operationId: demanderRendezVous
+      tags: [rendez-vous]
+      summary: Demander un rendez-vous
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemanderRendezVousInput"
+      responses:
+        "201":
+          description: Demande créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RendezVousItemResponse"
+
+  /rendez-vous/{id}/confirmer:
+    put:
+      operationId: confirmerRendezVous
+      tags: [rendez-vous]
+      summary: Confirmer un rendez-vous
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmerRendezVousInput"
+      responses:
+        "200":
+          description: Rendez-vous confirmé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RendezVousItemResponse"
+
+  /rendez-vous/{id}/annuler:
+    put:
+      operationId: annulerRendezVous
+      tags: [rendez-vous]
+      summary: Annuler un rendez-vous
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Rendez-vous annulé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RendezVousItemResponse"
+
+  /rendez-vous/{id}/terminer:
+    put:
+      operationId: terminerRendezVous
+      tags: [rendez-vous]
+      summary: Marquer un rendez-vous comme terminé
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Rendez-vous terminé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RendezVousItemResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -5059,3 +5478,280 @@ components:
       required: [count]
       properties:
         count: { type: integer }
+
+    # ── Portail Parent ──────────────────────────────────────────
+    ParentDashboardResponse:
+      type: object
+      properties:
+        enfants:
+          type: array
+          items:
+            type: object
+            properties:
+              eleve_id: { type: string }
+              nom: { type: string }
+              prenoms: { type: string }
+              matricule: { type: string }
+              classe_nom: { type: string }
+              filiere_nom: { type: string, nullable: true }
+              annee_scolaire: { type: string }
+              moyenne_generale: { type: number, nullable: true }
+              rang: { type: integer, nullable: true }
+              effectif: { type: integer, nullable: true }
+              nb_absences: { type: integer }
+              nb_messages_non_lus: { type: integer }
+              bulletins_disponibles: { type: integer }
+              cours_du_jour:
+                type: array
+                items: { type: object }
+              dernieres_absences:
+                type: array
+                items: { type: object }
+              prochains_devoirs:
+                type: array
+                items: { type: object }
+
+    MesEnfantsResponse:
+      type: object
+      properties:
+        enfants:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              eleve_id: { type: string }
+              nom: { type: string }
+              prenoms: { type: string }
+              matricule: { type: string }
+              photo_url: { type: string, nullable: true }
+              classe_nom: { type: string }
+              annee_scolaire: { type: string }
+              lien: { type: string }
+              est_principal: { type: boolean }
+
+    DossierEnfantResponse:
+      type: object
+      properties:
+        eleve: { type: object }
+        classe: { type: object }
+        filiere: { type: object, nullable: true }
+        annee_scolaire: { type: object }
+
+    NotesEnfantResponse:
+      type: object
+      properties:
+        matieres:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere: { type: string }
+              coefficient: { type: number }
+              notes:
+                type: array
+                items: { type: object }
+              moyenne: { type: number, nullable: true }
+              appreciation: { type: string, nullable: true }
+        moyenne_generale: { type: number, nullable: true }
+        rang: { type: integer, nullable: true }
+        trimestre: { type: string }
+        annee_scolaire_id: { type: string }
+
+    BulletinsEnfantResponse:
+      type: object
+      properties:
+        bulletins:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              trimestre: { type: string }
+              annee_scolaire: { type: string }
+              moyenne_generale: { type: number, nullable: true }
+              rang: { type: integer, nullable: true }
+              publie: { type: boolean }
+              created_at: { type: string }
+
+    AbsencesEnfantResponse:
+      type: object
+      properties:
+        absences:
+          type: array
+          items: { type: object }
+        resume:
+          type: object
+          properties:
+            total: { type: integer }
+            justifiees: { type: integer }
+            non_justifiees: { type: integer }
+            taux_presence: { type: number }
+
+    CahierTextesEnfantResponse:
+      type: object
+      properties:
+        seances:
+          type: array
+          items: { type: object }
+        devoirs_a_venir:
+          type: array
+          items: { type: object }
+
+    EmploiTempsEnfantResponse:
+      type: object
+      properties:
+        creneaux:
+          type: array
+          items: { type: object }
+        classe_id: { type: string }
+
+    # ── Messages ──────────────────────────────────────────────
+    MessageItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        expediteur_id: { type: string }
+        expediteur_nom: { type: string }
+        expediteur_prenoms: { type: string }
+        expediteur_role: { type: string }
+        destinataire_id: { type: string }
+        destinataire_nom: { type: string }
+        destinataire_prenoms: { type: string }
+        sujet: { type: string }
+        contenu: { type: string }
+        lu: { type: boolean }
+        date_lecture: { type: string, nullable: true }
+        piece_jointe_url: { type: string, nullable: true }
+        piece_jointe_nom: { type: string, nullable: true }
+        parent_message_id: { type: string, nullable: true }
+        archive_expediteur: { type: boolean }
+        archive_destinataire: { type: boolean }
+        created_at: { type: string }
+
+    MessagesListeResponse:
+      type: object
+      required: [messages, total]
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/MessageItem"
+        total: { type: integer }
+
+    MessageItemResponse:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/MessageItem"
+
+    MessageDetailResponse:
+      type: object
+      properties:
+        message:
+          $ref: "#/components/schemas/MessageItem"
+        reponses:
+          type: array
+          items:
+            $ref: "#/components/schemas/MessageItem"
+
+    EnvoyerMessageInput:
+      type: object
+      required: [destinataire_id, sujet, contenu]
+      properties:
+        destinataire_id: { type: string }
+        sujet: { type: string }
+        contenu: { type: string }
+        piece_jointe_url: { type: string }
+        piece_jointe_nom: { type: string }
+        parent_message_id: { type: string }
+
+    RepondreMessageInput:
+      type: object
+      required: [contenu]
+      properties:
+        contenu: { type: string }
+        piece_jointe_url: { type: string }
+        piece_jointe_nom: { type: string }
+
+    ContactItem:
+      type: object
+      properties:
+        id: { type: string }
+        nom: { type: string }
+        prenoms: { type: string }
+        role: { type: string }
+        photo_url: { type: string, nullable: true }
+
+    ContactsResponse:
+      type: object
+      required: [contacts]
+      properties:
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactItem"
+
+    MessageCountResponse:
+      type: object
+      required: [count]
+      properties:
+        count: { type: integer }
+
+    # ── Rendez-vous ────────────────────────────────────────────
+    RendezVousItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        parent_id: { type: string }
+        parent_nom: { type: string }
+        parent_prenoms: { type: string }
+        professeur_id: { type: string, nullable: true }
+        professeur_nom: { type: string, nullable: true }
+        directeur_id: { type: string, nullable: true }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        motif: { type: string }
+        date_rdv: { type: string }
+        heure_rdv: { type: string }
+        duree_minutes: { type: integer }
+        statut: { type: string, enum: [en_attente, confirme, annule, termine] }
+        lieu: { type: string, nullable: true }
+        notes_rdv: { type: string, nullable: true }
+        created_at: { type: string }
+
+    RendezVousItemResponse:
+      type: object
+      properties:
+        rdv:
+          $ref: "#/components/schemas/RendezVousItem"
+
+    RendezVousListeResponse:
+      type: object
+      required: [rdvs]
+      properties:
+        rdvs:
+          type: array
+          items:
+            $ref: "#/components/schemas/RendezVousItem"
+
+    DemanderRendezVousInput:
+      type: object
+      required: [eleve_id, motif, date_rdv, heure_rdv]
+      properties:
+        professeur_id: { type: string }
+        directeur_id: { type: string }
+        eleve_id: { type: string }
+        motif: { type: string }
+        date_rdv: { type: string }
+        heure_rdv: { type: string }
+        duree_minutes: { type: integer }
+
+    ConfirmerRendezVousInput:
+      type: object
+      properties:
+        lieu: { type: string }
+        notes_rdv: { type: string }

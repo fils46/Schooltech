@@ -42,6 +42,10 @@ import AbsenceGestion from "@/pages/absence-gestion";
 import AbsencesParent from "@/pages/absences-parent";
 import MesAbsences from "@/pages/mes-absences";
 import NotificationsCentre from "@/pages/notifications-centre";
+import ParentDashboard from "@/pages/parent-dashboard";
+import SuiviScolaire from "@/pages/suivi-scolaire";
+import Messagerie from "@/pages/messagerie";
+import RendezVousParent from "@/pages/rendez-vous-parent";
 
 const queryClient = new QueryClient();
 
@@ -294,12 +298,44 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      {/* ── Module 11 : Portail Parents ── */}
+      <Route path="/parent-dashboard">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ParentDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/suivi-scolaire">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <SuiviScolaire />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/messagerie">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Messagerie />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/rendez-vous">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <RendezVousParent />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/paiements", "/rapports",
         "/professeurs",
-        "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",
       ].map((path) => (
         <Route key={path} path={path}>

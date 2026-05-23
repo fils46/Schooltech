@@ -19,6 +19,9 @@ import bulletinsRouter from "./bulletins";
 import conseilsClasseRouter from "./conseilsClasse";
 import absencesRouter from "./absences";
 import notificationsRouter from "./notifications";
+import portailParentRouter from "./portailParent";
+import messagesRouter from "./messages";
+import rendezVousRouter from "./rendezVous";
 
 const router: IRouter = Router();
 
@@ -42,5 +45,8 @@ router.use(bulletinsRouter);
 router.use(conseilsClasseRouter);
 router.use(absencesRouter);
 router.use(notificationsRouter);
+router.use(portailParentRouter);
+router.use(messagesRouter);
+router.use(rendezVousRouter);
 
 export default router;

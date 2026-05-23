@@ -3293,3 +3293,512 @@ export const SupprimerNotificationResponse = zod.object({
 })
 
 
+/**
+ * @summary Dashboard parent — tous les enfants
+ */
+export const GetParentDashboardResponse = zod.object({
+  "enfants": zod.array(zod.object({
+  "eleve_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "matricule": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "filiere_nom": zod.string().nullish(),
+  "annee_scolaire": zod.string().optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "effectif": zod.number().nullish(),
+  "nb_absences": zod.number().optional(),
+  "nb_messages_non_lus": zod.number().optional(),
+  "bulletins_disponibles": zod.number().optional(),
+  "cours_du_jour": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "dernieres_absences": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "prochains_devoirs": zod.array(zod.object({
+
+}).passthrough()).optional()
+})).optional()
+})
+
+
+/**
+ * @summary Liste des enfants du parent connecté
+ */
+export const GetMesEnfantsResponse = zod.object({
+  "enfants": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "matricule": zod.string().optional(),
+  "photo_url": zod.string().nullish(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire": zod.string().optional(),
+  "lien": zod.string().optional(),
+  "est_principal": zod.boolean().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Dossier complet d'un enfant
+ */
+export const GetDossierEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetDossierEnfantResponse = zod.object({
+  "eleve": zod.object({
+
+}).passthrough().optional(),
+  "classe": zod.object({
+
+}).passthrough().optional(),
+  "filiere": zod.object({
+
+}).passthrough().nullish(),
+  "annee_scolaire": zod.object({
+
+}).passthrough().optional()
+})
+
+
+/**
+ * @summary Notes d'un enfant par trimestre
+ */
+export const GetNotesEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetNotesEnfantQueryParams = zod.object({
+  "trimestre": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetNotesEnfantResponse = zod.object({
+  "matieres": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "coefficient": zod.number().optional(),
+  "notes": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "moyenne": zod.number().nullish(),
+  "appreciation": zod.string().nullish()
+})).optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "trimestre": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Bulletins publiés d'un enfant
+ */
+export const GetBulletinsEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetBulletinsEnfantResponse = zod.object({
+  "bulletins": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "trimestre": zod.string().optional(),
+  "annee_scolaire": zod.string().optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "publie": zod.boolean().optional(),
+  "created_at": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Absences d'un enfant avec résumé
+ */
+export const GetAbsencesEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetAbsencesEnfantQueryParams = zod.object({
+  "trimestre": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional()
+})
+
+export const GetAbsencesEnfantResponse = zod.object({
+  "absences": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "resume": zod.object({
+  "total": zod.number().optional(),
+  "justifiees": zod.number().optional(),
+  "non_justifiees": zod.number().optional(),
+  "taux_presence": zod.number().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Cahier de textes de la classe de l'enfant
+ */
+export const GetCahierTextesEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetCahierTextesEnfantQueryParams = zod.object({
+  "matiere": zod.coerce.string().optional()
+})
+
+export const GetCahierTextesEnfantResponse = zod.object({
+  "seances": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "devoirs_a_venir": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+
+
+/**
+ * @summary Emploi du temps de la classe de l'enfant
+ */
+export const GetEmploiTempsEnfantParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetEmploiTempsEnfantResponse = zod.object({
+  "creneaux": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "classe_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Contacts disponibles selon rôle
+ */
+export const GetContactsDisponiblesResponse = zod.object({
+  "contacts": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "role": zod.string().optional(),
+  "photo_url": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary Nombre de messages non lus
+ */
+export const GetNbMessagesNonLusResponse = zod.object({
+  "count": zod.number()
+})
+
+
+/**
+ * @summary Boîte de réception
+ */
+export const GetBoiteReceptionQueryParams = zod.object({
+  "lu": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional()
+})
+
+export const GetBoiteReceptionResponse = zod.object({
+  "messages": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "expediteur_id": zod.string().optional(),
+  "expediteur_nom": zod.string().optional(),
+  "expediteur_prenoms": zod.string().optional(),
+  "expediteur_role": zod.string().optional(),
+  "destinataire_id": zod.string().optional(),
+  "destinataire_nom": zod.string().optional(),
+  "destinataire_prenoms": zod.string().optional(),
+  "sujet": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "lu": zod.boolean().optional(),
+  "date_lecture": zod.string().nullish(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "parent_message_id": zod.string().nullish(),
+  "archive_expediteur": zod.boolean().optional(),
+  "archive_destinataire": zod.boolean().optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Boîte d'envoi
+ */
+export const GetBoiteEnvoiResponse = zod.object({
+  "messages": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "expediteur_id": zod.string().optional(),
+  "expediteur_nom": zod.string().optional(),
+  "expediteur_prenoms": zod.string().optional(),
+  "expediteur_role": zod.string().optional(),
+  "destinataire_id": zod.string().optional(),
+  "destinataire_nom": zod.string().optional(),
+  "destinataire_prenoms": zod.string().optional(),
+  "sujet": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "lu": zod.boolean().optional(),
+  "date_lecture": zod.string().nullish(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "parent_message_id": zod.string().nullish(),
+  "archive_expediteur": zod.boolean().optional(),
+  "archive_destinataire": zod.boolean().optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Envoyer un nouveau message
+ */
+export const EnvoyerMessageBody = zod.object({
+  "destinataire_id": zod.string(),
+  "sujet": zod.string(),
+  "contenu": zod.string(),
+  "piece_jointe_url": zod.string().optional(),
+  "piece_jointe_nom": zod.string().optional(),
+  "parent_message_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Lire un message (marque comme lu)
+ */
+export const GetMessageParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetMessageResponse = zod.object({
+  "message": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "expediteur_id": zod.string().optional(),
+  "expediteur_nom": zod.string().optional(),
+  "expediteur_prenoms": zod.string().optional(),
+  "expediteur_role": zod.string().optional(),
+  "destinataire_id": zod.string().optional(),
+  "destinataire_nom": zod.string().optional(),
+  "destinataire_prenoms": zod.string().optional(),
+  "sujet": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "lu": zod.boolean().optional(),
+  "date_lecture": zod.string().nullish(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "parent_message_id": zod.string().nullish(),
+  "archive_expediteur": zod.boolean().optional(),
+  "archive_destinataire": zod.boolean().optional(),
+  "created_at": zod.string().optional()
+}).optional(),
+  "reponses": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "expediteur_id": zod.string().optional(),
+  "expediteur_nom": zod.string().optional(),
+  "expediteur_prenoms": zod.string().optional(),
+  "expediteur_role": zod.string().optional(),
+  "destinataire_id": zod.string().optional(),
+  "destinataire_nom": zod.string().optional(),
+  "destinataire_prenoms": zod.string().optional(),
+  "sujet": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "lu": zod.boolean().optional(),
+  "date_lecture": zod.string().nullish(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "parent_message_id": zod.string().nullish(),
+  "archive_expediteur": zod.boolean().optional(),
+  "archive_destinataire": zod.boolean().optional(),
+  "created_at": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Répondre à un message
+ */
+export const RepondreMessageParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const RepondreMessageBody = zod.object({
+  "contenu": zod.string(),
+  "piece_jointe_url": zod.string().optional(),
+  "piece_jointe_nom": zod.string().optional()
+})
+
+
+/**
+ * @summary Archiver un message
+ */
+export const ArchiverMessageParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ArchiverMessageResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les rendez-vous selon rôle
+ */
+export const ListerRendezVousQueryParams = zod.object({
+  "statut": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const ListerRendezVousResponse = zod.object({
+  "rdvs": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "parent_id": zod.string().optional(),
+  "parent_nom": zod.string().optional(),
+  "parent_prenoms": zod.string().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "directeur_id": zod.string().nullish(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "date_rdv": zod.string().optional(),
+  "heure_rdv": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "statut": zod.enum(['en_attente', 'confirme', 'annule', 'termine']).optional(),
+  "lieu": zod.string().nullish(),
+  "notes_rdv": zod.string().nullish(),
+  "created_at": zod.string().optional()
+}))
+})
+
+
+/**
+ * @summary Demander un rendez-vous
+ */
+export const DemanderRendezVousBody = zod.object({
+  "professeur_id": zod.string().optional(),
+  "directeur_id": zod.string().optional(),
+  "eleve_id": zod.string(),
+  "motif": zod.string(),
+  "date_rdv": zod.string(),
+  "heure_rdv": zod.string(),
+  "duree_minutes": zod.number().optional()
+})
+
+
+/**
+ * @summary Confirmer un rendez-vous
+ */
+export const ConfirmerRendezVousParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ConfirmerRendezVousBody = zod.object({
+  "lieu": zod.string().optional(),
+  "notes_rdv": zod.string().optional()
+})
+
+export const ConfirmerRendezVousResponse = zod.object({
+  "rdv": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "parent_id": zod.string().optional(),
+  "parent_nom": zod.string().optional(),
+  "parent_prenoms": zod.string().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "directeur_id": zod.string().nullish(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "date_rdv": zod.string().optional(),
+  "heure_rdv": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "statut": zod.enum(['en_attente', 'confirme', 'annule', 'termine']).optional(),
+  "lieu": zod.string().nullish(),
+  "notes_rdv": zod.string().nullish(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Annuler un rendez-vous
+ */
+export const AnnulerRendezVousParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AnnulerRendezVousResponse = zod.object({
+  "rdv": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "parent_id": zod.string().optional(),
+  "parent_nom": zod.string().optional(),
+  "parent_prenoms": zod.string().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "directeur_id": zod.string().nullish(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "date_rdv": zod.string().optional(),
+  "heure_rdv": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "statut": zod.enum(['en_attente', 'confirme', 'annule', 'termine']).optional(),
+  "lieu": zod.string().nullish(),
+  "notes_rdv": zod.string().nullish(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Marquer un rendez-vous comme terminé
+ */
+export const TerminerRendezVousParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const TerminerRendezVousResponse = zod.object({
+  "rdv": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "parent_id": zod.string().optional(),
+  "parent_nom": zod.string().optional(),
+  "parent_prenoms": zod.string().optional(),
+  "professeur_id": zod.string().nullish(),
+  "professeur_nom": zod.string().nullish(),
+  "directeur_id": zod.string().nullish(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "date_rdv": zod.string().optional(),
+  "heure_rdv": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "statut": zod.enum(['en_attente', 'confirme', 'annule', 'termine']).optional(),
+  "lieu": zod.string().nullish(),
+  "notes_rdv": zod.string().nullish(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+

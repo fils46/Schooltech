@@ -10,7 +10,7 @@ import {
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
-  BookMarked, FileSpreadsheet,
+  BookMarked, FileSpreadsheet, CalendarCheck,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -150,19 +150,25 @@ const navConfig: Record<string, Section[]> = {
   ],
   parent: [
     {
-      title: "MON ENFANT",
+      title: "TABLEAU DE BORD",
       links: [
-        { label: "Mon enfant",    href: "/mon-enfant",       icon: UserCircle },
-        { label: "Mes bulletins", href: "/mes-bulletins",    icon: FileSpreadsheet },
-        { label: "Notes",         href: "/notes",            icon: Award },
-        { label: "Absences",      href: "/absences-parent",  icon: UserMinus },
+        { label: "Tableau de bord", href: "/parent-dashboard", icon: LayoutDashboard },
       ],
     },
     {
-      title: "GESTION",
+      title: "MON ENFANT",
       links: [
-        { label: "Paiements", href: "/paiements", icon: CreditCard },
-        { label: "Messages",  href: "/messages",  icon: MessageSquare },
+        { label: "Suivi scolaire",  href: "/suivi-scolaire",  icon: BookOpen },
+        { label: "Bulletins",       href: "/mes-bulletins",   icon: FileSpreadsheet },
+        { label: "Absences",        href: "/absences-parent", icon: UserMinus },
+      ],
+    },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Messagerie",   href: "/messagerie",  icon: MessageSquare },
+        { label: "Rendez-vous",  href: "/rendez-vous", icon: CalendarCheck },
+        { label: "Paiements",    href: "/paiements",   icon: CreditCard },
       ],
     },
   ],
@@ -201,9 +207,13 @@ const PAGE_TITLES: Record<string, string> = {
   "/conseils-classe":          "Conseils de Classe",
   "/conseils-classe/salle":    "Salle de Conseil",
   "/conseils-classe/resultats": "Résultats du Conseil",
-  "/absences-parent":  "Absences de mon enfant",
-  "/mes-absences":     "Mes Absences",
-  "/notifications":    "Notifications",
+  "/absences-parent":   "Absences de mon enfant",
+  "/mes-absences":      "Mes Absences",
+  "/notifications":     "Notifications",
+  "/parent-dashboard":  "Tableau de bord",
+  "/suivi-scolaire":    "Suivi scolaire",
+  "/messagerie":        "Messagerie",
+  "/rendez-vous":       "Rendez-vous",
 };
 
 const ROLE_LABELS: Record<string, string> = {

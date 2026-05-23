@@ -3,6 +3,8 @@ export * from "./utilisateurs";
 export * from "./resetTokens";
 export * from "./eleves";
 export * from "./parentsEleves";
+export * from "./messages";
+export * from "./rendezVous";
 export * from "./documentsEleves";
 export * from "./classes";
 export * from "./anneesScolaires";
