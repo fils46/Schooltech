@@ -314,12 +314,12 @@ export default function BulletinDetail() {
             </div>
             <div>
               <Label className="text-xs mb-1 block" style={{ color: "var(--m15-muted)" }}>Décision</Label>
-              <Select value={appForm.decision_conseil} onValueChange={v => setAppForm(p => ({ ...p, decision_conseil: v }))}>
+              <Select value={appForm.decision_conseil || "__none__"} onValueChange={v => setAppForm(p => ({ ...p, decision_conseil: v === "__none__" ? "" : v }))}>
                 <SelectTrigger style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
                   <SelectValue placeholder="Choisir une décision" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Aucune</SelectItem>
+                  <SelectItem value="__none__">Aucune</SelectItem>
                   <SelectItem value="passage">Passage en classe supérieure</SelectItem>
                   <SelectItem value="redoublement">Redoublement</SelectItem>
                   <SelectItem value="exclusion">Exclusion</SelectItem>

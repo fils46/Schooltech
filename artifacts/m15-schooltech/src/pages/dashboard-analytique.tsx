@@ -124,12 +124,12 @@ export default function DashboardAnalytique() {
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {/* Sélecteur année */}
-          <Select value={anneeFilter} onValueChange={setAnneeFilter}>
+          <Select value={anneeFilter || "__all__"} onValueChange={v => setAnneeFilter(v === "__all__" ? "" : v)}>
             <SelectTrigger className="w-40 text-sm" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
               <SelectValue placeholder="Année active" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Année active</SelectItem>
+              <SelectItem value="__all__">Année active</SelectItem>
               {annees.map((a: any) => (
                 <SelectItem key={a.id} value={a.id}>{a.libelle}</SelectItem>
               ))}

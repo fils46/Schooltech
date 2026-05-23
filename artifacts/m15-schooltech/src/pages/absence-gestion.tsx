@@ -144,12 +144,12 @@ export default function AbsenceGestion() {
               {annees.map(a => <SelectItem key={a.id} value={a.id}>{a.annee}{a.courante ? " ★" : ""}</SelectItem>)}
             </SelectContent>
           </Select>
-          <Select value={classeId} onValueChange={setClasseId}>
+          <Select value={classeId || "__all__"} onValueChange={v => setClasseId(v === "__all__" ? "" : v)}>
             <SelectTrigger className="w-36" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
               <SelectValue placeholder="Toutes classes" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Toutes classes</SelectItem>
+              <SelectItem value="__all__">Toutes classes</SelectItem>
               {classes.map(c => <SelectItem key={c.id} value={c.id}>{c.nom}</SelectItem>)}
             </SelectContent>
           </Select>
@@ -219,12 +219,12 @@ export default function AbsenceGestion() {
       {tab === "liste" && (
         <div className="space-y-4">
           <div className="flex flex-wrap gap-3">
-            <Select value={statutFilter} onValueChange={setStatutFilter}>
+            <Select value={statutFilter || "__all__"} onValueChange={v => setStatutFilter(v === "__all__" ? "" : v)}>
               <SelectTrigger className="w-44" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
                 <SelectValue placeholder="Tous statuts" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tous statuts</SelectItem>
+                <SelectItem value="__all__">Tous statuts</SelectItem>
                 <SelectItem value="non_justifiee">Non justifiée</SelectItem>
                 <SelectItem value="en_attente">En attente</SelectItem>
                 <SelectItem value="justifiee">Justifiée</SelectItem>

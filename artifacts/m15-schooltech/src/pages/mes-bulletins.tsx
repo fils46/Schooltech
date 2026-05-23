@@ -94,12 +94,12 @@ export default function MesBulletins() {
       <div className="rounded-2xl p-4" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
         <div className="max-w-xs">
           <Label className="text-xs mb-1 block" style={{ color: "var(--m15-muted)" }}>Année scolaire</Label>
-          <Select value={anneeId} onValueChange={setAnneeId}>
+          <Select value={anneeId || "__all__"} onValueChange={v => setAnneeId(v === "__all__" ? "" : v)}>
             <SelectTrigger style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
               <SelectValue placeholder="Toutes les années" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Toutes les années</SelectItem>
+              <SelectItem value="__all__">Toutes les années</SelectItem>
               {annees.map(a => <SelectItem key={a.id} value={a.id}>{a.libelle}</SelectItem>)}
             </SelectContent>
           </Select>

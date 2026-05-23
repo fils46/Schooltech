@@ -463,12 +463,12 @@ export default function ConseilSalle() {
                 </SelectContent>
               </Select>
               {sortedDelibs.length > 0 && (
-                <Select value={messageEleveId} onValueChange={setMessageEleveId}>
+                <Select value={messageEleveId || "__all__"} onValueChange={v => setMessageEleveId(v === "__all__" ? "" : v)}>
                   <SelectTrigger style={{ background: "var(--elevate-2)", border: "1px solid var(--m15-border)", color: "var(--m15-white)", fontSize: "0.75rem", flex: 1 }}>
                     <SelectValue placeholder="Élève (opt.)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Général</SelectItem>
+                    <SelectItem value="__all__">Général</SelectItem>
                     {sortedDelibs.map(d => (
                       <SelectItem key={d.eleve_id} value={d.eleve_id}>{d.eleve_prenoms} {d.eleve_nom}</SelectItem>
                     ))}

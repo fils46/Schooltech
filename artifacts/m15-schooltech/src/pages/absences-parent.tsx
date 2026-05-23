@@ -90,12 +90,12 @@ export default function AbsencesParent() {
           </h2>
           <p className="text-sm mt-1" style={{ color: "var(--m15-muted)" }}>Suivi des présences et justifications</p>
         </div>
-        <Select value={anneeId} onValueChange={setAnneeId}>
+        <Select value={anneeId || "__all__"} onValueChange={v => setAnneeId(v === "__all__" ? "" : v)}>
           <SelectTrigger className="w-44" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
             <SelectValue placeholder="Toutes années" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Toutes années</SelectItem>
+            <SelectItem value="__all__">Toutes années</SelectItem>
             {annees.map(a => <SelectItem key={a.id} value={a.id}>{a.annee}{a.courante ? " ★" : ""}</SelectItem>)}
           </SelectContent>
         </Select>
