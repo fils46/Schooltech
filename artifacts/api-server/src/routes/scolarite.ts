@@ -13,7 +13,16 @@ import {
   anneesScolairesTable,
   parentsElevesTable,
   notificationsTable,
+  etablissementsTable,
 } from "@workspace/db";
+import {
+  genererMessagePush,
+  genererTitrePush,
+  niveauRelance,
+  premiereTrancheImpayee,
+  type RelanceContext,
+  type FraisConfigForRelance,
+} from "../lib/relanceTemplates";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
 import { emitNotification } from "../socket/socketManager";
@@ -57,7 +66,7 @@ async function getAnneeScolaireActive(etablissementId: string) {
     .from(anneesScolairesTable)
     .where(and(
       eq(anneesScolairesTable.etablissement_id, etablissementId),
-      eq(anneesScolairesTable.active, true),
+      eq(anneesScolairesTable.est_active, true),
     ))
     .limit(1);
   return as ?? null;
@@ -78,6 +87,7 @@ async function notifierParent(
   eleveId: string,
   etablissementId: string,
   message: string,
+  titre = "Scolarité",
 ) {
   const parents = await db
     .select({ utilisateur_id: parentsElevesTable.utilisateur_id })
@@ -86,15 +96,75 @@ async function notifierParent(
 
   for (const p of parents) {
     const [notif] = await db.insert(notificationsTable).values({
-      utilisateur_id: p.utilisateur_id,
+      destinataire_id: p.utilisateur_id,
       etablissement_id: etablissementId,
-      titre: "Scolarité",
-      message,
-      type: "info",
-      lu: false,
+      titre,
+      contenu: message,
+      type: "message",
     }).returning();
     if (notif) emitNotification(p.utilisateur_id, notif);
   }
+}
+
+/* Construit le contexte de relance enrichi à partir des IDs */
+async function construireContexteRelance(
+  eleveId: string,
+  etablissementId: string,
+  scol: typeof scolariteEleveTable.$inferSelect,
+  config: FraisConfigForRelance | null,
+): Promise<Omit<RelanceContext, "numeroRelance">> {
+  const [eleve] = await db
+    .select({ nom: elevesTable.nom, prenoms: elevesTable.prenoms, sexe: elevesTable.sexe })
+    .from(elevesTable).where(eq(elevesTable.id, eleveId)).limit(1);
+
+  const [ec] = await db
+    .select({ nom: classesTable.nom })
+    .from(eleveClassesTable)
+    .innerJoin(classesTable, eq(eleveClassesTable.classe_id, classesTable.id))
+    .where(eq(eleveClassesTable.eleve_id, eleveId))
+    .orderBy(desc(eleveClassesTable.created_at)).limit(1);
+
+  const [etab] = await db
+    .select({ nom: etablissementsTable.nom, telephone: etablissementsTable.telephone })
+    .from(etablissementsTable).where(eq(etablissementsTable.id, etablissementId)).limit(1);
+
+  const parents = await db
+    .select({ utilisateur_id: parentsElevesTable.utilisateur_id })
+    .from(parentsElevesTable)
+    .where(eq(parentsElevesTable.eleve_id, eleveId)).limit(1);
+
+  let nomParent = "Parent";
+  if (parents[0]) {
+    const [pu] = await db
+      .select({ nom: utilisateursTable.nom })
+      .from(utilisateursTable)
+      .where(eq(utilisateursTable.id, parents[0].utilisateur_id)).limit(1);
+    if (pu) nomParent = pu.nom;
+  }
+
+  const trancheInfo = premiereTrancheImpayee(
+    {
+      inscription_payee: Boolean(scol.inscription_payee),
+      tranche1_payee: Boolean(scol.tranche1_payee),
+      tranche2_payee: Boolean(scol.tranche2_payee),
+      tranche3_payee: Boolean(scol.tranche3_payee),
+    },
+    config,
+  );
+
+  return {
+    nomParent,
+    prenomEleve: (eleve?.prenoms ?? "").split(" ")[0] || eleve?.nom || "votre enfant",
+    nomEleve: eleve?.nom ?? "",
+    classeNom: ec?.nom ?? "—",
+    nomEtablissement: etab?.nom ?? "l'établissement",
+    telephoneEtablissement: etab?.telephone ?? null,
+    nomDirecteur: null,
+    montantRestant: parseFloat(scol.montant_restant ?? "0") || 0,
+    totalDu: parseFloat(scol.montant_total_du ?? "0") || 0,
+    totalPaye: parseFloat(scol.montant_total_paye ?? "0") || 0,
+    trancheInfo,
+  };
 }
 
 async function enrichirScolarite(s: typeof scolariteEleveTable.$inferSelect) {
@@ -158,7 +228,7 @@ router.post(
       and(
         eq(fraisConfigTable.etablissement_id, etablissementId),
         eq(fraisConfigTable.annee_scolaire_id, annee_scolaire_id as string),
-        eq(fraisConfigTable.niveau, niveau as string),
+        sql`${fraisConfigTable.niveau} = ${niveau as string}`,
       )
     ).limit(1);
 
@@ -181,7 +251,7 @@ router.post(
       [config] = await db.insert(fraisConfigTable).values({
         etablissement_id: etablissementId,
         annee_scolaire_id: annee_scolaire_id as string,
-        niveau: niveau as string,
+        niveau: niveau as "3eme" | "6eme" | "5eme" | "4eme" | "2nde" | "1ere" | "terminale",
         filiere_id: filiere_id as string ?? null,
         frais_inscription: String(frais_inscription ?? 0),
         frais_scolarite_annuel: String(frais_scolarite_annuel),
@@ -236,7 +306,7 @@ router.get(
       and(
         eq(fraisConfigTable.etablissement_id, etablissementId!),
         eq(fraisConfigTable.annee_scolaire_id, anneeScolaireId),
-        eq(fraisConfigTable.niveau, niveau),
+        sql`${fraisConfigTable.niveau} = ${niveau}`,
       )
     ).limit(1);
     if (!config) { res.status(404).json({ message: "Configuration non trouvée." }); return; }
@@ -305,17 +375,17 @@ router.post(
       .where(and(eq(scolariteEleveTable.eleve_id, eleve_id), eq(scolariteEleveTable.annee_scolaire_id, annee_scolaire_id))).limit(1);
     if (existing[0]) { res.status(409).json({ message: "Scolarité déjà initialisée pour cet élève et cette année." }); return; }
 
-    const niveau = await getNiveauEleve(eleve_id);
-    if (!niveau) { res.status(400).json({ message: "Aucune classe trouvée pour cet élève." }); return; }
+    const niveauRaw = await getNiveauEleve(eleve_id);
+    if (!niveauRaw) { res.status(400).json({ message: "Aucune classe trouvée pour cet élève." }); return; }
 
     const [config] = await db.select().from(fraisConfigTable).where(
       and(
         eq(fraisConfigTable.etablissement_id, etablissementId),
         eq(fraisConfigTable.annee_scolaire_id, annee_scolaire_id),
-        eq(fraisConfigTable.niveau, niveau),
+        sql`${fraisConfigTable.niveau} = ${niveauRaw}`,
       )
     ).limit(1);
-    if (!config) { res.status(404).json({ message: `Aucune configuration de frais pour le niveau ${niveau}.` }); return; }
+    if (!config) { res.status(404).json({ message: `Aucune configuration de frais pour le niveau ${niveauRaw}.` }); return; }
 
     const autresFrais = Array.isArray(config.autres_frais)
       ? (config.autres_frais as Array<{ montant?: number }>).reduce((s, f) => s + toNum(String(f.montant ?? 0)), 0)
@@ -349,15 +419,15 @@ router.post(
     const [classe] = await db.select().from(classesTable).where(eq(classesTable.id, classe_id)).limit(1);
     if (!classe) { res.status(404).json({ message: "Classe non trouvée." }); return; }
 
-    const niveau = (classe as Record<string, unknown>).niveau as string;
+    const niveauClasse = (classe as Record<string, unknown>).niveau as string;
     const [config] = await db.select().from(fraisConfigTable).where(
       and(
         eq(fraisConfigTable.etablissement_id, etablissementId),
         eq(fraisConfigTable.annee_scolaire_id, annee_scolaire_id),
-        eq(fraisConfigTable.niveau, niveau),
+        sql`${fraisConfigTable.niveau} = ${niveauClasse}`,
       )
     ).limit(1);
-    if (!config) { res.status(404).json({ message: `Aucune configuration de frais pour le niveau ${niveau}.` }); return; }
+    if (!config) { res.status(404).json({ message: `Aucune configuration de frais pour le niveau ${niveauClasse}.` }); return; }
 
     const autresFrais = Array.isArray(config.autres_frais)
       ? (config.autres_frais as Array<{ montant?: number }>).reduce((s, f) => s + toNum(String(f.montant ?? 0)), 0)
@@ -857,11 +927,21 @@ router.post(
           .orderBy(desc(scolariteEleveTable.created_at)).limit(1);
         if (!scol) continue;
 
-        const restant = toNum(scol.montant_restant);
-        const msg = `Rappel scolarité : ${restant.toLocaleString("fr-FR")} FCFA restants à payer. ${motif ?? ""}`.trim();
+        const [config] = await db.select().from(fraisConfigTable).where(eq(fraisConfigTable.id, scol.frais_config_id)).limit(1);
+
+        const [{ count: nbPrecedentes }] = await db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(relancesScolariteTable)
+          .where(eq(relancesScolariteTable.scolarite_id, scol.id));
+
+        const baseCtx = await construireContexteRelance(eleveId, etablissementId, scol, config ?? null);
+        const ctx: RelanceContext = { ...baseCtx, numeroRelance: niveauRelance(nbPrecedentes) };
+
+        const titre = genererTitrePush(ctx);
+        const msg = genererMessagePush(ctx) + (motif ? `\n\n${motif}` : "");
 
         if (type_relance === "notification" || type_relance === "les_deux") {
-          await notifierParent(eleveId, etablissementId, msg);
+          await notifierParent(eleveId, etablissementId, msg, titre);
         }
 
         await db.insert(relancesScolariteTable).values({
@@ -908,10 +988,22 @@ router.post(
     for (const eleveId of idsToRelance) {
       try {
         const scol = scolarites.find(s => s.eleve_id === eleveId)!;
-        const restant = toNum(scol.montant_restant);
-        const msg = `Rappel scolarité : ${restant.toLocaleString("fr-FR")} FCFA restants à payer.${motif ? " " + motif : ""}`;
+
+        const [config] = await db.select().from(fraisConfigTable).where(eq(fraisConfigTable.id, scol.frais_config_id)).limit(1);
+
+        const [{ count: nbPrecedentes }] = await db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(relancesScolariteTable)
+          .where(eq(relancesScolariteTable.scolarite_id, scol.id));
+
+        const baseCtx = await construireContexteRelance(eleveId, etablissementId, scol, config ?? null);
+        const ctx: RelanceContext = { ...baseCtx, numeroRelance: niveauRelance(nbPrecedentes) };
+
+        const titre = genererTitrePush(ctx);
+        const msg = genererMessagePush(ctx) + (motif ? `\n\n${motif}` : "");
+
         if (type_relance === "notification" || type_relance === "les_deux") {
-          await notifierParent(eleveId, etablissementId, msg);
+          await notifierParent(eleveId, etablissementId, msg, titre);
         }
         await db.insert(relancesScolariteTable).values({
           etablissement_id: etablissementId,
