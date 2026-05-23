@@ -52,7 +52,7 @@ async function enrichirAbsence(a: typeof absencesTable.$inferSelect, avecJustif 
 }
 
 /* ── GET /api/absences/statistiques ────────────────────── */
-router.get("/api/absences/statistiques", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/absences/statistiques", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const { classe_id, annee_scolaire_id, trimestre } = req.query as Record<string, string>;
 
@@ -103,7 +103,7 @@ router.get("/api/absences/statistiques", authMiddleware, verifierLicence, async 
 });
 
 /* ── GET /api/absences/eleves-a-risque ─────────────────── */
-router.get("/api/absences/eleves-a-risque", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/absences/eleves-a-risque", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const { annee_scolaire_id } = req.query as Record<string, string>;
 
@@ -138,7 +138,7 @@ router.get("/api/absences/eleves-a-risque", authMiddleware, verifierLicence, asy
 });
 
 /* ── GET /api/absences/liste ────────────────────────────── */
-router.get("/api/absences/liste", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/absences/liste", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const { eleve_id, classe_id, matiere, statut, type, date_debut, date_fin, annee_scolaire_id } = req.query as Record<string, string>;
   const page = Math.max(1, parseInt((req.query["page"] as string) || "1", 10));
@@ -186,7 +186,7 @@ router.get("/api/absences/liste", authMiddleware, verifierLicence, async (req, r
 });
 
 /* ── POST /api/absences/creer ───────────────────────────── */
-router.post("/api/absences/creer", authMiddleware, verifierLicence, async (req, res) => {
+router.post("/absences/creer", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const roles = ["dev", "directeur", "censeur"];
   if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
@@ -216,7 +216,7 @@ router.post("/api/absences/creer", authMiddleware, verifierLicence, async (req, 
 });
 
 /* ── GET /api/absences/eleve/:eleveId/resume ──────────────── */
-router.get("/api/absences/eleve/:eleveId/resume", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/absences/eleve/:eleveId/resume", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const eleveId = normalizeId(req.params["eleveId"]);
   const { annee_scolaire_id } = req.query as Record<string, string>;
@@ -261,7 +261,7 @@ router.get("/api/absences/eleve/:eleveId/resume", authMiddleware, verifierLicenc
 });
 
 /* ── GET /api/absences/:id ──────────────────────────────── */
-router.get("/api/absences/:id", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/absences/:id", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
 
@@ -279,7 +279,7 @@ router.get("/api/absences/:id", authMiddleware, verifierLicence, async (req, res
 });
 
 /* ── PUT /api/absences/:id/modifier ────────────────────── */
-router.put("/api/absences/:id/modifier", authMiddleware, verifierLicence, async (req, res) => {
+router.put("/absences/:id/modifier", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
   const roles = ["dev", "directeur", "censeur"];
@@ -302,7 +302,7 @@ router.put("/api/absences/:id/modifier", authMiddleware, verifierLicence, async 
 });
 
 /* ── DELETE /api/absences/:id/supprimer ─────────────────── */
-router.delete("/api/absences/:id/supprimer", authMiddleware, verifierLicence, async (req, res) => {
+router.delete("/absences/:id/supprimer", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
   const roles = ["dev", "directeur"];
@@ -317,7 +317,7 @@ router.delete("/api/absences/:id/supprimer", authMiddleware, verifierLicence, as
 });
 
 /* ── POST /api/absences/:id/justifier ───────────────────── */
-router.post("/api/absences/:id/justifier", authMiddleware, verifierLicence, async (req, res) => {
+router.post("/absences/:id/justifier", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
   const { motif, document_url } = req.body as Record<string, string>;
@@ -365,7 +365,7 @@ router.post("/api/absences/:id/justifier", authMiddleware, verifierLicence, asyn
 });
 
 /* ── GET /api/justifications/liste ──────────────────────── */
-router.get("/api/justifications/liste", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/justifications/liste", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const roles = ["dev", "directeur", "censeur"];
   if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
@@ -392,7 +392,7 @@ router.get("/api/justifications/liste", authMiddleware, verifierLicence, async (
 });
 
 /* ── PUT /api/justifications/:id/traiter ──────────────────── */
-router.put("/api/justifications/:id/traiter", authMiddleware, verifierLicence, async (req, res) => {
+router.put("/justifications/:id/traiter", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
   const roles = ["dev", "directeur", "censeur"];

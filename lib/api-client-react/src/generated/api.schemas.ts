@@ -1827,6 +1827,101 @@ export interface ConfirmerRendezVousInput {
   notes_rdv?: string;
 }
 
+export type AnnonceItemType = typeof AnnonceItemType[keyof typeof AnnonceItemType];
+
+
+export const AnnonceItemType = {
+  information: 'information',
+  urgence: 'urgence',
+  evenement: 'evenement',
+  rappel: 'rappel',
+} as const;
+
+export interface AnnonceItem {
+  id?: string;
+  etablissement_id?: string;
+  auteur_id?: string;
+  auteur_nom?: string;
+  auteur_prenoms?: string;
+  auteur_role?: string;
+  titre?: string;
+  contenu?: string;
+  type?: AnnonceItemType;
+  destinataires?: string[];
+  date_publication?: string | null;
+  date_expiration?: string | null;
+  publie?: boolean;
+  epingle?: boolean;
+  piece_jointe_url?: string | null;
+  piece_jointe_nom?: string | null;
+  nb_vues?: number;
+  lu?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface AnnonceItemResponse {
+  annonce: AnnonceItem;
+}
+
+export type AnnonceStatsResponseLecturesItem = {
+  utilisateur_id?: string;
+  nom?: string;
+  prenoms?: string;
+  lu_le?: string;
+};
+
+export interface AnnonceStatsResponse {
+  nb_vues?: number;
+  nb_lecteurs?: number;
+  lectures?: AnnonceStatsResponseLecturesItem[];
+}
+
+export interface AnnonceDetailResponse {
+  annonce: AnnonceItem;
+  stats?: AnnonceStatsResponse;
+}
+
+export interface AnnoncesListeResponse {
+  annonces: AnnonceItem[];
+  total?: number;
+}
+
+export interface AnnonceCountResponse {
+  count: number;
+}
+
+export type AnnonceInputType = typeof AnnonceInputType[keyof typeof AnnonceInputType];
+
+
+export const AnnonceInputType = {
+  information: 'information',
+  urgence: 'urgence',
+  evenement: 'evenement',
+  rappel: 'rappel',
+} as const;
+
+export interface AnnonceInput {
+  titre: string;
+  contenu: string;
+  type?: AnnonceInputType;
+  destinataires?: string[];
+  date_publication?: string | null;
+  date_expiration?: string | null;
+  publie?: boolean;
+  epingle?: boolean;
+  piece_jointe_url?: string | null;
+  piece_jointe_nom?: string | null;
+}
+
+export interface EnvoyerNotificationInput {
+  destinataires_ids: string[];
+  titre: string;
+  contenu: string;
+  type: string;
+  lien_action?: string | null;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -2072,4 +2167,22 @@ statut?: string;
 date_debut?: string;
 date_fin?: string;
 };
+
+export type GetApiAnnoncesParams = {
+type?: GetApiAnnoncesType;
+publie?: boolean;
+epingle?: boolean;
+date_debut?: string;
+date_fin?: string;
+};
+
+export type GetApiAnnoncesType = typeof GetApiAnnoncesType[keyof typeof GetApiAnnoncesType];
+
+
+export const GetApiAnnoncesType = {
+  information: 'information',
+  urgence: 'urgence',
+  evenement: 'evenement',
+  rappel: 'rappel',
+} as const;
 

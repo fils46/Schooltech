@@ -25,6 +25,7 @@ export * from "./conseilsClasse";
 export * from "./absences";
 export * from "./justifications";
 export * from "./notifications";
+export * from "./annonces";
 export * from "./conseilParticipants";
 export * from "./conseilDeliberations";
 export * from "./conseilInterventions";

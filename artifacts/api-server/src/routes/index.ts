@@ -22,6 +22,7 @@ import notificationsRouter from "./notifications";
 import portailParentRouter from "./portailParent";
 import messagesRouter from "./messages";
 import rendezVousRouter from "./rendezVous";
+import annoncesRouter from "./annonces";
 
 const router: IRouter = Router();
 
@@ -48,5 +49,6 @@ router.use(notificationsRouter);
 router.use(portailParentRouter);
 router.use(messagesRouter);
 router.use(rendezVousRouter);
+router.use(annoncesRouter);
 
 export default router;

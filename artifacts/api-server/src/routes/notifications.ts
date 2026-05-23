@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { eq, and, desc, count } from "drizzle-orm";
+import { eq, and, desc, count, inArray } from "drizzle-orm";
 import { db, notificationsTable } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
+import { emitNotification } from "../socket/socketManager";
 
 const router = Router();
 
@@ -11,7 +12,7 @@ function normalizeId(v: string | string[]): string {
 }
 
 /* ── GET /api/notifications/count ──────────────────────── */
-router.get("/api/notifications/count", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/notifications/count", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const [{ total }] = await db
     .select({ total: count() })
@@ -24,7 +25,7 @@ router.get("/api/notifications/count", authMiddleware, verifierLicence, async (r
 });
 
 /* ── PUT /api/notifications/tout-lire ───────────────────── */
-router.put("/api/notifications/tout-lire", authMiddleware, verifierLicence, async (req, res) => {
+router.put("/notifications/tout-lire", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   await db
     .update(notificationsTable)
@@ -37,7 +38,7 @@ router.put("/api/notifications/tout-lire", authMiddleware, verifierLicence, asyn
 });
 
 /* ── GET /api/notifications/mes-notifications ──────────── */
-router.get("/api/notifications/mes-notifications", authMiddleware, verifierLicence, async (req, res) => {
+router.get("/notifications/mes-notifications", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const { type } = req.query as Record<string, string>;
   const lu = req.query["lu"] as string | undefined;
@@ -60,7 +61,7 @@ router.get("/api/notifications/mes-notifications", authMiddleware, verifierLicen
 });
 
 /* ── PUT /api/notifications/:id/lire ───────────────────── */
-router.put("/api/notifications/:id/lire", authMiddleware, verifierLicence, async (req, res) => {
+router.put("/notifications/:id/lire", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
 
@@ -78,7 +79,7 @@ router.put("/api/notifications/:id/lire", authMiddleware, verifierLicence, async
 });
 
 /* ── DELETE /api/notifications/:id ─────────────────────── */
-router.delete("/api/notifications/:id", authMiddleware, verifierLicence, async (req, res) => {
+router.delete("/notifications/:id", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
   const id = normalizeId(req.params["id"]);
 
@@ -92,6 +93,53 @@ router.delete("/api/notifications/:id", authMiddleware, verifierLicence, async (
 
   if (!deleted) { res.status(404).json({ message: "Notification introuvable." }); return; }
   res.json({ message: "Notification supprimée." });
+});
+
+/* ── POST /api/notifications/envoyer ────────────────────────── */
+router.post("/notifications/envoyer", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev","directeur","censeur"].includes(user.role)) {
+    res.status(403).json({ message: "Accès non autorisé." }); return;
+  }
+
+  const { destinataires_ids, titre, contenu, type, lien_action } = req.body as {
+    destinataires_ids: string[];
+    titre: string;
+    contenu: string;
+    type: string;
+    lien_action?: string;
+  };
+
+  if (!destinataires_ids?.length || !titre?.trim() || !contenu?.trim() || !type?.trim()) {
+    res.status(400).json({ message: "Champs obligatoires manquants." }); return;
+  }
+
+  const validTypes = ["absence","retard","alerte_seuil","justification_validee","justification_rejetee","bulletin_publie","message","annonce","rdv"];
+  const notifType = validTypes.includes(type) ? type : "annonce";
+
+  const inserted = await db.insert(notificationsTable).values(
+    destinataires_ids.map(id => ({
+      etablissement_id: user.etablissement_id ?? "",
+      destinataire_id: id,
+      type: notifType as "absence" | "retard" | "alerte_seuil" | "justification_validee" | "justification_rejetee" | "bulletin_publie" | "message" | "annonce" | "rdv",
+      titre: titre.trim(),
+      contenu: contenu.trim(),
+      lien: lien_action ?? null,
+    }))
+  ).returning();
+
+  for (const n of inserted) {
+    await emitNotification(n.destinataire_id, {
+      id: n.id,
+      type: n.type,
+      titre: n.titre,
+      contenu: n.contenu,
+      lien: n.lien,
+      created_at: n.created_at,
+    });
+  }
+
+  res.json({ message: `${inserted.length} notification(s) envoyée(s).` });
 });
 
 export default router;

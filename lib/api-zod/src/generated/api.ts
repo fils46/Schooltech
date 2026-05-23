@@ -3802,3 +3802,235 @@ export const TerminerRendezVousResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les annonces
+ */
+export const GetApiAnnoncesQueryParams = zod.object({
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "publie": zod.coerce.boolean().optional(),
+  "epingle": zod.coerce.boolean().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const GetApiAnnoncesResponse = zod.object({
+  "annonces": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "auteur_id": zod.string().optional(),
+  "auteur_nom": zod.string().optional(),
+  "auteur_prenoms": zod.string().optional(),
+  "auteur_role": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "nb_vues": zod.number().optional(),
+  "lu": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Créer une annonce
+ */
+export const PostApiAnnoncesBody = zod.object({
+  "titre": zod.string(),
+  "contenu": zod.string(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish()
+})
+
+
+/**
+ * @summary Nombre d'annonces non lues
+ */
+export const GetApiAnnoncesNonLuesCountResponse = zod.object({
+  "count": zod.number()
+})
+
+
+/**
+ * @summary Détail annonce (marque comme lue)
+ */
+export const GetApiAnnoncesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetApiAnnoncesIdResponse = zod.object({
+  "annonce": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "auteur_id": zod.string().optional(),
+  "auteur_nom": zod.string().optional(),
+  "auteur_prenoms": zod.string().optional(),
+  "auteur_role": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "nb_vues": zod.number().optional(),
+  "lu": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+}),
+  "stats": zod.object({
+  "nb_vues": zod.number().optional(),
+  "nb_lecteurs": zod.number().optional(),
+  "lectures": zod.array(zod.object({
+  "utilisateur_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "lu_le": zod.string().optional()
+})).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Modifier une annonce
+ */
+export const PutApiAnnoncesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutApiAnnoncesIdBody = zod.object({
+  "titre": zod.string(),
+  "contenu": zod.string(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish()
+})
+
+export const PutApiAnnoncesIdResponse = zod.object({
+  "annonce": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "auteur_id": zod.string().optional(),
+  "auteur_nom": zod.string().optional(),
+  "auteur_prenoms": zod.string().optional(),
+  "auteur_role": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "nb_vues": zod.number().optional(),
+  "lu": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Supprimer une annonce
+ */
+export const DeleteApiAnnoncesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteApiAnnoncesIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Publier une annonce
+ */
+export const PutApiAnnoncesIdPublierParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutApiAnnoncesIdPublierResponse = zod.object({
+  "annonce": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "auteur_id": zod.string().optional(),
+  "auteur_nom": zod.string().optional(),
+  "auteur_prenoms": zod.string().optional(),
+  "auteur_role": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
+  "destinataires": zod.array(zod.string()).optional(),
+  "date_publication": zod.string().nullish(),
+  "date_expiration": zod.string().nullish(),
+  "publie": zod.boolean().optional(),
+  "epingle": zod.boolean().optional(),
+  "piece_jointe_url": zod.string().nullish(),
+  "piece_jointe_nom": zod.string().nullish(),
+  "nb_vues": zod.number().optional(),
+  "lu": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Stats de lecture d'une annonce
+ */
+export const GetApiAnnoncesIdStatsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetApiAnnoncesIdStatsResponse = zod.object({
+  "nb_vues": zod.number().optional(),
+  "nb_lecteurs": zod.number().optional(),
+  "lectures": zod.array(zod.object({
+  "utilisateur_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "lu_le": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Envoyer une notification manuelle
+ */
+export const PostApiNotificationsEnvoyerBody = zod.object({
+  "destinataires_ids": zod.array(zod.string()),
+  "titre": zod.string(),
+  "contenu": zod.string(),
+  "type": zod.string(),
+  "lien_action": zod.string().nullish()
+})
+
+export const PostApiNotificationsEnvoyerResponse = zod.object({
+  "message": zod.string()
+})
+
+

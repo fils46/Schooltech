@@ -46,6 +46,9 @@ import ParentDashboard from "@/pages/parent-dashboard";
 import SuiviScolaire from "@/pages/suivi-scolaire";
 import Messagerie from "@/pages/messagerie";
 import RendezVousParent from "@/pages/rendez-vous-parent";
+import CommunicationDashboard from "@/pages/communication-dashboard";
+import FormulaireAnnonce from "@/pages/formulaire-annonce";
+import FilAnnonces from "@/pages/fil-annonces";
 
 const queryClient = new QueryClient();
 
@@ -327,6 +330,39 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <RendezVousParent />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module 12 : Communication & Annonces ── */}
+      <Route path="/annonces/creer">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <FormulaireAnnonce />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/annonces/:id/editer">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <FormulaireAnnonce />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/annonces">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <CommunicationDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/fil-annonces">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <FilAnnonces />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

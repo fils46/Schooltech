@@ -43,7 +43,7 @@ async function countNonLus(userId: string): Promise<number> {
 }
 
 /* ── GET /api/messages/contacts ──────────────────────────────── */
-router.get("/api/messages/contacts", authMiddleware, async (req, res) => {
+router.get("/messages/contacts", authMiddleware, async (req, res) => {
   const user = req.user!;
   const etabId = user.etablissement_id ?? "";
 
@@ -125,13 +125,13 @@ router.get("/api/messages/contacts", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/messages/non-lus/count ────────────────────────── */
-router.get("/api/messages/non-lus/count", authMiddleware, async (req, res) => {
+router.get("/messages/non-lus/count", authMiddleware, async (req, res) => {
   const count = await countNonLus(req.user!.id);
   res.json({ count });
 });
 
 /* ── GET /api/messages/reception ────────────────────────────── */
-router.get("/api/messages/reception", authMiddleware, async (req, res) => {
+router.get("/messages/reception", authMiddleware, async (req, res) => {
   const user = req.user!;
   const { lu } = req.query as Record<string, string>;
 
@@ -153,7 +153,7 @@ router.get("/api/messages/reception", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/messages/envoi ────────────────────────────────── */
-router.get("/api/messages/envoi", authMiddleware, async (req, res) => {
+router.get("/messages/envoi", authMiddleware, async (req, res) => {
   const user = req.user!;
   const messages = await db
     .select()
@@ -169,7 +169,7 @@ router.get("/api/messages/envoi", authMiddleware, async (req, res) => {
 });
 
 /* ── POST /api/messages/envoyer ─────────────────────────────── */
-router.post("/api/messages/envoyer", authMiddleware, async (req, res) => {
+router.post("/messages/envoyer", authMiddleware, async (req, res) => {
   const user = req.user!;
   const { destinataire_id, sujet, contenu, piece_jointe_url, piece_jointe_nom, parent_message_id } =
     req.body as {
@@ -238,7 +238,7 @@ router.post("/api/messages/envoyer", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/messages/:id ──────────────────────────────────── */
-router.get("/api/messages/:id", authMiddleware, async (req, res) => {
+router.get("/messages/:id", authMiddleware, async (req, res) => {
   const user = req.user!;
   const id = req.params["id"] as string;
 
@@ -272,7 +272,7 @@ router.get("/api/messages/:id", authMiddleware, async (req, res) => {
 });
 
 /* ── POST /api/messages/:id/repondre ────────────────────────── */
-router.post("/api/messages/:id/repondre", authMiddleware, async (req, res) => {
+router.post("/messages/:id/repondre", authMiddleware, async (req, res) => {
   const user = req.user!;
   const id = req.params["id"] as string;
   const { contenu, piece_jointe_url, piece_jointe_nom } = req.body as {
@@ -315,7 +315,7 @@ router.post("/api/messages/:id/repondre", authMiddleware, async (req, res) => {
 });
 
 /* ── PUT /api/messages/:id/archiver ─────────────────────────── */
-router.put("/api/messages/:id/archiver", authMiddleware, async (req, res) => {
+router.put("/messages/:id/archiver", authMiddleware, async (req, res) => {
   const user = req.user!;
   const id = req.params["id"] as string;
 

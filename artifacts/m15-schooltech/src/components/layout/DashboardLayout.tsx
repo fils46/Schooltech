@@ -10,7 +10,7 @@ import {
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
-  BookMarked, FileSpreadsheet, CalendarCheck,
+  BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -53,6 +53,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Statistiques",   href: "/statistiques",   icon: BarChart3 },
       ],
     },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Annonces",       href: "/annonces",       icon: Megaphone },
+        { label: "Messagerie",     href: "/messagerie",     icon: MessageSquare },
+        { label: "Notifications",  href: "/notifications",  icon: Bell },
+      ],
+    },
   ],
   directeur: [
     {
@@ -87,6 +95,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Rapports",  href: "/rapports",  icon: FileText },
       ],
     },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
+      ],
+    },
   ],
   censeur: [
     {
@@ -112,6 +128,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Absences",        href: "/absences",        icon: UserMinus },
       ],
     },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
+      ],
+    },
   ],
   professeur: [
     {
@@ -126,7 +150,14 @@ const navConfig: Record<string, Section[]> = {
       title: "QUOTIDIEN",
       links: [
         { label: "Appel",    href: "/appel",    icon: ClipboardList },
-        { label: "Messages", href: "/messages", icon: MessageSquare },
+      ],
+    },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Annonces",      href: "/fil-annonces", icon: Megaphone },
+        { label: "Messagerie",    href: "/messagerie",   icon: MessageSquare },
+        { label: "Notifications", href: "/notifications",icon: Bell },
       ],
     },
   ],
@@ -145,6 +176,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
         { label: "Mes absences",    href: "/mes-absences",    icon: UserMinus },
         { label: "Bibliothèque",    href: "/bibliotheque",    icon: Library },
+      ],
+    },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
       ],
     },
   ],
@@ -166,9 +205,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "COMMUNICATION",
       links: [
-        { label: "Messagerie",   href: "/messagerie",  icon: MessageSquare },
-        { label: "Rendez-vous",  href: "/rendez-vous", icon: CalendarCheck },
-        { label: "Paiements",    href: "/paiements",   icon: CreditCard },
+        { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
+        { label: "Rendez-vous",   href: "/rendez-vous",   icon: CalendarCheck },
+        { label: "Paiements",     href: "/paiements",     icon: CreditCard },
       ],
     },
   ],
@@ -210,6 +251,9 @@ const PAGE_TITLES: Record<string, string> = {
   "/absences-parent":   "Absences de mon enfant",
   "/mes-absences":      "Mes Absences",
   "/notifications":     "Notifications",
+  "/annonces":          "Annonces",
+  "/annonces/creer":    "Nouvelle annonce",
+  "/fil-annonces":      "Fil d'annonces",
   "/parent-dashboard":  "Tableau de bord",
   "/suivi-scolaire":    "Suivi scolaire",
   "/messagerie":        "Messagerie",

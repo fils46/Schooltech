@@ -31,7 +31,7 @@ async function enrichirRdv(rdv: typeof rendezVousTable.$inferSelect) {
 }
 
 /* ── GET /api/rendez-vous/liste ─────────────────────────────── */
-router.get("/api/rendez-vous/liste", authMiddleware, async (req, res) => {
+router.get("/rendez-vous/liste", authMiddleware, async (req, res) => {
   const user = req.user!;
   const { statut, date_debut, date_fin } = req.query as Record<string, string>;
 
@@ -60,7 +60,7 @@ router.get("/api/rendez-vous/liste", authMiddleware, async (req, res) => {
 });
 
 /* ── POST /api/rendez-vous/demander ─────────────────────────── */
-router.post("/api/rendez-vous/demander", authMiddleware, async (req, res) => {
+router.post("/rendez-vous/demander", authMiddleware, async (req, res) => {
   const user = req.user!;
   if (user.role !== "parent") { res.status(403).json({ message: "Accès parent uniquement." }); return; }
 
@@ -116,7 +116,7 @@ router.post("/api/rendez-vous/demander", authMiddleware, async (req, res) => {
 });
 
 /* ── PUT /api/rendez-vous/:id/confirmer ─────────────────────── */
-router.put("/api/rendez-vous/:id/confirmer", authMiddleware, async (req, res) => {
+router.put("/rendez-vous/:id/confirmer", authMiddleware, async (req, res) => {
   const user = req.user!;
   if (!["directeur","censeur","professeur"].includes(user.role)) { res.status(403).json({ message: "Accès non autorisé." }); return; }
 
@@ -147,7 +147,7 @@ router.put("/api/rendez-vous/:id/confirmer", authMiddleware, async (req, res) =>
 });
 
 /* ── PUT /api/rendez-vous/:id/annuler ───────────────────────── */
-router.put("/api/rendez-vous/:id/annuler", authMiddleware, async (req, res) => {
+router.put("/rendez-vous/:id/annuler", authMiddleware, async (req, res) => {
   const user = req.user!;
   const id = req.params["id"] as string;
 
@@ -184,7 +184,7 @@ router.put("/api/rendez-vous/:id/annuler", authMiddleware, async (req, res) => {
 });
 
 /* ── PUT /api/rendez-vous/:id/terminer ──────────────────────── */
-router.put("/api/rendez-vous/:id/terminer", authMiddleware, async (req, res) => {
+router.put("/rendez-vous/:id/terminer", authMiddleware, async (req, res) => {
   const user = req.user!;
   if (!["directeur","censeur","professeur"].includes(user.role)) { res.status(403).json({ message: "Accès non autorisé." }); return; }
 

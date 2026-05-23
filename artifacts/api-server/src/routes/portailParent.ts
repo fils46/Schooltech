@@ -41,7 +41,7 @@ async function getClasseActiveEleve(eleveId: string) {
 }
 
 /* ── GET /api/parent/mes-enfants ────────────────────────────── */
-router.get("/api/parent/mes-enfants", authMiddleware, async (req, res) => {
+router.get("/parent/mes-enfants", authMiddleware, async (req, res) => {
   const user = req.user!;
   if (user.role !== "parent") { res.status(403).json({ message: "Accès parent uniquement." }); return; }
 
@@ -71,7 +71,7 @@ router.get("/api/parent/mes-enfants", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/parent/dashboard ──────────────────────────────── */
-router.get("/api/parent/dashboard", authMiddleware, async (req, res) => {
+router.get("/parent/dashboard", authMiddleware, async (req, res) => {
   const user = req.user!;
   if (user.role !== "parent") { res.status(403).json({ message: "Accès parent uniquement." }); return; }
 
@@ -162,7 +162,7 @@ router.get("/api/parent/dashboard", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/parent/enfant/:eleveId ──────────────────────────── */
-router.get("/api/parent/enfant/:eleveId", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
 
@@ -181,7 +181,7 @@ router.get("/api/parent/enfant/:eleveId", authMiddleware, async (req, res) => {
 });
 
 /* ── GET /api/parent/enfant/:eleveId/notes ───────────────────── */
-router.get("/api/parent/enfant/:eleveId/notes", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId/notes", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
   const { trimestre, annee_scolaire_id } = req.query as Record<string, string>;
@@ -243,7 +243,7 @@ router.get("/api/parent/enfant/:eleveId/notes", authMiddleware, async (req, res)
 });
 
 /* ── GET /api/parent/enfant/:eleveId/bulletins ────────────────── */
-router.get("/api/parent/enfant/:eleveId/bulletins", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId/bulletins", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
 
@@ -265,7 +265,7 @@ router.get("/api/parent/enfant/:eleveId/bulletins", authMiddleware, async (req, 
 });
 
 /* ── GET /api/parent/enfant/:eleveId/absences ─────────────────── */
-router.get("/api/parent/enfant/:eleveId/absences", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId/absences", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
   const { trimestre, statut } = req.query as Record<string, string>;
@@ -290,7 +290,7 @@ router.get("/api/parent/enfant/:eleveId/absences", authMiddleware, async (req, r
 });
 
 /* ── GET /api/parent/enfant/:eleveId/cahier-textes ────────────── */
-router.get("/api/parent/enfant/:eleveId/cahier-textes", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId/cahier-textes", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
   const { matiere } = req.query as Record<string, string>;
@@ -313,7 +313,7 @@ router.get("/api/parent/enfant/:eleveId/cahier-textes", authMiddleware, async (r
 });
 
 /* ── GET /api/parent/enfant/:eleveId/emploi-du-temps ──────────── */
-router.get("/api/parent/enfant/:eleveId/emploi-du-temps", authMiddleware, async (req, res) => {
+router.get("/parent/enfant/:eleveId/emploi-du-temps", authMiddleware, async (req, res) => {
   const user = req.user!;
   const eleveId = req.params["eleveId"] as string;
 

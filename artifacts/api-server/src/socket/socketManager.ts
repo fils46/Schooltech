@@ -26,8 +26,10 @@ export function initSocket(httpServer: HttpServer): SocketServer {
     }
     try {
       const payload = verifyToken(token);
-      (socket as Socket & { userId?: string; etablissementId?: string }).userId = payload.id;
-      (socket as Socket & { userId?: string; etablissementId?: string }).etablissementId = payload.etablissement_id ?? "";
+      const s = socket as Socket & { userId?: string; etablissementId?: string; role?: string };
+      s.userId = payload.id;
+      s.etablissementId = payload.etablissement_id ?? "";
+      s.role = payload.role;
       next();
     } catch {
       next(new Error("Token invalide."));
@@ -35,11 +37,19 @@ export function initSocket(httpServer: HttpServer): SocketServer {
   });
 
   io.on("connection", (socket: Socket) => {
-    const s = socket as Socket & { userId?: string; etablissementId?: string };
+    const s = socket as Socket & { userId?: string; etablissementId?: string; role?: string };
     const userId = s.userId;
     if (!userId) return;
 
     socket.join(`user_${userId}`);
+
+    /* Auto-join role room + etab room */
+    if (s.etablissementId) {
+      socket.join(`etab_${s.etablissementId}`);
+      if (s.role) {
+        socket.join(`role_${s.role}_${s.etablissementId}`);
+      }
+    }
     logger.info({ userId }, "Socket connecté");
 
     socket.on("rejoindre_etablissement", (etabId: string) => {
@@ -100,6 +110,26 @@ export function emitNouveauMessage(destinataireId: string, data: {
 export function emitBadgeMessages(destinataireId: string, count: number) {
   if (!io) return;
   io.to(`user_${destinataireId}`).emit("badge_messages", { count });
+}
+
+export function emitNouvelleAnnonce(
+  etablissementId: string,
+  destinataires: string[],
+  data: { id: string; titre: string; type: string; auteur: string }
+) {
+  if (!io) return;
+  if (destinataires.includes("tous")) {
+    io.to(`etab_${etablissementId}`).emit("nouvelle_annonce", data);
+  } else {
+    for (const role of destinataires) {
+      io.to(`role_${role}_${etablissementId}`).emit("nouvelle_annonce", data);
+    }
+  }
+}
+
+export function emitToEtablissement(etablissementId: string, event: string, data: unknown) {
+  if (!io) return;
+  io.to(`etab_${etablissementId}`).emit(event, data);
 }
 
 export async function emitNotification(destinataireId: string, data: {

@@ -32,6 +32,12 @@ import type {
   AnneeScolaire,
   AnneeScolaireInput,
   AnneeScolairesListeResponse,
+  AnnonceCountResponse,
+  AnnonceDetailResponse,
+  AnnonceInput,
+  AnnonceItemResponse,
+  AnnonceStatsResponse,
+  AnnoncesListeResponse,
   AppelCreeResponse,
   AppelDetailResponse,
   AppelInput,
@@ -80,6 +86,7 @@ import type {
   EmploiTempsEnfantResponse,
   EnvoyerConvocations200,
   EnvoyerMessageInput,
+  EnvoyerNotificationInput,
   ErrorResponse,
   Etablissement,
   EtablissementInput,
@@ -93,6 +100,7 @@ import type {
   GenererClasseResponse,
   GenererPV200,
   GetAbsencesEnfantParams,
+  GetApiAnnoncesParams,
   GetBoiteReceptionParams,
   GetBulletinsClasseParams,
   GetBulletinsEleveParams,
@@ -11836,5 +11844,674 @@ export const useTerminerRendezVous = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getTerminerRendezVousMutationOptions(options));
+    }
+
+export const getGetApiAnnoncesUrl = (params?: GetApiAnnoncesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/annonces?${stringifiedParams}` : `/api/api/annonces`
+}
+
+/**
+ * @summary Lister les annonces
+ */
+export const getApiAnnonces = async (params?: GetApiAnnoncesParams, options?: RequestInit): Promise<AnnoncesListeResponse> => {
+
+  return customFetch<AnnoncesListeResponse>(getGetApiAnnoncesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnnoncesQueryKey = (params?: GetApiAnnoncesParams,) => {
+    return [
+    `/api/api/annonces`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiAnnoncesQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnonces>>, TError = ErrorType<unknown>>(params?: GetApiAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnonces>>> = ({ signal }) => getApiAnnonces(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnnoncesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnonces>>>
+export type GetApiAnnoncesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les annonces
+ */
+
+export function useGetApiAnnonces<TData = Awaited<ReturnType<typeof getApiAnnonces>>, TError = ErrorType<unknown>>(
+ params?: GetApiAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnnoncesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostApiAnnoncesUrl = () => {
+
+
+
+
+  return `/api/api/annonces`
+}
+
+/**
+ * @summary Créer une annonce
+ */
+export const postApiAnnonces = async (annonceInput: AnnonceInput, options?: RequestInit): Promise<AnnonceItemResponse> => {
+
+  return customFetch<AnnonceItemResponse>(getPostApiAnnoncesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      annonceInput,)
+  }
+);}
+
+
+
+
+export const getPostApiAnnoncesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext> => {
+
+const mutationKey = ['postApiAnnonces'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnnonces>>, {data: BodyType<AnnonceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAnnonces(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAnnoncesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnnonces>>>
+    export type PostApiAnnoncesMutationBody = BodyType<AnnonceInput>
+    export type PostApiAnnoncesMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Créer une annonce
+ */
+export const usePostApiAnnonces = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postApiAnnonces>>,
+        TError,
+        {data: BodyType<AnnonceInput>},
+        TContext
+      > => {
+      return useMutation(getPostApiAnnoncesMutationOptions(options));
+    }
+
+export const getGetApiAnnoncesNonLuesCountUrl = () => {
+
+
+
+
+  return `/api/api/annonces/non-lues/count`
+}
+
+/**
+ * @summary Nombre d'annonces non lues
+ */
+export const getApiAnnoncesNonLuesCount = async ( options?: RequestInit): Promise<AnnonceCountResponse> => {
+
+  return customFetch<AnnonceCountResponse>(getGetApiAnnoncesNonLuesCountUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnnoncesNonLuesCountQueryKey = () => {
+    return [
+    `/api/api/annonces/non-lues/count`
+    ] as const;
+    }
+
+
+export const getGetApiAnnoncesNonLuesCountQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesNonLuesCountQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>> = ({ signal }) => getApiAnnoncesNonLuesCount({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnnoncesNonLuesCountQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>>
+export type GetApiAnnoncesNonLuesCountQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Nombre d'annonces non lues
+ */
+
+export function useGetApiAnnoncesNonLuesCount<TData = Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnnoncesNonLuesCountQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetApiAnnoncesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/annonces/${id}`
+}
+
+/**
+ * @summary Détail annonce (marque comme lue)
+ */
+export const getApiAnnoncesId = async (id: string, options?: RequestInit): Promise<AnnonceDetailResponse> => {
+
+  return customFetch<AnnonceDetailResponse>(getGetApiAnnoncesIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnnoncesIdQueryKey = (id: string,) => {
+    return [
+    `/api/api/annonces/${id}`
+    ] as const;
+    }
+
+
+export const getGetApiAnnoncesIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesIdQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesId>>> = ({ signal }) => getApiAnnoncesId(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnnoncesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesId>>>
+export type GetApiAnnoncesIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Détail annonce (marque comme lue)
+ */
+
+export function useGetApiAnnoncesId<TData = Awaited<ReturnType<typeof getApiAnnoncesId>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnnoncesIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutApiAnnoncesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/annonces/${id}`
+}
+
+/**
+ * @summary Modifier une annonce
+ */
+export const putApiAnnoncesId = async (id: string,
+    annonceInput: AnnonceInput, options?: RequestInit): Promise<AnnonceItemResponse> => {
+
+  return customFetch<AnnonceItemResponse>(getPutApiAnnoncesIdUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      annonceInput,)
+  }
+);}
+
+
+
+
+export const getPutApiAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext> => {
+
+const mutationKey = ['putApiAnnoncesId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAnnoncesId>>, {id: string;data: BodyType<AnnonceInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putApiAnnoncesId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAnnoncesId>>>
+    export type PutApiAnnoncesIdMutationBody = BodyType<AnnonceInput>
+    export type PutApiAnnoncesIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier une annonce
+ */
+export const usePutApiAnnoncesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putApiAnnoncesId>>,
+        TError,
+        {id: string;data: BodyType<AnnonceInput>},
+        TContext
+      > => {
+      return useMutation(getPutApiAnnoncesIdMutationOptions(options));
+    }
+
+export const getDeleteApiAnnoncesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/annonces/${id}`
+}
+
+/**
+ * @summary Supprimer une annonce
+ */
+export const deleteApiAnnoncesId = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getDeleteApiAnnoncesIdUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteApiAnnoncesId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteApiAnnoncesId(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiAnnoncesId>>>
+
+    export type DeleteApiAnnoncesIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Supprimer une annonce
+ */
+export const useDeleteApiAnnoncesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiAnnoncesId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiAnnoncesIdMutationOptions(options));
+    }
+
+export const getPutApiAnnoncesIdPublierUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/annonces/${id}/publier`
+}
+
+/**
+ * @summary Publier une annonce
+ */
+export const putApiAnnoncesIdPublier = async (id: string, options?: RequestInit): Promise<AnnonceItemResponse> => {
+
+  return customFetch<AnnonceItemResponse>(getPutApiAnnoncesIdPublierUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getPutApiAnnoncesIdPublierMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['putApiAnnoncesIdPublier'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  putApiAnnoncesIdPublier(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiAnnoncesIdPublierMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>>
+
+    export type PutApiAnnoncesIdPublierMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Publier une annonce
+ */
+export const usePutApiAnnoncesIdPublier = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPutApiAnnoncesIdPublierMutationOptions(options));
+    }
+
+export const getGetApiAnnoncesIdStatsUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/annonces/${id}/stats`
+}
+
+/**
+ * @summary Stats de lecture d'une annonce
+ */
+export const getApiAnnoncesIdStats = async (id: string, options?: RequestInit): Promise<AnnonceStatsResponse> => {
+
+  return customFetch<AnnonceStatsResponse>(getGetApiAnnoncesIdStatsUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiAnnoncesIdStatsQueryKey = (id: string,) => {
+    return [
+    `/api/api/annonces/${id}/stats`
+    ] as const;
+    }
+
+
+export const getGetApiAnnoncesIdStatsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesIdStatsQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>> = ({ signal }) => getApiAnnoncesIdStats(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiAnnoncesIdStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>>
+export type GetApiAnnoncesIdStatsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Stats de lecture d'une annonce
+ */
+
+export function useGetApiAnnoncesIdStats<TData = Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetApiAnnoncesIdStatsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostApiNotificationsEnvoyerUrl = () => {
+
+
+
+
+  return `/api/api/notifications/envoyer`
+}
+
+/**
+ * @summary Envoyer une notification manuelle
+ */
+export const postApiNotificationsEnvoyer = async (envoyerNotificationInput: EnvoyerNotificationInput, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getPostApiNotificationsEnvoyerUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      envoyerNotificationInput,)
+  }
+);}
+
+
+
+
+export const getPostApiNotificationsEnvoyerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext> => {
+
+const mutationKey = ['postApiNotificationsEnvoyer'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, {data: BodyType<EnvoyerNotificationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiNotificationsEnvoyer(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiNotificationsEnvoyerMutationResult = NonNullable<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>>
+    export type PostApiNotificationsEnvoyerMutationBody = BodyType<EnvoyerNotificationInput>
+    export type PostApiNotificationsEnvoyerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Envoyer une notification manuelle
+ */
+export const usePostApiNotificationsEnvoyer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>,
+        TError,
+        {data: BodyType<EnvoyerNotificationInput>},
+        TContext
+      > => {
+      return useMutation(getPostApiNotificationsEnvoyerMutationOptions(options));
     }
 
