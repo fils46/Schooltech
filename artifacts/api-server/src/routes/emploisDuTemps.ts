@@ -147,7 +147,7 @@ router.post(
 router.post(
   "/emploi-du-temps/creer",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { classe_id, professeur_id, salle_id, matiere, jour, creneau_id,
@@ -209,7 +209,7 @@ router.post(
 router.put(
   "/emploi-du-temps/:id/modifier",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -275,7 +275,7 @@ router.put(
 router.delete(
   "/emploi-du-temps/:id/supprimer",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -414,7 +414,7 @@ router.get(
 router.get(
   "/emploi-du-temps/salle/:salleId",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const salleId = Array.isArray(req.params.salleId) ? req.params.salleId[0] : req.params.salleId;
@@ -450,7 +450,7 @@ router.get(
 router.get(
   "/emploi-du-temps/conflits",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const anneeId = req.query.annee_scolaire_id as string | undefined;
@@ -553,7 +553,7 @@ router.get(
 router.post(
   "/emploi-du-temps/dupliquer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { classe_source_id, classe_destination_id, annee_scolaire_id } =

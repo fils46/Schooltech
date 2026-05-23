@@ -230,7 +230,7 @@ router.get(
 router.post(
   "/classes/:id/affecter-eleve",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -297,7 +297,7 @@ router.post(
 router.delete(
   "/classes/:id/retirer-eleve/:eleveId",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -335,7 +335,7 @@ router.delete(
 router.post(
   "/classes/:id/affecter-professeur",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -390,7 +390,7 @@ router.post(
 router.delete(
   "/classes/:id/retirer-professeur/:profId",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -425,7 +425,7 @@ router.delete(
 router.post(
   "/classes/montee",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { ancienne_annee_id, nouvelle_annee_id, mappings } = req.body as {
@@ -503,7 +503,7 @@ router.post(
 router.post(
   "/classes/creer",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const {
@@ -564,7 +564,7 @@ router.post(
 router.put(
   "/classes/:id",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -606,7 +606,7 @@ router.put(
 router.delete(
   "/classes/:id",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

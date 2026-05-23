@@ -32,7 +32,7 @@ router.get("/salles/liste", authMiddleware, async (req, res): Promise<void> => {
 router.post(
   "/salles/creer",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { nom, capacite, type, etablissement_id } = req.body as Record<string, unknown>;
@@ -76,7 +76,7 @@ router.post(
 router.put(
   "/salles/:id/modifier",
   authMiddleware,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -122,7 +122,7 @@ router.put(
 router.put(
   "/salles/:id/desactiver",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

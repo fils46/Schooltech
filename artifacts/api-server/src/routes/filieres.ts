@@ -36,7 +36,7 @@ router.get(
 router.post(
   "/filieres/creer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { nom, code, description, type_etablissement, etablissement_id } =
@@ -78,7 +78,7 @@ router.post(
 router.put(
   "/filieres/:id/modifier",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -117,7 +117,7 @@ router.put(
 router.put(
   "/filieres/:id/desactiver",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

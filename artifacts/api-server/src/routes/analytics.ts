@@ -812,7 +812,7 @@ router.get(
   "/analytics/censeur",
   authMiddleware,
   verifierLicence,
-  requireRole("censeur", "directeur", "dev"),
+  requireRole("censeur", "directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const etabId = user.etablissement_id!;
@@ -1012,7 +1012,7 @@ router.post(
   "/analytics/snapshots",
   authMiddleware,
   verifierLicence,
-  requireRole("dev"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { annee_scolaire_id, trimestre, date_snapshot, donnees } = req.body as {

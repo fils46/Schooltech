@@ -49,7 +49,7 @@ router.get("/creneaux/liste", authMiddleware, async (req, res): Promise<void> =>
 router.post(
   "/creneaux/creer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { heure_debut, heure_fin, libelle, ordre, etablissement_id } =
@@ -122,7 +122,7 @@ router.post(
 router.put(
   "/creneaux/:id/modifier",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -191,7 +191,7 @@ router.put(
 router.delete(
   "/creneaux/:id/supprimer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

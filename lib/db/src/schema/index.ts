@@ -34,3 +34,6 @@ export * from "./bibliotheque";
 export * from "./infirmerie";
 export * from "./clubs";
 export * from "./analytics";
+export * from "./licences";
+export * from "./paiementsLicences";
+export * from "./logsActiviteSaas";

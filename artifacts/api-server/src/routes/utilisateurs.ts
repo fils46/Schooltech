@@ -102,7 +102,7 @@ router.get(
   "/utilisateurs/liste",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const { role: filterRole, actif, etablissement_id } = req.query as Record<string, string>;
     const user = req.user!;
@@ -154,7 +154,7 @@ router.put(
   "/utilisateurs/:id/activer",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 
@@ -178,7 +178,7 @@ router.put(
   "/utilisateurs/:id/desactiver",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 

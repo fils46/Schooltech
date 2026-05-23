@@ -78,6 +78,12 @@ import AnalysePedagogique from "@/pages/analyse-pedagogique";
 import AnalysePresences from "@/pages/analyse-presences";
 import DashboardProfesseurAnalytique from "@/pages/dashboard-professeur-analytique";
 import RapportsExports from "@/pages/rapports-exports";
+import { SaasRoute } from "@/components/SaasRoute";
+import SaasDashboard from "@/pages/saas/SaasDashboard";
+import GestionEtablissements from "@/pages/saas/GestionEtablissements";
+import FicheEtablissement from "@/pages/saas/FicheEtablissement";
+import GestionLicences from "@/pages/saas/GestionLicences";
+import LogsSaas from "@/pages/saas/LogsSaas";
 
 const queryClient = new QueryClient();
 
@@ -661,6 +667,23 @@ function Router() {
             <Dashboard />
           </DashboardLayout>
         </ProtectedRoute>
+      </Route>
+
+      {/* Routes Admin SaaS — rôle dev uniquement */}
+      <Route path="/saas/etablissements/:id">
+        <SaasRoute><FicheEtablissement /></SaasRoute>
+      </Route>
+      <Route path="/saas/etablissements">
+        <SaasRoute><GestionEtablissements /></SaasRoute>
+      </Route>
+      <Route path="/saas/licences">
+        <SaasRoute><GestionLicences /></SaasRoute>
+      </Route>
+      <Route path="/saas/logs">
+        <SaasRoute><LogsSaas /></SaasRoute>
+      </Route>
+      <Route path="/saas">
+        <SaasRoute><SaasDashboard /></SaasRoute>
       </Route>
 
       <Route component={NotFound} />

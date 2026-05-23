@@ -75,7 +75,7 @@ router.post(
   "/eleves/inscrire",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const createur = req.user!;
     const {
@@ -202,7 +202,7 @@ router.get(
   "/eleves/recherche",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur", "professeur"),
+  requireRole("directeur", "censeur", "professeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { q, statut, sexe } = req.query as Record<string, string>;
@@ -240,7 +240,7 @@ router.get(
   "/eleves/liste",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur", "professeur"),
+  requireRole("directeur", "censeur", "professeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { statut, sexe } = req.query as Record<string, string>;
@@ -336,7 +336,7 @@ router.put(
   "/eleves/:id",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const user = req.user!;
@@ -368,7 +368,7 @@ router.delete(
   "/eleves/:id",
   authMiddleware,
   verifierLicence,
-  requireRole("dev"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 
@@ -389,7 +389,7 @@ router.put(
   "/eleves/:id/statut",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const user = req.user!;
@@ -436,7 +436,7 @@ router.post(
   "/eleves/:id/lier-parent",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const { utilisateur_id, lien, est_principal } = req.body as { utilisateur_id: string; lien: string; est_principal?: boolean };
@@ -468,7 +468,7 @@ router.delete(
   "/eleves/:id/delier-parent/:parentId",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const parentId = Array.isArray(req.params.parentId) ? req.params.parentId[0] : req.params.parentId;
@@ -493,7 +493,7 @@ router.post(
   "/eleves/:id/documents/upload",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   upload.single("file"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -533,7 +533,7 @@ router.delete(
   "/eleves/:id/documents/:docId",
   authMiddleware,
   verifierLicence,
-  requireRole("dev", "directeur", "censeur"),
+  requireRole("directeur", "censeur"),
   async (req, res): Promise<void> => {
     const docId = Array.isArray(req.params.docId) ? req.params.docId[0] : req.params.docId;
     const [doc] = await db.select().from(documentsElevesTable).where(eq(documentsElevesTable.id, docId));

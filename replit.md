@@ -64,6 +64,19 @@ Module 01 — Authentification complet :
 - Statistiques globales et par établissement
 - Thème Bleu marine / Cyan / Or + Poppins + mode sombre/clair
 
+Module 00 — Admin SaaS (complet) :
+- 3 tables DB : licences, paiements_licences, logs_activite_saas
+- 17 endpoints API REST sous /api/saas/... (guard verifSaasAdmin, rôle dev uniquement)
+- Middleware verifSaasAdmin : bloque tout accès non-dev
+- Création cascade : établissement + directeur + licence en une seule requête (mot de passe temporaire)
+- Gestion licences : renouveler, modifier, historique paiements
+- Réinitialisation mot de passe directeur avec nouveau mdp temporaire
+- 5 pages frontend sous /saas/* : SaasDashboard, GestionEtablissements, FicheEtablissement, GestionLicences, LogsSaas
+- SaasLayout distinct (sidebar Navy/Cyan/Gold, aucune référence à l'espace scolaire)
+- SaasRoute guard : redirection /login si rôle ≠ dev
+- Rôle dev retiré de toutes les routes scolaires (eleves, classes, notes, absences, analytics, etc.)
+- Export CSV des logs d'activité SaaS
+
 Module 18 — Tableau de Bord Analytique (complet) :
 - 2 tables DB : rapports_generes, snapshots_analytics
 - 12 endpoints API REST sous /api/analytics/...

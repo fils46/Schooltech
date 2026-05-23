@@ -72,7 +72,7 @@ router.get(
 router.post(
   "/annees-scolaires/creer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { libelle, date_debut, date_fin, est_active, etablissement_id } =
@@ -141,7 +141,7 @@ router.post(
 router.put(
   "/annees-scolaires/:id/activer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

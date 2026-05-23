@@ -9,7 +9,7 @@ const router = Router();
 router.get(
   "/stats/global",
   authMiddleware,
-  requireRole("dev"),
+  requireRole("directeur"),
   async (_req, res): Promise<void> => {
     const [totalEtablissementsResult] = await db
       .select({ count: count() })
@@ -68,7 +68,7 @@ router.get(
 router.get(
   "/stats/etablissement/:id",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const user = req.user!;
