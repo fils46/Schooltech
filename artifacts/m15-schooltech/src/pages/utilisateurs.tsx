@@ -225,12 +225,15 @@ export default function Utilisateurs() {
                   {isDev && (
                     <div className="space-y-2">
                       <Label>Établissement</Label>
-                      <Select onValueChange={(val) => form.setValue("etablissement_id", val)} defaultValue={form.getValues("etablissement_id")}>
+                      <Select
+                        onValueChange={(val) => form.setValue("etablissement_id", val === "__none__" ? "" : val)}
+                        defaultValue={form.getValues("etablissement_id") || "__none__"}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Aucun (Administrateur Global)" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Aucun (Administrateur Global)</SelectItem>
+                          <SelectItem value="__none__">Aucun (Administrateur Global)</SelectItem>
                           {etablissements?.map(e => (
                             <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>
                           ))}
