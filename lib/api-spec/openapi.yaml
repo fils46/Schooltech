@@ -3607,6 +3607,259 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /examens/sujets:
+    get:
+      tags: [Examens]
+      summary: Lister les sujets d'examens
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: matiere, in: query, schema: { type: string } }
+        - { name: type_examen, in: query, schema: { type: string } }
+        - { name: serie, in: query, schema: { type: string } }
+        - { name: annee, in: query, schema: { type: integer } }
+        - { name: niveau, in: query, schema: { type: string } }
+        - { name: publie, in: query, schema: { type: boolean } }
+        - { name: q, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste sujets
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SujetsListeResponse" }
+    post:
+      tags: [Examens]
+      summary: Ajouter un sujet
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SujetExamenInput" }
+      responses:
+        "201":
+          description: Sujet créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SujetExamenResponse" }
+
+  /examens/sujets/{id}:
+    get:
+      tags: [Examens]
+      summary: Obtenir un sujet (incrémente téléchargements)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Sujet
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SujetExamenResponse" }
+    put:
+      tags: [Examens]
+      summary: Modifier un sujet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SujetExamenInput" }
+      responses:
+        "200":
+          description: Sujet modifié
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SujetExamenResponse" }
+    delete:
+      tags: [Examens]
+      summary: Supprimer un sujet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Supprimé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MessageResponse" }
+
+  /examens/sujets/{id}/publier:
+    put:
+      tags: [Examens]
+      summary: Publier un sujet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Sujet publié
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SujetExamenResponse" }
+
+  /examens/epreuves:
+    get:
+      tags: [Examens]
+      summary: Lister les épreuves blanches
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: matiere, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste épreuves
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EpreuvesListeResponse" }
+    post:
+      tags: [Examens]
+      summary: Créer une épreuve blanche
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EpreuveBlanCheInput" }
+      responses:
+        "201":
+          description: Épreuve créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EpreuveBlanCheResponse" }
+
+  /examens/epreuves/{id}:
+    get:
+      tags: [Examens]
+      summary: Obtenir une épreuve
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Épreuve
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EpreuveBlanCheResponse" }
+
+  /examens/epreuves/{id}/resultats:
+    post:
+      tags: [Examens]
+      summary: Saisir les résultats d'une épreuve
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SaisirResultatsInput" }
+      responses:
+        "200":
+          description: Résultats enregistrés
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatsEpreuveResponse" }
+
+  /examens/epreuves/{id}/stats:
+    get:
+      tags: [Examens]
+      summary: Statistiques d'une épreuve
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatsEpreuveResponse" }
+
+  /examens/eleve/{eleveId}/progression:
+    get:
+      tags: [Examens]
+      summary: Progression d'un élève aux épreuves blanches
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Progression
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ProgressionEleveResponse" }
+
+  /examens/planning/generer:
+    post:
+      tags: [Examens]
+      summary: Générer un planning de révision
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GenererPlanningInput" }
+      responses:
+        "200":
+          description: Planning généré
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PlanningListeResponse" }
+
+  /examens/planning/{eleveId}:
+    get:
+      tags: [Examens]
+      summary: Obtenir le planning d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+        - { name: semaine, in: query, schema: { type: string } }
+        - { name: mois, in: query, schema: { type: string } }
+        - { name: matiere, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Planning
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PlanningListeResponse" }
+
+  /examens/planning/sessions/{id}:
+    put:
+      tags: [Examens]
+      summary: Mettre à jour une session de révision
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateSessionInput" }
+      responses:
+        "200":
+          description: Session mise à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PlanningSessionItem" }
+
+  /examens/planning/{eleveId}/completion:
+    get:
+      tags: [Examens]
+      summary: Taux de complétion du planning
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Completion
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CompletionPlanningResponse" }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -6032,3 +6285,238 @@ components:
         type: { type: string }
         lien_action: { type: string, nullable: true }
 
+
+    SujetExamenItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        ajoute_par: { type: string }
+        matiere: { type: string }
+        titre: { type: string }
+        type_examen: { type: string, enum: [BEPC, BAC, blanc, entrainement] }
+        serie: { type: string, nullable: true }
+        annee: { type: integer, nullable: true }
+        niveau: { type: string, enum: ["3eme", "Tle"] }
+        fichier_url: { type: string }
+        fichier_nom: { type: string }
+        corrige_url: { type: string, nullable: true }
+        corrige_nom: { type: string, nullable: true }
+        nb_telechargements: { type: integer }
+        publie: { type: boolean }
+        auteur_nom: { type: string }
+        created_at: { type: string }
+
+    SujetExamenInput:
+      type: object
+      required: [matiere, titre, type_examen, niveau, fichier_url, fichier_nom]
+      properties:
+        matiere: { type: string }
+        titre: { type: string }
+        type_examen: { type: string, enum: [BEPC, BAC, blanc, entrainement] }
+        serie: { type: string, nullable: true }
+        annee: { type: integer, nullable: true }
+        niveau: { type: string, enum: ["3eme", "Tle"] }
+        fichier_url: { type: string }
+        fichier_nom: { type: string }
+        corrige_url: { type: string, nullable: true }
+        corrige_nom: { type: string, nullable: true }
+        publie: { type: boolean }
+
+    SujetExamenResponse:
+      type: object
+      properties:
+        sujet: { $ref: "#/components/schemas/SujetExamenItem" }
+
+    SujetsListeResponse:
+      type: object
+      properties:
+        sujets:
+          type: array
+          items: { $ref: "#/components/schemas/SujetExamenItem" }
+        total: { type: integer }
+
+    EpreuveBlanCheItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        professeur_id: { type: string }
+        classe_id: { type: string }
+        matiere: { type: string }
+        sujet_id: { type: string, nullable: true }
+        titre: { type: string }
+        type_examen: { type: string }
+        date_epreuve: { type: string }
+        duree_minutes: { type: integer }
+        bareme_total: { type: string }
+        statut: { type: string, enum: [planifiee, en_cours, terminee, corrigee] }
+        instructions: { type: string, nullable: true }
+        professeur_nom: { type: string }
+        classe_nom: { type: string }
+        created_at: { type: string }
+
+    EpreuveBlanCheInput:
+      type: object
+      required: [classe_id, matiere, titre, date_epreuve, duree_minutes]
+      properties:
+        classe_id: { type: string }
+        matiere: { type: string }
+        sujet_id: { type: string, nullable: true }
+        titre: { type: string }
+        type_examen: { type: string, enum: [BEPC, BAC, blanc] }
+        date_epreuve: { type: string }
+        duree_minutes: { type: integer }
+        bareme_total: { type: number }
+        instructions: { type: string, nullable: true }
+
+    EpreuveBlanCheResponse:
+      type: object
+      properties:
+        epreuve: { $ref: "#/components/schemas/EpreuveBlanCheItem" }
+
+    EpreuvesListeResponse:
+      type: object
+      properties:
+        epreuves:
+          type: array
+          items: { $ref: "#/components/schemas/EpreuveBlanCheItem" }
+        total: { type: integer }
+
+    ResultatEpreuveItem:
+      type: object
+      properties:
+        id: { type: string }
+        epreuve_id: { type: string }
+        eleve_id: { type: string }
+        note: { type: string, nullable: true }
+        appreciation: { type: string, nullable: true }
+        present: { type: boolean }
+        date_correction: { type: string, nullable: true }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+
+    SaisirResultatsInput:
+      type: object
+      required: [resultats]
+      properties:
+        resultats:
+          type: array
+          items:
+            type: object
+            required: [eleve_id]
+            properties:
+              eleve_id: { type: string }
+              note: { type: number, nullable: true }
+              appreciation: { type: string, nullable: true }
+              present: { type: boolean }
+
+    StatsEpreuveResponse:
+      type: object
+      properties:
+        epreuve_id: { type: string }
+        nb_presents: { type: integer }
+        nb_absents: { type: integer }
+        moyenne: { type: number }
+        note_min: { type: number }
+        note_max: { type: number }
+        ecart_type: { type: number }
+        taux_reussite: { type: number }
+        distribution:
+          type: object
+          properties:
+            "0-5": { type: integer }
+            "5-10": { type: integer }
+            "10-14": { type: integer }
+            "14-20": { type: integer }
+        resultats:
+          type: array
+          items: { $ref: "#/components/schemas/ResultatEpreuveItem" }
+
+    ProgressionEleveResponse:
+      type: object
+      properties:
+        eleve_id: { type: string }
+        par_matiere:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere: { type: string }
+              moyenne_blancs: { type: number }
+              nb_epreuves: { type: integer }
+              meilleure_note: { type: number }
+              derniere_note: { type: number }
+              tendance: { type: string, enum: [hausse, baisse, stable] }
+        points_forts:
+          type: array
+          items: { type: string }
+        points_faibles:
+          type: array
+          items: { type: string }
+        historique:
+          type: array
+          items:
+            type: object
+            properties:
+              date_epreuve: { type: string }
+              matiere: { type: string }
+              note: { type: number }
+              bareme_total: { type: string }
+              titre: { type: string }
+
+    PlanningSessionItem:
+      type: object
+      properties:
+        id: { type: string }
+        eleve_id: { type: string }
+        matiere: { type: string }
+        titre_session: { type: string }
+        date_session: { type: string }
+        heure_debut: { type: string }
+        heure_fin: { type: string }
+        statut: { type: string, enum: [planifie, fait, saute] }
+        notes_eleve: { type: string, nullable: true }
+
+    PlanningListeResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items: { $ref: "#/components/schemas/PlanningSessionItem" }
+        total: { type: integer }
+
+    GenererPlanningInput:
+      type: object
+      required: [eleve_id, date_examen, nb_heures_par_jour]
+      properties:
+        eleve_id: { type: string }
+        date_examen: { type: string }
+        nb_heures_par_jour: { type: integer }
+        matieres_prioritaires:
+          type: array
+          items: { type: string }
+
+    UpdateSessionInput:
+      type: object
+      properties:
+        statut: { type: string, enum: [planifie, fait, saute] }
+        notes_eleve: { type: string, nullable: true }
+
+    CompletionPlanningResponse:
+      type: object
+      properties:
+        total: { type: integer }
+        fait: { type: integer }
+        saute: { type: integer }
+        planifie: { type: integer }
+        taux_completion: { type: number }
+        par_matiere:
+          type: array
+          items:
+            type: object
+            properties:
+              matiere: { type: string }
+              total: { type: integer }
+              fait: { type: integer }
+              taux: { type: number }

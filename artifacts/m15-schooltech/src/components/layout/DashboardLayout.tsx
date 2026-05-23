@@ -11,6 +11,7 @@ import {
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
+  Target, ClipboardCheck, TrendingUp,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -51,6 +52,15 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Licences",       href: "/licences",       icon: Key },
         { label: "Statistiques",   href: "/statistiques",   icon: BarChart3 },
+      ],
+    },
+    {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation examens", href: "/examens",              icon: Target },
+        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
       ],
     },
     {
@@ -96,6 +106,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation examens", href: "/examens",              icon: Target },
+        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -129,6 +148,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation examens", href: "/examens",              icon: Target },
+        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -150,6 +178,14 @@ const navConfig: Record<string, Section[]> = {
       title: "QUOTIDIEN",
       links: [
         { label: "Appel",    href: "/appel",    icon: ClipboardList },
+      ],
+    },
+    {
+      title: "EXAMENS",
+      links: [
+        { label: "Sujets BEPC/BAC",   href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats classe",   href: "/resultats-progression",icon: TrendingUp },
       ],
     },
     {
@@ -179,6 +215,16 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation",     href: "/examens",              icon: Target },
+        { label: "Sujets BEPC/BAC", href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",href: "/epreuves-blanches",   icon: ClipboardCheck },
+        { label: "Mon planning",    href: "/planning-revision",    icon: Calendar },
+        { label: "Mes résultats",   href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
@@ -200,6 +246,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Suivi scolaire",  href: "/suivi-scolaire",  icon: BookOpen },
         { label: "Bulletins",       href: "/mes-bulletins",   icon: FileSpreadsheet },
         { label: "Absences",        href: "/absences-parent", icon: UserMinus },
+      ],
+    },
+    {
+      title: "EXAMENS",
+      links: [
+        { label: "Sujets BEPC/BAC",    href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats enfant",   href: "/resultats-progression",icon: TrendingUp },
       ],
     },
     {
@@ -257,7 +311,12 @@ const PAGE_TITLES: Record<string, string> = {
   "/parent-dashboard":  "Tableau de bord",
   "/suivi-scolaire":    "Suivi scolaire",
   "/messagerie":        "Messagerie",
-  "/rendez-vous":       "Rendez-vous",
+  "/rendez-vous":             "Rendez-vous",
+  "/examens":                 "Préparation aux Examens",
+  "/bibliotheque-sujets":     "Bibliothèque de Sujets",
+  "/epreuves-blanches":       "Épreuves Blanches",
+  "/planning-revision":       "Planning de Révision",
+  "/resultats-progression":   "Résultats & Progression",
 };
 
 const ROLE_LABELS: Record<string, string> = {

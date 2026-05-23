@@ -1922,6 +1922,284 @@ export interface EnvoyerNotificationInput {
   lien_action?: string | null;
 }
 
+export type SujetExamenItemTypeExamen = typeof SujetExamenItemTypeExamen[keyof typeof SujetExamenItemTypeExamen];
+
+
+export const SujetExamenItemTypeExamen = {
+  BEPC: 'BEPC',
+  BAC: 'BAC',
+  blanc: 'blanc',
+  entrainement: 'entrainement',
+} as const;
+
+export type SujetExamenItemNiveau = typeof SujetExamenItemNiveau[keyof typeof SujetExamenItemNiveau];
+
+
+export const SujetExamenItemNiveau = {
+  '3eme': '3eme',
+  Tle: 'Tle',
+} as const;
+
+export interface SujetExamenItem {
+  id?: string;
+  etablissement_id?: string;
+  ajoute_par?: string;
+  matiere?: string;
+  titre?: string;
+  type_examen?: SujetExamenItemTypeExamen;
+  serie?: string | null;
+  annee?: number | null;
+  niveau?: SujetExamenItemNiveau;
+  fichier_url?: string;
+  fichier_nom?: string;
+  corrige_url?: string | null;
+  corrige_nom?: string | null;
+  nb_telechargements?: number;
+  publie?: boolean;
+  auteur_nom?: string;
+  created_at?: string;
+}
+
+export type SujetExamenInputTypeExamen = typeof SujetExamenInputTypeExamen[keyof typeof SujetExamenInputTypeExamen];
+
+
+export const SujetExamenInputTypeExamen = {
+  BEPC: 'BEPC',
+  BAC: 'BAC',
+  blanc: 'blanc',
+  entrainement: 'entrainement',
+} as const;
+
+export type SujetExamenInputNiveau = typeof SujetExamenInputNiveau[keyof typeof SujetExamenInputNiveau];
+
+
+export const SujetExamenInputNiveau = {
+  '3eme': '3eme',
+  Tle: 'Tle',
+} as const;
+
+export interface SujetExamenInput {
+  matiere: string;
+  titre: string;
+  type_examen: SujetExamenInputTypeExamen;
+  serie?: string | null;
+  annee?: number | null;
+  niveau: SujetExamenInputNiveau;
+  fichier_url: string;
+  fichier_nom: string;
+  corrige_url?: string | null;
+  corrige_nom?: string | null;
+  publie?: boolean;
+}
+
+export interface SujetExamenResponse {
+  sujet?: SujetExamenItem;
+}
+
+export interface SujetsListeResponse {
+  sujets?: SujetExamenItem[];
+  total?: number;
+}
+
+export type EpreuveBlanCheItemStatut = typeof EpreuveBlanCheItemStatut[keyof typeof EpreuveBlanCheItemStatut];
+
+
+export const EpreuveBlanCheItemStatut = {
+  planifiee: 'planifiee',
+  en_cours: 'en_cours',
+  terminee: 'terminee',
+  corrigee: 'corrigee',
+} as const;
+
+export interface EpreuveBlanCheItem {
+  id?: string;
+  etablissement_id?: string;
+  professeur_id?: string;
+  classe_id?: string;
+  matiere?: string;
+  sujet_id?: string | null;
+  titre?: string;
+  type_examen?: string;
+  date_epreuve?: string;
+  duree_minutes?: number;
+  bareme_total?: string;
+  statut?: EpreuveBlanCheItemStatut;
+  instructions?: string | null;
+  professeur_nom?: string;
+  classe_nom?: string;
+  created_at?: string;
+}
+
+export type EpreuveBlanCheInputTypeExamen = typeof EpreuveBlanCheInputTypeExamen[keyof typeof EpreuveBlanCheInputTypeExamen];
+
+
+export const EpreuveBlanCheInputTypeExamen = {
+  BEPC: 'BEPC',
+  BAC: 'BAC',
+  blanc: 'blanc',
+} as const;
+
+export interface EpreuveBlanCheInput {
+  classe_id: string;
+  matiere: string;
+  sujet_id?: string | null;
+  titre: string;
+  type_examen?: EpreuveBlanCheInputTypeExamen;
+  date_epreuve: string;
+  duree_minutes: number;
+  bareme_total?: number;
+  instructions?: string | null;
+}
+
+export interface EpreuveBlanCheResponse {
+  epreuve?: EpreuveBlanCheItem;
+}
+
+export interface EpreuvesListeResponse {
+  epreuves?: EpreuveBlanCheItem[];
+  total?: number;
+}
+
+export interface ResultatEpreuveItem {
+  id?: string;
+  epreuve_id?: string;
+  eleve_id?: string;
+  note?: string | null;
+  appreciation?: string | null;
+  present?: boolean;
+  date_correction?: string | null;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+}
+
+export type SaisirResultatsInputResultatsItem = {
+  eleve_id: string;
+  note?: number | null;
+  appreciation?: string | null;
+  present?: boolean;
+};
+
+export interface SaisirResultatsInput {
+  resultats: SaisirResultatsInputResultatsItem[];
+}
+
+export type StatsEpreuveResponseDistribution = {
+  '0-5'?: number;
+  '5-10'?: number;
+  '10-14'?: number;
+  '14-20'?: number;
+};
+
+export interface StatsEpreuveResponse {
+  epreuve_id?: string;
+  nb_presents?: number;
+  nb_absents?: number;
+  moyenne?: number;
+  note_min?: number;
+  note_max?: number;
+  ecart_type?: number;
+  taux_reussite?: number;
+  distribution?: StatsEpreuveResponseDistribution;
+  resultats?: ResultatEpreuveItem[];
+}
+
+export type ProgressionEleveResponseParMatiereItemTendance = typeof ProgressionEleveResponseParMatiereItemTendance[keyof typeof ProgressionEleveResponseParMatiereItemTendance];
+
+
+export const ProgressionEleveResponseParMatiereItemTendance = {
+  hausse: 'hausse',
+  baisse: 'baisse',
+  stable: 'stable',
+} as const;
+
+export type ProgressionEleveResponseParMatiereItem = {
+  matiere?: string;
+  moyenne_blancs?: number;
+  nb_epreuves?: number;
+  meilleure_note?: number;
+  derniere_note?: number;
+  tendance?: ProgressionEleveResponseParMatiereItemTendance;
+};
+
+export type ProgressionEleveResponseHistoriqueItem = {
+  date_epreuve?: string;
+  matiere?: string;
+  note?: number;
+  bareme_total?: string;
+  titre?: string;
+};
+
+export interface ProgressionEleveResponse {
+  eleve_id?: string;
+  par_matiere?: ProgressionEleveResponseParMatiereItem[];
+  points_forts?: string[];
+  points_faibles?: string[];
+  historique?: ProgressionEleveResponseHistoriqueItem[];
+}
+
+export type PlanningSessionItemStatut = typeof PlanningSessionItemStatut[keyof typeof PlanningSessionItemStatut];
+
+
+export const PlanningSessionItemStatut = {
+  planifie: 'planifie',
+  fait: 'fait',
+  saute: 'saute',
+} as const;
+
+export interface PlanningSessionItem {
+  id?: string;
+  eleve_id?: string;
+  matiere?: string;
+  titre_session?: string;
+  date_session?: string;
+  heure_debut?: string;
+  heure_fin?: string;
+  statut?: PlanningSessionItemStatut;
+  notes_eleve?: string | null;
+}
+
+export interface PlanningListeResponse {
+  sessions?: PlanningSessionItem[];
+  total?: number;
+}
+
+export interface GenererPlanningInput {
+  eleve_id: string;
+  date_examen: string;
+  nb_heures_par_jour: number;
+  matieres_prioritaires?: string[];
+}
+
+export type UpdateSessionInputStatut = typeof UpdateSessionInputStatut[keyof typeof UpdateSessionInputStatut];
+
+
+export const UpdateSessionInputStatut = {
+  planifie: 'planifie',
+  fait: 'fait',
+  saute: 'saute',
+} as const;
+
+export interface UpdateSessionInput {
+  statut?: UpdateSessionInputStatut;
+  notes_eleve?: string | null;
+}
+
+export type CompletionPlanningResponseParMatiereItem = {
+  matiere?: string;
+  total?: number;
+  fait?: number;
+  taux?: number;
+};
+
+export interface CompletionPlanningResponse {
+  total?: number;
+  fait?: number;
+  saute?: number;
+  planifie?: number;
+  taux_completion?: number;
+  par_matiere?: CompletionPlanningResponseParMatiereItem[];
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -2185,4 +2463,28 @@ export const GetApiAnnoncesType = {
   evenement: 'evenement',
   rappel: 'rappel',
 } as const;
+
+export type GetExamensSujetsParams = {
+matiere?: string;
+type_examen?: string;
+serie?: string;
+annee?: number;
+niveau?: string;
+publie?: boolean;
+q?: string;
+};
+
+export type GetExamensEpreuvesParams = {
+classe_id?: string;
+matiere?: string;
+statut?: string;
+date_debut?: string;
+date_fin?: string;
+};
+
+export type GetExamensPlanningEleveIdParams = {
+semaine?: string;
+mois?: string;
+matiere?: string;
+};
 

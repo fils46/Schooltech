@@ -29,3 +29,4 @@ export * from "./annonces";
 export * from "./conseilParticipants";
 export * from "./conseilDeliberations";
 export * from "./conseilInterventions";
+export * from "./examens";

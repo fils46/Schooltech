@@ -4034,3 +4034,465 @@ export const PostApiNotificationsEnvoyerResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les sujets d'examens
+ */
+export const GetExamensSujetsQueryParams = zod.object({
+  "matiere": zod.coerce.string().optional(),
+  "type_examen": zod.coerce.string().optional(),
+  "serie": zod.coerce.string().optional(),
+  "annee": zod.coerce.number().optional(),
+  "niveau": zod.coerce.string().optional(),
+  "publie": zod.coerce.boolean().optional(),
+  "q": zod.coerce.string().optional()
+})
+
+export const GetExamensSujetsResponse = zod.object({
+  "sujets": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']).optional(),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "nb_telechargements": zod.number().optional(),
+  "publie": zod.boolean().optional(),
+  "auteur_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Ajouter un sujet
+ */
+export const PostExamensSujetsBody = zod.object({
+  "matiere": zod.string(),
+  "titre": zod.string(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']),
+  "fichier_url": zod.string(),
+  "fichier_nom": zod.string(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "publie": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Obtenir un sujet (incrémente téléchargements)
+ */
+export const GetExamensSujetsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetExamensSujetsIdResponse = zod.object({
+  "sujet": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']).optional(),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "nb_telechargements": zod.number().optional(),
+  "publie": zod.boolean().optional(),
+  "auteur_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Modifier un sujet
+ */
+export const PutExamensSujetsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutExamensSujetsIdBody = zod.object({
+  "matiere": zod.string(),
+  "titre": zod.string(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']),
+  "fichier_url": zod.string(),
+  "fichier_nom": zod.string(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "publie": zod.boolean().optional()
+})
+
+export const PutExamensSujetsIdResponse = zod.object({
+  "sujet": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']).optional(),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "nb_telechargements": zod.number().optional(),
+  "publie": zod.boolean().optional(),
+  "auteur_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Supprimer un sujet
+ */
+export const DeleteExamensSujetsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteExamensSujetsIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Publier un sujet
+ */
+export const PutExamensSujetsIdPublierParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutExamensSujetsIdPublierResponse = zod.object({
+  "sujet": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc', 'entrainement']).optional(),
+  "serie": zod.string().nullish(),
+  "annee": zod.number().nullish(),
+  "niveau": zod.enum(['3eme', 'Tle']).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "corrige_url": zod.string().nullish(),
+  "corrige_nom": zod.string().nullish(),
+  "nb_telechargements": zod.number().optional(),
+  "publie": zod.boolean().optional(),
+  "auteur_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Lister les épreuves blanches
+ */
+export const GetExamensEpreuvesQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "matiere": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const GetExamensEpreuvesResponse = zod.object({
+  "epreuves": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "sujet_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.string().optional(),
+  "date_epreuve": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "bareme_total": zod.string().optional(),
+  "statut": zod.enum(['planifiee', 'en_cours', 'terminee', 'corrigee']).optional(),
+  "instructions": zod.string().nullish(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Créer une épreuve blanche
+ */
+export const PostExamensEpreuvesBody = zod.object({
+  "classe_id": zod.string(),
+  "matiere": zod.string(),
+  "sujet_id": zod.string().nullish(),
+  "titre": zod.string(),
+  "type_examen": zod.enum(['BEPC', 'BAC', 'blanc']).optional(),
+  "date_epreuve": zod.string(),
+  "duree_minutes": zod.number(),
+  "bareme_total": zod.number().optional(),
+  "instructions": zod.string().nullish()
+})
+
+
+/**
+ * @summary Obtenir une épreuve
+ */
+export const GetExamensEpreuvesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetExamensEpreuvesIdResponse = zod.object({
+  "epreuve": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "sujet_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "type_examen": zod.string().optional(),
+  "date_epreuve": zod.string().optional(),
+  "duree_minutes": zod.number().optional(),
+  "bareme_total": zod.string().optional(),
+  "statut": zod.enum(['planifiee', 'en_cours', 'terminee', 'corrigee']).optional(),
+  "instructions": zod.string().nullish(),
+  "professeur_nom": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "created_at": zod.string().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Saisir les résultats d'une épreuve
+ */
+export const PostExamensEpreuvesIdResultatsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PostExamensEpreuvesIdResultatsBody = zod.object({
+  "resultats": zod.array(zod.object({
+  "eleve_id": zod.string(),
+  "note": zod.number().nullish(),
+  "appreciation": zod.string().nullish(),
+  "present": zod.boolean().optional()
+}))
+})
+
+export const PostExamensEpreuvesIdResultatsResponse = zod.object({
+  "epreuve_id": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "moyenne": zod.number().optional(),
+  "note_min": zod.number().optional(),
+  "note_max": zod.number().optional(),
+  "ecart_type": zod.number().optional(),
+  "taux_reussite": zod.number().optional(),
+  "distribution": zod.object({
+  "0-5": zod.number().optional(),
+  "5-10": zod.number().optional(),
+  "10-14": zod.number().optional(),
+  "14-20": zod.number().optional()
+}).optional(),
+  "resultats": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "epreuve_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "appreciation": zod.string().nullish(),
+  "present": zod.boolean().optional(),
+  "date_correction": zod.string().nullish(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Statistiques d'une épreuve
+ */
+export const GetExamensEpreuvesIdStatsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetExamensEpreuvesIdStatsResponse = zod.object({
+  "epreuve_id": zod.string().optional(),
+  "nb_presents": zod.number().optional(),
+  "nb_absents": zod.number().optional(),
+  "moyenne": zod.number().optional(),
+  "note_min": zod.number().optional(),
+  "note_max": zod.number().optional(),
+  "ecart_type": zod.number().optional(),
+  "taux_reussite": zod.number().optional(),
+  "distribution": zod.object({
+  "0-5": zod.number().optional(),
+  "5-10": zod.number().optional(),
+  "10-14": zod.number().optional(),
+  "14-20": zod.number().optional()
+}).optional(),
+  "resultats": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "epreuve_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "appreciation": zod.string().nullish(),
+  "present": zod.boolean().optional(),
+  "date_correction": zod.string().nullish(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Progression d'un élève aux épreuves blanches
+ */
+export const GetExamensEleveEleveIdProgressionParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetExamensEleveEleveIdProgressionResponse = zod.object({
+  "eleve_id": zod.string().optional(),
+  "par_matiere": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "moyenne_blancs": zod.number().optional(),
+  "nb_epreuves": zod.number().optional(),
+  "meilleure_note": zod.number().optional(),
+  "derniere_note": zod.number().optional(),
+  "tendance": zod.enum(['hausse', 'baisse', 'stable']).optional()
+})).optional(),
+  "points_forts": zod.array(zod.string()).optional(),
+  "points_faibles": zod.array(zod.string()).optional(),
+  "historique": zod.array(zod.object({
+  "date_epreuve": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "note": zod.number().optional(),
+  "bareme_total": zod.string().optional(),
+  "titre": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Générer un planning de révision
+ */
+export const PostExamensPlanningGenererBody = zod.object({
+  "eleve_id": zod.string(),
+  "date_examen": zod.string(),
+  "nb_heures_par_jour": zod.number(),
+  "matieres_prioritaires": zod.array(zod.string()).optional()
+})
+
+export const PostExamensPlanningGenererResponse = zod.object({
+  "sessions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre_session": zod.string().optional(),
+  "date_session": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "statut": zod.enum(['planifie', 'fait', 'saute']).optional(),
+  "notes_eleve": zod.string().nullish()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Obtenir le planning d'un élève
+ */
+export const GetExamensPlanningEleveIdParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetExamensPlanningEleveIdQueryParams = zod.object({
+  "semaine": zod.coerce.string().optional(),
+  "mois": zod.coerce.string().optional(),
+  "matiere": zod.coerce.string().optional()
+})
+
+export const GetExamensPlanningEleveIdResponse = zod.object({
+  "sessions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre_session": zod.string().optional(),
+  "date_session": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "statut": zod.enum(['planifie', 'fait', 'saute']).optional(),
+  "notes_eleve": zod.string().nullish()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Mettre à jour une session de révision
+ */
+export const PutExamensPlanningSessionsIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutExamensPlanningSessionsIdBody = zod.object({
+  "statut": zod.enum(['planifie', 'fait', 'saute']).optional(),
+  "notes_eleve": zod.string().nullish()
+})
+
+export const PutExamensPlanningSessionsIdResponse = zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "matiere": zod.string().optional(),
+  "titre_session": zod.string().optional(),
+  "date_session": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "statut": zod.enum(['planifie', 'fait', 'saute']).optional(),
+  "notes_eleve": zod.string().nullish()
+})
+
+
+/**
+ * @summary Taux de complétion du planning
+ */
+export const GetExamensPlanningEleveIdCompletionParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetExamensPlanningEleveIdCompletionResponse = zod.object({
+  "total": zod.number().optional(),
+  "fait": zod.number().optional(),
+  "saute": zod.number().optional(),
+  "planifie": zod.number().optional(),
+  "taux_completion": zod.number().optional(),
+  "par_matiere": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "total": zod.number().optional(),
+  "fait": zod.number().optional(),
+  "taux": zod.number().optional()
+})).optional()
+})
+
+

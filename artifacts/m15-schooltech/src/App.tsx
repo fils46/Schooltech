@@ -49,6 +49,11 @@ import RendezVousParent from "@/pages/rendez-vous-parent";
 import CommunicationDashboard from "@/pages/communication-dashboard";
 import FormulaireAnnonce from "@/pages/formulaire-annonce";
 import FilAnnonces from "@/pages/fil-annonces";
+import ExamensDashboard from "@/pages/examens-dashboard";
+import BibliothequeSujets from "@/pages/bibliotheque-sujets";
+import EpreuvesBlanches from "@/pages/epreuves-blanches";
+import PlanningRevision from "@/pages/planning-revision";
+import ResultatsProgression from "@/pages/resultats-progression";
 
 const queryClient = new QueryClient();
 
@@ -363,6 +368,46 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <FilAnnonces />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/examens">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ExamensDashboard />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/bibliotheque-sujets">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <BibliothequeSujets />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/epreuves-blanches">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EpreuvesBlanches />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/planning-revision">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <PlanningRevision />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/resultats-progression">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ResultatsProgression />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

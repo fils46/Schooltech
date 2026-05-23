@@ -23,6 +23,9 @@ import portailParentRouter from "./portailParent";
 import messagesRouter from "./messages";
 import rendezVousRouter from "./rendezVous";
 import annoncesRouter from "./annonces";
+import sujetsExamensRouter from "./sujetsExamens";
+import epreuvesBlanChesRouter from "./epreuvesBlanches";
+import planningRevisionsRouter from "./planningRevisions";
 
 const router: IRouter = Router();
 
@@ -50,5 +53,8 @@ router.use(portailParentRouter);
 router.use(messagesRouter);
 router.use(rendezVousRouter);
 router.use(annoncesRouter);
+router.use(sujetsExamensRouter);
+router.use(epreuvesBlanChesRouter);
+router.use(planningRevisionsRouter);
 
 export default router;
