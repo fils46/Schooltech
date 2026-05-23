@@ -2587,3 +2587,361 @@ export const TerminerConseilResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les absences
+ */
+export const ListerAbsencesQueryParams = zod.object({
+  "eleve_id": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional(),
+  "matiere": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "type": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListerAbsencesResponse = zod.object({
+  "absences": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "appel_detail_id": zod.string().nullish(),
+  "matiere": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "date_absence": zod.string().optional(),
+  "creneau_id": zod.string().nullish(),
+  "type": zod.enum(['absence', 'retard']).optional(),
+  "statut": zod.enum(['non_justifiee', 'en_attente', 'justifiee', 'rejetee']).optional(),
+  "notif_parent_envoyee": zod.boolean().optional(),
+  "justification": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number(),
+  "page": zod.number(),
+  "limit": zod.number()
+})
+
+
+/**
+ * @summary Statistiques d'absences
+ */
+export const GetStatistiquesAbsencesQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.string().optional()
+})
+
+export const GetStatistiquesAbsencesResponse = zod.object({
+  "statistiques": zod.object({
+  "total": zod.number().optional(),
+  "justifiees": zod.number().optional(),
+  "non_justifiees": zod.number().optional(),
+  "en_attente": zod.number().optional(),
+  "taux_presence": zod.number().optional(),
+  "par_jour": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "par_matiere": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "top_absents": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+})
+
+
+/**
+ * @summary Élèves dépassant le seuil d'absences
+ */
+export const GetElevesARisqueQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetElevesARisqueResponse = zod.object({
+  "seuil": zod.number().optional(),
+  "eleves": zod.array(zod.object({
+  "eleve_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "nb_absences": zod.number().optional(),
+  "derniere_absence": zod.string().optional()
+}))
+})
+
+
+/**
+ * @summary Créer une absence manuelle
+ */
+export const CreerAbsenceManuelleBody = zod.object({
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matiere": zod.string(),
+  "date_absence": zod.string(),
+  "creneau_id": zod.string().optional(),
+  "type": zod.enum(['absence', 'retard'])
+})
+
+
+/**
+ * @summary Résumé absences d'un élève
+ */
+export const GetResumeAbsencesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetResumeAbsencesEleveQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetResumeAbsencesEleveResponse = zod.object({
+  "resume": zod.object({
+  "total": zod.number().optional(),
+  "justifiees": zod.number().optional(),
+  "non_justifiees": zod.number().optional(),
+  "retards": zod.number().optional(),
+  "taux_presence": zod.number().optional(),
+  "par_matiere": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "evolution_mensuelle": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+})
+
+
+/**
+ * @summary Détail d'une absence
+ */
+export const GetAbsenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetAbsenceResponse = zod.object({
+  "absence": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "appel_detail_id": zod.string().nullish(),
+  "matiere": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "date_absence": zod.string().optional(),
+  "creneau_id": zod.string().nullish(),
+  "type": zod.enum(['absence', 'retard']).optional(),
+  "statut": zod.enum(['non_justifiee', 'en_attente', 'justifiee', 'rejetee']).optional(),
+  "notif_parent_envoyee": zod.boolean().optional(),
+  "justification": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Modifier une absence
+ */
+export const ModifierAbsenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierAbsenceBody = zod.object({
+  "type": zod.enum(['absence', 'retard']).optional(),
+  "date_absence": zod.string().optional(),
+  "matiere": zod.string().optional()
+})
+
+export const ModifierAbsenceResponse = zod.object({
+  "absence": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "appel_detail_id": zod.string().nullish(),
+  "matiere": zod.string().optional(),
+  "professeur_id": zod.string().optional(),
+  "professeur_nom": zod.string().optional(),
+  "date_absence": zod.string().optional(),
+  "creneau_id": zod.string().nullish(),
+  "type": zod.enum(['absence', 'retard']).optional(),
+  "statut": zod.enum(['non_justifiee', 'en_attente', 'justifiee', 'rejetee']).optional(),
+  "notif_parent_envoyee": zod.boolean().optional(),
+  "justification": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Supprimer une absence
+ */
+export const SupprimerAbsenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerAbsenceResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Soumettre une justification
+ */
+export const SoumettreJustificationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SoumettreJustificationBody = zod.object({
+  "motif": zod.string(),
+  "document_url": zod.string().optional()
+})
+
+
+/**
+ * @summary Lister les justifications
+ */
+export const ListerJustificationsQueryParams = zod.object({
+  "statut": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListerJustificationsResponse = zod.object({
+  "justifications": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "absence_id": zod.string().optional(),
+  "soumis_par": zod.string().optional(),
+  "soumis_par_nom": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "document_url": zod.string().nullish(),
+  "statut": zod.enum(['en_attente', 'validee', 'rejetee']).optional(),
+  "traite_par": zod.string().nullish(),
+  "date_traitement": zod.string().nullish(),
+  "commentaire_traitement": zod.string().nullish(),
+  "absence": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Valider ou rejeter une justification
+ */
+export const TraiterJustificationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const TraiterJustificationBody = zod.object({
+  "decision": zod.enum(['validee', 'rejetee']),
+  "commentaire": zod.string().optional()
+})
+
+export const TraiterJustificationResponse = zod.object({
+  "justification": zod.object({
+  "id": zod.string().optional(),
+  "absence_id": zod.string().optional(),
+  "soumis_par": zod.string().optional(),
+  "soumis_par_nom": zod.string().optional(),
+  "motif": zod.string().optional(),
+  "document_url": zod.string().nullish(),
+  "statut": zod.enum(['en_attente', 'validee', 'rejetee']).optional(),
+  "traite_par": zod.string().nullish(),
+  "date_traitement": zod.string().nullish(),
+  "commentaire_traitement": zod.string().nullish(),
+  "absence": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})
+})
+
+
+/**
+ * @summary Mes notifications
+ */
+export const GetMesNotificationsQueryParams = zod.object({
+  "lu": zod.coerce.boolean().optional(),
+  "type": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetMesNotificationsResponse = zod.object({
+  "notifications": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "destinataire_id": zod.string().optional(),
+  "type": zod.string().optional(),
+  "titre": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "lien": zod.string().nullish(),
+  "lu": zod.boolean().optional(),
+  "date_lecture": zod.string().nullish(),
+  "metadata": zod.unknown().optional(),
+  "created_at": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Nombre de notifications non lues
+ */
+export const GetNotificationsCountResponse = zod.object({
+  "count": zod.number()
+})
+
+
+/**
+ * @summary Marquer toutes les notifications comme lues
+ */
+export const MarquerToutLuResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Marquer une notification comme lue
+ */
+export const MarquerNotificationLueParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const MarquerNotificationLueResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Supprimer une notification
+ */
+export const SupprimerNotificationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerNotificationResponse = zod.object({
+  "message": zod.string()
+})
+
+

@@ -17,6 +17,8 @@ import notesRouter from "./notes";
 import matieresConfigRouter from "./matieresConfig";
 import bulletinsRouter from "./bulletins";
 import conseilsClasseRouter from "./conseilsClasse";
+import absencesRouter from "./absences";
+import notificationsRouter from "./notifications";
 
 const router: IRouter = Router();
 
@@ -38,5 +40,7 @@ router.use(notesRouter);
 router.use(matieresConfigRouter);
 router.use(bulletinsRouter);
 router.use(conseilsClasseRouter);
+router.use(absencesRouter);
+router.use(notificationsRouter);
 
 export default router;

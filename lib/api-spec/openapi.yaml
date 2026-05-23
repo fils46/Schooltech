@@ -22,6 +22,12 @@ tags:
     description: Gestion des dossiers élèves et inscriptions
   - name: classes
     description: Gestion des classes et niveaux
+  - name: absences
+    description: Suivi des présences et absences
+  - name: justifications
+    description: Gestion des justifications d'absences
+  - name: notifications
+    description: Notifications temps réel
 
 paths:
   /healthz:
@@ -2538,6 +2544,305 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
+  # ── Module 08 : Absences ─────────────────────────────────
+
+  /absences/liste:
+    get:
+      operationId: listerAbsences
+      tags: [absences]
+      summary: Lister les absences
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleve_id, in: query, schema: { type: string } }
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: matiere, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: type, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des absences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsencesListeResponse"
+
+  /absences/statistiques:
+    get:
+      operationId: getStatistiquesAbsences
+      tags: [absences]
+      summary: Statistiques d'absences
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Statistiques absences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatistiquesAbsencesResponse"
+
+  /absences/eleves-a-risque:
+    get:
+      operationId: getElevesARisque
+      tags: [absences]
+      summary: Élèves dépassant le seuil d'absences
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Élèves à risque
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ElevesRisqueResponse"
+
+  /absences/creer:
+    post:
+      operationId: creerAbsenceManuelle
+      tags: [absences]
+      summary: Créer une absence manuelle
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AbsenceInput"
+      responses:
+        "201":
+          description: Absence créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsenceItemResponse"
+
+  /absences/eleve/{eleveId}/resume:
+    get:
+      operationId: getResumeAbsencesEleve
+      tags: [absences]
+      summary: Résumé absences d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Résumé absences élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumeAbsencesEleveResponse"
+
+  /absences/{id}:
+    get:
+      operationId: getAbsence
+      tags: [absences]
+      summary: Détail d'une absence
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Absence trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsenceItemResponse"
+
+  /absences/{id}/modifier:
+    put:
+      operationId: modifierAbsence
+      tags: [absences]
+      summary: Modifier une absence
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AbsenceUpdateInput"
+      responses:
+        "200":
+          description: Absence modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsenceItemResponse"
+
+  /absences/{id}/supprimer:
+    delete:
+      operationId: supprimerAbsence
+      tags: [absences]
+      summary: Supprimer une absence
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Absence supprimée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /absences/{id}/justifier:
+    post:
+      operationId: soumettreJustification
+      tags: [absences]
+      summary: Soumettre une justification
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JustificationInput"
+      responses:
+        "201":
+          description: Justification soumise
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JustificationItemResponse"
+
+  # ── Justifications ────────────────────────────────────────
+
+  /justifications/liste:
+    get:
+      operationId: listerJustifications
+      tags: [justifications]
+      summary: Lister les justifications
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des justifications
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JustificationsListeResponse"
+
+  /justifications/{id}/traiter:
+    put:
+      operationId: traiterJustification
+      tags: [justifications]
+      summary: Valider ou rejeter une justification
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraiterJustificationInput"
+      responses:
+        "200":
+          description: Justification traitée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JustificationItemResponse"
+
+  # ── Notifications ─────────────────────────────────────────
+
+  /notifications/mes-notifications:
+    get:
+      operationId: getMesNotifications
+      tags: [notifications]
+      summary: Mes notifications
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: lu, in: query, schema: { type: boolean } }
+        - { name: type, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des notifications
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationsListeResponse"
+
+  /notifications/count:
+    get:
+      operationId: getNotificationsCount
+      tags: [notifications]
+      summary: Nombre de notifications non lues
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Compteur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationCountResponse"
+
+  /notifications/tout-lire:
+    put:
+      operationId: marquerToutLu
+      tags: [notifications]
+      summary: Marquer toutes les notifications comme lues
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Toutes lues
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /notifications/{id}/lire:
+    put:
+      operationId: marquerNotificationLue
+      tags: [notifications]
+      summary: Marquer une notification comme lue
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Notification lue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /notifications/{id}:
+    delete:
+      operationId: supprimerNotification
+      tags: [notifications]
+      summary: Supprimer une notification
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Notification supprimée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -4256,3 +4561,207 @@ components:
       type: object
       properties:
         observations_generales: { type: string, nullable: true }
+
+    # ── Module 08 schemas ─────────────────────────────────
+
+    AbsenceItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        classe_id: { type: string }
+        classe_nom: { type: string }
+        annee_scolaire_id: { type: string }
+        appel_detail_id: { type: string, nullable: true }
+        matiere: { type: string }
+        professeur_id: { type: string }
+        professeur_nom: { type: string }
+        date_absence: { type: string }
+        creneau_id: { type: string, nullable: true }
+        type: { type: string, enum: ["absence","retard"] }
+        statut: { type: string, enum: ["non_justifiee","en_attente","justifiee","rejetee"] }
+        notif_parent_envoyee: { type: boolean }
+        justification: {}
+        created_at: { type: string }
+
+    AbsenceItemResponse:
+      type: object
+      required: [absence]
+      properties:
+        absence:
+          $ref: "#/components/schemas/AbsenceItem"
+
+    AbsencesListeResponse:
+      type: object
+      required: [absences, total, page, limit]
+      properties:
+        absences:
+          type: array
+          items:
+            $ref: "#/components/schemas/AbsenceItem"
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    AbsenceInput:
+      type: object
+      required: [eleve_id, classe_id, annee_scolaire_id, matiere, date_absence, type]
+      properties:
+        eleve_id: { type: string }
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        matiere: { type: string }
+        date_absence: { type: string }
+        creneau_id: { type: string }
+        type: { type: string, enum: ["absence","retard"] }
+
+    AbsenceUpdateInput:
+      type: object
+      properties:
+        type: { type: string, enum: ["absence","retard"] }
+        date_absence: { type: string }
+        matiere: { type: string }
+
+    ResumeAbsencesEleveResponse:
+      type: object
+      required: [resume]
+      properties:
+        resume:
+          type: object
+          properties:
+            total: { type: integer }
+            justifiees: { type: integer }
+            non_justifiees: { type: integer }
+            retards: { type: integer }
+            taux_presence: { type: number }
+            par_matiere:
+              type: array
+              items:
+                type: object
+            evolution_mensuelle:
+              type: array
+              items:
+                type: object
+
+    StatistiquesAbsencesResponse:
+      type: object
+      required: [statistiques]
+      properties:
+        statistiques:
+          type: object
+          properties:
+            total: { type: integer }
+            justifiees: { type: integer }
+            non_justifiees: { type: integer }
+            en_attente: { type: integer }
+            taux_presence: { type: number }
+            par_jour:
+              type: array
+              items:
+                type: object
+            par_matiere:
+              type: array
+              items:
+                type: object
+            top_absents:
+              type: array
+              items:
+                type: object
+
+    ElevesRisqueResponse:
+      type: object
+      required: [eleves]
+      properties:
+        seuil: { type: integer }
+        eleves:
+          type: array
+          items:
+            type: object
+            properties:
+              eleve_id: { type: string }
+              nom: { type: string }
+              prenoms: { type: string }
+              classe_nom: { type: string }
+              nb_absences: { type: integer }
+              derniere_absence: { type: string }
+
+    JustificationItem:
+      type: object
+      properties:
+        id: { type: string }
+        absence_id: { type: string }
+        soumis_par: { type: string }
+        soumis_par_nom: { type: string }
+        motif: { type: string }
+        document_url: { type: string, nullable: true }
+        statut: { type: string, enum: ["en_attente","validee","rejetee"] }
+        traite_par: { type: string, nullable: true }
+        date_traitement: { type: string, nullable: true }
+        commentaire_traitement: { type: string, nullable: true }
+        absence: {}
+        created_at: { type: string }
+
+    JustificationItemResponse:
+      type: object
+      required: [justification]
+      properties:
+        justification:
+          $ref: "#/components/schemas/JustificationItem"
+
+    JustificationsListeResponse:
+      type: object
+      required: [justifications, total]
+      properties:
+        justifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/JustificationItem"
+        total: { type: integer }
+
+    JustificationInput:
+      type: object
+      required: [motif]
+      properties:
+        motif: { type: string }
+        document_url: { type: string }
+
+    TraiterJustificationInput:
+      type: object
+      required: [decision]
+      properties:
+        decision: { type: string, enum: ["validee","rejetee"] }
+        commentaire: { type: string }
+
+    NotificationItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        destinataire_id: { type: string }
+        type: { type: string }
+        titre: { type: string }
+        contenu: { type: string }
+        lien: { type: string, nullable: true }
+        lu: { type: boolean }
+        date_lecture: { type: string, nullable: true }
+        metadata: {}
+        created_at: { type: string }
+
+    NotificationsListeResponse:
+      type: object
+      required: [notifications, total]
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationItem"
+        total: { type: integer }
+
+    NotificationCountResponse:
+      type: object
+      required: [count]
+      properties:
+        count: { type: integer }

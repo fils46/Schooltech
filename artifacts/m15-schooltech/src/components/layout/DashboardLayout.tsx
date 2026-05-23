@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
+import { useGetNotificationsCount, getGetNotificationsCountQueryKey } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { io, type Socket } from "socket.io-client";
 import { useTheme } from "@/components/theme-provider";
 import {
   Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard,
@@ -140,7 +143,7 @@ const navConfig: Record<string, Section[]> = {
       title: "ÉCOLE",
       links: [
         { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
-        { label: "Absences",        href: "/absences",        icon: UserMinus },
+        { label: "Mes absences",    href: "/mes-absences",    icon: UserMinus },
         { label: "Bibliothèque",    href: "/bibliotheque",    icon: Library },
       ],
     },
@@ -149,10 +152,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "MON ENFANT",
       links: [
-        { label: "Mon enfant",    href: "/mon-enfant",    icon: UserCircle },
-        { label: "Mes bulletins", href: "/mes-bulletins", icon: FileSpreadsheet },
-        { label: "Notes",         href: "/notes",         icon: Award },
-        { label: "Absences",      href: "/absences",      icon: UserMinus },
+        { label: "Mon enfant",    href: "/mon-enfant",       icon: UserCircle },
+        { label: "Mes bulletins", href: "/mes-bulletins",    icon: FileSpreadsheet },
+        { label: "Notes",         href: "/notes",            icon: Award },
+        { label: "Absences",      href: "/absences-parent",  icon: UserMinus },
       ],
     },
     {
@@ -179,7 +182,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/eleves":           "Élèves",
   "/eleves/inscrire":  "Inscrire un élève",
   "/emploi-du-temps":  "Emploi du temps",
-  "/absences":         "Absences",
+  "/absences":         "Gestion des Absences",
   "/mes-classes":      "Mes classes",
   "/evaluations":      "Évaluations",
   "/cahier-de-textes": "Cahier de textes",
@@ -196,6 +199,9 @@ const PAGE_TITLES: Record<string, string> = {
   "/bulletins":        "Gestion des Bulletins",
   "/mes-bulletins":    "Mes Bulletins",
   "/conseils-classe":  "Conseils de Classe",
+  "/absences-parent":  "Absences de mon enfant",
+  "/mes-absences":     "Mes Absences",
+  "/notifications":    "Notifications",
 };
 
 const ROLE_LABELS: Record<string, string> = {
@@ -342,9 +348,40 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
 /* ─── DashboardLayout principal ─────────────────────────── */
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [notifCount] = useState(3);
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const socketRef = useRef<Socket | null>(null);
+
+  const countQKey = getGetNotificationsCountQueryKey();
+  const { data: countData } = useGetNotificationsCount({
+    query: { queryKey: countQKey, enabled: !!user, refetchInterval: 30000 },
+  });
+  const notifCount: number = (countData as { count?: number })?.count ?? 0;
+
+  useEffect(() => {
+    if (!user) return;
+    const token = localStorage.getItem("m15_token");
+    if (!token) return;
+
+    const socket = io(window.location.origin, {
+      path: "/api/socket.io",
+      auth: { token },
+      transports: ["websocket", "polling"],
+    });
+    socketRef.current = socket;
+
+    socket.on("notification", () => {
+      void qc.invalidateQueries({ queryKey: countQKey });
+    });
+
+    socket.on("badge_count", (n: number) => {
+      qc.setQueryData(countQKey, { count: n });
+    });
+
+    return () => { socket.disconnect(); };
+  }, [user?.id]);
 
   const pageTitle = PAGE_TITLES[location] || "M15-SchoolTech";
 
@@ -397,7 +434,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Cloche notifications */}
-            <button className="relative w-9 h-9 flex items-center justify-center rounded-xl transition-all"
+            <button
+              onClick={() => setLocation("/notifications")}
+              className="relative w-9 h-9 flex items-center justify-center rounded-xl transition-all"
               style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-white)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; }}>
@@ -405,7 +444,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               {notifCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-xs flex items-center justify-center font-bold"
                   style={{ background: "#FF4D6D", color: "#fff", fontSize: "10px" }}>
-                  {notifCount}
+                  {notifCount > 9 ? "9+" : notifCount}
                 </span>
               )}
             </button>

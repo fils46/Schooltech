@@ -3,10 +3,11 @@ import { eq, and, desc, gte, lte, count } from "drizzle-orm";
 import {
   db, appelsTable, appelDetailsTable, elevesTable,
   eleveClassesTable, utilisateursTable, classesTable,
-  professeurClassesTable,
+  professeurClassesTable, absencesTable,
 } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
+import { declencherNotificationsAbsence } from "../lib/notificationService";
 
 const router = Router();
 
@@ -309,6 +310,12 @@ router.put(
       return;
     }
 
+    const [detail] = await db
+      .select()
+      .from(appelDetailsTable)
+      .where(and(eq(appelDetailsTable.appel_id, id), eq(appelDetailsTable.eleve_id, eleve_id)))
+      .limit(1);
+
     await db
       .update(appelDetailsTable)
       .set({
@@ -319,6 +326,33 @@ router.put(
       .where(
         and(eq(appelDetailsTable.appel_id, id), eq(appelDetailsTable.eleve_id, eleve_id))
       );
+
+    if ((statut === "absent" || statut === "retard") && detail) {
+      const [existing] = await db
+        .select({ id: absencesTable.id })
+        .from(absencesTable)
+        .where(eq(absencesTable.appel_detail_id, detail.id))
+        .limit(1);
+
+      if (!existing) {
+        const [absence] = await db.insert(absencesTable).values({
+          etablissement_id: appel.etablissement_id,
+          eleve_id,
+          classe_id: appel.classe_id,
+          annee_scolaire_id: appel.annee_scolaire_id,
+          appel_detail_id: detail.id,
+          matiere: appel.matiere,
+          professeur_id: appel.professeur_id,
+          date_absence: appel.date_appel,
+          creneau_id: appel.creneau_id ?? null,
+          type: statut === "retard" ? "retard" : "absence",
+        }).returning();
+
+        if (absence) {
+          void declencherNotificationsAbsence(absence);
+        }
+      }
+    }
 
     res.json({ appel: await enrichirAppel(appel, true) });
   }

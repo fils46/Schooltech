@@ -1223,6 +1223,216 @@ export interface TerminerConseilInput {
   observations_generales?: string | null;
 }
 
+export type AbsenceItemType = typeof AbsenceItemType[keyof typeof AbsenceItemType];
+
+
+export const AbsenceItemType = {
+  absence: 'absence',
+  retard: 'retard',
+} as const;
+
+export type AbsenceItemStatut = typeof AbsenceItemStatut[keyof typeof AbsenceItemStatut];
+
+
+export const AbsenceItemStatut = {
+  non_justifiee: 'non_justifiee',
+  en_attente: 'en_attente',
+  justifiee: 'justifiee',
+  rejetee: 'rejetee',
+} as const;
+
+export interface AbsenceItem {
+  id?: string;
+  etablissement_id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  classe_id?: string;
+  classe_nom?: string;
+  annee_scolaire_id?: string;
+  appel_detail_id?: string | null;
+  matiere?: string;
+  professeur_id?: string;
+  professeur_nom?: string;
+  date_absence?: string;
+  creneau_id?: string | null;
+  type?: AbsenceItemType;
+  statut?: AbsenceItemStatut;
+  notif_parent_envoyee?: boolean;
+  justification?: unknown;
+  created_at?: string;
+}
+
+export interface AbsenceItemResponse {
+  absence: AbsenceItem;
+}
+
+export interface AbsencesListeResponse {
+  absences: AbsenceItem[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export type AbsenceInputType = typeof AbsenceInputType[keyof typeof AbsenceInputType];
+
+
+export const AbsenceInputType = {
+  absence: 'absence',
+  retard: 'retard',
+} as const;
+
+export interface AbsenceInput {
+  eleve_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  matiere: string;
+  date_absence: string;
+  creneau_id?: string;
+  type: AbsenceInputType;
+}
+
+export type AbsenceUpdateInputType = typeof AbsenceUpdateInputType[keyof typeof AbsenceUpdateInputType];
+
+
+export const AbsenceUpdateInputType = {
+  absence: 'absence',
+  retard: 'retard',
+} as const;
+
+export interface AbsenceUpdateInput {
+  type?: AbsenceUpdateInputType;
+  date_absence?: string;
+  matiere?: string;
+}
+
+export type ResumeAbsencesEleveResponseResumeParMatiereItem = { [key: string]: unknown };
+
+export type ResumeAbsencesEleveResponseResumeEvolutionMensuelleItem = { [key: string]: unknown };
+
+export type ResumeAbsencesEleveResponseResume = {
+  total?: number;
+  justifiees?: number;
+  non_justifiees?: number;
+  retards?: number;
+  taux_presence?: number;
+  par_matiere?: ResumeAbsencesEleveResponseResumeParMatiereItem[];
+  evolution_mensuelle?: ResumeAbsencesEleveResponseResumeEvolutionMensuelleItem[];
+};
+
+export interface ResumeAbsencesEleveResponse {
+  resume: ResumeAbsencesEleveResponseResume;
+}
+
+export type StatistiquesAbsencesResponseStatistiquesParJourItem = { [key: string]: unknown };
+
+export type StatistiquesAbsencesResponseStatistiquesParMatiereItem = { [key: string]: unknown };
+
+export type StatistiquesAbsencesResponseStatistiquesTopAbsentsItem = { [key: string]: unknown };
+
+export type StatistiquesAbsencesResponseStatistiques = {
+  total?: number;
+  justifiees?: number;
+  non_justifiees?: number;
+  en_attente?: number;
+  taux_presence?: number;
+  par_jour?: StatistiquesAbsencesResponseStatistiquesParJourItem[];
+  par_matiere?: StatistiquesAbsencesResponseStatistiquesParMatiereItem[];
+  top_absents?: StatistiquesAbsencesResponseStatistiquesTopAbsentsItem[];
+};
+
+export interface StatistiquesAbsencesResponse {
+  statistiques: StatistiquesAbsencesResponseStatistiques;
+}
+
+export type ElevesRisqueResponseElevesItem = {
+  eleve_id?: string;
+  nom?: string;
+  prenoms?: string;
+  classe_nom?: string;
+  nb_absences?: number;
+  derniere_absence?: string;
+};
+
+export interface ElevesRisqueResponse {
+  seuil?: number;
+  eleves: ElevesRisqueResponseElevesItem[];
+}
+
+export type JustificationItemStatut = typeof JustificationItemStatut[keyof typeof JustificationItemStatut];
+
+
+export const JustificationItemStatut = {
+  en_attente: 'en_attente',
+  validee: 'validee',
+  rejetee: 'rejetee',
+} as const;
+
+export interface JustificationItem {
+  id?: string;
+  absence_id?: string;
+  soumis_par?: string;
+  soumis_par_nom?: string;
+  motif?: string;
+  document_url?: string | null;
+  statut?: JustificationItemStatut;
+  traite_par?: string | null;
+  date_traitement?: string | null;
+  commentaire_traitement?: string | null;
+  absence?: unknown;
+  created_at?: string;
+}
+
+export interface JustificationItemResponse {
+  justification: JustificationItem;
+}
+
+export interface JustificationsListeResponse {
+  justifications: JustificationItem[];
+  total: number;
+}
+
+export interface JustificationInput {
+  motif: string;
+  document_url?: string;
+}
+
+export type TraiterJustificationInputDecision = typeof TraiterJustificationInputDecision[keyof typeof TraiterJustificationInputDecision];
+
+
+export const TraiterJustificationInputDecision = {
+  validee: 'validee',
+  rejetee: 'rejetee',
+} as const;
+
+export interface TraiterJustificationInput {
+  decision: TraiterJustificationInputDecision;
+  commentaire?: string;
+}
+
+export interface NotificationItem {
+  id?: string;
+  etablissement_id?: string;
+  destinataire_id?: string;
+  type?: string;
+  titre?: string;
+  contenu?: string;
+  lien?: string | null;
+  lu?: boolean;
+  date_lecture?: string | null;
+  metadata?: unknown;
+  created_at?: string;
+}
+
+export interface NotificationsListeResponse {
+  notifications: NotificationItem[];
+  total: number;
+}
+
+export interface NotificationCountResponse {
+  count: number;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -1379,4 +1589,46 @@ export const ListerConseilsStatut = {
   en_cours: 'en_cours',
   termine: 'termine',
 } as const;
+
+export type ListerAbsencesParams = {
+eleve_id?: string;
+classe_id?: string;
+matiere?: string;
+statut?: string;
+type?: string;
+date_debut?: string;
+date_fin?: string;
+annee_scolaire_id?: string;
+page?: number;
+limit?: number;
+};
+
+export type GetStatistiquesAbsencesParams = {
+classe_id?: string;
+annee_scolaire_id?: string;
+trimestre?: string;
+};
+
+export type GetElevesARisqueParams = {
+annee_scolaire_id?: string;
+};
+
+export type GetResumeAbsencesEleveParams = {
+annee_scolaire_id?: string;
+};
+
+export type ListerJustificationsParams = {
+statut?: string;
+date_debut?: string;
+date_fin?: string;
+page?: number;
+limit?: number;
+};
+
+export type GetMesNotificationsParams = {
+lu?: boolean;
+type?: string;
+page?: number;
+limit?: number;
+};
 

@@ -36,6 +36,10 @@ import BulletinGestion from "@/pages/bulletin-gestion";
 import BulletinDetail from "@/pages/bulletin-detail";
 import MesBulletins from "@/pages/mes-bulletins";
 import ConseilClasse from "@/pages/conseil-classe";
+import AbsenceGestion from "@/pages/absence-gestion";
+import AbsencesParent from "@/pages/absences-parent";
+import MesAbsences from "@/pages/mes-absences";
+import NotificationsCentre from "@/pages/notifications-centre";
 
 const queryClient = new QueryClient();
 
@@ -239,11 +243,44 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      {/* ── Module 08 : Présences & Absences ── */}
+      <Route path="/absences">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AbsenceGestion />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/absences-parent">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AbsencesParent />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mes-absences">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MesAbsences />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/notifications">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <NotificationsCentre />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/paiements", "/rapports",
-        "/professeurs", "/absences",
+        "/professeurs",
         "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",
       ].map((path) => (

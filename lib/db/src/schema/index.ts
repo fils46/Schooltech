@@ -20,3 +20,6 @@ export * from "./matieresConfig";
 export * from "./bulletins";
 export * from "./bulletinDetails";
 export * from "./conseilsClasse";
+export * from "./absences";
+export * from "./justifications";
+export * from "./notifications";
