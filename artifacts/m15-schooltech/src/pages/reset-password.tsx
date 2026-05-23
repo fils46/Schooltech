@@ -5,9 +5,9 @@ import { useLocation } from "wouter";
 import { useResetPassword } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
 
@@ -76,7 +76,7 @@ export default function ResetPassword() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="newPassword">Nouveau mot de passe</Label>
-              <Input id="newPassword" type="password" {...form.register("newPassword")} />
+              <PasswordInput id="newPassword" {...form.register("newPassword")} />
               {form.formState.errors.newPassword && <p className="text-sm text-destructive">{form.formState.errors.newPassword.message}</p>}
               
               <div className="h-1.5 w-full bg-secondary/20 rounded-full overflow-hidden mt-2">
@@ -86,7 +86,7 @@ export default function ResetPassword() {
 
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-              <Input id="confirmPassword" type="password" {...form.register("confirmPassword")} />
+              <PasswordInput id="confirmPassword" {...form.register("confirmPassword")} />
               {form.formState.errors.confirmPassword && <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>}
             </div>
 

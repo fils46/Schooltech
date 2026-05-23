@@ -6,9 +6,9 @@ import { useChangePassword } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Loader2 } from "lucide-react";
 
 const changeSchema = z.object({
@@ -65,13 +65,13 @@ export default function PremierLogin() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="ancienPassword">Mot de passe actuel</Label>
-              <Input id="ancienPassword" type="password" {...form.register("ancienPassword")} />
+              <PasswordInput id="ancienPassword" {...form.register("ancienPassword")} />
               {form.formState.errors.ancienPassword && <p className="text-sm text-destructive">{form.formState.errors.ancienPassword.message}</p>}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="nouveauPassword">Nouveau mot de passe</Label>
-              <Input id="nouveauPassword" type="password" {...form.register("nouveauPassword")} />
+              <PasswordInput id="nouveauPassword" {...form.register("nouveauPassword")} />
               {form.formState.errors.nouveauPassword && <p className="text-sm text-destructive">{form.formState.errors.nouveauPassword.message}</p>}
               
               <div className="h-1.5 w-full bg-secondary/20 rounded-full overflow-hidden mt-2">
@@ -81,7 +81,7 @@ export default function PremierLogin() {
 
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-              <Input id="confirmPassword" type="password" {...form.register("confirmPassword")} />
+              <PasswordInput id="confirmPassword" {...form.register("confirmPassword")} />
               {form.formState.errors.confirmPassword && <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>}
             </div>
 

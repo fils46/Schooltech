@@ -4,7 +4,8 @@ import { z } from "zod";
 import { useLocation, Link } from "wouter";
 import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
-import { Loader2, Lock, GraduationCap } from "lucide-react";
+import { useState } from "react";
+import { Loader2, Lock, GraduationCap, Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -24,6 +25,7 @@ const FEATURES = [
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
 
   const form = useForm<LoginFormValues>({
@@ -178,20 +180,34 @@ export default function Login() {
                   Mot de passe oublié ?
                 </Link>
               </div>
-              <input
-                type="password"
-                {...form.register("password")}
-                data-testid="input-password"
-                className="w-full rounded-xl px-4 py-3.5 text-sm transition-all outline-none"
-                style={{
-                  background: "var(--m15-card)",
-                  border: form.formState.errors.password ? "1px solid #FF4D6D" : "1px solid var(--m15-border)",
-                  color: "var(--m15-white)",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-                onFocus={e => { e.target.style.borderColor = "#00C9A7"; e.target.style.boxShadow = "0 0 0 3px rgba(0,201,167,0.1)"; }}
-                onBlur={e => { e.target.style.borderColor = form.formState.errors.password ? "#FF4D6D" : "var(--m15-border)"; e.target.style.boxShadow = "none"; }}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...form.register("password")}
+                  data-testid="input-password"
+                  className="w-full rounded-xl px-4 py-3.5 pr-11 text-sm transition-all outline-none"
+                  style={{
+                    background: "var(--m15-card)",
+                    border: form.formState.errors.password ? "1px solid #FF4D6D" : "1px solid var(--m15-border)",
+                    color: "var(--m15-white)",
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
+                  onFocus={e => { e.target.style.borderColor = "#00C9A7"; e.target.style.boxShadow = "0 0 0 3px rgba(0,201,167,0.1)"; }}
+                  onBlur={e => { e.target.style.borderColor = form.formState.errors.password ? "#FF4D6D" : "var(--m15-border)"; e.target.style.boxShadow = "none"; }}
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowPassword(v => !v)}
+                  className="absolute inset-y-0 right-0 flex items-center px-3 transition-colors"
+                  style={{ color: "var(--m15-muted)" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-white)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; }}
+                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
               {form.formState.errors.password && (
                 <p className="mt-1.5 text-xs" style={{ color: "#FF4D6D" }}>{form.formState.errors.password.message}</p>
               )}
