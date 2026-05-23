@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "M15-SchoolTech"
+version = "1.0.0"
+id = "artifacts/m15-schooltech"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21136
+
+[services.development]
+run = "pnpm --filter @workspace/m15-schooltech run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/m15-schooltech", "run", "build" ]
+publicDir = "artifacts/m15-schooltech/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21136"
+BASE_PATH = "/"

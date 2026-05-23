@@ -5,7 +5,9 @@
  * M15-SchoolTech API — Plateforme de gestion scolaire
  * OpenAPI spec version: 0.1.0
  */
+import type { Utilisateur } from './utilisateur';
 
-export interface HealthStatus {
-  status: string;
+export interface UtilisateurCreatedResponse {
+  utilisateur: Utilisateur;
+  passwordTemporaire: string;
 }

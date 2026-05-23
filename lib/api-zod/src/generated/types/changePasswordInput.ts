@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface ChangePasswordInput {
+  ancienPassword: string;
+  /** @minLength 8 */
+  nouveauPassword: string;
 }

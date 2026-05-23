@@ -3,13 +3,22 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: M15-SchoolTech API — Plateforme de gestion scolaire
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentification et gestion des sessions
+  - name: utilisateurs
+    description: Gestion des utilisateurs
+  - name: etablissements
+    description: Gestion des établissements scolaires
+  - name: stats
+    description: Statistiques et tableaux de bord
+
 paths:
   /healthz:
     get:
@@ -24,7 +33,392 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Connexion utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Identifiants invalides ou compte désactivé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Déconnexion
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Déconnexion réussie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Profil de l'utilisateur connecté
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Profil utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Utilisateur"
+        "401":
+          description: Non authentifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/forgot-password:
+    post:
+      operationId: forgotPassword
+      tags: [auth]
+      summary: Demande de réinitialisation du mot de passe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordInput"
+      responses:
+        "200":
+          description: Email envoyé si le compte existe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/reset-password:
+    post:
+      operationId: resetPassword
+      tags: [auth]
+      summary: Réinitialisation du mot de passe avec token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordInput"
+      responses:
+        "200":
+          description: Mot de passe réinitialisé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Token invalide ou expiré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/change-password:
+    post:
+      operationId: changePassword
+      tags: [auth]
+      summary: Changement de mot de passe (premier login)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordInput"
+      responses:
+        "200":
+          description: Mot de passe changé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Validation échouée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /utilisateurs/creer:
+    post:
+      operationId: creerUtilisateur
+      tags: [utilisateurs]
+      summary: Créer un nouvel utilisateur
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UtilisateurInput"
+      responses:
+        "201":
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UtilisateurCreatedResponse"
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Permission insuffisante
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /utilisateurs/liste:
+    get:
+      operationId: listerUtilisateurs
+      tags: [utilisateurs]
+      summary: Lister les utilisateurs de l'établissement
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: role
+          in: query
+          schema:
+            type: string
+        - name: actif
+          in: query
+          schema:
+            type: string
+        - name: etablissement_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Liste des utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Utilisateur"
+
+  /utilisateurs/{id}/activer:
+    put:
+      operationId: activerUtilisateur
+      tags: [utilisateurs]
+      summary: Activer un compte utilisateur
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Compte activé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /utilisateurs/{id}/desactiver:
+    put:
+      operationId: desactiverUtilisateur
+      tags: [utilisateurs]
+      summary: Désactiver un compte utilisateur
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Compte désactivé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /etablissements:
+    get:
+      operationId: listerEtablissements
+      tags: [etablissements]
+      summary: Lister tous les établissements (dev only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Liste des établissements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Etablissement"
+
+    post:
+      operationId: creerEtablissement
+      tags: [etablissements]
+      summary: Créer un établissement (dev only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EtablissementInput"
+      responses:
+        "201":
+          description: Établissement créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Etablissement"
+
+  /etablissements/{id}:
+    get:
+      operationId: getEtablissement
+      tags: [etablissements]
+      summary: Détail d'un établissement
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Détail de l'établissement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Etablissement"
+
+    put:
+      operationId: updateEtablissement
+      tags: [etablissements]
+      summary: Mettre à jour un établissement
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EtablissementUpdate"
+      responses:
+        "200":
+          description: Établissement mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Etablissement"
+
+  /etablissements/{id}/desactiver:
+    put:
+      operationId: desactiverEtablissement
+      tags: [etablissements]
+      summary: Désactiver un établissement et suspendre ses comptes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Établissement désactivé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /stats/global:
+    get:
+      operationId: getStatsGlobal
+      tags: [stats]
+      summary: Statistiques globales (dev)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Statistiques globales
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsGlobal"
+
+  /stats/etablissement/{id}:
+    get:
+      operationId: getStatsEtablissement
+      tags: [stats]
+      summary: Statistiques d'un établissement
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Statistiques de l'établissement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsEtablissement"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +428,233 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+      required:
+        - message
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      required: [token, refreshToken, utilisateur]
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+        utilisateur:
+          $ref: "#/components/schemas/Utilisateur"
+        premierLogin:
+          type: boolean
+
+    ForgotPasswordInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    ResetPasswordInput:
+      type: object
+      required: [token, newPassword]
+      properties:
+        token:
+          type: string
+        newPassword:
+          type: string
+          minLength: 8
+
+    ChangePasswordInput:
+      type: object
+      required: [ancienPassword, nouveauPassword]
+      properties:
+        ancienPassword:
+          type: string
+        nouveauPassword:
+          type: string
+          minLength: 8
+
+    UtilisateurInput:
+      type: object
+      required: [nom, email, role]
+      properties:
+        etablissement_id:
+          type: ["string", "null"]
+        nom:
+          type: string
+        prenoms:
+          type: ["string", "null"]
+        email:
+          type: string
+          format: email
+        telephone:
+          type: ["string", "null"]
+        role:
+          type: string
+          enum: [dev, directeur, censeur, professeur, eleve, parent]
+
+    UtilisateurCreatedResponse:
+      type: object
+      required: [utilisateur, passwordTemporaire]
+      properties:
+        utilisateur:
+          $ref: "#/components/schemas/Utilisateur"
+        passwordTemporaire:
+          type: string
+
+    Utilisateur:
+      type: object
+      required: [id, nom, email, role, actif]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: ["string", "null"]
+        nom:
+          type: string
+        prenoms:
+          type: ["string", "null"]
+        email:
+          type: string
+        telephone:
+          type: ["string", "null"]
+        role:
+          type: string
+          enum: [dev, directeur, censeur, professeur, eleve, parent]
+        actif:
+          type: boolean
+        premier_login:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    Etablissement:
+      type: object
+      required: [id, nom, licence_active]
+      properties:
+        id:
+          type: string
+        nom:
+          type: string
+        type:
+          type: ["string", "null"]
+          enum: [college, lycee, college_lycee, null]
+        ville:
+          type: ["string", "null"]
+        telephone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        logo_url:
+          type: ["string", "null"]
+        licence_active:
+          type: boolean
+        date_expiration_licence:
+          type: ["string", "null"]
+        created_at:
+          type: string
+          format: date-time
+        nbUtilisateurs:
+          type: ["integer", "null"]
+
+    EtablissementInput:
+      type: object
+      required: [nom]
+      properties:
+        nom:
+          type: string
+        type:
+          type: ["string", "null"]
+          enum: [college, lycee, college_lycee, null]
+        ville:
+          type: ["string", "null"]
+        telephone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        date_expiration_licence:
+          type: ["string", "null"]
+
+    EtablissementUpdate:
+      type: object
+      properties:
+        nom:
+          type: string
+        type:
+          type: ["string", "null"]
+          enum: [college, lycee, college_lycee, null]
+        ville:
+          type: ["string", "null"]
+        telephone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        licence_active:
+          type: boolean
+        date_expiration_licence:
+          type: ["string", "null"]
+
+    StatsGlobal:
+      type: object
+      required: [totalEtablissements, totalUtilisateurs, etablissementsActifs, licencesExpirees]
+      properties:
+        totalEtablissements:
+          type: integer
+        totalUtilisateurs:
+          type: integer
+        etablissementsActifs:
+          type: integer
+        licencesExpirees:
+          type: integer
+        repartitionRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleCount"
+
+    StatsEtablissement:
+      type: object
+      required: [etablissement_id, totalUtilisateurs, totalActifs]
+      properties:
+        etablissement_id:
+          type: string
+        totalUtilisateurs:
+          type: integer
+        totalActifs:
+          type: integer
+        repartitionRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleCount"
+
+    RoleCount:
+      type: object
+      required: [role, count]
+      properties:
+        role:
+          type: string
+        count:
+          type: integer
