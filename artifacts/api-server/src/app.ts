@@ -1,10 +1,13 @@
 import express, { type Express } from "express";
 import cors from "cors";
+import path from "path";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
+
+app.use("/api/pvs", express.static(path.join(process.cwd(), "public", "pvs")));
 
 app.use(
   pinoHttp({

@@ -1186,11 +1186,19 @@ export interface ConseilClasseItem {
   annee_scolaire_id?: string;
   trimestre?: ConseilClasseItemTrimestre;
   date_conseil?: string;
+  heure_debut?: string | null;
+  heure_fin?: string | null;
+  ordre_du_jour?: string | null;
   president_id?: string;
   president_nom?: string;
   participants?: unknown;
   observations_generales?: string | null;
   statut?: ConseilClasseItemStatut;
+  convocations_envoyees?: boolean;
+  pv_genere?: boolean;
+  pv_url?: string | null;
+  pv_signe_par?: string | null;
+  pv_date_signature?: string | null;
 }
 
 export interface ConseilClasseItemResponse {
@@ -1199,6 +1207,87 @@ export interface ConseilClasseItemResponse {
 
 export interface ConseilsListeResponse {
   conseils: ConseilClasseItem[];
+}
+
+export interface ConseilParticipantItem {
+  id?: string;
+  conseil_id?: string;
+  utilisateur_id?: string;
+  utilisateur_nom?: string;
+  utilisateur_prenoms?: string;
+  role_conseil?: string;
+  convoque?: boolean;
+  convocation_envoyee?: boolean;
+  present?: boolean;
+  heure_arrivee?: string | null;
+}
+
+export type ConseilDeliberationItemDecision = typeof ConseilDeliberationItemDecision[keyof typeof ConseilDeliberationItemDecision] | null;
+
+
+export const ConseilDeliberationItemDecision = {
+  passage: 'passage',
+  redoublement: 'redoublement',
+  exclusion: 'exclusion',
+  orientation: 'orientation',
+  felicitations: 'felicitations',
+  encouragements: 'encouragements',
+  avertissement: 'avertissement',
+  blame: 'blame',
+} as const;
+
+export interface ConseilDeliberationItem {
+  id?: string;
+  conseil_id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  moyenne_generale?: number | null;
+  rang?: number | null;
+  nb_absences?: number;
+  nb_absences_justifiees?: number;
+  appreciation_generale?: string | null;
+  decision?: ConseilDeliberationItemDecision;
+  mention_honneur?: boolean;
+  observations?: string | null;
+  saisi_par?: string | null;
+}
+
+export type ConseilInterventionItemType = typeof ConseilInterventionItemType[keyof typeof ConseilInterventionItemType];
+
+
+export const ConseilInterventionItemType = {
+  observation: 'observation',
+  decision: 'decision',
+  question: 'question',
+  reponse: 'reponse',
+  general: 'general',
+} as const;
+
+export interface ConseilInterventionItem {
+  id?: string;
+  conseil_id?: string;
+  eleve_id?: string | null;
+  auteur_id?: string;
+  auteur_nom?: string;
+  contenu?: string;
+  type?: ConseilInterventionItemType;
+  created_at?: string;
+}
+
+export interface ConseilEnCoursResponse {
+  conseil?: ConseilClasseItem;
+  participants?: ConseilParticipantItem[];
+  deliberations?: ConseilDeliberationItem[];
+  interventions?: ConseilInterventionItem[];
+}
+
+export interface ConseilParticipantsResponse {
+  participants?: ConseilParticipantItem[];
+}
+
+export interface DeliberationsListeResponse {
+  deliberations?: ConseilDeliberationItem[];
 }
 
 export type PlanifierConseilInputTrimestre = typeof PlanifierConseilInputTrimestre[keyof typeof PlanifierConseilInputTrimestre];
@@ -1210,13 +1299,73 @@ export const PlanifierConseilInputTrimestre = {
   NUMBER_3: '3',
 } as const;
 
+export type PlanifierConseilInputParticipantsItem = {
+  utilisateur_id?: string;
+  role_conseil?: string;
+};
+
 export interface PlanifierConseilInput {
   classe_id: string;
   annee_scolaire_id: string;
   trimestre: PlanifierConseilInputTrimestre;
   date_conseil: string;
+  heure_debut?: string;
+  heure_fin?: string;
+  ordre_du_jour?: string;
   president_id: string;
-  participants?: unknown;
+  participants?: PlanifierConseilInputParticipantsItem[];
+}
+
+export type ModifierConseilInputParticipantsItem = {
+  utilisateur_id?: string;
+  role_conseil?: string;
+};
+
+export interface ModifierConseilInput {
+  date_conseil?: string;
+  heure_debut?: string;
+  heure_fin?: string;
+  ordre_du_jour?: string;
+  participants?: ModifierConseilInputParticipantsItem[];
+}
+
+export type SaisirDeliberationInputDecision = typeof SaisirDeliberationInputDecision[keyof typeof SaisirDeliberationInputDecision];
+
+
+export const SaisirDeliberationInputDecision = {
+  passage: 'passage',
+  redoublement: 'redoublement',
+  exclusion: 'exclusion',
+  orientation: 'orientation',
+  felicitations: 'felicitations',
+  encouragements: 'encouragements',
+  avertissement: 'avertissement',
+  blame: 'blame',
+} as const;
+
+export interface SaisirDeliberationInput {
+  eleve_id: string;
+  appreciation_generale?: string;
+  decision?: SaisirDeliberationInputDecision;
+  mention_honneur?: boolean;
+  observations?: string;
+}
+
+export type AjouterInterventionInputType = typeof AjouterInterventionInputType[keyof typeof AjouterInterventionInputType];
+
+
+export const AjouterInterventionInputType = {
+  observation: 'observation',
+  decision: 'decision',
+  question: 'question',
+  reponse: 'reponse',
+  general: 'general',
+} as const;
+
+export interface AjouterInterventionInput {
+  eleve_id?: string;
+  contenu: string;
+  type: AjouterInterventionInputType;
 }
 
 export interface TerminerConseilInput {
@@ -1589,6 +1738,28 @@ export const ListerConseilsStatut = {
   en_cours: 'en_cours',
   termine: 'termine',
 } as const;
+
+export type EnvoyerConvocations200 = {
+  message?: string;
+  envoyes?: number;
+};
+
+export type ConfirmerPresence200 = {
+  message?: string;
+};
+
+export type SaisirDeliberation200 = {
+  deliberation?: ConseilDeliberationItem;
+};
+
+export type AjouterIntervention201 = {
+  intervention?: ConseilInterventionItem;
+};
+
+export type GenererPV200 = {
+  pv_url?: string;
+  conseil?: ConseilClasseItem;
+};
 
 export type ListerAbsencesParams = {
 eleve_id?: string;

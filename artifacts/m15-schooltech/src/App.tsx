@@ -36,6 +36,8 @@ import BulletinGestion from "@/pages/bulletin-gestion";
 import BulletinDetail from "@/pages/bulletin-detail";
 import MesBulletins from "@/pages/mes-bulletins";
 import ConseilClasse from "@/pages/conseil-classe";
+import ConseilSalle from "@/pages/conseil-salle";
+import ConseilResultats from "@/pages/conseil-resultats";
 import AbsenceGestion from "@/pages/absence-gestion";
 import AbsencesParent from "@/pages/absences-parent";
 import MesAbsences from "@/pages/mes-absences";
@@ -239,6 +241,22 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <ConseilClasse />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/conseils-classe/salle/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConseilSalle />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/conseils-classe/resultats/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConseilResultats />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

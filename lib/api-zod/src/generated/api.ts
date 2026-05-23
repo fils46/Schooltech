@@ -2463,8 +2463,14 @@ export const PlanifierConseilBody = zod.object({
   "annee_scolaire_id": zod.string(),
   "trimestre": zod.enum(['1', '2', '3']),
   "date_conseil": zod.string(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "ordre_du_jour": zod.string().optional(),
   "president_id": zod.string(),
-  "participants": zod.unknown().optional()
+  "participants": zod.array(zod.object({
+  "utilisateur_id": zod.string().optional(),
+  "role_conseil": zod.string().optional()
+})).optional()
 })
 
 export const PlanifierConseilResponse = zod.object({
@@ -2475,11 +2481,19 @@ export const PlanifierConseilResponse = zod.object({
   "annee_scolaire_id": zod.string().optional(),
   "trimestre": zod.enum(['1', '2', '3']).optional(),
   "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
   "president_id": zod.string().optional(),
   "president_nom": zod.string().optional(),
   "participants": zod.unknown().optional(),
   "observations_generales": zod.string().nullish(),
-  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
 })
 })
 
@@ -2502,11 +2516,19 @@ export const ListerConseilsResponse = zod.object({
   "annee_scolaire_id": zod.string().optional(),
   "trimestre": zod.enum(['1', '2', '3']).optional(),
   "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
   "president_id": zod.string().optional(),
   "president_nom": zod.string().optional(),
   "participants": zod.unknown().optional(),
   "observations_generales": zod.string().nullish(),
-  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
 }))
 })
 
@@ -2526,11 +2548,19 @@ export const GetConseilResponse = zod.object({
   "annee_scolaire_id": zod.string().optional(),
   "trimestre": zod.enum(['1', '2', '3']).optional(),
   "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
   "president_id": zod.string().optional(),
   "president_nom": zod.string().optional(),
   "participants": zod.unknown().optional(),
   "observations_generales": zod.string().nullish(),
-  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
 })
 })
 
@@ -2550,11 +2580,19 @@ export const DemarrerConseilResponse = zod.object({
   "annee_scolaire_id": zod.string().optional(),
   "trimestre": zod.enum(['1', '2', '3']).optional(),
   "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
   "president_id": zod.string().optional(),
   "president_nom": zod.string().optional(),
   "participants": zod.unknown().optional(),
   "observations_generales": zod.string().nullish(),
-  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
 })
 })
 
@@ -2578,12 +2616,322 @@ export const TerminerConseilResponse = zod.object({
   "annee_scolaire_id": zod.string().optional(),
   "trimestre": zod.enum(['1', '2', '3']).optional(),
   "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
   "president_id": zod.string().optional(),
   "president_nom": zod.string().optional(),
   "participants": zod.unknown().optional(),
   "observations_generales": zod.string().nullish(),
-  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional()
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
 })
+})
+
+
+/**
+ * @summary Modifier un conseil planifié
+ */
+export const ModifierConseilParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierConseilBody = zod.object({
+  "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().optional(),
+  "heure_fin": zod.string().optional(),
+  "ordre_du_jour": zod.string().optional(),
+  "participants": zod.array(zod.object({
+  "utilisateur_id": zod.string().optional(),
+  "role_conseil": zod.string().optional()
+})).optional()
+})
+
+export const ModifierConseilResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
+})
+})
+
+
+/**
+ * @summary Envoyer les convocations aux participants
+ */
+export const EnvoyerConvocationsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const EnvoyerConvocationsResponse = zod.object({
+  "message": zod.string().optional(),
+  "envoyes": zod.number().optional()
+})
+
+
+/**
+ * @summary Confirmer sa présence au conseil
+ */
+export const ConfirmerPresenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ConfirmerPresenceResponse = zod.object({
+  "message": zod.string().optional()
+})
+
+
+/**
+ * @summary Obtenir les données du conseil en cours
+ */
+export const GetConseilEnCoursParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetConseilEnCoursResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
+}).optional(),
+  "participants": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "utilisateur_id": zod.string().optional(),
+  "utilisateur_nom": zod.string().optional(),
+  "utilisateur_prenoms": zod.string().optional(),
+  "role_conseil": zod.string().optional(),
+  "convoque": zod.boolean().optional(),
+  "convocation_envoyee": zod.boolean().optional(),
+  "present": zod.boolean().optional(),
+  "heure_arrivee": zod.string().nullish()
+})).optional(),
+  "deliberations": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "nb_absences": zod.number().optional(),
+  "nb_absences_justifiees": zod.number().optional(),
+  "appreciation_generale": zod.string().nullish(),
+  "decision": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation', 'felicitations', 'encouragements', 'avertissement', 'blame']).nullish(),
+  "mention_honneur": zod.boolean().optional(),
+  "observations": zod.string().nullish(),
+  "saisi_par": zod.string().nullish()
+})).optional(),
+  "interventions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "eleve_id": zod.string().nullish(),
+  "auteur_id": zod.string().optional(),
+  "auteur_nom": zod.string().optional(),
+  "contenu": zod.string().optional(),
+  "type": zod.enum(['observation', 'decision', 'question', 'reponse', 'general']).optional(),
+  "created_at": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Saisir ou mettre à jour une délibération
+ */
+export const SaisirDeliberationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SaisirDeliberationBody = zod.object({
+  "eleve_id": zod.string(),
+  "appreciation_generale": zod.string().optional(),
+  "decision": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation', 'felicitations', 'encouragements', 'avertissement', 'blame']).optional(),
+  "mention_honneur": zod.boolean().optional(),
+  "observations": zod.string().optional()
+})
+
+export const SaisirDeliberationResponse = zod.object({
+  "deliberation": zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "nb_absences": zod.number().optional(),
+  "nb_absences_justifiees": zod.number().optional(),
+  "appreciation_generale": zod.string().nullish(),
+  "decision": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation', 'felicitations', 'encouragements', 'avertissement', 'blame']).nullish(),
+  "mention_honneur": zod.boolean().optional(),
+  "observations": zod.string().nullish(),
+  "saisi_par": zod.string().nullish()
+}).optional()
+})
+
+
+/**
+ * @summary Ajouter une intervention
+ */
+export const AjouterInterventionParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AjouterInterventionBody = zod.object({
+  "eleve_id": zod.string().optional(),
+  "contenu": zod.string(),
+  "type": zod.enum(['observation', 'decision', 'question', 'reponse', 'general'])
+})
+
+
+/**
+ * @summary Lister les délibérations d'un conseil
+ */
+export const GetDeliberationsClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetDeliberationsClasseResponse = zod.object({
+  "deliberations": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "moyenne_generale": zod.number().nullish(),
+  "rang": zod.number().nullish(),
+  "nb_absences": zod.number().optional(),
+  "nb_absences_justifiees": zod.number().optional(),
+  "appreciation_generale": zod.string().nullish(),
+  "decision": zod.enum(['passage', 'redoublement', 'exclusion', 'orientation', 'felicitations', 'encouragements', 'avertissement', 'blame']).nullish(),
+  "mention_honneur": zod.boolean().optional(),
+  "observations": zod.string().nullish(),
+  "saisi_par": zod.string().nullish()
+})).optional()
+})
+
+
+/**
+ * @summary Générer le procès-verbal PDF
+ */
+export const GenererPVParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GenererPVResponse = zod.object({
+  "pv_url": zod.string().optional(),
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
+}).optional()
+})
+
+
+/**
+ * @summary Signer le procès-verbal
+ */
+export const SignerPVParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SignerPVResponse = zod.object({
+  "conseil": zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre": zod.enum(['1', '2', '3']).optional(),
+  "date_conseil": zod.string().optional(),
+  "heure_debut": zod.string().nullish(),
+  "heure_fin": zod.string().nullish(),
+  "ordre_du_jour": zod.string().nullish(),
+  "president_id": zod.string().optional(),
+  "president_nom": zod.string().optional(),
+  "participants": zod.unknown().optional(),
+  "observations_generales": zod.string().nullish(),
+  "statut": zod.enum(['planifie', 'en_cours', 'termine']).optional(),
+  "convocations_envoyees": zod.boolean().optional(),
+  "pv_genere": zod.boolean().optional(),
+  "pv_url": zod.string().nullish(),
+  "pv_signe_par": zod.string().nullish(),
+  "pv_date_signature": zod.string().nullish()
+})
+})
+
+
+/**
+ * @summary Lister les participants d'un conseil
+ */
+export const GetConseilParticipantsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetConseilParticipantsResponse = zod.object({
+  "participants": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "conseil_id": zod.string().optional(),
+  "utilisateur_id": zod.string().optional(),
+  "utilisateur_nom": zod.string().optional(),
+  "utilisateur_prenoms": zod.string().optional(),
+  "role_conseil": zod.string().optional(),
+  "convoque": zod.boolean().optional(),
+  "convocation_envoyee": zod.boolean().optional(),
+  "present": zod.boolean().optional(),
+  "heure_arrivee": zod.string().nullish()
+})).optional()
 })
 
 

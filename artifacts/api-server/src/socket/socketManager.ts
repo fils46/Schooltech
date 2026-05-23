@@ -59,6 +59,16 @@ export function initSocket(httpServer: HttpServer): SocketServer {
         );
     });
 
+    socket.on("rejoindre_conseil", async (conseilId: string) => {
+      if (!userId) return;
+      socket.join(`conseil_${conseilId}`);
+      logger.info({ userId, conseilId }, "Rejoint salle conseil");
+    });
+
+    socket.on("quitter_conseil", (conseilId: string) => {
+      socket.leave(`conseil_${conseilId}`);
+    });
+
     socket.on("disconnect", () => {
       logger.info({ userId }, "Socket déconnecté");
     });
@@ -69,6 +79,11 @@ export function initSocket(httpServer: HttpServer): SocketServer {
 
 export function getIo(): SocketServer | null {
   return io;
+}
+
+export function emitToConseil(conseilId: string, event: string, data: unknown) {
+  if (!io) return;
+  io.to(`conseil_${conseilId}`).emit(event, data);
 }
 
 export async function emitNotification(destinataireId: string, data: {

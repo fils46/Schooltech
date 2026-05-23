@@ -2544,6 +2544,178 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
+  /api/conseils/{id}/modifier:
+    put:
+      operationId: modifierConseil
+      summary: Modifier un conseil planifié
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ModifierConseilInput" }
+      responses:
+        "200":
+          description: Conseil modifié
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConseilClasseItemResponse" }
+
+  /api/conseils/{id}/convoquer:
+    post:
+      operationId: envoyerConvocations
+      summary: Envoyer les convocations aux participants
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Convocations envoyées
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  envoyes: { type: integer }
+
+  /api/conseils/{id}/presence:
+    put:
+      operationId: confirmerPresence
+      summary: Confirmer sa présence au conseil
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Présence confirmée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+
+  /api/conseils/{id}/en-cours:
+    get:
+      operationId: getConseilEnCours
+      summary: Obtenir les données du conseil en cours
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Données conseil en cours
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConseilEnCoursResponse" }
+
+  /api/conseils/{id}/deliberation:
+    put:
+      operationId: saisirDeliberation
+      summary: Saisir ou mettre à jour une délibération
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SaisirDeliberationInput" }
+      responses:
+        "200":
+          description: Délibération enregistrée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deliberation: { $ref: "#/components/schemas/ConseilDeliberationItem" }
+
+  /api/conseils/{id}/intervention:
+    post:
+      operationId: ajouterIntervention
+      summary: Ajouter une intervention
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AjouterInterventionInput" }
+      responses:
+        "201":
+          description: Intervention ajoutée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intervention: { $ref: "#/components/schemas/ConseilInterventionItem" }
+
+  /api/conseils/{id}/deliberations:
+    get:
+      operationId: getDeliberationsClasse
+      summary: Lister les délibérations d'un conseil
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des délibérations
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DeliberationsListeResponse" }
+
+  /api/conseils/{id}/generer-pv:
+    post:
+      operationId: genererPV
+      summary: Générer le procès-verbal PDF
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: PV généré
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pv_url: { type: string }
+                  conseil: { $ref: "#/components/schemas/ConseilClasseItem" }
+
+  /api/conseils/{id}/signer-pv:
+    put:
+      operationId: signerPV
+      summary: Signer le procès-verbal
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: PV signé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConseilClasseItemResponse" }
+
+  /api/conseils/{id}/participants:
+    get:
+      operationId: getConseilParticipants
+      summary: Lister les participants d'un conseil
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des participants
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConseilParticipantsResponse" }
+
   # ── Module 08 : Absences ─────────────────────────────────
 
   /absences/liste:
@@ -4524,11 +4696,19 @@ components:
         annee_scolaire_id: { type: string }
         trimestre: { type: string, enum: ["1","2","3"] }
         date_conseil: { type: string }
+        heure_debut: { type: string, nullable: true }
+        heure_fin: { type: string, nullable: true }
+        ordre_du_jour: { type: string, nullable: true }
         president_id: { type: string }
         president_nom: { type: string }
         participants: {}
         observations_generales: { type: string, nullable: true }
         statut: { type: string, enum: ["planifie","en_cours","termine"] }
+        convocations_envoyees: { type: boolean }
+        pv_genere: { type: boolean }
+        pv_url: { type: string, nullable: true }
+        pv_signe_par: { type: string, nullable: true }
+        pv_date_signature: { type: string, nullable: true }
 
     ConseilClasseItemResponse:
       type: object
@@ -4546,6 +4726,78 @@ components:
           items:
             $ref: "#/components/schemas/ConseilClasseItem"
 
+    ConseilParticipantItem:
+      type: object
+      properties:
+        id: { type: string }
+        conseil_id: { type: string }
+        utilisateur_id: { type: string }
+        utilisateur_nom: { type: string }
+        utilisateur_prenoms: { type: string }
+        role_conseil: { type: string }
+        convoque: { type: boolean }
+        convocation_envoyee: { type: boolean }
+        present: { type: boolean }
+        heure_arrivee: { type: string, nullable: true }
+
+    ConseilDeliberationItem:
+      type: object
+      properties:
+        id: { type: string }
+        conseil_id: { type: string }
+        eleve_id: { type: string }
+        eleve_nom: { type: string }
+        eleve_prenoms: { type: string }
+        moyenne_generale: { type: number, nullable: true }
+        rang: { type: integer, nullable: true }
+        nb_absences: { type: integer }
+        nb_absences_justifiees: { type: integer }
+        appreciation_generale: { type: string, nullable: true }
+        decision: { type: string, nullable: true, enum: ["passage","redoublement","exclusion","orientation","felicitations","encouragements","avertissement","blame"] }
+        mention_honneur: { type: boolean }
+        observations: { type: string, nullable: true }
+        saisi_par: { type: string, nullable: true }
+
+    ConseilInterventionItem:
+      type: object
+      properties:
+        id: { type: string }
+        conseil_id: { type: string }
+        eleve_id: { type: string, nullable: true }
+        auteur_id: { type: string }
+        auteur_nom: { type: string }
+        contenu: { type: string }
+        type: { type: string, enum: ["observation","decision","question","reponse","general"] }
+        created_at: { type: string }
+
+    ConseilEnCoursResponse:
+      type: object
+      properties:
+        conseil: { $ref: "#/components/schemas/ConseilClasseItem" }
+        participants:
+          type: array
+          items: { $ref: "#/components/schemas/ConseilParticipantItem" }
+        deliberations:
+          type: array
+          items: { $ref: "#/components/schemas/ConseilDeliberationItem" }
+        interventions:
+          type: array
+          items: { $ref: "#/components/schemas/ConseilInterventionItem" }
+
+    ConseilParticipantsResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items: { $ref: "#/components/schemas/ConseilParticipantItem" }
+
+    DeliberationsListeResponse:
+      type: object
+      properties:
+        deliberations:
+          type: array
+          items: { $ref: "#/components/schemas/ConseilDeliberationItem" }
+
     PlanifierConseilInput:
       type: object
       required: [classe_id, annee_scolaire_id, trimestre, date_conseil, president_id]
@@ -4554,8 +4806,50 @@ components:
         annee_scolaire_id: { type: string }
         trimestre: { type: string, enum: ["1","2","3"] }
         date_conseil: { type: string }
+        heure_debut: { type: string }
+        heure_fin: { type: string }
+        ordre_du_jour: { type: string }
         president_id: { type: string }
-        participants: {}
+        participants:
+          type: array
+          items:
+            type: object
+            properties:
+              utilisateur_id: { type: string }
+              role_conseil: { type: string }
+
+    ModifierConseilInput:
+      type: object
+      properties:
+        date_conseil: { type: string }
+        heure_debut: { type: string }
+        heure_fin: { type: string }
+        ordre_du_jour: { type: string }
+        participants:
+          type: array
+          items:
+            type: object
+            properties:
+              utilisateur_id: { type: string }
+              role_conseil: { type: string }
+
+    SaisirDeliberationInput:
+      type: object
+      required: [eleve_id]
+      properties:
+        eleve_id: { type: string }
+        appreciation_generale: { type: string }
+        decision: { type: string, enum: ["passage","redoublement","exclusion","orientation","felicitations","encouragements","avertissement","blame"] }
+        mention_honneur: { type: boolean }
+        observations: { type: string }
+
+    AjouterInterventionInput:
+      type: object
+      required: [contenu, type]
+      properties:
+        eleve_id: { type: string }
+        contenu: { type: string }
+        type: { type: string, enum: ["observation","decision","question","reponse","general"] }
 
     TerminerConseilInput:
       type: object

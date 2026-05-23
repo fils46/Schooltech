@@ -26,6 +26,8 @@ import type {
   AbsencesListeResponse,
   AffecterEleveInput,
   AffecterProfesseurInput,
+  AjouterIntervention201,
+  AjouterInterventionInput,
   AnneeScolaire,
   AnneeScolaireInput,
   AnneeScolairesListeResponse,
@@ -46,14 +48,18 @@ import type {
   ClasseStatistiques,
   ClassesListeResponse,
   ConfigurerMatieresInput,
+  ConfirmerPresence200,
   ConflitsResponse,
   ConseilClasseItemResponse,
+  ConseilEnCoursResponse,
+  ConseilParticipantsResponse,
   ConseilsListeResponse,
   CoursDetail,
   CoursInput,
   Creneau,
   CreneauInput,
   CreneauxListeResponse,
+  DeliberationsListeResponse,
   DevoirsResponse,
   DocumentEleve,
   DupliquerEmploiInput,
@@ -64,6 +70,7 @@ import type {
   ElevesListeResponse,
   ElevesRisqueResponse,
   EmploiGrilleResponse,
+  EnvoyerConvocations200,
   ErrorResponse,
   Etablissement,
   EtablissementInput,
@@ -75,6 +82,7 @@ import type {
   GenererBulletinInput,
   GenererClasseInput,
   GenererClasseResponse,
+  GenererPV200,
   GetBulletinsClasseParams,
   GetBulletinsEleveParams,
   GetDevoirsAVenirParams,
@@ -113,6 +121,7 @@ import type {
   MatiereConfigItemResponse,
   MatieresConfigResponse,
   MessageResponse,
+  ModifierConseilInput,
   ModifierEleveInput,
   MonteeClasseInput,
   MonteeClasseResponse,
@@ -132,6 +141,8 @@ import type {
   RechercherElevesParams,
   ResetPasswordInput,
   ResumeAbsencesEleveResponse,
+  SaisirDeliberation200,
+  SaisirDeliberationInput,
   Salle,
   SalleInput,
   SallesListeResponse,
@@ -8221,6 +8232,733 @@ export const useTerminerConseil = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getTerminerConseilMutationOptions(options));
     }
+
+export const getModifierConseilUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/modifier`
+}
+
+/**
+ * @summary Modifier un conseil planifié
+ */
+export const modifierConseil = async (id: string,
+    modifierConseilInput: ModifierConseilInput, options?: RequestInit): Promise<ConseilClasseItemResponse> => {
+
+  return customFetch<ConseilClasseItemResponse>(getModifierConseilUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierConseilInput,)
+  }
+);}
+
+
+
+
+export const getModifierConseilMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierConseil>>, TError,{id: string;data: BodyType<ModifierConseilInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierConseil>>, TError,{id: string;data: BodyType<ModifierConseilInput>}, TContext> => {
+
+const mutationKey = ['modifierConseil'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierConseil>>, {id: string;data: BodyType<ModifierConseilInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  modifierConseil(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierConseilMutationResult = NonNullable<Awaited<ReturnType<typeof modifierConseil>>>
+    export type ModifierConseilMutationBody = BodyType<ModifierConseilInput>
+    export type ModifierConseilMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier un conseil planifié
+ */
+export const useModifierConseil = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierConseil>>, TError,{id: string;data: BodyType<ModifierConseilInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierConseil>>,
+        TError,
+        {id: string;data: BodyType<ModifierConseilInput>},
+        TContext
+      > => {
+      return useMutation(getModifierConseilMutationOptions(options));
+    }
+
+export const getEnvoyerConvocationsUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/convoquer`
+}
+
+/**
+ * @summary Envoyer les convocations aux participants
+ */
+export const envoyerConvocations = async (id: string, options?: RequestInit): Promise<EnvoyerConvocations200> => {
+
+  return customFetch<EnvoyerConvocations200>(getEnvoyerConvocationsUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getEnvoyerConvocationsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof envoyerConvocations>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof envoyerConvocations>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['envoyerConvocations'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof envoyerConvocations>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  envoyerConvocations(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnvoyerConvocationsMutationResult = NonNullable<Awaited<ReturnType<typeof envoyerConvocations>>>
+
+    export type EnvoyerConvocationsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Envoyer les convocations aux participants
+ */
+export const useEnvoyerConvocations = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof envoyerConvocations>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof envoyerConvocations>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getEnvoyerConvocationsMutationOptions(options));
+    }
+
+export const getConfirmerPresenceUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/presence`
+}
+
+/**
+ * @summary Confirmer sa présence au conseil
+ */
+export const confirmerPresence = async (id: string, options?: RequestInit): Promise<ConfirmerPresence200> => {
+
+  return customFetch<ConfirmerPresence200>(getConfirmerPresenceUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getConfirmerPresenceMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmerPresence>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof confirmerPresence>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['confirmerPresence'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof confirmerPresence>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  confirmerPresence(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfirmerPresenceMutationResult = NonNullable<Awaited<ReturnType<typeof confirmerPresence>>>
+
+    export type ConfirmerPresenceMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Confirmer sa présence au conseil
+ */
+export const useConfirmerPresence = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmerPresence>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof confirmerPresence>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getConfirmerPresenceMutationOptions(options));
+    }
+
+export const getGetConseilEnCoursUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/en-cours`
+}
+
+/**
+ * @summary Obtenir les données du conseil en cours
+ */
+export const getConseilEnCours = async (id: string, options?: RequestInit): Promise<ConseilEnCoursResponse> => {
+
+  return customFetch<ConseilEnCoursResponse>(getGetConseilEnCoursUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetConseilEnCoursQueryKey = (id: string,) => {
+    return [
+    `/api/api/conseils/${id}/en-cours`
+    ] as const;
+    }
+
+
+export const getGetConseilEnCoursQueryOptions = <TData = Awaited<ReturnType<typeof getConseilEnCours>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConseilEnCours>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetConseilEnCoursQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getConseilEnCours>>> = ({ signal }) => getConseilEnCours(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getConseilEnCours>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetConseilEnCoursQueryResult = NonNullable<Awaited<ReturnType<typeof getConseilEnCours>>>
+export type GetConseilEnCoursQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir les données du conseil en cours
+ */
+
+export function useGetConseilEnCours<TData = Awaited<ReturnType<typeof getConseilEnCours>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConseilEnCours>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetConseilEnCoursQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSaisirDeliberationUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/deliberation`
+}
+
+/**
+ * @summary Saisir ou mettre à jour une délibération
+ */
+export const saisirDeliberation = async (id: string,
+    saisirDeliberationInput: SaisirDeliberationInput, options?: RequestInit): Promise<SaisirDeliberation200> => {
+
+  return customFetch<SaisirDeliberation200>(getSaisirDeliberationUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      saisirDeliberationInput,)
+  }
+);}
+
+
+
+
+export const getSaisirDeliberationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saisirDeliberation>>, TError,{id: string;data: BodyType<SaisirDeliberationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saisirDeliberation>>, TError,{id: string;data: BodyType<SaisirDeliberationInput>}, TContext> => {
+
+const mutationKey = ['saisirDeliberation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saisirDeliberation>>, {id: string;data: BodyType<SaisirDeliberationInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  saisirDeliberation(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaisirDeliberationMutationResult = NonNullable<Awaited<ReturnType<typeof saisirDeliberation>>>
+    export type SaisirDeliberationMutationBody = BodyType<SaisirDeliberationInput>
+    export type SaisirDeliberationMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Saisir ou mettre à jour une délibération
+ */
+export const useSaisirDeliberation = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saisirDeliberation>>, TError,{id: string;data: BodyType<SaisirDeliberationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof saisirDeliberation>>,
+        TError,
+        {id: string;data: BodyType<SaisirDeliberationInput>},
+        TContext
+      > => {
+      return useMutation(getSaisirDeliberationMutationOptions(options));
+    }
+
+export const getAjouterInterventionUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/intervention`
+}
+
+/**
+ * @summary Ajouter une intervention
+ */
+export const ajouterIntervention = async (id: string,
+    ajouterInterventionInput: AjouterInterventionInput, options?: RequestInit): Promise<AjouterIntervention201> => {
+
+  return customFetch<AjouterIntervention201>(getAjouterInterventionUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      ajouterInterventionInput,)
+  }
+);}
+
+
+
+
+export const getAjouterInterventionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof ajouterIntervention>>, TError,{id: string;data: BodyType<AjouterInterventionInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof ajouterIntervention>>, TError,{id: string;data: BodyType<AjouterInterventionInput>}, TContext> => {
+
+const mutationKey = ['ajouterIntervention'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof ajouterIntervention>>, {id: string;data: BodyType<AjouterInterventionInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  ajouterIntervention(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AjouterInterventionMutationResult = NonNullable<Awaited<ReturnType<typeof ajouterIntervention>>>
+    export type AjouterInterventionMutationBody = BodyType<AjouterInterventionInput>
+    export type AjouterInterventionMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Ajouter une intervention
+ */
+export const useAjouterIntervention = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof ajouterIntervention>>, TError,{id: string;data: BodyType<AjouterInterventionInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof ajouterIntervention>>,
+        TError,
+        {id: string;data: BodyType<AjouterInterventionInput>},
+        TContext
+      > => {
+      return useMutation(getAjouterInterventionMutationOptions(options));
+    }
+
+export const getGetDeliberationsClasseUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/deliberations`
+}
+
+/**
+ * @summary Lister les délibérations d'un conseil
+ */
+export const getDeliberationsClasse = async (id: string, options?: RequestInit): Promise<DeliberationsListeResponse> => {
+
+  return customFetch<DeliberationsListeResponse>(getGetDeliberationsClasseUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDeliberationsClasseQueryKey = (id: string,) => {
+    return [
+    `/api/api/conseils/${id}/deliberations`
+    ] as const;
+    }
+
+
+export const getGetDeliberationsClasseQueryOptions = <TData = Awaited<ReturnType<typeof getDeliberationsClasse>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliberationsClasse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDeliberationsClasseQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliberationsClasse>>> = ({ signal }) => getDeliberationsClasse(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeliberationsClasse>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDeliberationsClasseQueryResult = NonNullable<Awaited<ReturnType<typeof getDeliberationsClasse>>>
+export type GetDeliberationsClasseQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les délibérations d'un conseil
+ */
+
+export function useGetDeliberationsClasse<TData = Awaited<ReturnType<typeof getDeliberationsClasse>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliberationsClasse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDeliberationsClasseQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGenererPVUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/generer-pv`
+}
+
+/**
+ * @summary Générer le procès-verbal PDF
+ */
+export const genererPV = async (id: string, options?: RequestInit): Promise<GenererPV200> => {
+
+  return customFetch<GenererPV200>(getGenererPVUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getGenererPVMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof genererPV>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof genererPV>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['genererPV'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof genererPV>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  genererPV(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GenererPVMutationResult = NonNullable<Awaited<ReturnType<typeof genererPV>>>
+
+    export type GenererPVMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Générer le procès-verbal PDF
+ */
+export const useGenererPV = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof genererPV>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof genererPV>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getGenererPVMutationOptions(options));
+    }
+
+export const getSignerPVUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/signer-pv`
+}
+
+/**
+ * @summary Signer le procès-verbal
+ */
+export const signerPV = async (id: string, options?: RequestInit): Promise<ConseilClasseItemResponse> => {
+
+  return customFetch<ConseilClasseItemResponse>(getSignerPVUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getSignerPVMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signerPV>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof signerPV>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['signerPV'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof signerPV>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  signerPV(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SignerPVMutationResult = NonNullable<Awaited<ReturnType<typeof signerPV>>>
+
+    export type SignerPVMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Signer le procès-verbal
+ */
+export const useSignerPV = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signerPV>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof signerPV>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSignerPVMutationOptions(options));
+    }
+
+export const getGetConseilParticipantsUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/conseils/${id}/participants`
+}
+
+/**
+ * @summary Lister les participants d'un conseil
+ */
+export const getConseilParticipants = async (id: string, options?: RequestInit): Promise<ConseilParticipantsResponse> => {
+
+  return customFetch<ConseilParticipantsResponse>(getGetConseilParticipantsUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetConseilParticipantsQueryKey = (id: string,) => {
+    return [
+    `/api/api/conseils/${id}/participants`
+    ] as const;
+    }
+
+
+export const getGetConseilParticipantsQueryOptions = <TData = Awaited<ReturnType<typeof getConseilParticipants>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConseilParticipants>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetConseilParticipantsQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getConseilParticipants>>> = ({ signal }) => getConseilParticipants(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getConseilParticipants>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetConseilParticipantsQueryResult = NonNullable<Awaited<ReturnType<typeof getConseilParticipants>>>
+export type GetConseilParticipantsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les participants d'un conseil
+ */
+
+export function useGetConseilParticipants<TData = Awaited<ReturnType<typeof getConseilParticipants>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConseilParticipants>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetConseilParticipantsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getListerAbsencesUrl = (params?: ListerAbsencesParams,) => {
   const normalizedParams = new URLSearchParams();
