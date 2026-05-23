@@ -19,8 +19,9 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "PRINCIPAL",
       links: [
-        { label: "Établissements", href: "/etablissements", icon: Building },
-        { label: "Utilisateurs",   href: "/utilisateurs",   icon: Users },
+        { label: "Tableau de bord", href: "/dashboard",      icon: LayoutDashboard },
+        { label: "Établissements",  href: "/etablissements", icon: Building },
+        { label: "Utilisateurs",    href: "/utilisateurs",   icon: Users },
       ],
     },
     {
