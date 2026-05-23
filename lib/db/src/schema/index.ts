@@ -5,3 +5,7 @@ export * from "./eleves";
 export * from "./parentsEleves";
 export * from "./documentsEleves";
 export * from "./classes";
+export * from "./anneesScolaires";
+export * from "./filieres";
+export * from "./eleveClasses";
+export * from "./professeurClasses";

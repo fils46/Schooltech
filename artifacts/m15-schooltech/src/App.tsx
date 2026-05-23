@@ -21,6 +21,9 @@ import EleveForm from "@/pages/eleve-form";
 import EleveDetail from "@/pages/eleve-detail";
 import Censeurs from "@/pages/censeurs";
 import Classes from "@/pages/classes";
+import ClasseDetail from "@/pages/classe-detail";
+import AnneesScolaires from "@/pages/annees-scolaires";
+import Filieres from "@/pages/filieres";
 import EnConstruction from "@/pages/en-construction";
 
 const queryClient = new QueryClient();
@@ -95,10 +98,34 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      <Route path="/classes/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ClasseDetail />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       <Route path="/classes">
         <ProtectedRoute>
           <DashboardLayout>
             <Classes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/annees-scolaires">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AnneesScolaires />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/filieres">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Filieres />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

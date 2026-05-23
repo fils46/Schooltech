@@ -6,8 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListerClassesParams = {
-annee_scolaire?: number;
-annee_scolaire_id?: string;
-niveau?: string;
-};
+export interface AffecterProfesseurInput {
+  professeur_id: string;
+  matiere: string;
+  annee_scolaire_id: string;
+}

@@ -6,6 +6,8 @@ import etablissementsRouter from "./etablissements";
 import statsRouter from "./stats";
 import elevesRouter from "./eleves";
 import classesRouter from "./classes";
+import anneesScolairesRouter from "./anneesScolaires";
+import filieresRouter from "./filieres";
 
 const router: IRouter = Router();
 
@@ -15,6 +17,8 @@ router.use(utilisateursRouter);
 router.use(etablissementsRouter);
 router.use(statsRouter);
 router.use(elevesRouter);
+router.use(anneesScolairesRouter);
+router.use(filieresRouter);
 router.use(classesRouter);
 
 export default router;

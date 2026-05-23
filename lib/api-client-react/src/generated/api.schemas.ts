@@ -364,6 +364,148 @@ export interface ClassesListeResponse {
   total: number;
 }
 
+export interface AnneeScolaire {
+  id: string;
+  etablissement_id: string;
+  libelle: string;
+  date_debut: string;
+  date_fin: string;
+  est_active: boolean;
+  created_at?: string;
+}
+
+export interface AnneeScolaireInput {
+  libelle: string;
+  date_debut: string;
+  date_fin: string;
+  est_active?: boolean;
+  etablissement_id?: string;
+}
+
+export interface AnneeScolairesListeResponse {
+  annees: AnneeScolaire[];
+  total: number;
+}
+
+export interface Filiere {
+  id: string;
+  etablissement_id: string;
+  nom: string;
+  code: string;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  type_etablissement?: string | null;
+  actif: boolean;
+  created_at?: string;
+}
+
+export interface FiliereInput {
+  nom: string;
+  code: string;
+  description?: string;
+  type_etablissement?: string;
+  actif?: boolean;
+  etablissement_id?: string;
+}
+
+export interface FilieresListeResponse {
+  filieres: Filiere[];
+  total: number;
+}
+
+export interface EleveClasseItem {
+  id: string;
+  eleve_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  date_affectation: string;
+  statut: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  eleve_matricule?: string;
+  eleve_sexe?: string;
+}
+
+export interface ProfesseurClasseItem {
+  id: string;
+  professeur_id: string;
+  classe_id: string;
+  matiere: string;
+  annee_scolaire_id: string;
+  prof_nom?: string;
+  prof_prenoms?: string;
+  prof_email?: string;
+}
+
+export interface ClasseDetail {
+  id: string;
+  etablissement_id: string;
+  nom: string;
+  niveau: string;
+  section?: string;
+  annee_scolaire?: number;
+  /** @nullable */
+  annee_scolaire_id?: string | null;
+  /** @nullable */
+  filiere_id?: string | null;
+  /** @nullable */
+  filiere_nom?: string | null;
+  /** @nullable */
+  filiere_code?: string | null;
+  /** @nullable */
+  titulaire_id?: string | null;
+  /** @nullable */
+  titulaire_nom?: string | null;
+  /** @nullable */
+  capacite_max?: number | null;
+  actif?: boolean;
+  nb_eleves?: number;
+  eleves?: EleveClasseItem[];
+  professeurs?: ProfesseurClasseItem[];
+}
+
+export interface ElevesClasseResponse {
+  eleves: EleveClasseItem[];
+  total: number;
+}
+
+export interface ClasseStatistiques {
+  classe_id: string;
+  nb_eleves: number;
+  nb_garcons: number;
+  nb_filles: number;
+  capacite_max: number;
+  taux_remplissage: number;
+}
+
+export interface AffecterEleveInput {
+  eleve_id: string;
+  annee_scolaire_id: string;
+}
+
+export interface AffecterProfesseurInput {
+  professeur_id: string;
+  matiere: string;
+  annee_scolaire_id: string;
+}
+
+export interface MonteeClasseMapping {
+  classe_source_id: string;
+  classe_destination_id: string;
+}
+
+export interface MonteeClasseInput {
+  ancienne_annee_id: string;
+  nouvelle_annee_id: string;
+  mappings: MonteeClasseMapping[];
+}
+
+export interface MonteeClasseResponse {
+  message: string;
+  eleves_transferes: number;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -387,6 +529,7 @@ sexe?: string;
 
 export type ListerClassesParams = {
 annee_scolaire?: number;
+annee_scolaire_id?: string;
 niveau?: string;
 };
 

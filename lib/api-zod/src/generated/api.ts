@@ -607,6 +607,7 @@ export const SupprimerDocumentEleveResponse = zod.object({
  */
 export const ListerClassesQueryParams = zod.object({
   "annee_scolaire": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
   "niveau": zod.coerce.string().optional()
 })
 
@@ -677,6 +678,305 @@ export const SupprimerClasseParams = zod.object({
 
 export const SupprimerClasseResponse = zod.object({
   "message": zod.string()
+})
+
+
+/**
+ * @summary Détail d'une classe (avec élèves et professeurs)
+ */
+export const GetClasseDetailParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetClasseDetailResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "niveau": zod.string(),
+  "section": zod.string().optional(),
+  "annee_scolaire": zod.number().optional(),
+  "annee_scolaire_id": zod.string().nullish(),
+  "filiere_id": zod.string().nullish(),
+  "filiere_nom": zod.string().nullish(),
+  "filiere_code": zod.string().nullish(),
+  "titulaire_id": zod.string().nullish(),
+  "titulaire_nom": zod.string().nullish(),
+  "capacite_max": zod.number().nullish(),
+  "actif": zod.boolean().optional(),
+  "nb_eleves": zod.number().optional(),
+  "eleves": zod.array(zod.object({
+  "id": zod.string(),
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "date_affectation": zod.string(),
+  "statut": zod.string(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_sexe": zod.string().optional()
+})).optional(),
+  "professeurs": zod.array(zod.object({
+  "id": zod.string(),
+  "professeur_id": zod.string(),
+  "classe_id": zod.string(),
+  "matiere": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "prof_nom": zod.string().optional(),
+  "prof_prenoms": zod.string().optional(),
+  "prof_email": zod.string().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Liste des élèves d'une classe
+ */
+export const GetElevesClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetElevesClasseResponse = zod.object({
+  "eleves": zod.array(zod.object({
+  "id": zod.string(),
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "date_affectation": zod.string(),
+  "statut": zod.string(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "eleve_matricule": zod.string().optional(),
+  "eleve_sexe": zod.string().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Statistiques d'une classe
+ */
+export const GetStatistiquesClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetStatistiquesClasseResponse = zod.object({
+  "classe_id": zod.string(),
+  "nb_eleves": zod.number(),
+  "nb_garcons": zod.number(),
+  "nb_filles": zod.number(),
+  "capacite_max": zod.number(),
+  "taux_remplissage": zod.number()
+})
+
+
+/**
+ * @summary Affecter un élève à une classe
+ */
+export const AffecterEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AffecterEleveBody = zod.object({
+  "eleve_id": zod.string(),
+  "annee_scolaire_id": zod.string()
+})
+
+
+/**
+ * @summary Retirer un élève d'une classe
+ */
+export const RetirerEleveParams = zod.object({
+  "id": zod.coerce.string(),
+  "eleveId": zod.coerce.string()
+})
+
+export const RetirerEleveResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Affecter un professeur à une classe
+ */
+export const AffecterProfesseurParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AffecterProfesseurBody = zod.object({
+  "professeur_id": zod.string(),
+  "matiere": zod.string(),
+  "annee_scolaire_id": zod.string()
+})
+
+
+/**
+ * @summary Retirer un professeur d'une classe
+ */
+export const RetirerProfesseurParams = zod.object({
+  "id": zod.coerce.string(),
+  "profId": zod.coerce.string()
+})
+
+export const RetirerProfesseurResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Montée de classe (passage année scolaire suivante)
+ */
+export const MonteeDeClasseBody = zod.object({
+  "ancienne_annee_id": zod.string(),
+  "nouvelle_annee_id": zod.string(),
+  "mappings": zod.array(zod.object({
+  "classe_source_id": zod.string(),
+  "classe_destination_id": zod.string()
+}))
+})
+
+export const MonteeDeClasseResponse = zod.object({
+  "message": zod.string(),
+  "eleves_transferes": zod.number()
+})
+
+
+/**
+ * @summary Créer une année scolaire
+ */
+export const CreerAnneeScolaireBody = zod.object({
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Lister les années scolaires
+ */
+export const ListerAnneesScolairesResponse = zod.object({
+  "annees": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Obtenir l'année scolaire active
+ */
+export const GetAnneeActiveResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Activer une année scolaire
+ */
+export const ActiverAnneeScolaireParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ActiverAnneeScolaireResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Créer une filière
+ */
+export const CreerFiliereBody = zod.object({
+  "nom": zod.string(),
+  "code": zod.string(),
+  "description": zod.string().optional(),
+  "type_etablissement": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Lister les filières
+ */
+export const ListerFilieresResponse = zod.object({
+  "filieres": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "description": zod.string().nullish(),
+  "type_etablissement": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Modifier une filière
+ */
+export const ModifierFiliereParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierFiliereBody = zod.object({
+  "nom": zod.string(),
+  "code": zod.string(),
+  "description": zod.string().optional(),
+  "type_etablissement": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierFiliereResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "description": zod.string().nullish(),
+  "type_etablissement": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Désactiver une filière
+ */
+export const DesactiverFiliereParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DesactiverFiliereResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "description": zod.string().nullish(),
+  "type_etablissement": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
 })
 
 

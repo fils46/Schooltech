@@ -760,6 +760,10 @@ paths:
           in: query
           schema:
             type: integer
+        - name: annee_scolaire_id
+          in: query
+          schema:
+            type: string
         - name: niveau
           in: query
           schema:
@@ -852,6 +856,406 @@ paths:
                 $ref: "#/components/schemas/MessageResponse"
         "404":
           description: Classe non trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /classes/{id}/detail:
+    get:
+      operationId: getClasseDetail
+      tags: [classes]
+      summary: Détail d'une classe (avec élèves et professeurs)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Détail de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClasseDetail"
+        "404":
+          description: Classe non trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /classes/{id}/eleves:
+    get:
+      operationId: getElevesClasse
+      tags: [classes]
+      summary: Liste des élèves d'une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Élèves de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ElevesClasseResponse"
+
+  /classes/{id}/statistiques:
+    get:
+      operationId: getStatistiquesClasse
+      tags: [classes]
+      summary: Statistiques d'une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Statistiques de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClasseStatistiques"
+
+  /classes/{id}/affecter-eleve:
+    post:
+      operationId: affecterEleve
+      tags: [classes]
+      summary: Affecter un élève à une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AffecterEleveInput"
+      responses:
+        "201":
+          description: Élève affecté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Erreur d'affectation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /classes/{id}/retirer-eleve/{eleveId}:
+    delete:
+      operationId: retirerEleve
+      tags: [classes]
+      summary: Retirer un élève d'une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: eleveId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Élève retiré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /classes/{id}/affecter-professeur:
+    post:
+      operationId: affecterProfesseur
+      tags: [classes]
+      summary: Affecter un professeur à une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AffecterProfesseurInput"
+      responses:
+        "201":
+          description: Professeur affecté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Erreur d'affectation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /classes/{id}/retirer-professeur/{profId}:
+    delete:
+      operationId: retirerProfesseur
+      tags: [classes]
+      summary: Retirer un professeur d'une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: profId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Professeur retiré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /classes/montee:
+    post:
+      operationId: monteeDeClasse
+      tags: [classes]
+      summary: Montée de classe (passage année scolaire suivante)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MonteeClasseInput"
+      responses:
+        "200":
+          description: Montée effectuée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonteeClasseResponse"
+        "400":
+          description: Erreur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /annees-scolaires/creer:
+    post:
+      operationId: creerAnneeScolaire
+      tags: [annees-scolaires]
+      summary: Créer une année scolaire
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnneeScolaireInput"
+      responses:
+        "201":
+          description: Année créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolaire"
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /annees-scolaires/liste:
+    get:
+      operationId: listerAnneesScolaires
+      tags: [annees-scolaires]
+      summary: Lister les années scolaires
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Liste des années scolaires
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolairesListeResponse"
+
+  /annees-scolaires/active:
+    get:
+      operationId: getAnneeActive
+      tags: [annees-scolaires]
+      summary: Obtenir l'année scolaire active
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Année scolaire active
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolaire"
+        "404":
+          description: Aucune année active
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /annees-scolaires/{id}/activer:
+    put:
+      operationId: activerAnneeScolaire
+      tags: [annees-scolaires]
+      summary: Activer une année scolaire
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Année activée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolaire"
+        "404":
+          description: Année non trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /filieres/creer:
+    post:
+      operationId: creerFiliere
+      tags: [filieres]
+      summary: Créer une filière
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FiliereInput"
+      responses:
+        "201":
+          description: Filière créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filiere"
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /filieres/liste:
+    get:
+      operationId: listerFilieres
+      tags: [filieres]
+      summary: Lister les filières
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Liste des filières
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilieresListeResponse"
+
+  /filieres/{id}/modifier:
+    put:
+      operationId: modifierFiliere
+      tags: [filieres]
+      summary: Modifier une filière
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FiliereInput"
+      responses:
+        "200":
+          description: Filière modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filiere"
+
+  /filieres/{id}/desactiver:
+    put:
+      operationId: desactiverFiliere
+      tags: [filieres]
+      summary: Désactiver une filière
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Filière désactivée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filiere"
+        "400":
+          description: Des classes actives utilisent cette filière
           content:
             application/json:
               schema:
@@ -1369,4 +1773,268 @@ components:
           items:
             $ref: "#/components/schemas/Classe"
         total:
+          type: integer
+
+    AnneeScolaire:
+      type: object
+      required: [id, etablissement_id, libelle, date_debut, date_fin, est_active]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        libelle:
+          type: string
+        date_debut:
+          type: string
+        date_fin:
+          type: string
+        est_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    AnneeScolaireInput:
+      type: object
+      required: [libelle, date_debut, date_fin]
+      properties:
+        libelle:
+          type: string
+        date_debut:
+          type: string
+        date_fin:
+          type: string
+        est_active:
+          type: boolean
+        etablissement_id:
+          type: string
+
+    AnneeScolairesListeResponse:
+      type: object
+      required: [annees, total]
+      properties:
+        annees:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnneeScolaire"
+        total:
+          type: integer
+
+    Filiere:
+      type: object
+      required: [id, etablissement_id, nom, code, actif]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        nom:
+          type: string
+        code:
+          type: string
+        description:
+          type: ["string", "null"]
+        type_etablissement:
+          type: ["string", "null"]
+        actif:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    FiliereInput:
+      type: object
+      required: [nom, code]
+      properties:
+        nom:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        type_etablissement:
+          type: string
+        actif:
+          type: boolean
+        etablissement_id:
+          type: string
+
+    FilieresListeResponse:
+      type: object
+      required: [filieres, total]
+      properties:
+        filieres:
+          type: array
+          items:
+            $ref: "#/components/schemas/Filiere"
+        total:
+          type: integer
+
+    EleveClasseItem:
+      type: object
+      required: [id, eleve_id, classe_id, annee_scolaire_id, date_affectation, statut]
+      properties:
+        id:
+          type: string
+        eleve_id:
+          type: string
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        date_affectation:
+          type: string
+        statut:
+          type: string
+        eleve_nom:
+          type: string
+        eleve_prenoms:
+          type: string
+        eleve_matricule:
+          type: string
+        eleve_sexe:
+          type: string
+
+    ProfesseurClasseItem:
+      type: object
+      required: [id, professeur_id, classe_id, matiere, annee_scolaire_id]
+      properties:
+        id:
+          type: string
+        professeur_id:
+          type: string
+        classe_id:
+          type: string
+        matiere:
+          type: string
+        annee_scolaire_id:
+          type: string
+        prof_nom:
+          type: string
+        prof_prenoms:
+          type: string
+        prof_email:
+          type: string
+
+    ClasseDetail:
+      type: object
+      required: [id, etablissement_id, nom, niveau]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        nom:
+          type: string
+        niveau:
+          type: string
+        section:
+          type: string
+        annee_scolaire:
+          type: integer
+        annee_scolaire_id:
+          type: ["string", "null"]
+        filiere_id:
+          type: ["string", "null"]
+        filiere_nom:
+          type: ["string", "null"]
+        filiere_code:
+          type: ["string", "null"]
+        titulaire_id:
+          type: ["string", "null"]
+        titulaire_nom:
+          type: ["string", "null"]
+        capacite_max:
+          type: ["integer", "null"]
+        actif:
+          type: boolean
+        nb_eleves:
+          type: integer
+        eleves:
+          type: array
+          items:
+            $ref: "#/components/schemas/EleveClasseItem"
+        professeurs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfesseurClasseItem"
+
+    ElevesClasseResponse:
+      type: object
+      required: [eleves, total]
+      properties:
+        eleves:
+          type: array
+          items:
+            $ref: "#/components/schemas/EleveClasseItem"
+        total:
+          type: integer
+
+    ClasseStatistiques:
+      type: object
+      required: [classe_id, nb_eleves, nb_garcons, nb_filles, capacite_max, taux_remplissage]
+      properties:
+        classe_id:
+          type: string
+        nb_eleves:
+          type: integer
+        nb_garcons:
+          type: integer
+        nb_filles:
+          type: integer
+        capacite_max:
+          type: integer
+        taux_remplissage:
+          type: number
+
+    AffecterEleveInput:
+      type: object
+      required: [eleve_id, annee_scolaire_id]
+      properties:
+        eleve_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+
+    AffecterProfesseurInput:
+      type: object
+      required: [professeur_id, matiere, annee_scolaire_id]
+      properties:
+        professeur_id:
+          type: string
+        matiere:
+          type: string
+        annee_scolaire_id:
+          type: string
+
+    MonteeClasseMapping:
+      type: object
+      required: [classe_source_id, classe_destination_id]
+      properties:
+        classe_source_id:
+          type: string
+        classe_destination_id:
+          type: string
+
+    MonteeClasseInput:
+      type: object
+      required: [ancienne_annee_id, nouvelle_annee_id, mappings]
+      properties:
+        ancienne_annee_id:
+          type: string
+        nouvelle_annee_id:
+          type: string
+        mappings:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonteeClasseMapping"
+
+    MonteeClasseResponse:
+      type: object
+      required: [message, eleves_transferes]
+      properties:
+        message:
+          type: string
+        eleves_transferes:
           type: integer

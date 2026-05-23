@@ -6,7 +6,7 @@ import {
   Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard,
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
-  Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight,
+  Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -27,7 +27,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ACADÉMIQUE",
       links: [
-        { label: "Élèves", href: "/eleves", icon: UserSquare },
+        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
+        { label: "Classes",          href: "/classes",          icon: UsersRound },
+        { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
+        { label: "Filières",         href: "/filieres",         icon: Layers },
       ],
     },
     {
@@ -48,9 +51,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ACADÉMIQUE",
       links: [
-        { label: "Censeurs", href: "/censeurs", icon: Users },
-        { label: "Classes",  href: "/classes",  icon: UsersRound },
-        { label: "Élèves",   href: "/eleves",   icon: UserSquare },
+        { label: "Censeurs",         href: "/censeurs",         icon: Users },
+        { label: "Classes",          href: "/classes",          icon: UsersRound },
+        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
+        { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
+        { label: "Filières",         href: "/filieres",         icon: Layers },
       ],
     },
     {
@@ -154,6 +159,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/notes":            "Notes",
   "/bibliotheque":     "Bibliothèque",
   "/mon-enfant":       "Mon enfant",
+  "/annees-scolaires": "Années scolaires",
+  "/filieres":         "Filières",
 };
 
 const ROLE_LABELS: Record<string, string> = {

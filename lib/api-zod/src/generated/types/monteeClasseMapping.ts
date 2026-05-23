@@ -6,8 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListerClassesParams = {
-annee_scolaire?: number;
-annee_scolaire_id?: string;
-niveau?: string;
-};
+export interface MonteeClasseMapping {
+  classe_source_id: string;
+  classe_destination_id: string;
+}

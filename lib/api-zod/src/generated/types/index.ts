@@ -6,16 +6,25 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './affecterEleveInput';
+export * from './affecterProfesseurInput';
+export * from './anneeScolaire';
+export * from './anneeScolaireInput';
+export * from './anneeScolairesListeResponse';
 export * from './authTokens';
 export * from './changePasswordInput';
 export * from './changerStatutInput';
 export * from './classe';
+export * from './classeDetail';
 export * from './classeInput';
 export * from './classesListeResponse';
+export * from './classeStatistiques';
 export * from './documentEleve';
+export * from './eleveClasseItem';
 export * from './eleveDetail';
 export * from './eleveDetailHistoriqueStatutItem';
 export * from './eleveResume';
+export * from './elevesClasseResponse';
 export * from './elevesListeResponse';
 export * from './errorResponse';
 export * from './etablissement';
@@ -24,6 +33,9 @@ export * from './etablissementInputType';
 export * from './etablissementType';
 export * from './etablissementUpdate';
 export * from './etablissementUpdateType';
+export * from './filiere';
+export * from './filiereInput';
+export * from './filieresListeResponse';
 export * from './forgotPasswordInput';
 export * from './healthStatus';
 export * from './inscrireEleveInput';
@@ -35,7 +47,11 @@ export * from './listerUtilisateursParams';
 export * from './loginInput';
 export * from './messageResponse';
 export * from './modifierEleveInput';
+export * from './monteeClasseInput';
+export * from './monteeClasseMapping';
+export * from './monteeClasseResponse';
 export * from './parentLie';
+export * from './professeurClasseItem';
 export * from './rechercherElevesParams';
 export * from './resetPasswordInput';
 export * from './roleCount';

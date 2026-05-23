@@ -5,9 +5,9 @@
  * M15-SchoolTech API — Plateforme de gestion scolaire
  * OpenAPI spec version: 0.1.0
  */
+import type { Filiere } from './filiere';
 
-export type ListerClassesParams = {
-annee_scolaire?: number;
-annee_scolaire_id?: string;
-niveau?: string;
-};
+export interface FilieresListeResponse {
+  filieres: Filiere[];
+  total: number;
+}
