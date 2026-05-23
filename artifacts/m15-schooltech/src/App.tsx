@@ -16,6 +16,7 @@ import PremierLogin from "@/pages/premier-login";
 import Dashboard from "@/pages/dashboard";
 import Etablissements from "@/pages/etablissements";
 import Utilisateurs from "@/pages/utilisateurs";
+import EnConstruction from "@/pages/en-construction";
 
 const queryClient = new QueryClient();
 
@@ -56,7 +57,24 @@ function Router() {
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
-      
+
+      {/* Modules en construction — tous les liens de la sidebar */}
+      {[
+        "/licences", "/statistiques",
+        "/censeurs", "/classes", "/paiements", "/rapports",
+        "/professeurs", "/eleves", "/emploi-du-temps", "/absences",
+        "/mes-classes", "/evaluations", "/cahier-de-textes", "/appel", "/messages",
+        "/notes", "/bibliotheque", "/mon-enfant",
+      ].map((path) => (
+        <Route key={path} path={path}>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <EnConstruction />
+            </DashboardLayout>
+          </ProtectedRoute>
+        </Route>
+      ))}
+
       <Route path="/">
         <ProtectedRoute>
           <DashboardLayout>
