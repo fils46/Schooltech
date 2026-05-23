@@ -2,161 +2,377 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/components/theme-provider";
-import { 
-  Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard, 
-  FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen, 
+import {
+  Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard,
+  FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
-  Menu, Moon, Sun, LogOut
+  Menu, Moon, Sun, LogOut, Bell, Search, X, ChevronRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const navConfig = {
+/* ─── NAV CONFIG avec sections ─────────────────────────────── */
+type NavLink = { label: string; href: string; icon: React.ElementType };
+type Section = { title: string; links: NavLink[] };
+
+const navConfig: Record<string, Section[]> = {
   dev: [
-    { label: "Établissements", href: "/etablissements", icon: Building },
-    { label: "Utilisateurs", href: "/utilisateurs", icon: Users },
-    { label: "Licences", href: "/licences", icon: Key },
-    { label: "Statistiques", href: "/statistiques", icon: BarChart3 },
+    {
+      title: "PRINCIPAL",
+      links: [
+        { label: "Établissements", href: "/etablissements", icon: Building },
+        { label: "Utilisateurs",   href: "/utilisateurs",   icon: Users },
+      ],
+    },
+    {
+      title: "GESTION",
+      links: [
+        { label: "Licences",       href: "/licences",       icon: Key },
+        { label: "Statistiques",   href: "/statistiques",   icon: BarChart3 },
+      ],
+    },
   ],
   directeur: [
-    { label: "Tableau de bord", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Censeurs", href: "/censeurs", icon: Users },
-    { label: "Classes", href: "/classes", icon: UsersRound },
-    { label: "Paiements", href: "/paiements", icon: CreditCard },
-    { label: "Rapports", href: "/rapports", icon: FileText },
+    {
+      title: "PRINCIPAL",
+      links: [
+        { label: "Tableau de bord", href: "/dashboard", icon: LayoutDashboard },
+      ],
+    },
+    {
+      title: "ACADÉMIQUE",
+      links: [
+        { label: "Censeurs", href: "/censeurs", icon: Users },
+        { label: "Classes",  href: "/classes",  icon: UsersRound },
+      ],
+    },
+    {
+      title: "GESTION",
+      links: [
+        { label: "Paiements", href: "/paiements", icon: CreditCard },
+        { label: "Rapports",  href: "/rapports",  icon: FileText },
+      ],
+    },
   ],
   censeur: [
-    { label: "Classes", href: "/classes", icon: UsersRound },
-    { label: "Professeurs", href: "/professeurs", icon: GraduationCap },
-    { label: "Élèves", href: "/eleves", icon: UserSquare },
-    { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
-    { label: "Absences", href: "/absences", icon: UserMinus },
+    {
+      title: "ACADÉMIQUE",
+      links: [
+        { label: "Classes",         href: "/classes",         icon: UsersRound },
+        { label: "Professeurs",     href: "/professeurs",     icon: GraduationCap },
+        { label: "Élèves",          href: "/eleves",          icon: UserSquare },
+      ],
+    },
+    {
+      title: "QUOTIDIEN",
+      links: [
+        { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
+        { label: "Absences",        href: "/absences",        icon: UserMinus },
+      ],
+    },
   ],
   professeur: [
-    { label: "Mes classes", href: "/mes-classes", icon: BookOpen },
-    { label: "Évaluations", href: "/evaluations", icon: FileCheck },
-    { label: "Cahier de textes", href: "/cahier-de-textes", icon: Book },
-    { label: "Appel", href: "/appel", icon: ClipboardList },
-    { label: "Messages", href: "/messages", icon: MessageSquare },
+    {
+      title: "MES COURS",
+      links: [
+        { label: "Mes classes",      href: "/mes-classes",      icon: BookOpen },
+        { label: "Évaluations",      href: "/evaluations",      icon: FileCheck },
+        { label: "Cahier de textes", href: "/cahier-de-textes", icon: Book },
+      ],
+    },
+    {
+      title: "QUOTIDIEN",
+      links: [
+        { label: "Appel",    href: "/appel",    icon: ClipboardList },
+        { label: "Messages", href: "/messages", icon: MessageSquare },
+      ],
+    },
   ],
   eleve: [
-    { label: "Tableau de bord", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Notes", href: "/notes", icon: Award },
-    { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
-    { label: "Absences", href: "/absences", icon: UserMinus },
-    { label: "Bibliothèque", href: "/bibliotheque", icon: Library },
+    {
+      title: "PRINCIPAL",
+      links: [
+        { label: "Tableau de bord",  href: "/dashboard",       icon: LayoutDashboard },
+        { label: "Notes",            href: "/notes",            icon: Award },
+      ],
+    },
+    {
+      title: "ÉCOLE",
+      links: [
+        { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
+        { label: "Absences",        href: "/absences",        icon: UserMinus },
+        { label: "Bibliothèque",    href: "/bibliotheque",    icon: Library },
+      ],
+    },
   ],
   parent: [
-    { label: "Mon enfant", href: "/mon-enfant", icon: UserCircle },
-    { label: "Notes", href: "/notes", icon: Award },
-    { label: "Absences", href: "/absences", icon: UserMinus },
-    { label: "Paiements", href: "/paiements", icon: CreditCard },
-    { label: "Messages", href: "/messages", icon: MessageSquare },
+    {
+      title: "MON ENFANT",
+      links: [
+        { label: "Mon enfant", href: "/mon-enfant", icon: UserCircle },
+        { label: "Notes",      href: "/notes",      icon: Award },
+        { label: "Absences",   href: "/absences",   icon: UserMinus },
+      ],
+    },
+    {
+      title: "GESTION",
+      links: [
+        { label: "Paiements", href: "/paiements", icon: CreditCard },
+        { label: "Messages",  href: "/messages",  icon: MessageSquare },
+      ],
+    },
   ],
 };
 
-export function DashboardLayout({ children }: { children: React.ReactNode }) {
+const PAGE_TITLES: Record<string, string> = {
+  "/dashboard":       "Tableau de bord",
+  "/etablissements":  "Établissements",
+  "/utilisateurs":    "Utilisateurs",
+  "/licences":        "Licences",
+  "/statistiques":    "Statistiques",
+  "/censeurs":        "Censeurs",
+  "/classes":         "Classes",
+  "/paiements":       "Paiements",
+  "/rapports":        "Rapports",
+  "/professeurs":     "Professeurs",
+  "/eleves":          "Élèves",
+  "/emploi-du-temps": "Emploi du temps",
+  "/absences":        "Absences",
+  "/mes-classes":     "Mes classes",
+  "/evaluations":     "Évaluations",
+  "/cahier-de-textes":"Cahier de textes",
+  "/appel":           "Appel",
+  "/messages":        "Messages",
+  "/notes":           "Notes",
+  "/bibliotheque":    "Bibliothèque",
+  "/mon-enfant":      "Mon enfant",
+};
+
+const ROLE_LABELS: Record<string, string> = {
+  dev:        "DÉVELOPPEUR",
+  directeur:  "DIRECTEUR",
+  censeur:    "CENSEUR",
+  professeur: "PROFESSEUR",
+  eleve:      "ÉLÈVE",
+  parent:     "PARENT",
+};
+
+/* ─── Composant NavLinks ─────────────────────────────────── */
+function NavLinks({ sections, location, onClose }: {
+  sections: Section[];
+  location: string;
+  onClose: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      {sections.map((section) => (
+        <div key={section.title}>
+          <p className="px-3 mb-2 text-xs font-semibold tracking-widest" style={{ color: "#8B9DC3", opacity: 0.7 }}>
+            {section.title}
+          </p>
+          <div className="space-y-0.5">
+            {section.links.map((link) => {
+              const Icon = link.icon;
+              const isActive = location === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={onClose}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all relative"
+                  style={{
+                    color:       isActive ? "#00C9A7" : "#8B9DC3",
+                    background:  isActive ? "rgba(0,201,167,0.08)" : "transparent",
+                    borderLeft:  isActive ? "3px solid #00C9A7" : "3px solid transparent",
+                  }}
+                  onMouseEnter={e => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLElement).style.color = "#F0F4FF";
+                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLElement).style.color = "#8B9DC3";
+                      (e.currentTarget as HTMLElement).style.background = "transparent";
+                    }
+                  }}
+                >
+                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  <span>{link.label}</span>
+                  {isActive && <ChevronRight className="w-3 h-3 ml-auto" style={{ color: "#00C9A7" }} />}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Sidebar content ────────────────────────────────────── */
+function SidebarContent({ location, onClose }: { location: string; onClose: () => void }) {
   const { user, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
-  const [location, setLocation] = useLocation();
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   const role = user?.role || "eleve";
-  const links = navConfig[role as keyof typeof navConfig] || [];
+  const sections = navConfig[role as keyof typeof navConfig] || [];
+  const initials = `${user?.prenoms?.charAt(0) || ""}${user?.nom?.charAt(0) || ""}`.toUpperCase() || "U";
 
   const handleLogout = () => {
+    onClose();
     logout();
     setLocation("/login");
   };
 
-  const NavLinks = () => (
-    <>
-      {links.map((link) => {
-        const Icon = link.icon;
-        const isActive = location === link.href;
-        return (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setIsMobileOpen(false)}
-            className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
-              isActive
-                ? "bg-primary text-primary-foreground font-medium"
-                : "text-muted-foreground hover:text-foreground hover:bg-accent"
-            }`}
-          >
-            <Icon className="w-5 h-5" />
-            <span>{link.label}</span>
-          </Link>
-        );
-      })}
-    </>
+  return (
+    <div className="flex flex-col h-full" style={{ background: "#111E35", borderRight: "1px solid rgba(0,201,167,0.15)" }}>
+      {/* Logo */}
+      <div className="p-6 pb-4" style={{ borderBottom: "1px solid rgba(0,201,167,0.1)" }}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(0,201,167,0.15)", border: "1px solid rgba(0,201,167,0.25)" }}>
+            <GraduationCap className="w-5 h-5" style={{ color: "#00C9A7" }} />
+          </div>
+          <div>
+            <span className="font-bold text-base" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+              M15-SchoolTech
+            </span>
+            <p className="text-xs" style={{ color: "#8B9DC3" }}>v1.0 — Collège & Lycée</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto p-4 pt-5">
+        <NavLinks sections={sections} location={location} onClose={onClose} />
+      </nav>
+
+      {/* Avatar utilisateur */}
+      <div className="p-4" style={{ borderTop: "1px solid rgba(0,201,167,0.1)" }}>
+        <div className="flex items-center gap-3 p-3 rounded-xl mb-3"
+          style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(0,201,167,0.08)" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
+            style={{
+              background: "linear-gradient(135deg, #00C9A7, #0080FF)",
+              color: "#fff",
+              fontFamily: "'Syne', sans-serif",
+            }}>
+            {initials}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold truncate" style={{ color: "#F0F4FF" }}>
+              {user?.prenoms} {user?.nom}
+            </p>
+            <p className="text-xs font-semibold" style={{ color: "#00C9A7", letterSpacing: "0.06em" }}>
+              {ROLE_LABELS[role] || role.toUpperCase()}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"
+          style={{
+            background: "rgba(255,77,109,0.06)",
+            border: "1px solid rgba(255,77,109,0.2)",
+            color: "#FF4D6D",
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,77,109,0.12)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,77,109,0.06)"; }}
+        >
+          <LogOut className="w-4 h-4" />
+          Déconnexion
+        </button>
+      </div>
+    </div>
   );
+}
+
+/* ─── DashboardLayout principal ─────────────────────────── */
+export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { theme, setTheme } = useTheme();
+  const [location] = useLocation();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [notifCount] = useState(3);
+
+  const pageTitle = PAGE_TITLES[location] || "M15-SchoolTech";
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/40">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-card h-screen sticky top-0">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold tracking-tight text-primary">
-            M15-SchoolTech
-          </h2>
-        </div>
-        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
-          <NavLinks />
-        </nav>
-        <div className="p-4 border-t">
-          <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-bold">
-              {user?.nom.charAt(0) || "U"}
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium leading-none">{user?.nom} {user?.prenoms}</span>
-              <span className="text-xs text-muted-foreground capitalize">{user?.role}</span>
-            </div>
-          </div>
-          <Button variant="outline" className="w-full justify-start text-destructive hover:text-destructive" onClick={handleLogout}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Déconnexion
-          </Button>
-        </div>
+    <div className="flex min-h-screen w-full" style={{ background: "var(--m15-navy, #0A1628)" }}>
+
+      {/* ── Desktop Sidebar ── */}
+      <aside className="hidden md:block w-64 flex-shrink-0 h-screen sticky top-0">
+        <SidebarContent location={location} onClose={() => {}} />
       </aside>
 
-      <div className="flex-1 flex flex-col">
-        {/* Mobile Navbar & Top Navbar */}
-        <header className="h-16 border-b bg-card flex items-center justify-between px-4 md:px-6 sticky top-0 z-10">
-          <div className="flex items-center md:hidden">
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* ── Topbar ── */}
+        <header className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-6 h-16"
+          style={{
+            background: "#0D1F3C",
+            borderBottom: "1px solid rgba(0,201,167,0.15)",
+          }}>
+          {/* Gauche : hamburger mobile + titre */}
+          <div className="flex items-center gap-4">
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <button className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl transition-all"
+                  style={{ background: "rgba(255,255,255,0.05)", color: "#F0F4FF" }}>
                   <Menu className="w-5 h-5" />
-                </Button>
+                </button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0">
-                <div className="p-6">
-                  <h2 className="text-xl font-bold text-primary">M15-SchoolTech</h2>
-                </div>
-                <nav className="px-4 space-y-1">
-                  <NavLinks />
-                </nav>
+              <SheetContent side="left" className="w-64 p-0 border-0">
+                <SidebarContent location={location} onClose={() => setIsMobileOpen(false)} />
               </SheetContent>
             </Sheet>
-            <h2 className="ml-4 font-bold text-primary">M15</h2>
+
+            <h1 className="text-lg font-bold hidden sm:block" style={{ fontFamily: "'Syne', sans-serif", color: "#F0F4FF" }}>
+              {pageTitle}
+            </h1>
           </div>
-          
-          <div className="ml-auto flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
+
+          {/* Droite : recherche + notifs + toggle */}
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Barre de recherche */}
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl"
+              style={{ background: "#111E35", border: "1px solid rgba(0,201,167,0.12)", minWidth: "200px" }}>
+              <Search className="w-4 h-4 flex-shrink-0" style={{ color: "#8B9DC3" }} />
+              <input
+                type="search"
+                placeholder="Rechercher..."
+                className="bg-transparent text-sm outline-none w-full"
+                style={{ color: "#F0F4FF", fontFamily: "'DM Sans', sans-serif" }}
+              />
+            </div>
+
+            {/* Cloche notifications */}
+            <button className="relative w-9 h-9 flex items-center justify-center rounded-xl transition-all"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#8B9DC3" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#F0F4FF"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#8B9DC3"; }}>
+              <Bell className="w-4 h-4" />
+              {notifCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-xs flex items-center justify-center font-bold"
+                  style={{ background: "#FF4D6D", color: "#fff", fontSize: "10px" }}>
+                  {notifCount}
+                </span>
+              )}
+            </button>
+
+            {/* Toggle dark/light */}
+            <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </Button>
+              className="w-9 h-9 flex items-center justify-center rounded-xl transition-all"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#8B9DC3" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#F0F4FF"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#8B9DC3"; }}>
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
           </div>
         </header>
 
-        {/* Main Content */}
-        <main className="flex-1 p-4 md:p-6 overflow-x-hidden">
+        {/* ── Contenu principal ── */}
+        <main className="flex-1 p-4 md:p-6 overflow-x-hidden page-fade-in">
           {children}
         </main>
       </div>

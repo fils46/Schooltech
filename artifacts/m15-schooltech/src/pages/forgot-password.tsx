@@ -55,8 +55,8 @@ export default function ForgotPassword() {
               <p className="text-sm text-muted-foreground">
                 Un email contenant les instructions pour réinitialiser votre mot de passe a été envoyé.
               </p>
-              <Link href="/login">
-                <Button variant="outline" className="w-full mt-4">
+              <Link href="/login" className="block mt-4">
+                <Button variant="outline" className="w-full">
                   Retour à la connexion
                 </Button>
               </Link>
@@ -86,11 +86,9 @@ export default function ForgotPassword() {
               </Button>
 
               <div className="text-center mt-4">
-                <Link href="/login">
-                  <a className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center gap-2">
-                    <ArrowLeft className="w-4 h-4" />
-                    Retour
-                  </a>
+                <Link href="/login" className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center gap-2">
+                  <ArrowLeft className="w-4 h-4" />
+                  Retour
                 </Link>
               </div>
             </form>
