@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,14 +13,6 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-const ROLES = [
-  { id: "dev",        label: "Dev",        emoji: "⚙️" },
-  { id: "directeur",  label: "Directeur",  emoji: "🏫" },
-  { id: "censeur",    label: "Censeur",    emoji: "📋" },
-  { id: "professeur", label: "Professeur", emoji: "📚" },
-  { id: "eleve",      label: "Élève",      emoji: "🎒" },
-  { id: "parent",     label: "Parent",     emoji: "👨‍👩‍👧" },
-];
 
 const FEATURES = [
   { icon: "📊", text: "Notes & Bulletins automatisés" },
@@ -33,8 +24,6 @@ const FEATURES = [
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
-
   const loginMutation = useLogin();
 
   const form = useForm<LoginFormValues>({
@@ -151,27 +140,6 @@ export default function Login() {
             <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
               Accédez à votre espace de gestion scolaire
             </p>
-          </div>
-
-          {/* Sélecteur de rôle */}
-          <div className="mb-6">
-            <label className="block text-xs font-semibold uppercase tracking-widest mb-3"
-              style={{ color: "var(--m15-muted)" }}>Connecter en tant que</label>
-            <div className="grid grid-cols-3 gap-2">
-              {ROLES.map((r) => (
-                <button key={r.id} type="button"
-                  onClick={() => setSelectedRole(r.id === selectedRole ? null : r.id)}
-                  className="flex flex-col items-center gap-1 p-3 rounded-xl text-sm font-medium transition-all"
-                  style={{
-                    background: selectedRole === r.id ? "rgba(0,201,167,0.1)" : "var(--elevate-1)",
-                    border: selectedRole === r.id ? "1px solid #00C9A7" : "1px solid var(--m15-border)",
-                    color: selectedRole === r.id ? "#00C9A7" : "var(--m15-muted)",
-                  }}>
-                  <span>{r.emoji}</span>
-                  <span style={{ fontSize: "11px" }}>{r.label}</span>
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Formulaire */}
