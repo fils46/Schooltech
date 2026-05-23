@@ -125,7 +125,7 @@ export default function DetailRessource() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Colonne gauche */}
           <div className="md:col-span-1 space-y-4">
-            <div className="w-full aspect-[3/4] rounded-xl bg-gradient-to-br from-[#111E35] to-[#0A1628] border border-[rgba(0,201,167,0.15)] flex items-center justify-center text-[#00C9A7]">
+            <div className="w-full aspect-[3/4] rounded-xl bg-gradient-to-br from-[var(--m15-card)] to-[var(--m15-navy)] border border-[rgba(0,201,167,0.15)] flex items-center justify-center text-[#00C9A7]">
               {ressource.couverture_url
                 ? <img src={ressource.couverture_url} alt="" className="h-full w-full object-cover rounded-xl" />
                 : <div className="opacity-30 scale-150">{TYPE_ICONS[type]}</div>

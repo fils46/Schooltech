@@ -107,7 +107,7 @@ export default function CatalogueBibliotheque() {
   return (
     <div className="min-h-screen bg-[var(--m15-navy)] text-[var(--m15-white)]">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-[#111E35] to-[#0A1628] border-b border-[rgba(0,201,167,0.15)] px-6 py-8">
+      <div className="bg-gradient-to-br from-[var(--m15-card)] to-[var(--m15-navy)] border-b border-[rgba(0,201,167,0.15)] px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <h1 className="font-syne text-3xl font-bold text-[var(--m15-white)] mb-1">Bibliothèque numérique</h1>
           <p className="text-[var(--m15-muted)] mb-6">Manuels, fiches de cours, exercices et documents officiels</p>
@@ -269,7 +269,7 @@ export default function CatalogueBibliotheque() {
                     onClick={() => navigate(`/bibliotheque/ressource/${r.id}`)}
                   >
                     <CardContent className="p-4">
-                      <div className="w-full h-28 rounded-lg mb-3 flex items-center justify-center bg-gradient-to-br from-[#1a2a44] to-[#0A1628] text-[#00C9A7] group-hover:from-[#1e3050] transition-all">
+                      <div className="w-full h-28 rounded-lg mb-3 flex items-center justify-center bg-gradient-to-br from-[var(--m15-card2)] to-[var(--m15-navy)] text-[#00C9A7] group-hover:from-[var(--m15-card2)] transition-all">
                         {r.couverture_url
                           ? <img src={r.couverture_url} alt="" className="h-full w-full object-cover rounded-lg" />
                           : <div className="text-4xl opacity-40">{TYPE_ICONS[type]}</div>
