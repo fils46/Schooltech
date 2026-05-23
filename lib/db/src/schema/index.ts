@@ -37,3 +37,5 @@ export * from "./analytics";
 export * from "./licences";
 export * from "./paiementsLicences";
 export * from "./logsActiviteSaas";
+export * from "./incidents";
+export * from "./sanctions";

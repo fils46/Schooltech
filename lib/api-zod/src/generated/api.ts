@@ -35,7 +35,7 @@ export const LoginResponse = zod.object({
   "prenoms": zod.string().nullish(),
   "email": zod.string(),
   "telephone": zod.string().nullish(),
-  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent']),
+  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent', 'infirmier', 'educateur']),
   "actif": zod.boolean(),
   "premier_login": zod.boolean().optional(),
   "created_at": zod.coerce.date().optional()
@@ -62,7 +62,7 @@ export const GetMeResponse = zod.object({
   "prenoms": zod.string().nullish(),
   "email": zod.string(),
   "telephone": zod.string().nullish(),
-  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent']),
+  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent', 'infirmier', 'educateur']),
   "actif": zod.boolean(),
   "premier_login": zod.boolean().optional(),
   "created_at": zod.coerce.date().optional()
@@ -124,7 +124,7 @@ export const CreerUtilisateurBody = zod.object({
   "prenoms": zod.string().nullish(),
   "email": zod.string().email(),
   "telephone": zod.string().nullish(),
-  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent'])
+  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent', 'infirmier', 'educateur'])
 })
 
 
@@ -144,7 +144,7 @@ export const ListerUtilisateursResponseItem = zod.object({
   "prenoms": zod.string().nullish(),
   "email": zod.string(),
   "telephone": zod.string().nullish(),
-  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent']),
+  "role": zod.enum(['dev', 'directeur', 'censeur', 'professeur', 'eleve', 'parent', 'infirmier', 'educateur']),
   "actif": zod.boolean(),
   "premier_login": zod.boolean().optional(),
   "created_at": zod.coerce.date().optional()

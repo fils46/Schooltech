@@ -803,5 +803,6 @@ export default function Dashboard() {
   if (user?.role === "dev") return <DevDashboard />;
   if (user?.role === "directeur") return <DirecteurDashboard />;
   if (user?.role === "censeur") return <CenseurDashboard />;
+  if (user?.role === "educateur") { window.location.replace("/discipline/incidents"); return null; }
   return <DefaultDashboard />;
 }

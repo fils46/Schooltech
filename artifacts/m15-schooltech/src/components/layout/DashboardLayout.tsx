@@ -14,6 +14,7 @@ import {
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
   Trophy, Activity, Star as StarIcon,
+  ShieldAlert,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -366,6 +367,30 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
   ],
+  educateur: [
+    {
+      title: "TABLEAU DE BORD",
+      links: [
+        { label: "Incidents",        href: "/discipline/incidents", icon: ShieldAlert },
+        { label: "Sanctions",        href: "/discipline/sanctions", icon: ClipboardList },
+        { label: "Statistiques",     href: "/discipline/stats",     icon: BarChart3 },
+      ],
+    },
+    {
+      title: "SUIVI",
+      links: [
+        { label: "Absences (lecture)", href: "/absences",          icon: UserMinus },
+        { label: "Cahier de textes",   href: "/cahier-de-textes", icon: BookOpen },
+      ],
+    },
+    {
+      title: "COMMUNICATION",
+      links: [
+        { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Notifications", href: "/notifications", icon: Bell },
+      ],
+    },
+  ],
   infirmier: [
     {
       title: "INFIRMERIE",
@@ -508,6 +533,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/analytics-professeur":      "Mon tableau de bord analytique",
   "/rapports-exports":          "Rapports & Exports",
   "/analytics-complementaires": "Analytics — Clubs & Infirmerie",
+  "/discipline/incidents":  "Gestion des Incidents",
+  "/discipline/sanctions":  "Sanctions en attente",
+  "/discipline/stats":      "Tableau de bord disciplinaire",
+  "/cahier-textes":         "Cahier de textes",
 };
 
 const ROLE_LABELS: Record<string, string> = {
@@ -518,6 +547,7 @@ const ROLE_LABELS: Record<string, string> = {
   eleve:      "ÉLÈVE",
   parent:     "PARENT",
   infirmier:  "INFIRMIER(E)",
+  educateur:  "ÉDUCATEUR",
 };
 
 /* ─── Composant NavLinks ─────────────────────────────────── */

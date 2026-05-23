@@ -4950,7 +4950,7 @@ components:
           type: ["string", "null"]
         role:
           type: string
-          enum: [dev, directeur, censeur, professeur, eleve, parent]
+          enum: [dev, directeur, censeur, professeur, eleve, parent, infirmier, educateur]
 
     UtilisateurCreatedResponse:
       type: object
@@ -4979,7 +4979,7 @@ components:
           type: ["string", "null"]
         role:
           type: string
-          enum: [dev, directeur, censeur, professeur, eleve, parent]
+          enum: [dev, directeur, censeur, professeur, eleve, parent, infirmier, educateur]
         actif:
           type: boolean
         premier_login:

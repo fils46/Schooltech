@@ -159,6 +159,8 @@ router.get("/absences/liste", authMiddleware, verifierLicence, async (req, res) 
     const ids = enfants.map(e => e.eleve_id);
     if (ids.length === 0) { res.json({ absences: [], total: 0, page, limit }); return; }
     conditions.push(sql`${absencesTable.eleve_id} = ANY(${ids})`);
+  } else if (user.role === "educateur") {
+    conditions.push(eq(absencesTable.etablissement_id, user.etablissement_id ?? ""));
   } else if (user.role === "eleve") {
     conditions.push(eq(absencesTable.eleve_id, user.id));
   } else {

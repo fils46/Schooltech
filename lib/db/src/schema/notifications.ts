@@ -14,6 +14,11 @@ export const notificationTypeEnum = pgEnum("notification_type", [
   "message",
   "annonce",
   "rdv",
+  "incident_signale",
+  "sanction_en_attente",
+  "sanction_validee",
+  "sanction_refusee",
+  "incident_escalade",
 ]);
 
 export const notificationsTable = pgTable(

@@ -38,10 +38,11 @@ function BadgeStatut({ statut }: { statut: string }) {
 
 /* ─── Onglets ─────────────────────────────────────────────── */
 const TABS = [
-  { id: "infos",     label: "Informations", icon: Info },
-  { id: "parents",   label: "Parents",      icon: Users },
-  { id: "documents", label: "Documents",    icon: FileText },
-  { id: "historique",label: "Historique",   icon: Clock },
+  { id: "infos",       label: "Informations", icon: Info },
+  { id: "parents",     label: "Parents",      icon: Users },
+  { id: "documents",   label: "Documents",    icon: FileText },
+  { id: "historique",  label: "Historique",   icon: Clock },
+  { id: "discipline",  label: "Discipline",   icon: ShieldAlert },
 ];
 
 /* ─── Modal changement statut ─────────────────────────────── */
@@ -526,6 +527,23 @@ export default function EleveDetail() {
           {activeTab === "parents" && <TabParents parents={parents} />}
           {activeTab === "documents" && <TabDocuments eleveId={eleveId} canManage={canManage} token={token} />}
           {activeTab === "historique" && <TabHistorique historique={historique} />}
+          {activeTab === "discipline" && (
+            <div className="p-5 flex flex-col items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                style={{ background: "rgba(255,77,109,0.12)" }}>
+                <ShieldAlert className="w-7 h-7" style={{ color: "#FF4D6D" }} />
+              </div>
+              <p className="text-sm text-center" style={{ color: "var(--m15-muted)" }}>
+                Consultez l'historique disciplinaire complet de cet élève : incidents, sanctions et niveau de risque.
+              </p>
+              <a href={`/discipline/historique/${eleveId}`}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
+                style={{ background: "rgba(255,77,109,0.1)", color: "#FF4D6D", border: "1px solid rgba(255,77,109,0.2)" }}>
+                <ShieldAlert className="w-4 h-4" />
+                Voir l'historique disciplinaire
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>

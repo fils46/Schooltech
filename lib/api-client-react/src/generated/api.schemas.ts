@@ -37,6 +37,8 @@ export const UtilisateurRole = {
   professeur: 'professeur',
   eleve: 'eleve',
   parent: 'parent',
+  infirmier: 'infirmier',
+  educateur: 'educateur',
 } as const;
 
 export interface Utilisateur {
@@ -88,6 +90,8 @@ export const UtilisateurInputRole = {
   professeur: 'professeur',
   eleve: 'eleve',
   parent: 'parent',
+  infirmier: 'infirmier',
+  educateur: 'educateur',
 } as const;
 
 export interface UtilisateurInput {

@@ -104,6 +104,19 @@ router.get("/messages/contacts", authMiddleware, async (req, res) => {
     );
     contacts.push(...parents, ...admins);
 
+  } else if (user.role === "educateur") {
+    /* Parents de l'établissement + censeur + directeur */
+    const parents = await db.select().from(utilisateursTable).where(
+      and(eq(utilisateursTable.etablissement_id, etabId), eq(utilisateursTable.role, "parent"), eq(utilisateursTable.actif, true))
+    );
+    const admins = await db.select().from(utilisateursTable).where(
+      and(
+        eq(utilisateursTable.etablissement_id, etabId),
+        or(eq(utilisateursTable.role, "directeur"), eq(utilisateursTable.role, "censeur")),
+        eq(utilisateursTable.actif, true),
+      )
+    );
+    contacts.push(...parents, ...admins);
   } else {
     /* Admin → tout le monde dans l'établissement */
     contacts = await db.select().from(utilisateursTable).where(
@@ -186,6 +199,10 @@ router.post("/messages/envoyer", authMiddleware, async (req, res) => {
 
   if (dest.etablissement_id !== user.etablissement_id && user.role !== "dev") {
     res.status(403).json({ message: "Vous ne pouvez pas écrire à cet utilisateur." }); return;
+  }
+
+  if (user.role === "educateur" && !["parent", "censeur", "directeur"].includes(dest.role)) {
+    res.status(403).json({ message: "En tant qu'éducateur, vous pouvez uniquement écrire aux parents et à l'administration." }); return;
   }
 
   const [msg] = await db

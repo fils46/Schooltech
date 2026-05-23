@@ -9,7 +9,7 @@ export { SEUIL_ABSENCES };
 export async function creerNotification(data: {
   etablissement_id: string;
   destinataire_id: string;
-  type: "absence" | "retard" | "alerte_seuil" | "justification_validee" | "justification_rejetee" | "bulletin_publie" | "message";
+  type: "absence" | "retard" | "alerte_seuil" | "justification_validee" | "justification_rejetee" | "bulletin_publie" | "message" | "annonce" | "rdv" | "incident_signale" | "sanction_en_attente" | "sanction_validee" | "sanction_refusee" | "incident_escalade";
   titre: string;
   contenu: string;
   lien?: string | null;

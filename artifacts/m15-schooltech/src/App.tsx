@@ -78,6 +78,10 @@ import AnalysePedagogique from "@/pages/analyse-pedagogique";
 import AnalysePresences from "@/pages/analyse-presences";
 import DashboardProfesseurAnalytique from "@/pages/dashboard-professeur-analytique";
 import RapportsExports from "@/pages/rapports-exports";
+import IncidentGestion from "@/pages/educateur/IncidentGestion";
+import IncidentDetail from "@/pages/educateur/IncidentDetail";
+import HistoriqueDisciplinaire from "@/pages/educateur/HistoriqueDisciplinaire";
+import DisciplineStats from "@/pages/educateur/DisciplineStats";
 import { SaasRoute } from "@/components/SaasRoute";
 import SaasDashboard from "@/pages/saas/SaasDashboard";
 import GestionEtablissements from "@/pages/saas/GestionEtablissements";
@@ -584,6 +588,43 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <RapportsExports />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module Discipline ── */}
+      <Route path="/discipline/historique/:eleveId">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <HistoriqueDisciplinaire />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/discipline/stats">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DisciplineStats />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/discipline/incidents/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <IncidentDetail />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/discipline/sanctions">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <IncidentGestion />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/discipline/incidents">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <IncidentGestion />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
