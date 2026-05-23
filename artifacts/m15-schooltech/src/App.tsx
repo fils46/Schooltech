@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { SplashScreen } from "@/components/SplashScreen";
+import { useState } from "react";
 
 // Pages
 import NotFound from "@/pages/not-found";
@@ -733,11 +735,14 @@ function Router() {
 }
 
 function App() {
+  const [splashDone, setSplashDone] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="m15-theme">
         <TooltipProvider>
           <AuthProvider>
+            {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <Router />
             </WouterRouter>
