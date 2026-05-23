@@ -207,12 +207,16 @@ export default function Utilisateurs() {
                           <SelectValue placeholder="Sélectionner..." />
                         </SelectTrigger>
                         <SelectContent>
-                          {isDev && <SelectItem value="dev">Dev</SelectItem>}
-                          <SelectItem value="directeur">Directeur</SelectItem>
-                          <SelectItem value="censeur">Censeur</SelectItem>
-                          <SelectItem value="professeur">Professeur</SelectItem>
-                          <SelectItem value="eleve">Élève</SelectItem>
-                          <SelectItem value="parent">Parent</SelectItem>
+                          {isDev ? (
+                            <SelectItem value="directeur">Directeur</SelectItem>
+                          ) : (
+                            <>
+                              <SelectItem value="censeur">Censeur</SelectItem>
+                              <SelectItem value="professeur">Professeur</SelectItem>
+                              <SelectItem value="eleve">Élève</SelectItem>
+                              <SelectItem value="parent">Parent</SelectItem>
+                            </>
+                          )}
                         </SelectContent>
                       </Select>
                     </div>

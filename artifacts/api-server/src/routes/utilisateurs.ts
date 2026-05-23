@@ -9,9 +9,10 @@ import { generateTempPassword } from "../lib/auth";
 const router = Router();
 
 // Rôles qui peuvent créer des utilisateurs
+// Dev ne crée que les directeurs ; c'est le directeur qui crée les membres de son école.
 const CREATION_PERMISSIONS: Record<string, string[]> = {
-  dev: ["directeur", "censeur", "professeur", "eleve", "parent"],
-  directeur: ["censeur"],
+  dev: ["directeur"],
+  directeur: ["censeur", "professeur", "eleve", "parent"],
   censeur: ["professeur", "eleve", "parent"],
 };
 

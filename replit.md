@@ -43,6 +43,17 @@ Plateforme de gestion scolaire pour collèges et lycées en Côte d'Ivoire, dév
 - Premier login → `premier_login=true` en DB, forçage changement de mot de passe côté frontend
 - Envoi email Resend désactivé (fonctionnalité désactivée à la demande de l'utilisateur)
 
+## Hiérarchie de création des comptes
+
+| Rôle créateur | Peut créer                               |
+|---------------|------------------------------------------|
+| dev           | directeur uniquement                     |
+| directeur     | censeur, professeur, élève, parent       |
+| censeur       | professeur, élève, parent                |
+
+Le dev crée les directeurs et leur assigne un établissement.
+Le directeur est responsable de créer tous les membres de son école.
+
 ## Product
 
 Module 01 — Authentification complet :
