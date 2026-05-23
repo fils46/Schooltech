@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AuthTokens,
   ChangePasswordInput,
   ErrorResponse,
   Etablissement,
@@ -29,7 +30,6 @@ import type {
   HealthStatus,
   ListerUtilisateursParams,
   LoginInput,
-  LoginResponse,
   MessageResponse,
   ResetPasswordInput,
   StatsEtablissement,
@@ -140,9 +140,9 @@ export const getLoginUrl = () => {
 /**
  * @summary Connexion utilisateur
  */
-export const login = async (loginInput: LoginInput, options?: RequestInit): Promise<LoginResponse> => {
+export const login = async (loginInput: LoginInput, options?: RequestInit): Promise<AuthTokens> => {
 
-  return customFetch<LoginResponse>(getLoginUrl(),
+  return customFetch<AuthTokens>(getLoginUrl(),
   {
     ...options,
     method: 'POST',

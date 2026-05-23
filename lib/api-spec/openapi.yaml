@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoginResponse"
+                $ref: "#/components/schemas/AuthTokens"
         "401":
           description: Identifiants invalides ou compte désactivé
           content:
@@ -456,7 +456,7 @@ components:
         password:
           type: string
 
-    LoginResponse:
+    AuthTokens:
       type: object
       required: [token, refreshToken, utilisateur]
       properties:

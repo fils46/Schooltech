@@ -7,7 +7,7 @@
  */
 import type { Utilisateur } from './utilisateur';
 
-export interface LoginResponse {
+export interface AuthTokens {
   token: string;
   refreshToken: string;
   utilisateur: Utilisateur;

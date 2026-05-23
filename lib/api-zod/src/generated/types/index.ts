@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './authTokens';
 export * from './changePasswordInput';
 export * from './errorResponse';
 export * from './etablissement';
@@ -18,7 +19,6 @@ export * from './forgotPasswordInput';
 export * from './healthStatus';
 export * from './listerUtilisateursParams';
 export * from './loginInput';
-export * from './loginResponse';
 export * from './messageResponse';
 export * from './resetPasswordInput';
 export * from './roleCount';

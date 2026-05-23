@@ -51,7 +51,7 @@ export interface Utilisateur {
   created_at?: string;
 }
 
-export interface LoginResponse {
+export interface AuthTokens {
   token: string;
   refreshToken: string;
   utilisateur: Utilisateur;
