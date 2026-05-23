@@ -3860,6 +3860,226 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/CompletionPlanningResponse" }
 
+  # ── Module 14 — Bibliothèque Numérique ──────────────────────
+
+  /bibliotheque/ressources:
+    get:
+      tags: [Bibliotheque]
+      summary: Lister les ressources
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: matiere_id, in: query, schema: { type: string } }
+        - { name: type, in: query, schema: { type: string } }
+        - { name: niveau, in: query, schema: { type: string } }
+        - { name: langue, in: query, schema: { type: string } }
+        - { name: mots_cles, in: query, schema: { type: string } }
+        - { name: publie, in: query, schema: { type: boolean } }
+        - { name: valide, in: query, schema: { type: boolean } }
+        - { name: q, in: query, schema: { type: string } }
+        - { name: tri, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste des ressources
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourcesListeResponse" }
+    post:
+      tags: [Bibliotheque]
+      summary: Ajouter une ressource
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreerRessourceInput" }
+      responses:
+        "201":
+          description: Ressource créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceDetailResponse" }
+
+  /bibliotheque/ressources/en-attente:
+    get:
+      tags: [Bibliotheque]
+      summary: Ressources en attente de validation
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste en attente
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourcesListeResponse" }
+
+  /bibliotheque/ressources/{id}:
+    get:
+      tags: [Bibliotheque]
+      summary: Détail d'une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Ressource
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceDetailResponse" }
+    put:
+      tags: [Bibliotheque]
+      summary: Modifier une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ModifierRessourceInput" }
+      responses:
+        "200":
+          description: Ressource modifiée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceDetailResponse" }
+    delete:
+      tags: [Bibliotheque]
+      summary: Supprimer une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Supprimée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MessageResponse" }
+
+  /bibliotheque/ressources/{id}/valider:
+    put:
+      tags: [Bibliotheque]
+      summary: Valider et publier une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Ressource validée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceDetailResponse" }
+
+  /bibliotheque/ressources/{id}/publier:
+    put:
+      tags: [Bibliotheque]
+      summary: Publier/dépublier une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publie: { type: boolean }
+      responses:
+        "200":
+          description: Ressource mise à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceDetailResponse" }
+
+  /bibliotheque/ressources/{id}/telecharger:
+    post:
+      tags: [Bibliotheque]
+      summary: Enregistrer un téléchargement
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: URL téléchargement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fichier_url: { type: string }
+                  fichier_nom: { type: string }
+
+  /bibliotheque/ressources/{id}/favori:
+    post:
+      tags: [Bibliotheque]
+      summary: Toggle favori
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Statut favori
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  est_favori: { type: boolean }
+
+  /bibliotheque/ressources/{id}/stats:
+    get:
+      tags: [Bibliotheque]
+      summary: Stats d'une ressource
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Stats ressource
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourceStatsResponse" }
+
+  /bibliotheque/favoris:
+    get:
+      tags: [Bibliotheque]
+      summary: Mes ressources favorites
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Favoris
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RessourcesListeResponse" }
+
+  /bibliotheque/historique:
+    get:
+      tags: [Bibliotheque]
+      summary: Mon historique
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: action, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Historique
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HistoriqueResponse" }
+
+  /bibliotheque/stats:
+    get:
+      tags: [Bibliotheque]
+      summary: Statistiques globales bibliothèque
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Stats globales
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BibliothequeStatsGlobalesResponse" }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -6520,3 +6740,162 @@ components:
               total: { type: integer }
               fait: { type: integer }
               taux: { type: number }
+
+    # ── Module 14 Schemas ─────────────────────────────────────
+
+    RessourceItem:
+      type: object
+      properties:
+        id: { type: string }
+        etablissement_id: { type: string }
+        ajoute_par: { type: string }
+        matiere_id: { type: string, nullable: true }
+        titre: { type: string }
+        auteur: { type: string, nullable: true }
+        description: { type: string, nullable: true }
+        type: { type: string, enum: [manuel, fiche_cours, exercice, video, document_officiel, autre] }
+        niveau:
+          type: array
+          items: { type: string }
+        fichier_url: { type: string }
+        fichier_nom: { type: string }
+        fichier_taille: { type: integer, nullable: true }
+        fichier_type: { type: string, nullable: true }
+        couverture_url: { type: string, nullable: true }
+        mots_cles:
+          type: array
+          items: { type: string }
+          nullable: true
+        langue: { type: string }
+        publie: { type: boolean }
+        valide: { type: boolean }
+        nb_consultations: { type: integer }
+        nb_telechargements: { type: integer }
+        created_at: { type: string }
+        updated_at: { type: string }
+        auteur_nom: { type: string, nullable: true }
+        auteur_role: { type: string, nullable: true }
+        matiere_nom: { type: string, nullable: true }
+        est_favori: { type: boolean }
+
+    RessourcesListeResponse:
+      type: object
+      properties:
+        ressources:
+          type: array
+          items: { $ref: "#/components/schemas/RessourceItem" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    RessourceDetailResponse:
+      type: object
+      properties:
+        ressource: { $ref: "#/components/schemas/RessourceItem" }
+
+    CreerRessourceInput:
+      type: object
+      required: [titre, type, niveau, fichier_url, fichier_nom]
+      properties:
+        matiere_id: { type: string, nullable: true }
+        titre: { type: string }
+        auteur: { type: string }
+        description: { type: string }
+        type: { type: string, enum: [manuel, fiche_cours, exercice, video, document_officiel, autre] }
+        niveau:
+          type: array
+          items: { type: string }
+        fichier_url: { type: string }
+        fichier_nom: { type: string }
+        fichier_taille: { type: integer }
+        fichier_type: { type: string }
+        couverture_url: { type: string }
+        mots_cles:
+          type: array
+          items: { type: string }
+        langue: { type: string }
+
+    ModifierRessourceInput:
+      type: object
+      properties:
+        matiere_id: { type: string, nullable: true }
+        titre: { type: string }
+        auteur: { type: string }
+        description: { type: string }
+        type: { type: string }
+        niveau:
+          type: array
+          items: { type: string }
+        fichier_url: { type: string }
+        fichier_nom: { type: string }
+        fichier_taille: { type: integer }
+        fichier_type: { type: string }
+        couverture_url: { type: string }
+        mots_cles:
+          type: array
+          items: { type: string }
+        langue: { type: string }
+        publie: { type: boolean }
+
+    RessourceStatsResponse:
+      type: object
+      properties:
+        nb_consultations: { type: integer }
+        nb_telechargements: { type: integer }
+        nb_favoris: { type: integer }
+        historique_30j:
+          type: array
+          items:
+            type: object
+            properties:
+              date: { type: string }
+              consultations: { type: integer }
+              telechargements: { type: integer }
+
+    HistoriqueItem:
+      type: object
+      properties:
+        id: { type: string }
+        ressource_id: { type: string }
+        action: { type: string, enum: [consultation, telechargement] }
+        created_at: { type: string }
+        ressource_titre: { type: string }
+        ressource_type: { type: string }
+        ressource_fichier_url: { type: string }
+
+    HistoriqueResponse:
+      type: object
+      properties:
+        historique:
+          type: array
+          items: { $ref: "#/components/schemas/HistoriqueItem" }
+        total: { type: integer }
+
+    BibliothequeStatsGlobalesResponse:
+      type: object
+      properties:
+        total_publiees: { type: integer }
+        en_attente_validation: { type: integer }
+        consultations_mois: { type: integer }
+        telechargements_mois: { type: integer }
+        par_type:
+          type: array
+          items:
+            type: object
+            properties:
+              type: { type: string }
+              total: { type: integer }
+        top_consultees:
+          type: array
+          items: { $ref: "#/components/schemas/RessourceItem" }
+        top_telechargees:
+          type: array
+          items: { $ref: "#/components/schemas/RessourceItem" }
+        activite_30j:
+          type: array
+          items:
+            type: object
+            properties:
+              date: { type: string }
+              consultations: { type: integer }
+              telechargements: { type: integer }

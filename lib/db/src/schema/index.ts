@@ -30,3 +30,4 @@ export * from "./conseilParticipants";
 export * from "./conseilDeliberations";
 export * from "./conseilInterventions";
 export * from "./examens";
+export * from "./bibliotheque";

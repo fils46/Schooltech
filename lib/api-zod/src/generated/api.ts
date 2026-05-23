@@ -4496,3 +4496,483 @@ export const GetExamensPlanningEleveIdCompletionResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les ressources
+ */
+export const GetBibliothequeRessourcesQueryParams = zod.object({
+  "matiere_id": zod.coerce.string().optional(),
+  "type": zod.coerce.string().optional(),
+  "niveau": zod.coerce.string().optional(),
+  "langue": zod.coerce.string().optional(),
+  "mots_cles": zod.coerce.string().optional(),
+  "publie": zod.coerce.boolean().optional(),
+  "valide": zod.coerce.boolean().optional(),
+  "q": zod.coerce.string().optional(),
+  "tri": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetBibliothequeRessourcesResponse = zod.object({
+  "ressources": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "page": zod.number().optional(),
+  "limit": zod.number().optional()
+})
+
+
+/**
+ * @summary Ajouter une ressource
+ */
+export const PostBibliothequeRessourcesBody = zod.object({
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string(),
+  "auteur": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']),
+  "niveau": zod.array(zod.string()),
+  "fichier_url": zod.string(),
+  "fichier_nom": zod.string(),
+  "fichier_taille": zod.number().optional(),
+  "fichier_type": zod.string().optional(),
+  "couverture_url": zod.string().optional(),
+  "mots_cles": zod.array(zod.string()).optional(),
+  "langue": zod.string().optional()
+})
+
+
+/**
+ * @summary Ressources en attente de validation
+ */
+export const GetBibliothequeRessourcesEnAttenteResponse = zod.object({
+  "ressources": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "page": zod.number().optional(),
+  "limit": zod.number().optional()
+})
+
+
+/**
+ * @summary Détail d'une ressource
+ */
+export const GetBibliothequeRessourcesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetBibliothequeRessourcesIdResponse = zod.object({
+  "ressource": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Modifier une ressource
+ */
+export const PutBibliothequeRessourcesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutBibliothequeRessourcesIdBody = zod.object({
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().optional(),
+  "description": zod.string().optional(),
+  "type": zod.string().optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().optional(),
+  "fichier_type": zod.string().optional(),
+  "couverture_url": zod.string().optional(),
+  "mots_cles": zod.array(zod.string()).optional(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional()
+})
+
+export const PutBibliothequeRessourcesIdResponse = zod.object({
+  "ressource": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Supprimer une ressource
+ */
+export const DeleteBibliothequeRessourcesIdParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteBibliothequeRessourcesIdResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Valider et publier une ressource
+ */
+export const PutBibliothequeRessourcesIdValiderParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutBibliothequeRessourcesIdValiderResponse = zod.object({
+  "ressource": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Publier/dépublier une ressource
+ */
+export const PutBibliothequeRessourcesIdPublierParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PutBibliothequeRessourcesIdPublierBody = zod.object({
+  "publie": zod.boolean().optional()
+})
+
+export const PutBibliothequeRessourcesIdPublierResponse = zod.object({
+  "ressource": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Enregistrer un téléchargement
+ */
+export const PostBibliothequeRessourcesIdTelechargerParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PostBibliothequeRessourcesIdTelechargerResponse = zod.object({
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional()
+})
+
+
+/**
+ * @summary Toggle favori
+ */
+export const PostBibliothequeRessourcesIdFavoriParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PostBibliothequeRessourcesIdFavoriResponse = zod.object({
+  "est_favori": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Stats d'une ressource
+ */
+export const GetBibliothequeRessourcesIdStatsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetBibliothequeRessourcesIdStatsResponse = zod.object({
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "nb_favoris": zod.number().optional(),
+  "historique_30j": zod.array(zod.object({
+  "date": zod.string().optional(),
+  "consultations": zod.number().optional(),
+  "telechargements": zod.number().optional()
+})).optional()
+})
+
+
+/**
+ * @summary Mes ressources favorites
+ */
+export const GetBibliothequeFavorisResponse = zod.object({
+  "ressources": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "page": zod.number().optional(),
+  "limit": zod.number().optional()
+})
+
+
+/**
+ * @summary Mon historique
+ */
+export const GetBibliothequeHistoriqueQueryParams = zod.object({
+  "action": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const GetBibliothequeHistoriqueResponse = zod.object({
+  "historique": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "ressource_id": zod.string().optional(),
+  "action": zod.enum(['consultation', 'telechargement']).optional(),
+  "created_at": zod.string().optional(),
+  "ressource_titre": zod.string().optional(),
+  "ressource_type": zod.string().optional(),
+  "ressource_fichier_url": zod.string().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Statistiques globales bibliothèque
+ */
+export const GetBibliothequeStatsResponse = zod.object({
+  "total_publiees": zod.number().optional(),
+  "en_attente_validation": zod.number().optional(),
+  "consultations_mois": zod.number().optional(),
+  "telechargements_mois": zod.number().optional(),
+  "par_type": zod.array(zod.object({
+  "type": zod.string().optional(),
+  "total": zod.number().optional()
+})).optional(),
+  "top_consultees": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+})).optional(),
+  "top_telechargees": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "ajoute_par": zod.string().optional(),
+  "matiere_id": zod.string().nullish(),
+  "titre": zod.string().optional(),
+  "auteur": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "type": zod.enum(['manuel', 'fiche_cours', 'exercice', 'video', 'document_officiel', 'autre']).optional(),
+  "niveau": zod.array(zod.string()).optional(),
+  "fichier_url": zod.string().optional(),
+  "fichier_nom": zod.string().optional(),
+  "fichier_taille": zod.number().nullish(),
+  "fichier_type": zod.string().nullish(),
+  "couverture_url": zod.string().nullish(),
+  "mots_cles": zod.array(zod.string()).nullish(),
+  "langue": zod.string().optional(),
+  "publie": zod.boolean().optional(),
+  "valide": zod.boolean().optional(),
+  "nb_consultations": zod.number().optional(),
+  "nb_telechargements": zod.number().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional(),
+  "auteur_nom": zod.string().nullish(),
+  "auteur_role": zod.string().nullish(),
+  "matiere_nom": zod.string().nullish(),
+  "est_favori": zod.boolean().optional()
+})).optional(),
+  "activite_30j": zod.array(zod.object({
+  "date": zod.string().optional(),
+  "consultations": zod.number().optional(),
+  "telechargements": zod.number().optional()
+})).optional()
+})
+
+

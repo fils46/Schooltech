@@ -54,6 +54,11 @@ import BibliothequeSujets from "@/pages/bibliotheque-sujets";
 import EpreuvesBlanches from "@/pages/epreuves-blanches";
 import PlanningRevision from "@/pages/planning-revision";
 import ResultatsProgression from "@/pages/resultats-progression";
+import CatalogueBibliotheque from "@/pages/catalogue-bibliotheque";
+import DetailRessource from "@/pages/detail-ressource";
+import MesRessources from "@/pages/mes-ressources";
+import DepotRessource from "@/pages/depot-ressource";
+import AdminBibliotheque from "@/pages/admin-bibliotheque";
 
 const queryClient = new QueryClient();
 
@@ -412,12 +417,52 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      <Route path="/bibliotheque">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <CatalogueBibliotheque />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/bibliotheque/ressource/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DetailRessource />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mes-ressources">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MesRessources />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/depot-ressource">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DepotRessource />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/admin-bibliotheque">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AdminBibliotheque />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/paiements", "/rapports",
         "/professeurs",
-        "/notes", "/bibliotheque", "/mon-enfant",
+        "/notes", "/mon-enfant",
       ].map((path) => (
         <Route key={path} path={path}>
           <ProtectedRoute>

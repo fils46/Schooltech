@@ -2200,6 +2200,161 @@ export interface CompletionPlanningResponse {
   par_matiere?: CompletionPlanningResponseParMatiereItem[];
 }
 
+export type RessourceItemType = typeof RessourceItemType[keyof typeof RessourceItemType];
+
+
+export const RessourceItemType = {
+  manuel: 'manuel',
+  fiche_cours: 'fiche_cours',
+  exercice: 'exercice',
+  video: 'video',
+  document_officiel: 'document_officiel',
+  autre: 'autre',
+} as const;
+
+export interface RessourceItem {
+  id?: string;
+  etablissement_id?: string;
+  ajoute_par?: string;
+  matiere_id?: string | null;
+  titre?: string;
+  auteur?: string | null;
+  description?: string | null;
+  type?: RessourceItemType;
+  niveau?: string[];
+  fichier_url?: string;
+  fichier_nom?: string;
+  fichier_taille?: number | null;
+  fichier_type?: string | null;
+  couverture_url?: string | null;
+  mots_cles?: string[] | null;
+  langue?: string;
+  publie?: boolean;
+  valide?: boolean;
+  nb_consultations?: number;
+  nb_telechargements?: number;
+  created_at?: string;
+  updated_at?: string;
+  auteur_nom?: string | null;
+  auteur_role?: string | null;
+  matiere_nom?: string | null;
+  est_favori?: boolean;
+}
+
+export interface RessourcesListeResponse {
+  ressources?: RessourceItem[];
+  total?: number;
+  page?: number;
+  limit?: number;
+}
+
+export interface RessourceDetailResponse {
+  ressource?: RessourceItem;
+}
+
+export type CreerRessourceInputType = typeof CreerRessourceInputType[keyof typeof CreerRessourceInputType];
+
+
+export const CreerRessourceInputType = {
+  manuel: 'manuel',
+  fiche_cours: 'fiche_cours',
+  exercice: 'exercice',
+  video: 'video',
+  document_officiel: 'document_officiel',
+  autre: 'autre',
+} as const;
+
+export interface CreerRessourceInput {
+  matiere_id?: string | null;
+  titre: string;
+  auteur?: string;
+  description?: string;
+  type: CreerRessourceInputType;
+  niveau: string[];
+  fichier_url: string;
+  fichier_nom: string;
+  fichier_taille?: number;
+  fichier_type?: string;
+  couverture_url?: string;
+  mots_cles?: string[];
+  langue?: string;
+}
+
+export interface ModifierRessourceInput {
+  matiere_id?: string | null;
+  titre?: string;
+  auteur?: string;
+  description?: string;
+  type?: string;
+  niveau?: string[];
+  fichier_url?: string;
+  fichier_nom?: string;
+  fichier_taille?: number;
+  fichier_type?: string;
+  couverture_url?: string;
+  mots_cles?: string[];
+  langue?: string;
+  publie?: boolean;
+}
+
+export type RessourceStatsResponseHistorique30jItem = {
+  date?: string;
+  consultations?: number;
+  telechargements?: number;
+};
+
+export interface RessourceStatsResponse {
+  nb_consultations?: number;
+  nb_telechargements?: number;
+  nb_favoris?: number;
+  historique_30j?: RessourceStatsResponseHistorique30jItem[];
+}
+
+export type HistoriqueItemAction = typeof HistoriqueItemAction[keyof typeof HistoriqueItemAction];
+
+
+export const HistoriqueItemAction = {
+  consultation: 'consultation',
+  telechargement: 'telechargement',
+} as const;
+
+export interface HistoriqueItem {
+  id?: string;
+  ressource_id?: string;
+  action?: HistoriqueItemAction;
+  created_at?: string;
+  ressource_titre?: string;
+  ressource_type?: string;
+  ressource_fichier_url?: string;
+}
+
+export interface HistoriqueResponse {
+  historique?: HistoriqueItem[];
+  total?: number;
+}
+
+export type BibliothequeStatsGlobalesResponseParTypeItem = {
+  type?: string;
+  total?: number;
+};
+
+export type BibliothequeStatsGlobalesResponseActivite30jItem = {
+  date?: string;
+  consultations?: number;
+  telechargements?: number;
+};
+
+export interface BibliothequeStatsGlobalesResponse {
+  total_publiees?: number;
+  en_attente_validation?: number;
+  consultations_mois?: number;
+  telechargements_mois?: number;
+  par_type?: BibliothequeStatsGlobalesResponseParTypeItem[];
+  top_consultees?: RessourceItem[];
+  top_telechargees?: RessourceItem[];
+  activite_30j?: BibliothequeStatsGlobalesResponseActivite30jItem[];
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -2486,5 +2641,38 @@ export type GetExamensPlanningEleveIdParams = {
 semaine?: string;
 mois?: string;
 matiere?: string;
+};
+
+export type GetBibliothequeRessourcesParams = {
+matiere_id?: string;
+type?: string;
+niveau?: string;
+langue?: string;
+mots_cles?: string;
+publie?: boolean;
+valide?: boolean;
+q?: string;
+tri?: string;
+page?: number;
+limit?: number;
+};
+
+export type PutBibliothequeRessourcesIdPublierBody = {
+  publie?: boolean;
+};
+
+export type PostBibliothequeRessourcesIdTelecharger200 = {
+  fichier_url?: string;
+  fichier_nom?: string;
+};
+
+export type PostBibliothequeRessourcesIdFavori200 = {
+  est_favori?: boolean;
+};
+
+export type GetBibliothequeHistoriqueParams = {
+action?: string;
+date_debut?: string;
+date_fin?: string;
 };
 

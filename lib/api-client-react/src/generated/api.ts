@@ -44,6 +44,7 @@ import type {
   AppelsHistoriqueResponse,
   AppreciationInput,
   AuthTokens,
+  BibliothequeStatsGlobalesResponse,
   BulletinDetailResponse,
   BulletinsClasseResponse,
   BulletinsEleveResponse,
@@ -68,6 +69,7 @@ import type {
   ContactsResponse,
   CoursDetail,
   CoursInput,
+  CreerRessourceInput,
   Creneau,
   CreneauInput,
   CreneauxListeResponse,
@@ -106,6 +108,8 @@ import type {
   GenererPlanningInput,
   GetAbsencesEnfantParams,
   GetApiAnnoncesParams,
+  GetBibliothequeHistoriqueParams,
+  GetBibliothequeRessourcesParams,
   GetBoiteReceptionParams,
   GetBulletinsClasseParams,
   GetBulletinsEleveParams,
@@ -130,6 +134,7 @@ import type {
   GetStatistiquesAbsencesParams,
   GetStatistiquesNotesParams,
   HealthStatus,
+  HistoriqueResponse,
   InscrireEleveInput,
   InscrireEleveResponse,
   JustificationInput,
@@ -158,6 +163,7 @@ import type {
   MessagesListeResponse,
   ModifierConseilInput,
   ModifierEleveInput,
+  ModifierRessourceInput,
   MonteeClasseInput,
   MonteeClasseResponse,
   MoyennesClasseResponse,
@@ -174,15 +180,21 @@ import type {
   PlanifierConseilInput,
   PlanningListeResponse,
   PlanningSessionItem,
+  PostBibliothequeRessourcesIdFavori200,
+  PostBibliothequeRessourcesIdTelecharger200,
   PresenceEleveResponse,
   PresenceUpdateInput,
   ProgressionEleveResponse,
   PublierClasseResponse,
+  PutBibliothequeRessourcesIdPublierBody,
   RechercherElevesParams,
   RendezVousItemResponse,
   RendezVousListeResponse,
   RepondreMessageInput,
   ResetPasswordInput,
+  RessourceDetailResponse,
+  RessourceStatsResponse,
+  RessourcesListeResponse,
   ResumeAbsencesEleveResponse,
   SaisirDeliberation200,
   SaisirDeliberationInput,
@@ -13731,6 +13743,1054 @@ export function useGetExamensPlanningEleveIdCompletion<TData = Awaited<ReturnTyp
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetExamensPlanningEleveIdCompletionQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBibliothequeRessourcesUrl = (params?: GetBibliothequeRessourcesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bibliotheque/ressources?${stringifiedParams}` : `/api/bibliotheque/ressources`
+}
+
+/**
+ * @summary Lister les ressources
+ */
+export const getBibliothequeRessources = async (params?: GetBibliothequeRessourcesParams, options?: RequestInit): Promise<RessourcesListeResponse> => {
+
+  return customFetch<RessourcesListeResponse>(getGetBibliothequeRessourcesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeRessourcesQueryKey = (params?: GetBibliothequeRessourcesParams,) => {
+    return [
+    `/api/bibliotheque/ressources`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetBibliothequeRessourcesQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeRessources>>, TError = ErrorType<unknown>>(params?: GetBibliothequeRessourcesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessources>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeRessourcesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeRessources>>> = ({ signal }) => getBibliothequeRessources(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessources>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeRessourcesQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeRessources>>>
+export type GetBibliothequeRessourcesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les ressources
+ */
+
+export function useGetBibliothequeRessources<TData = Awaited<ReturnType<typeof getBibliothequeRessources>>, TError = ErrorType<unknown>>(
+ params?: GetBibliothequeRessourcesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessources>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeRessourcesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPostBibliothequeRessourcesUrl = () => {
+
+
+
+
+  return `/api/bibliotheque/ressources`
+}
+
+/**
+ * @summary Ajouter une ressource
+ */
+export const postBibliothequeRessources = async (creerRessourceInput: CreerRessourceInput, options?: RequestInit): Promise<RessourceDetailResponse> => {
+
+  return customFetch<RessourceDetailResponse>(getPostBibliothequeRessourcesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      creerRessourceInput,)
+  }
+);}
+
+
+
+
+export const getPostBibliothequeRessourcesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessources>>, TError,{data: BodyType<CreerRessourceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessources>>, TError,{data: BodyType<CreerRessourceInput>}, TContext> => {
+
+const mutationKey = ['postBibliothequeRessources'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postBibliothequeRessources>>, {data: BodyType<CreerRessourceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postBibliothequeRessources(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostBibliothequeRessourcesMutationResult = NonNullable<Awaited<ReturnType<typeof postBibliothequeRessources>>>
+    export type PostBibliothequeRessourcesMutationBody = BodyType<CreerRessourceInput>
+    export type PostBibliothequeRessourcesMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Ajouter une ressource
+ */
+export const usePostBibliothequeRessources = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessources>>, TError,{data: BodyType<CreerRessourceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postBibliothequeRessources>>,
+        TError,
+        {data: BodyType<CreerRessourceInput>},
+        TContext
+      > => {
+      return useMutation(getPostBibliothequeRessourcesMutationOptions(options));
+    }
+
+export const getGetBibliothequeRessourcesEnAttenteUrl = () => {
+
+
+
+
+  return `/api/bibliotheque/ressources/en-attente`
+}
+
+/**
+ * @summary Ressources en attente de validation
+ */
+export const getBibliothequeRessourcesEnAttente = async ( options?: RequestInit): Promise<RessourcesListeResponse> => {
+
+  return customFetch<RessourcesListeResponse>(getGetBibliothequeRessourcesEnAttenteUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeRessourcesEnAttenteQueryKey = () => {
+    return [
+    `/api/bibliotheque/ressources/en-attente`
+    ] as const;
+    }
+
+
+export const getGetBibliothequeRessourcesEnAttenteQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeRessourcesEnAttenteQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>> = ({ signal }) => getBibliothequeRessourcesEnAttente({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeRessourcesEnAttenteQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>>
+export type GetBibliothequeRessourcesEnAttenteQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Ressources en attente de validation
+ */
+
+export function useGetBibliothequeRessourcesEnAttente<TData = Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesEnAttente>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeRessourcesEnAttenteQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBibliothequeRessourcesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}`
+}
+
+/**
+ * @summary Détail d'une ressource
+ */
+export const getBibliothequeRessourcesId = async (id: string, options?: RequestInit): Promise<RessourceDetailResponse> => {
+
+  return customFetch<RessourceDetailResponse>(getGetBibliothequeRessourcesIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeRessourcesIdQueryKey = (id: string,) => {
+    return [
+    `/api/bibliotheque/ressources/${id}`
+    ] as const;
+    }
+
+
+export const getGetBibliothequeRessourcesIdQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeRessourcesId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeRessourcesIdQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeRessourcesId>>> = ({ signal }) => getBibliothequeRessourcesId(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeRessourcesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeRessourcesId>>>
+export type GetBibliothequeRessourcesIdQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Détail d'une ressource
+ */
+
+export function useGetBibliothequeRessourcesId<TData = Awaited<ReturnType<typeof getBibliothequeRessourcesId>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeRessourcesIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPutBibliothequeRessourcesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}`
+}
+
+/**
+ * @summary Modifier une ressource
+ */
+export const putBibliothequeRessourcesId = async (id: string,
+    modifierRessourceInput: ModifierRessourceInput, options?: RequestInit): Promise<RessourceDetailResponse> => {
+
+  return customFetch<RessourceDetailResponse>(getPutBibliothequeRessourcesIdUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierRessourceInput,)
+  }
+);}
+
+
+
+
+export const getPutBibliothequeRessourcesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesId>>, TError,{id: string;data: BodyType<ModifierRessourceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesId>>, TError,{id: string;data: BodyType<ModifierRessourceInput>}, TContext> => {
+
+const mutationKey = ['putBibliothequeRessourcesId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putBibliothequeRessourcesId>>, {id: string;data: BodyType<ModifierRessourceInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putBibliothequeRessourcesId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutBibliothequeRessourcesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putBibliothequeRessourcesId>>>
+    export type PutBibliothequeRessourcesIdMutationBody = BodyType<ModifierRessourceInput>
+    export type PutBibliothequeRessourcesIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier une ressource
+ */
+export const usePutBibliothequeRessourcesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesId>>, TError,{id: string;data: BodyType<ModifierRessourceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putBibliothequeRessourcesId>>,
+        TError,
+        {id: string;data: BodyType<ModifierRessourceInput>},
+        TContext
+      > => {
+      return useMutation(getPutBibliothequeRessourcesIdMutationOptions(options));
+    }
+
+export const getDeleteBibliothequeRessourcesIdUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}`
+}
+
+/**
+ * @summary Supprimer une ressource
+ */
+export const deleteBibliothequeRessourcesId = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getDeleteBibliothequeRessourcesIdUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteBibliothequeRessourcesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteBibliothequeRessourcesId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteBibliothequeRessourcesId(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteBibliothequeRessourcesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>>
+
+    export type DeleteBibliothequeRessourcesIdMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Supprimer une ressource
+ */
+export const useDeleteBibliothequeRessourcesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteBibliothequeRessourcesId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getDeleteBibliothequeRessourcesIdMutationOptions(options));
+    }
+
+export const getPutBibliothequeRessourcesIdValiderUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}/valider`
+}
+
+/**
+ * @summary Valider et publier une ressource
+ */
+export const putBibliothequeRessourcesIdValider = async (id: string, options?: RequestInit): Promise<RessourceDetailResponse> => {
+
+  return customFetch<RessourceDetailResponse>(getPutBibliothequeRessourcesIdValiderUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getPutBibliothequeRessourcesIdValiderMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['putBibliothequeRessourcesIdValider'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  putBibliothequeRessourcesIdValider(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutBibliothequeRessourcesIdValiderMutationResult = NonNullable<Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>>
+
+    export type PutBibliothequeRessourcesIdValiderMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Valider et publier une ressource
+ */
+export const usePutBibliothequeRessourcesIdValider = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putBibliothequeRessourcesIdValider>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPutBibliothequeRessourcesIdValiderMutationOptions(options));
+    }
+
+export const getPutBibliothequeRessourcesIdPublierUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}/publier`
+}
+
+/**
+ * @summary Publier/dépublier une ressource
+ */
+export const putBibliothequeRessourcesIdPublier = async (id: string,
+    putBibliothequeRessourcesIdPublierBody?: PutBibliothequeRessourcesIdPublierBody, options?: RequestInit): Promise<RessourceDetailResponse> => {
+
+  return customFetch<RessourceDetailResponse>(getPutBibliothequeRessourcesIdPublierUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      putBibliothequeRessourcesIdPublierBody,)
+  }
+);}
+
+
+
+
+export const getPutBibliothequeRessourcesIdPublierMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>, TError,{id: string;data?: BodyType<PutBibliothequeRessourcesIdPublierBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>, TError,{id: string;data?: BodyType<PutBibliothequeRessourcesIdPublierBody>}, TContext> => {
+
+const mutationKey = ['putBibliothequeRessourcesIdPublier'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>, {id: string;data?: BodyType<PutBibliothequeRessourcesIdPublierBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  putBibliothequeRessourcesIdPublier(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutBibliothequeRessourcesIdPublierMutationResult = NonNullable<Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>>
+    export type PutBibliothequeRessourcesIdPublierMutationBody = BodyType<PutBibliothequeRessourcesIdPublierBody> | undefined
+    export type PutBibliothequeRessourcesIdPublierMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Publier/dépublier une ressource
+ */
+export const usePutBibliothequeRessourcesIdPublier = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>, TError,{id: string;data?: BodyType<PutBibliothequeRessourcesIdPublierBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof putBibliothequeRessourcesIdPublier>>,
+        TError,
+        {id: string;data?: BodyType<PutBibliothequeRessourcesIdPublierBody>},
+        TContext
+      > => {
+      return useMutation(getPutBibliothequeRessourcesIdPublierMutationOptions(options));
+    }
+
+export const getPostBibliothequeRessourcesIdTelechargerUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}/telecharger`
+}
+
+/**
+ * @summary Enregistrer un téléchargement
+ */
+export const postBibliothequeRessourcesIdTelecharger = async (id: string, options?: RequestInit): Promise<PostBibliothequeRessourcesIdTelecharger200> => {
+
+  return customFetch<PostBibliothequeRessourcesIdTelecharger200>(getPostBibliothequeRessourcesIdTelechargerUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostBibliothequeRessourcesIdTelechargerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['postBibliothequeRessourcesIdTelecharger'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  postBibliothequeRessourcesIdTelecharger(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostBibliothequeRessourcesIdTelechargerMutationResult = NonNullable<Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>>
+
+    export type PostBibliothequeRessourcesIdTelechargerMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Enregistrer un téléchargement
+ */
+export const usePostBibliothequeRessourcesIdTelecharger = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postBibliothequeRessourcesIdTelecharger>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPostBibliothequeRessourcesIdTelechargerMutationOptions(options));
+    }
+
+export const getPostBibliothequeRessourcesIdFavoriUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}/favori`
+}
+
+/**
+ * @summary Toggle favori
+ */
+export const postBibliothequeRessourcesIdFavori = async (id: string, options?: RequestInit): Promise<PostBibliothequeRessourcesIdFavori200> => {
+
+  return customFetch<PostBibliothequeRessourcesIdFavori200>(getPostBibliothequeRessourcesIdFavoriUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPostBibliothequeRessourcesIdFavoriMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['postBibliothequeRessourcesIdFavori'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  postBibliothequeRessourcesIdFavori(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostBibliothequeRessourcesIdFavoriMutationResult = NonNullable<Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>>
+
+    export type PostBibliothequeRessourcesIdFavoriMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Toggle favori
+ */
+export const usePostBibliothequeRessourcesIdFavori = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof postBibliothequeRessourcesIdFavori>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getPostBibliothequeRessourcesIdFavoriMutationOptions(options));
+    }
+
+export const getGetBibliothequeRessourcesIdStatsUrl = (id: string,) => {
+
+
+
+
+  return `/api/bibliotheque/ressources/${id}/stats`
+}
+
+/**
+ * @summary Stats d'une ressource
+ */
+export const getBibliothequeRessourcesIdStats = async (id: string, options?: RequestInit): Promise<RessourceStatsResponse> => {
+
+  return customFetch<RessourceStatsResponse>(getGetBibliothequeRessourcesIdStatsUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeRessourcesIdStatsQueryKey = (id: string,) => {
+    return [
+    `/api/bibliotheque/ressources/${id}/stats`
+    ] as const;
+    }
+
+
+export const getGetBibliothequeRessourcesIdStatsQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeRessourcesIdStatsQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>> = ({ signal }) => getBibliothequeRessourcesIdStats(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeRessourcesIdStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>>
+export type GetBibliothequeRessourcesIdStatsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Stats d'une ressource
+ */
+
+export function useGetBibliothequeRessourcesIdStats<TData = Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeRessourcesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeRessourcesIdStatsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBibliothequeFavorisUrl = () => {
+
+
+
+
+  return `/api/bibliotheque/favoris`
+}
+
+/**
+ * @summary Mes ressources favorites
+ */
+export const getBibliothequeFavoris = async ( options?: RequestInit): Promise<RessourcesListeResponse> => {
+
+  return customFetch<RessourcesListeResponse>(getGetBibliothequeFavorisUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeFavorisQueryKey = () => {
+    return [
+    `/api/bibliotheque/favoris`
+    ] as const;
+    }
+
+
+export const getGetBibliothequeFavorisQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeFavoris>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeFavoris>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeFavorisQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeFavoris>>> = ({ signal }) => getBibliothequeFavoris({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeFavoris>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeFavorisQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeFavoris>>>
+export type GetBibliothequeFavorisQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Mes ressources favorites
+ */
+
+export function useGetBibliothequeFavoris<TData = Awaited<ReturnType<typeof getBibliothequeFavoris>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeFavoris>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeFavorisQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBibliothequeHistoriqueUrl = (params?: GetBibliothequeHistoriqueParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/bibliotheque/historique?${stringifiedParams}` : `/api/bibliotheque/historique`
+}
+
+/**
+ * @summary Mon historique
+ */
+export const getBibliothequeHistorique = async (params?: GetBibliothequeHistoriqueParams, options?: RequestInit): Promise<HistoriqueResponse> => {
+
+  return customFetch<HistoriqueResponse>(getGetBibliothequeHistoriqueUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeHistoriqueQueryKey = (params?: GetBibliothequeHistoriqueParams,) => {
+    return [
+    `/api/bibliotheque/historique`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetBibliothequeHistoriqueQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeHistorique>>, TError = ErrorType<unknown>>(params?: GetBibliothequeHistoriqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeHistorique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeHistoriqueQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeHistorique>>> = ({ signal }) => getBibliothequeHistorique(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeHistorique>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeHistoriqueQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeHistorique>>>
+export type GetBibliothequeHistoriqueQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Mon historique
+ */
+
+export function useGetBibliothequeHistorique<TData = Awaited<ReturnType<typeof getBibliothequeHistorique>>, TError = ErrorType<unknown>>(
+ params?: GetBibliothequeHistoriqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeHistorique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeHistoriqueQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetBibliothequeStatsUrl = () => {
+
+
+
+
+  return `/api/bibliotheque/stats`
+}
+
+/**
+ * @summary Statistiques globales bibliothèque
+ */
+export const getBibliothequeStats = async ( options?: RequestInit): Promise<BibliothequeStatsGlobalesResponse> => {
+
+  return customFetch<BibliothequeStatsGlobalesResponse>(getGetBibliothequeStatsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetBibliothequeStatsQueryKey = () => {
+    return [
+    `/api/bibliotheque/stats`
+    ] as const;
+    }
+
+
+export const getGetBibliothequeStatsQueryOptions = <TData = Awaited<ReturnType<typeof getBibliothequeStats>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBibliothequeStatsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBibliothequeStats>>> = ({ signal }) => getBibliothequeStats({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeStats>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetBibliothequeStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getBibliothequeStats>>>
+export type GetBibliothequeStatsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Statistiques globales bibliothèque
+ */
+
+export function useGetBibliothequeStats<TData = Awaited<ReturnType<typeof getBibliothequeStats>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBibliothequeStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetBibliothequeStatsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

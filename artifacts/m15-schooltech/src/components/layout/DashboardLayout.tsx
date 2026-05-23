@@ -11,7 +11,7 @@ import {
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
-  Target, ClipboardCheck, TrendingUp,
+  Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -61,6 +61,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",        href: "/bibliotheque",       icon: Library },
+        { label: "Administration",   href: "/admin-bibliotheque", icon: BookMarked },
+        { label: "Statistiques",     href: "/admin-bibliotheque", icon: BarChart3 },
       ],
     },
     {
@@ -115,6 +123,13 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",      href: "/bibliotheque",       icon: Library },
+        { label: "Administration", href: "/admin-bibliotheque", icon: BookMarked },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -157,6 +172,13 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",      href: "/bibliotheque",       icon: Library },
+        { label: "Administration", href: "/admin-bibliotheque", icon: BookMarked },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -186,6 +208,13 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",   href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats classe",   href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",    href: "/bibliotheque",   icon: Library },
+        { label: "Mes dépôts",   href: "/depot-ressource",icon: Upload },
       ],
     },
     {
@@ -225,6 +254,14 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",  href: "/bibliotheque",  icon: Library },
+        { label: "Favoris",    href: "/mes-ressources", icon: Star },
+        { label: "Historique", href: "/mes-ressources", icon: Clock },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/fil-annonces",  icon: Megaphone },
@@ -254,6 +291,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Sujets BEPC/BAC",    href: "/bibliotheque-sujets",  icon: BookOpen },
         { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
         { label: "Résultats enfant",   href: "/resultats-progression",icon: TrendingUp },
+      ],
+    },
+    {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",  href: "/bibliotheque",   icon: Library },
+        { label: "Favoris",    href: "/mes-ressources", icon: Star },
+        { label: "Historique", href: "/mes-ressources", icon: Clock },
       ],
     },
     {
@@ -292,7 +337,6 @@ const PAGE_TITLES: Record<string, string> = {
   "/notes":            "Notes",
   "/notes/classe":     "Notes de la classe",
   "/notes/eleve":      "Relevé de notes",
-  "/bibliotheque":     "Bibliothèque",
   "/mon-enfant":       "Mon enfant",
   "/annees-scolaires": "Années scolaires",
   "/filieres":         "Filières",
@@ -317,6 +361,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/epreuves-blanches":       "Épreuves Blanches",
   "/planning-revision":       "Planning de Révision",
   "/resultats-progression":   "Résultats & Progression",
+  "/bibliotheque":            "Bibliothèque numérique",
+  "/mes-ressources":          "Mes Ressources",
+  "/depot-ressource":         "Mes Dépôts",
+  "/admin-bibliotheque":      "Administration Bibliothèque",
 };
 
 const ROLE_LABELS: Record<string, string> = {
