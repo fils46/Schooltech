@@ -12,5 +12,7 @@ export interface StatsGlobal {
   totalUtilisateurs: number;
   etablissementsActifs: number;
   licencesExpirees: number;
+  totalElevesActifs?: number;
+  inscriptionsAnneeEnCours?: number;
   repartitionRoles?: RoleCount[];
 }

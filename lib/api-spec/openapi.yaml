@@ -18,6 +18,8 @@ tags:
     description: Gestion des établissements scolaires
   - name: stats
     description: Statistiques et tableaux de bord
+  - name: eleves
+    description: Gestion des dossiers élèves et inscriptions
 
 paths:
   /healthz:
@@ -459,6 +461,291 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatsEtablissement"
 
+  /eleves/inscrire:
+    post:
+      operationId: inscrireEleve
+      tags: [eleves]
+      summary: Inscrire un nouvel élève avec compte + parent
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InscrireEleveInput"
+      responses:
+        "201":
+          description: Élève inscrit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InscrireEleveResponse"
+
+  /eleves/liste:
+    get:
+      operationId: listerEleves
+      tags: [eleves]
+      summary: Lister les élèves (paginé, filtré)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: statut
+          in: query
+          schema:
+            type: string
+        - name: annee_inscription
+          in: query
+          schema:
+            type: integer
+        - name: sexe
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Liste paginée d'élèves
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ElevesListeResponse"
+
+  /eleves/recherche:
+    get:
+      operationId: rechercherEleves
+      tags: [eleves]
+      summary: Recherche d'élèves par texte libre
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: statut
+          in: query
+          schema:
+            type: string
+        - name: annee
+          in: query
+          schema:
+            type: integer
+        - name: sexe
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Résultats de recherche
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EleveResume"
+
+  /eleves/{id}:
+    get:
+      operationId: getEleve
+      tags: [eleves]
+      summary: Détail complet d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dossier élève complet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EleveDetail"
+    put:
+      operationId: modifierEleve
+      tags: [eleves]
+      summary: Modifier les informations d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifierEleveInput"
+      responses:
+        "200":
+          description: Élève mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EleveResume"
+    delete:
+      operationId: supprimerEleve
+      tags: [eleves]
+      summary: Soft delete d'un élève (inactif)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Élève désactivé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /eleves/{id}/statut:
+    put:
+      operationId: changerStatutEleve
+      tags: [eleves]
+      summary: Changer le statut d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangerStatutInput"
+      responses:
+        "200":
+          description: Statut modifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /eleves/{id}/lier-parent:
+    post:
+      operationId: lierParent
+      tags: [eleves]
+      summary: Lier un parent existant à un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LierParentInput"
+      responses:
+        "201":
+          description: Parent lié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /eleves/{id}/delier-parent/{parentId}:
+    delete:
+      operationId: delierParent
+      tags: [eleves]
+      summary: Délier un parent d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Parent délié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /eleves/{id}/documents:
+    get:
+      operationId: listerDocumentsEleve
+      tags: [eleves]
+      summary: Lister les documents d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Liste des documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DocumentEleve"
+
+  /eleves/{id}/documents/{docId}:
+    delete:
+      operationId: supprimerDocumentEleve
+      tags: [eleves]
+      summary: Supprimer un document
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: docId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Document supprimé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -689,6 +976,10 @@ components:
           type: integer
         licencesExpirees:
           type: integer
+        totalElevesActifs:
+          type: integer
+        inscriptionsAnneeEnCours:
+          type: integer
         repartitionRoles:
           type: array
           items:
@@ -717,3 +1008,202 @@ components:
           type: string
         count:
           type: integer
+
+    EleveResume:
+      type: object
+      required: [id, matricule, nom, prenoms, sexe, annee_inscription, statut]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        utilisateur_id:
+          type: ["string", "null"]
+        matricule:
+          type: string
+        nom:
+          type: string
+        prenoms:
+          type: string
+        date_naissance:
+          type: string
+        lieu_naissance:
+          type: ["string", "null"]
+        sexe:
+          type: string
+        photo_url:
+          type: ["string", "null"]
+        adresse:
+          type: ["string", "null"]
+        situation_familiale:
+          type: ["string", "null"]
+        annee_inscription:
+          type: integer
+        statut:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    EleveDetail:
+      allOf:
+        - $ref: "#/components/schemas/EleveResume"
+        - type: object
+          properties:
+            parents:
+              type: array
+              items:
+                $ref: "#/components/schemas/ParentLie"
+            documents:
+              type: array
+              items:
+                $ref: "#/components/schemas/DocumentEleve"
+            historique_statut:
+              type: array
+              items:
+                type: object
+                properties:
+                  statut:
+                    type: string
+                  motif:
+                    type: ["string", "null"]
+                  date:
+                    type: string
+
+    ParentLie:
+      type: object
+      properties:
+        lien_id:
+          type: string
+        utilisateur_id:
+          type: string
+        nom:
+          type: string
+        prenoms:
+          type: ["string", "null"]
+        email:
+          type: string
+        telephone:
+          type: ["string", "null"]
+        lien:
+          type: string
+        est_principal:
+          type: boolean
+
+    DocumentEleve:
+      type: object
+      required: [id, eleve_id, nom_fichier, url_fichier]
+      properties:
+        id:
+          type: string
+        eleve_id:
+          type: string
+        type_document:
+          type: ["string", "null"]
+        nom_fichier:
+          type: string
+        url_fichier:
+          type: string
+        date_upload:
+          type: string
+          format: date-time
+
+    ElevesListeResponse:
+      type: object
+      required: [eleves, total, page, limit]
+      properties:
+        eleves:
+          type: array
+          items:
+            $ref: "#/components/schemas/EleveResume"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    InscrireEleveInput:
+      type: object
+      required: [nom, prenoms, date_naissance, sexe, annee_inscription, parent_nom, parent_prenoms, parent_email, parent_lien]
+      properties:
+        nom:
+          type: string
+        prenoms:
+          type: string
+        date_naissance:
+          type: string
+        lieu_naissance:
+          type: string
+        sexe:
+          type: string
+        adresse:
+          type: string
+        situation_familiale:
+          type: string
+        annee_inscription:
+          type: integer
+        parent_nom:
+          type: string
+        parent_prenoms:
+          type: string
+        parent_email:
+          type: string
+        parent_lien:
+          type: string
+        parent_telephone:
+          type: string
+
+    InscrireEleveResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        eleve:
+          $ref: "#/components/schemas/EleveResume"
+        matricule:
+          type: string
+        email_eleve:
+          type: string
+        password_eleve_temporaire:
+          type: string
+
+    ModifierEleveInput:
+      type: object
+      properties:
+        nom:
+          type: string
+        prenoms:
+          type: string
+        date_naissance:
+          type: string
+        lieu_naissance:
+          type: string
+        sexe:
+          type: string
+        adresse:
+          type: string
+        situation_familiale:
+          type: string
+        photo_url:
+          type: string
+
+    ChangerStatutInput:
+      type: object
+      required: [statut]
+      properties:
+        statut:
+          type: string
+        motif:
+          type: string
+
+    LierParentInput:
+      type: object
+      required: [utilisateur_id, lien]
+      properties:
+        utilisateur_id:
+          type: string
+        lien:
+          type: string
+        est_principal:
+          type: boolean

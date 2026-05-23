@@ -22,15 +22,26 @@ import type {
 import type {
   AuthTokens,
   ChangePasswordInput,
+  ChangerStatutInput,
+  DocumentEleve,
+  EleveDetail,
+  EleveResume,
+  ElevesListeResponse,
   ErrorResponse,
   Etablissement,
   EtablissementInput,
   EtablissementUpdate,
   ForgotPasswordInput,
   HealthStatus,
+  InscrireEleveInput,
+  InscrireEleveResponse,
+  LierParentInput,
+  ListerElevesParams,
   ListerUtilisateursParams,
   LoginInput,
   MessageResponse,
+  ModifierEleveInput,
+  RechercherElevesParams,
   ResetPasswordInput,
   StatsEtablissement,
   StatsGlobal,
@@ -1515,4 +1526,827 @@ export function useGetStatsEtablissement<TData = Awaited<ReturnType<typeof getSt
 
 
 
+
+export const getInscrireEleveUrl = () => {
+
+
+
+
+  return `/api/eleves/inscrire`
+}
+
+/**
+ * @summary Inscrire un nouvel élève avec compte + parent
+ */
+export const inscrireEleve = async (inscrireEleveInput: InscrireEleveInput, options?: RequestInit): Promise<InscrireEleveResponse> => {
+
+  return customFetch<InscrireEleveResponse>(getInscrireEleveUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      inscrireEleveInput,)
+  }
+);}
+
+
+
+
+export const getInscrireEleveMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof inscrireEleve>>, TError,{data: BodyType<InscrireEleveInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof inscrireEleve>>, TError,{data: BodyType<InscrireEleveInput>}, TContext> => {
+
+const mutationKey = ['inscrireEleve'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof inscrireEleve>>, {data: BodyType<InscrireEleveInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  inscrireEleve(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type InscrireEleveMutationResult = NonNullable<Awaited<ReturnType<typeof inscrireEleve>>>
+    export type InscrireEleveMutationBody = BodyType<InscrireEleveInput>
+    export type InscrireEleveMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Inscrire un nouvel élève avec compte + parent
+ */
+export const useInscrireEleve = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof inscrireEleve>>, TError,{data: BodyType<InscrireEleveInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof inscrireEleve>>,
+        TError,
+        {data: BodyType<InscrireEleveInput>},
+        TContext
+      > => {
+      return useMutation(getInscrireEleveMutationOptions(options));
+    }
+
+export const getListerElevesUrl = (params?: ListerElevesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/eleves/liste?${stringifiedParams}` : `/api/eleves/liste`
+}
+
+/**
+ * @summary Lister les élèves (paginé, filtré)
+ */
+export const listerEleves = async (params?: ListerElevesParams, options?: RequestInit): Promise<ElevesListeResponse> => {
+
+  return customFetch<ElevesListeResponse>(getListerElevesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerElevesQueryKey = (params?: ListerElevesParams,) => {
+    return [
+    `/api/eleves/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerElevesQueryOptions = <TData = Awaited<ReturnType<typeof listerEleves>>, TError = ErrorType<unknown>>(params?: ListerElevesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerEleves>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerElevesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerEleves>>> = ({ signal }) => listerEleves(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerEleves>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerElevesQueryResult = NonNullable<Awaited<ReturnType<typeof listerEleves>>>
+export type ListerElevesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les élèves (paginé, filtré)
+ */
+
+export function useListerEleves<TData = Awaited<ReturnType<typeof listerEleves>>, TError = ErrorType<unknown>>(
+ params?: ListerElevesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerEleves>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerElevesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getRechercherElevesUrl = (params?: RechercherElevesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/eleves/recherche?${stringifiedParams}` : `/api/eleves/recherche`
+}
+
+/**
+ * @summary Recherche d'élèves par texte libre
+ */
+export const rechercherEleves = async (params?: RechercherElevesParams, options?: RequestInit): Promise<EleveResume[]> => {
+
+  return customFetch<EleveResume[]>(getRechercherElevesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getRechercherElevesQueryKey = (params?: RechercherElevesParams,) => {
+    return [
+    `/api/eleves/recherche`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getRechercherElevesQueryOptions = <TData = Awaited<ReturnType<typeof rechercherEleves>>, TError = ErrorType<unknown>>(params?: RechercherElevesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof rechercherEleves>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRechercherElevesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof rechercherEleves>>> = ({ signal }) => rechercherEleves(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof rechercherEleves>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type RechercherElevesQueryResult = NonNullable<Awaited<ReturnType<typeof rechercherEleves>>>
+export type RechercherElevesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Recherche d'élèves par texte libre
+ */
+
+export function useRechercherEleves<TData = Awaited<ReturnType<typeof rechercherEleves>>, TError = ErrorType<unknown>>(
+ params?: RechercherElevesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof rechercherEleves>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getRechercherElevesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetEleveUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}`
+}
+
+/**
+ * @summary Détail complet d'un élève
+ */
+export const getEleve = async (id: string, options?: RequestInit): Promise<EleveDetail> => {
+
+  return customFetch<EleveDetail>(getGetEleveUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetEleveQueryKey = (id: string,) => {
+    return [
+    `/api/eleves/${id}`
+    ] as const;
+    }
+
+
+export const getGetEleveQueryOptions = <TData = Awaited<ReturnType<typeof getEleve>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEleveQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEleve>>> = ({ signal }) => getEleve(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEleve>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetEleveQueryResult = NonNullable<Awaited<ReturnType<typeof getEleve>>>
+export type GetEleveQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Détail complet d'un élève
+ */
+
+export function useGetEleve<TData = Awaited<ReturnType<typeof getEleve>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetEleveQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getModifierEleveUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}`
+}
+
+/**
+ * @summary Modifier les informations d'un élève
+ */
+export const modifierEleve = async (id: string,
+    modifierEleveInput: ModifierEleveInput, options?: RequestInit): Promise<EleveResume> => {
+
+  return customFetch<EleveResume>(getModifierEleveUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierEleveInput,)
+  }
+);}
+
+
+
+
+export const getModifierEleveMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierEleve>>, TError,{id: string;data: BodyType<ModifierEleveInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierEleve>>, TError,{id: string;data: BodyType<ModifierEleveInput>}, TContext> => {
+
+const mutationKey = ['modifierEleve'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierEleve>>, {id: string;data: BodyType<ModifierEleveInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  modifierEleve(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierEleveMutationResult = NonNullable<Awaited<ReturnType<typeof modifierEleve>>>
+    export type ModifierEleveMutationBody = BodyType<ModifierEleveInput>
+    export type ModifierEleveMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier les informations d'un élève
+ */
+export const useModifierEleve = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierEleve>>, TError,{id: string;data: BodyType<ModifierEleveInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierEleve>>,
+        TError,
+        {id: string;data: BodyType<ModifierEleveInput>},
+        TContext
+      > => {
+      return useMutation(getModifierEleveMutationOptions(options));
+    }
+
+export const getSupprimerEleveUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}`
+}
+
+/**
+ * @summary Soft delete d'un élève (inactif)
+ */
+export const supprimerEleve = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getSupprimerEleveUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getSupprimerEleveMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerEleve>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof supprimerEleve>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['supprimerEleve'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof supprimerEleve>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  supprimerEleve(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SupprimerEleveMutationResult = NonNullable<Awaited<ReturnType<typeof supprimerEleve>>>
+
+    export type SupprimerEleveMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Soft delete d'un élève (inactif)
+ */
+export const useSupprimerEleve = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerEleve>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof supprimerEleve>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSupprimerEleveMutationOptions(options));
+    }
+
+export const getChangerStatutEleveUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/statut`
+}
+
+/**
+ * @summary Changer le statut d'un élève
+ */
+export const changerStatutEleve = async (id: string,
+    changerStatutInput: ChangerStatutInput, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getChangerStatutEleveUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      changerStatutInput,)
+  }
+);}
+
+
+
+
+export const getChangerStatutEleveMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changerStatutEleve>>, TError,{id: string;data: BodyType<ChangerStatutInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof changerStatutEleve>>, TError,{id: string;data: BodyType<ChangerStatutInput>}, TContext> => {
+
+const mutationKey = ['changerStatutEleve'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changerStatutEleve>>, {id: string;data: BodyType<ChangerStatutInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  changerStatutEleve(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChangerStatutEleveMutationResult = NonNullable<Awaited<ReturnType<typeof changerStatutEleve>>>
+    export type ChangerStatutEleveMutationBody = BodyType<ChangerStatutInput>
+    export type ChangerStatutEleveMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Changer le statut d'un élève
+ */
+export const useChangerStatutEleve = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changerStatutEleve>>, TError,{id: string;data: BodyType<ChangerStatutInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof changerStatutEleve>>,
+        TError,
+        {id: string;data: BodyType<ChangerStatutInput>},
+        TContext
+      > => {
+      return useMutation(getChangerStatutEleveMutationOptions(options));
+    }
+
+export const getLierParentUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/lier-parent`
+}
+
+/**
+ * @summary Lier un parent existant à un élève
+ */
+export const lierParent = async (id: string,
+    lierParentInput: LierParentInput, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getLierParentUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      lierParentInput,)
+  }
+);}
+
+
+
+
+export const getLierParentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lierParent>>, TError,{id: string;data: BodyType<LierParentInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof lierParent>>, TError,{id: string;data: BodyType<LierParentInput>}, TContext> => {
+
+const mutationKey = ['lierParent'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lierParent>>, {id: string;data: BodyType<LierParentInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  lierParent(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LierParentMutationResult = NonNullable<Awaited<ReturnType<typeof lierParent>>>
+    export type LierParentMutationBody = BodyType<LierParentInput>
+    export type LierParentMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Lier un parent existant à un élève
+ */
+export const useLierParent = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lierParent>>, TError,{id: string;data: BodyType<LierParentInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof lierParent>>,
+        TError,
+        {id: string;data: BodyType<LierParentInput>},
+        TContext
+      > => {
+      return useMutation(getLierParentMutationOptions(options));
+    }
+
+export const getDelierParentUrl = (id: string,
+    parentId: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/delier-parent/${parentId}`
+}
+
+/**
+ * @summary Délier un parent d'un élève
+ */
+export const delierParent = async (id: string,
+    parentId: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getDelierParentUrl(id,parentId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDelierParentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof delierParent>>, TError,{id: string;parentId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof delierParent>>, TError,{id: string;parentId: string}, TContext> => {
+
+const mutationKey = ['delierParent'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof delierParent>>, {id: string;parentId: string}> = (props) => {
+          const {id,parentId} = props ?? {};
+
+          return  delierParent(id,parentId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DelierParentMutationResult = NonNullable<Awaited<ReturnType<typeof delierParent>>>
+
+    export type DelierParentMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Délier un parent d'un élève
+ */
+export const useDelierParent = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof delierParent>>, TError,{id: string;parentId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof delierParent>>,
+        TError,
+        {id: string;parentId: string},
+        TContext
+      > => {
+      return useMutation(getDelierParentMutationOptions(options));
+    }
+
+export const getListerDocumentsEleveUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/documents`
+}
+
+/**
+ * @summary Lister les documents d'un élève
+ */
+export const listerDocumentsEleve = async (id: string, options?: RequestInit): Promise<DocumentEleve[]> => {
+
+  return customFetch<DocumentEleve[]>(getListerDocumentsEleveUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerDocumentsEleveQueryKey = (id: string,) => {
+    return [
+    `/api/eleves/${id}/documents`
+    ] as const;
+    }
+
+
+export const getListerDocumentsEleveQueryOptions = <TData = Awaited<ReturnType<typeof listerDocumentsEleve>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerDocumentsEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerDocumentsEleveQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerDocumentsEleve>>> = ({ signal }) => listerDocumentsEleve(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerDocumentsEleve>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerDocumentsEleveQueryResult = NonNullable<Awaited<ReturnType<typeof listerDocumentsEleve>>>
+export type ListerDocumentsEleveQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les documents d'un élève
+ */
+
+export function useListerDocumentsEleve<TData = Awaited<ReturnType<typeof listerDocumentsEleve>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerDocumentsEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerDocumentsEleveQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSupprimerDocumentEleveUrl = (id: string,
+    docId: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/documents/${docId}`
+}
+
+/**
+ * @summary Supprimer un document
+ */
+export const supprimerDocumentEleve = async (id: string,
+    docId: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getSupprimerDocumentEleveUrl(id,docId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getSupprimerDocumentEleveMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerDocumentEleve>>, TError,{id: string;docId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof supprimerDocumentEleve>>, TError,{id: string;docId: string}, TContext> => {
+
+const mutationKey = ['supprimerDocumentEleve'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof supprimerDocumentEleve>>, {id: string;docId: string}> = (props) => {
+          const {id,docId} = props ?? {};
+
+          return  supprimerDocumentEleve(id,docId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SupprimerDocumentEleveMutationResult = NonNullable<Awaited<ReturnType<typeof supprimerDocumentEleve>>>
+
+    export type SupprimerDocumentEleveMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Supprimer un document
+ */
+export const useSupprimerDocumentEleve = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerDocumentEleve>>, TError,{id: string;docId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof supprimerDocumentEleve>>,
+        TError,
+        {id: string;docId: string},
+        TContext
+      > => {
+      return useMutation(getSupprimerDocumentEleveMutationOptions(options));
+    }
 

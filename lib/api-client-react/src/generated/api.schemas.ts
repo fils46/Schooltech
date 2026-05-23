@@ -211,6 +211,8 @@ export interface StatsGlobal {
   totalUtilisateurs: number;
   etablissementsActifs: number;
   licencesExpirees: number;
+  totalElevesActifs?: number;
+  inscriptionsAnneeEnCours?: number;
   repartitionRoles?: RoleCount[];
 }
 
@@ -221,9 +223,136 @@ export interface StatsEtablissement {
   repartitionRoles?: RoleCount[];
 }
 
+export interface EleveResume {
+  id: string;
+  etablissement_id?: string;
+  /** @nullable */
+  utilisateur_id?: string | null;
+  matricule: string;
+  nom: string;
+  prenoms: string;
+  date_naissance?: string;
+  /** @nullable */
+  lieu_naissance?: string | null;
+  sexe: string;
+  /** @nullable */
+  photo_url?: string | null;
+  /** @nullable */
+  adresse?: string | null;
+  /** @nullable */
+  situation_familiale?: string | null;
+  annee_inscription: number;
+  statut: string;
+  created_at?: string;
+}
+
+export type EleveDetailHistoriqueStatutItem = {
+  statut?: string;
+  /** @nullable */
+  motif?: string | null;
+  date?: string;
+};
+
+export interface ParentLie {
+  lien_id?: string;
+  utilisateur_id?: string;
+  nom?: string;
+  /** @nullable */
+  prenoms?: string | null;
+  email?: string;
+  /** @nullable */
+  telephone?: string | null;
+  lien?: string;
+  est_principal?: boolean;
+}
+
+export interface DocumentEleve {
+  id: string;
+  eleve_id: string;
+  /** @nullable */
+  type_document?: string | null;
+  nom_fichier: string;
+  url_fichier: string;
+  date_upload?: string;
+}
+
+export type EleveDetail = EleveResume & {
+  parents?: ParentLie[];
+  documents?: DocumentEleve[];
+  historique_statut?: EleveDetailHistoriqueStatutItem[];
+};
+
+export interface ElevesListeResponse {
+  eleves: EleveResume[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface InscrireEleveInput {
+  nom: string;
+  prenoms: string;
+  date_naissance: string;
+  lieu_naissance?: string;
+  sexe: string;
+  adresse?: string;
+  situation_familiale?: string;
+  annee_inscription: number;
+  parent_nom: string;
+  parent_prenoms: string;
+  parent_email: string;
+  parent_lien: string;
+  parent_telephone?: string;
+}
+
+export interface InscrireEleveResponse {
+  message?: string;
+  eleve?: EleveResume;
+  matricule?: string;
+  email_eleve?: string;
+  password_eleve_temporaire?: string;
+}
+
+export interface ModifierEleveInput {
+  nom?: string;
+  prenoms?: string;
+  date_naissance?: string;
+  lieu_naissance?: string;
+  sexe?: string;
+  adresse?: string;
+  situation_familiale?: string;
+  photo_url?: string;
+}
+
+export interface ChangerStatutInput {
+  statut: string;
+  motif?: string;
+}
+
+export interface LierParentInput {
+  utilisateur_id: string;
+  lien: string;
+  est_principal?: boolean;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
 etablissement_id?: string;
+};
+
+export type ListerElevesParams = {
+statut?: string;
+annee_inscription?: number;
+sexe?: string;
+page?: number;
+limit?: number;
+};
+
+export type RechercherElevesParams = {
+q?: string;
+statut?: string;
+annee?: number;
+sexe?: string;
 };
 

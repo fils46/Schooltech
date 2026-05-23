@@ -4,7 +4,7 @@ import {
   getGetStatsGlobalQueryKey, getListerEtablissementsQueryKey,
 } from "@workspace/api-client-react";
 import { Link } from "wouter";
-import { Building, Users, Activity, AlertCircle, TrendingUp, TrendingDown, Calendar, Bell } from "lucide-react";
+import { Building, Users, Activity, AlertCircle, TrendingUp, TrendingDown, Calendar, Bell, GraduationCap, UserSquare } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -129,7 +129,7 @@ function DevDashboard() {
       </div>
 
       {/* ── Stat cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         <StatCard
           label="Établissements"
           value={stats?.totalEtablissements ?? 0}
@@ -164,6 +164,24 @@ function DevDashboard() {
           color="#FF4D6D"
           trend="down"
           trendLabel="À renouveler"
+          loading={statsLoading}
+        />
+        <StatCard
+          label="Élèves actifs"
+          value={stats?.totalElevesActifs ?? 0}
+          icon={GraduationCap}
+          color="#A78BFA"
+          trend="up"
+          trendLabel="En cours"
+          loading={statsLoading}
+        />
+        <StatCard
+          label={`Inscrits ${new Date().getFullYear()}`}
+          value={stats?.inscriptionsAnneeEnCours ?? 0}
+          icon={UserSquare}
+          color="#F472B6"
+          trend="up"
+          trendLabel="Cette année"
           loading={statsLoading}
         />
       </div>

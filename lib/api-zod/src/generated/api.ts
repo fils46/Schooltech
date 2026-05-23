@@ -316,6 +316,8 @@ export const GetStatsGlobalResponse = zod.object({
   "totalUtilisateurs": zod.number(),
   "etablissementsActifs": zod.number(),
   "licencesExpirees": zod.number(),
+  "totalElevesActifs": zod.number().optional(),
+  "inscriptionsAnneeEnCours": zod.number().optional(),
   "repartitionRoles": zod.array(zod.object({
   "role": zod.string(),
   "count": zod.number()
@@ -338,6 +340,265 @@ export const GetStatsEtablissementResponse = zod.object({
   "role": zod.string(),
   "count": zod.number()
 })).optional()
+})
+
+
+/**
+ * @summary Inscrire un nouvel élève avec compte + parent
+ */
+export const InscrireEleveBody = zod.object({
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string(),
+  "lieu_naissance": zod.string().optional(),
+  "sexe": zod.string(),
+  "adresse": zod.string().optional(),
+  "situation_familiale": zod.string().optional(),
+  "annee_inscription": zod.number(),
+  "parent_nom": zod.string(),
+  "parent_prenoms": zod.string(),
+  "parent_email": zod.string(),
+  "parent_lien": zod.string(),
+  "parent_telephone": zod.string().optional()
+})
+
+
+/**
+ * @summary Lister les élèves (paginé, filtré)
+ */
+export const ListerElevesQueryParams = zod.object({
+  "statut": zod.coerce.string().optional(),
+  "annee_inscription": zod.coerce.number().optional(),
+  "sexe": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListerElevesResponse = zod.object({
+  "eleves": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number(),
+  "page": zod.number(),
+  "limit": zod.number()
+})
+
+
+/**
+ * @summary Recherche d'élèves par texte libre
+ */
+export const RechercherElevesQueryParams = zod.object({
+  "q": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "annee": zod.coerce.number().optional(),
+  "sexe": zod.coerce.string().optional()
+})
+
+export const RechercherElevesResponseItem = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+})
+export const RechercherElevesResponse = zod.array(RechercherElevesResponseItem)
+
+
+/**
+ * @summary Détail complet d'un élève
+ */
+export const GetEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetEleveResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+}).and(zod.object({
+  "parents": zod.array(zod.object({
+  "lien_id": zod.string().optional(),
+  "utilisateur_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().nullish(),
+  "email": zod.string().optional(),
+  "telephone": zod.string().nullish(),
+  "lien": zod.string().optional(),
+  "est_principal": zod.boolean().optional()
+})).optional(),
+  "documents": zod.array(zod.object({
+  "id": zod.string(),
+  "eleve_id": zod.string(),
+  "type_document": zod.string().nullish(),
+  "nom_fichier": zod.string(),
+  "url_fichier": zod.string(),
+  "date_upload": zod.coerce.date().optional()
+})).optional(),
+  "historique_statut": zod.array(zod.object({
+  "statut": zod.string().optional(),
+  "motif": zod.string().nullish(),
+  "date": zod.string().optional()
+})).optional()
+}))
+
+
+/**
+ * @summary Modifier les informations d'un élève
+ */
+export const ModifierEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierEleveBody = zod.object({
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().optional(),
+  "sexe": zod.string().optional(),
+  "adresse": zod.string().optional(),
+  "situation_familiale": zod.string().optional(),
+  "photo_url": zod.string().optional()
+})
+
+export const ModifierEleveResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Soft delete d'un élève (inactif)
+ */
+export const SupprimerEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerEleveResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Changer le statut d'un élève
+ */
+export const ChangerStatutEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ChangerStatutEleveBody = zod.object({
+  "statut": zod.string(),
+  "motif": zod.string().optional()
+})
+
+export const ChangerStatutEleveResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lier un parent existant à un élève
+ */
+export const LierParentParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const LierParentBody = zod.object({
+  "utilisateur_id": zod.string(),
+  "lien": zod.string(),
+  "est_principal": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Délier un parent d'un élève
+ */
+export const DelierParentParams = zod.object({
+  "id": zod.coerce.string(),
+  "parentId": zod.coerce.string()
+})
+
+export const DelierParentResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les documents d'un élève
+ */
+export const ListerDocumentsEleveParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ListerDocumentsEleveResponseItem = zod.object({
+  "id": zod.string(),
+  "eleve_id": zod.string(),
+  "type_document": zod.string().nullish(),
+  "nom_fichier": zod.string(),
+  "url_fichier": zod.string(),
+  "date_upload": zod.coerce.date().optional()
+})
+export const ListerDocumentsEleveResponse = zod.array(ListerDocumentsEleveResponseItem)
+
+
+/**
+ * @summary Supprimer un document
+ */
+export const SupprimerDocumentEleveParams = zod.object({
+  "id": zod.coerce.string(),
+  "docId": zod.coerce.string()
+})
+
+export const SupprimerDocumentEleveResponse = zod.object({
+  "message": zod.string()
 })
 
 

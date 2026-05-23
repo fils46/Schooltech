@@ -25,6 +25,12 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "ACADÉMIQUE",
+      links: [
+        { label: "Élèves", href: "/eleves", icon: UserSquare },
+      ],
+    },
+    {
       title: "GESTION",
       links: [
         { label: "Licences",       href: "/licences",       icon: Key },
@@ -44,6 +50,7 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Censeurs", href: "/censeurs", icon: Users },
         { label: "Classes",  href: "/classes",  icon: UsersRound },
+        { label: "Élèves",   href: "/eleves",   icon: UserSquare },
       ],
     },
     {
@@ -125,27 +132,28 @@ const navConfig: Record<string, Section[]> = {
 };
 
 const PAGE_TITLES: Record<string, string> = {
-  "/dashboard":       "Tableau de bord",
-  "/etablissements":  "Établissements",
-  "/utilisateurs":    "Utilisateurs",
-  "/licences":        "Licences",
-  "/statistiques":    "Statistiques",
-  "/censeurs":        "Censeurs",
-  "/classes":         "Classes",
-  "/paiements":       "Paiements",
-  "/rapports":        "Rapports",
-  "/professeurs":     "Professeurs",
-  "/eleves":          "Élèves",
-  "/emploi-du-temps": "Emploi du temps",
-  "/absences":        "Absences",
-  "/mes-classes":     "Mes classes",
-  "/evaluations":     "Évaluations",
-  "/cahier-de-textes":"Cahier de textes",
-  "/appel":           "Appel",
-  "/messages":        "Messages",
-  "/notes":           "Notes",
-  "/bibliotheque":    "Bibliothèque",
-  "/mon-enfant":      "Mon enfant",
+  "/dashboard":        "Tableau de bord",
+  "/etablissements":   "Établissements",
+  "/utilisateurs":     "Utilisateurs",
+  "/licences":         "Licences",
+  "/statistiques":     "Statistiques",
+  "/censeurs":         "Censeurs",
+  "/classes":          "Classes",
+  "/paiements":        "Paiements",
+  "/rapports":         "Rapports",
+  "/professeurs":      "Professeurs",
+  "/eleves":           "Élèves",
+  "/eleves/inscrire":  "Inscrire un élève",
+  "/emploi-du-temps":  "Emploi du temps",
+  "/absences":         "Absences",
+  "/mes-classes":      "Mes classes",
+  "/evaluations":      "Évaluations",
+  "/cahier-de-textes": "Cahier de textes",
+  "/appel":            "Appel",
+  "/messages":         "Messages",
+  "/notes":            "Notes",
+  "/bibliotheque":     "Bibliothèque",
+  "/mon-enfant":       "Mon enfant",
 };
 
 const ROLE_LABELS: Record<string, string> = {

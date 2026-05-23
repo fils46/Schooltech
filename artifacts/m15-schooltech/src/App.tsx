@@ -16,6 +16,9 @@ import PremierLogin from "@/pages/premier-login";
 import Dashboard from "@/pages/dashboard";
 import Etablissements from "@/pages/etablissements";
 import Utilisateurs from "@/pages/utilisateurs";
+import EleveListe from "@/pages/eleves";
+import EleveForm from "@/pages/eleve-form";
+import EleveDetail from "@/pages/eleve-detail";
 import EnConstruction from "@/pages/en-construction";
 
 const queryClient = new QueryClient();
@@ -58,11 +61,35 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      <Route path="/eleves/inscrire">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EleveForm />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/eleves/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EleveDetail />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/eleves">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EleveListe />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
         "/censeurs", "/classes", "/paiements", "/rapports",
-        "/professeurs", "/eleves", "/emploi-du-temps", "/absences",
+        "/professeurs", "/emploi-du-temps", "/absences",
         "/mes-classes", "/evaluations", "/cahier-de-textes", "/appel", "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",
       ].map((path) => (

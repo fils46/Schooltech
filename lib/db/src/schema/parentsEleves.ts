@@ -1,0 +1,13 @@
+import { pgTable, text, timestamp, uuid, boolean } from "drizzle-orm/pg-core";
+
+export const parentsElevesTable = pgTable("parents_eleves", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  eleve_id: uuid("eleve_id").notNull(),
+  utilisateur_id: uuid("utilisateur_id").notNull(),
+  lien: text("lien").notNull(),
+  est_principal: boolean("est_principal").notNull().default(false),
+  created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type ParentEleve = typeof parentsElevesTable.$inferSelect;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { eq, count, and, sql } from "drizzle-orm";
-import { db, etablissementsTable, utilisateursTable } from "@workspace/db";
+import { db, etablissementsTable, utilisateursTable, elevesTable } from "@workspace/db";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 
 const router = Router();
@@ -38,11 +38,24 @@ router.get(
       .from(utilisateursTable)
       .groupBy(utilisateursTable.role);
 
+    const [totalElevesActifsResult] = await db
+      .select({ count: count() })
+      .from(elevesTable)
+      .where(eq(elevesTable.statut, "actif"));
+
+    const anneeEnCours = new Date().getFullYear();
+    const [inscriptionsAnneeResult] = await db
+      .select({ count: count() })
+      .from(elevesTable)
+      .where(eq(elevesTable.annee_inscription, anneeEnCours));
+
     res.json({
       totalEtablissements: Number(totalEtablissementsResult?.count ?? 0),
       totalUtilisateurs: Number(totalUtilisateursResult?.count ?? 0),
       etablissementsActifs: Number(etablissementsActifsResult?.count ?? 0),
       licencesExpirees: Number(licencesExpireeResult?.count ?? 0),
+      totalElevesActifs: Number(totalElevesActifsResult?.count ?? 0),
+      inscriptionsAnneeEnCours: Number(inscriptionsAnneeResult?.count ?? 0),
       repartitionRoles: repartitionRaw.map((r) => ({
         role: r.role,
         count: Number(r.count),
