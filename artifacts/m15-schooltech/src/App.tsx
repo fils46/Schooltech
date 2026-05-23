@@ -19,6 +19,8 @@ import Utilisateurs from "@/pages/utilisateurs";
 import EleveListe from "@/pages/eleves";
 import EleveForm from "@/pages/eleve-form";
 import EleveDetail from "@/pages/eleve-detail";
+import Censeurs from "@/pages/censeurs";
+import Classes from "@/pages/classes";
 import EnConstruction from "@/pages/en-construction";
 
 const queryClient = new QueryClient();
@@ -85,10 +87,26 @@ function Router() {
         </ProtectedRoute>
       </Route>
 
+      <Route path="/censeurs">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Censeurs />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/classes">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Classes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
       {/* Modules en construction — tous les liens de la sidebar */}
       {[
         "/licences", "/statistiques",
-        "/censeurs", "/classes", "/paiements", "/rapports",
+        "/paiements", "/rapports",
         "/professeurs", "/emploi-du-temps", "/absences",
         "/mes-classes", "/evaluations", "/cahier-de-textes", "/appel", "/messages",
         "/notes", "/bibliotheque", "/mon-enfant",

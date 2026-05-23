@@ -602,3 +602,81 @@ export const SupprimerDocumentEleveResponse = zod.object({
 })
 
 
+/**
+ * @summary Lister les classes
+ */
+export const ListerClassesQueryParams = zod.object({
+  "annee_scolaire": zod.coerce.number().optional(),
+  "niveau": zod.coerce.string().optional()
+})
+
+export const ListerClassesResponse = zod.object({
+  "classes": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "niveau": zod.string(),
+  "section": zod.string(),
+  "annee_scolaire": zod.number(),
+  "capacite_max": zod.number().nullish(),
+  "nb_eleves": zod.number().nullish(),
+  "created_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Créer une nouvelle classe
+ */
+export const CreerClasseBody = zod.object({
+  "nom": zod.string(),
+  "niveau": zod.string(),
+  "section": zod.string(),
+  "annee_scolaire": zod.number(),
+  "capacite_max": zod.number().nullish(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier une classe
+ */
+export const ModifierClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierClasseBody = zod.object({
+  "nom": zod.string(),
+  "niveau": zod.string(),
+  "section": zod.string(),
+  "annee_scolaire": zod.number(),
+  "capacite_max": zod.number().nullish(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierClasseResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "niveau": zod.string(),
+  "section": zod.string(),
+  "annee_scolaire": zod.number(),
+  "capacite_max": zod.number().nullish(),
+  "nb_eleves": zod.number().nullish(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Supprimer une classe
+ */
+export const SupprimerClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerClasseResponse = zod.object({
+  "message": zod.string()
+})
+
+

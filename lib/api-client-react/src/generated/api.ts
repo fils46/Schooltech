@@ -23,6 +23,9 @@ import type {
   AuthTokens,
   ChangePasswordInput,
   ChangerStatutInput,
+  Classe,
+  ClasseInput,
+  ClassesListeResponse,
   DocumentEleve,
   EleveDetail,
   EleveResume,
@@ -36,6 +39,7 @@ import type {
   InscrireEleveInput,
   InscrireEleveResponse,
   LierParentInput,
+  ListerClassesParams,
   ListerElevesParams,
   ListerUtilisateursParams,
   LoginInput,
@@ -2348,5 +2352,302 @@ export const useSupprimerDocumentEleve = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getSupprimerDocumentEleveMutationOptions(options));
+    }
+
+export const getListerClassesUrl = (params?: ListerClassesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/classes/liste?${stringifiedParams}` : `/api/classes/liste`
+}
+
+/**
+ * @summary Lister les classes
+ */
+export const listerClasses = async (params?: ListerClassesParams, options?: RequestInit): Promise<ClassesListeResponse> => {
+
+  return customFetch<ClassesListeResponse>(getListerClassesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerClassesQueryKey = (params?: ListerClassesParams,) => {
+    return [
+    `/api/classes/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerClassesQueryOptions = <TData = Awaited<ReturnType<typeof listerClasses>>, TError = ErrorType<unknown>>(params?: ListerClassesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerClasses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerClassesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerClasses>>> = ({ signal }) => listerClasses(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerClasses>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerClassesQueryResult = NonNullable<Awaited<ReturnType<typeof listerClasses>>>
+export type ListerClassesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les classes
+ */
+
+export function useListerClasses<TData = Awaited<ReturnType<typeof listerClasses>>, TError = ErrorType<unknown>>(
+ params?: ListerClassesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerClasses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerClassesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreerClasseUrl = () => {
+
+
+
+
+  return `/api/classes/creer`
+}
+
+/**
+ * @summary Créer une nouvelle classe
+ */
+export const creerClasse = async (classeInput: ClasseInput, options?: RequestInit): Promise<Classe> => {
+
+  return customFetch<Classe>(getCreerClasseUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      classeInput,)
+  }
+);}
+
+
+
+
+export const getCreerClasseMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof creerClasse>>, TError,{data: BodyType<ClasseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof creerClasse>>, TError,{data: BodyType<ClasseInput>}, TContext> => {
+
+const mutationKey = ['creerClasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof creerClasse>>, {data: BodyType<ClasseInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  creerClasse(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreerClasseMutationResult = NonNullable<Awaited<ReturnType<typeof creerClasse>>>
+    export type CreerClasseMutationBody = BodyType<ClasseInput>
+    export type CreerClasseMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Créer une nouvelle classe
+ */
+export const useCreerClasse = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof creerClasse>>, TError,{data: BodyType<ClasseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof creerClasse>>,
+        TError,
+        {data: BodyType<ClasseInput>},
+        TContext
+      > => {
+      return useMutation(getCreerClasseMutationOptions(options));
+    }
+
+export const getModifierClasseUrl = (id: string,) => {
+
+
+
+
+  return `/api/classes/${id}`
+}
+
+/**
+ * @summary Modifier une classe
+ */
+export const modifierClasse = async (id: string,
+    classeInput: ClasseInput, options?: RequestInit): Promise<Classe> => {
+
+  return customFetch<Classe>(getModifierClasseUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      classeInput,)
+  }
+);}
+
+
+
+
+export const getModifierClasseMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierClasse>>, TError,{id: string;data: BodyType<ClasseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierClasse>>, TError,{id: string;data: BodyType<ClasseInput>}, TContext> => {
+
+const mutationKey = ['modifierClasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierClasse>>, {id: string;data: BodyType<ClasseInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  modifierClasse(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierClasseMutationResult = NonNullable<Awaited<ReturnType<typeof modifierClasse>>>
+    export type ModifierClasseMutationBody = BodyType<ClasseInput>
+    export type ModifierClasseMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Modifier une classe
+ */
+export const useModifierClasse = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierClasse>>, TError,{id: string;data: BodyType<ClasseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierClasse>>,
+        TError,
+        {id: string;data: BodyType<ClasseInput>},
+        TContext
+      > => {
+      return useMutation(getModifierClasseMutationOptions(options));
+    }
+
+export const getSupprimerClasseUrl = (id: string,) => {
+
+
+
+
+  return `/api/classes/${id}`
+}
+
+/**
+ * @summary Supprimer une classe
+ */
+export const supprimerClasse = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getSupprimerClasseUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getSupprimerClasseMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerClasse>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof supprimerClasse>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['supprimerClasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof supprimerClasse>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  supprimerClasse(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SupprimerClasseMutationResult = NonNullable<Awaited<ReturnType<typeof supprimerClasse>>>
+
+    export type SupprimerClasseMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Supprimer une classe
+ */
+export const useSupprimerClasse = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerClasse>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof supprimerClasse>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSupprimerClasseMutationOptions(options));
     }
 

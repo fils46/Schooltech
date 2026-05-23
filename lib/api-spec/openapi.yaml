@@ -20,6 +20,8 @@ tags:
     description: Statistiques et tableaux de bord
   - name: eleves
     description: Gestion des dossiers élèves et inscriptions
+  - name: classes
+    description: Gestion des classes et niveaux
 
 paths:
   /healthz:
@@ -746,6 +748,115 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /classes/liste:
+    get:
+      operationId: listerClasses
+      tags: [classes]
+      summary: Lister les classes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: annee_scolaire
+          in: query
+          schema:
+            type: integer
+        - name: niveau
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Liste des classes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClassesListeResponse"
+
+  /classes/creer:
+    post:
+      operationId: creerClasse
+      tags: [classes]
+      summary: Créer une nouvelle classe
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClasseInput"
+      responses:
+        "201":
+          description: Classe créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Classe"
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /classes/{id}:
+    put:
+      operationId: modifierClasse
+      tags: [classes]
+      summary: Modifier une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClasseInput"
+      responses:
+        "200":
+          description: Classe mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Classe"
+        "404":
+          description: Classe non trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: supprimerClasse
+      tags: [classes]
+      summary: Supprimer une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Classe supprimée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "404":
+          description: Classe non trouvée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1207,3 +1318,55 @@ components:
           type: string
         est_principal:
           type: boolean
+
+    Classe:
+      type: object
+      required: [id, etablissement_id, nom, niveau, section, annee_scolaire]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        nom:
+          type: string
+        niveau:
+          type: string
+        section:
+          type: string
+        annee_scolaire:
+          type: integer
+        capacite_max:
+          type: ["integer", "null"]
+        nb_eleves:
+          type: ["integer", "null"]
+        created_at:
+          type: string
+          format: date-time
+
+    ClasseInput:
+      type: object
+      required: [nom, niveau, section, annee_scolaire]
+      properties:
+        nom:
+          type: string
+        niveau:
+          type: string
+        section:
+          type: string
+        annee_scolaire:
+          type: integer
+        capacite_max:
+          type: ["integer", "null"]
+        etablissement_id:
+          type: string
+
+    ClassesListeResponse:
+      type: object
+      required: [classes, total]
+      properties:
+        classes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Classe"
+        total:
+          type: integer

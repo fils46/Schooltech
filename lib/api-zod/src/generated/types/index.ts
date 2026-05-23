@@ -9,6 +9,9 @@
 export * from './authTokens';
 export * from './changePasswordInput';
 export * from './changerStatutInput';
+export * from './classe';
+export * from './classeInput';
+export * from './classesListeResponse';
 export * from './documentEleve';
 export * from './eleveDetail';
 export * from './eleveDetailHistoriqueStatutItem';
@@ -26,6 +29,7 @@ export * from './healthStatus';
 export * from './inscrireEleveInput';
 export * from './inscrireEleveResponse';
 export * from './lierParentInput';
+export * from './listerClassesParams';
 export * from './listerElevesParams';
 export * from './listerUtilisateursParams';
 export * from './loginInput';

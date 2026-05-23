@@ -335,6 +335,35 @@ export interface LierParentInput {
   est_principal?: boolean;
 }
 
+export interface Classe {
+  id: string;
+  etablissement_id: string;
+  nom: string;
+  niveau: string;
+  section: string;
+  annee_scolaire: number;
+  /** @nullable */
+  capacite_max?: number | null;
+  /** @nullable */
+  nb_eleves?: number | null;
+  created_at?: string;
+}
+
+export interface ClasseInput {
+  nom: string;
+  niveau: string;
+  section: string;
+  annee_scolaire: number;
+  /** @nullable */
+  capacite_max?: number | null;
+  etablissement_id?: string;
+}
+
+export interface ClassesListeResponse {
+  classes: Classe[];
+  total: number;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -354,5 +383,10 @@ q?: string;
 statut?: string;
 annee?: number;
 sexe?: string;
+};
+
+export type ListerClassesParams = {
+annee_scolaire?: number;
+niveau?: string;
 };
 
