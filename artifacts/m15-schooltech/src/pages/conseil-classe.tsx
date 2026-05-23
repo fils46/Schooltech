@@ -213,12 +213,12 @@ export default function ConseilClasse() {
         ].map(f => (
           <div key={f.label}>
             <Label className="text-xs mb-1 block" style={{ color: "var(--m15-muted)" }}>{f.label}</Label>
-            <Select value={f.value} onValueChange={f.onChange}>
+            <Select value={f.value || "__all__"} onValueChange={v => f.onChange(v === "__all__" ? "" : v)}>
               <SelectTrigger style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
                 <SelectValue placeholder={f.placeholder} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">{f.placeholder}</SelectItem>
+                <SelectItem value="__all__">{f.placeholder}</SelectItem>
                 {f.items.map(i => <SelectItem key={i.v} value={i.v}>{i.l}</SelectItem>)}
               </SelectContent>
             </Select>
