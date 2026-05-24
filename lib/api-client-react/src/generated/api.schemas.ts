@@ -966,6 +966,9 @@ export const SalleType = {
   laboratoire: 'laboratoire',
   salle_info: 'salle_info',
   gymnase: 'gymnase',
+  bibliotheque: 'bibliotheque',
+  salle_reunion: 'salle_reunion',
+  amphitheatre: 'amphitheatre',
   autre: 'autre',
 } as const;
 
@@ -976,6 +979,12 @@ export interface Salle {
   /** @nullable */
   capacite?: number | null;
   type: SalleType;
+  /** @nullable */
+  equipements?: string[] | null;
+  /** @nullable */
+  etage?: string | null;
+  /** @nullable */
+  batiment?: string | null;
   actif: boolean;
   created_at?: string;
 }
@@ -988,6 +997,9 @@ export const SalleInputType = {
   laboratoire: 'laboratoire',
   salle_info: 'salle_info',
   gymnase: 'gymnase',
+  bibliotheque: 'bibliotheque',
+  salle_reunion: 'salle_reunion',
+  amphitheatre: 'amphitheatre',
   autre: 'autre',
 } as const;
 
@@ -995,6 +1007,9 @@ export interface SalleInput {
   nom: string;
   capacite?: number;
   type: SalleInputType;
+  equipements?: string[];
+  etage?: string;
+  batiment?: string;
   actif?: boolean;
   etablissement_id?: string;
 }
@@ -1002,6 +1017,28 @@ export interface SalleInput {
 export interface SallesListeResponse {
   salles: Salle[];
   total: number;
+}
+
+export type SalleDisponibiliteResponseCreneauxOccupesItem = { [key: string]: unknown };
+
+export type SalleDisponibiliteResponseCreneauxLibresItem = { [key: string]: unknown };
+
+export interface SalleDisponibiliteResponse {
+  salle?: Salle;
+  creneaux_occupes?: SalleDisponibiliteResponseCreneauxOccupesItem[];
+  creneaux_libres?: SalleDisponibiliteResponseCreneauxLibresItem[];
+}
+
+export interface SallesDisponiblesResponse {
+  salles?: Salle[];
+  total?: number;
+}
+
+export type ConflitsSallesResponseConflitsItem = { [key: string]: unknown };
+
+export interface ConflitsSallesResponse {
+  conflits?: ConflitsSallesResponseConflitsItem[];
+  total?: number;
 }
 
 export type CoursInputJour = typeof CoursInputJour[keyof typeof CoursInputJour];
@@ -3784,6 +3821,23 @@ etablissement_id?: string;
 };
 
 export type ListerSallesParams = {
+etablissement_id?: string;
+};
+
+export type GetDisponibiliteSalleParams = {
+annee_scolaire_id: string;
+};
+
+export type GetSallesDisponiblesParams = {
+jour: string;
+creneau_id: string;
+annee_scolaire_id: string;
+capacite_min?: number;
+etablissement_id?: string;
+};
+
+export type GetConflitsSallesParams = {
+annee_scolaire_id: string;
 etablissement_id?: string;
 };
 

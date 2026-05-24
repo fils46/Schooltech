@@ -115,6 +115,7 @@ import ValidationPromotion from "@/pages/cloture/ValidationPromotion";
 import ResultatsAnnuels from "@/pages/cloture/ResultatsAnnuels";
 import DashboardEleve from "@/pages/dashboard-eleve";
 import MonProfil from "@/pages/mon-profil";
+import GestionSalles from "@/pages/salles/GestionSalles";
 
 const queryClient = new QueryClient();
 
@@ -920,6 +921,12 @@ function Router() {
       <Route path="/profil">
         <ProtectedRoute>
           <DashboardLayout><MonProfil /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/salles">
+        <ProtectedRoute>
+          <DashboardLayout><GestionSalles /></DashboardLayout>
         </ProtectedRoute>
       </Route>
 

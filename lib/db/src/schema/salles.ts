@@ -7,18 +7,24 @@ export const typeSalleEnum = pgEnum("type_salle", [
   "laboratoire",
   "salle_info",
   "gymnase",
+  "bibliotheque",
+  "salle_reunion",
+  "amphitheatre",
   "autre",
 ]);
 
 export const sallesTable = pgTable("salles", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  etablissement_id: uuid("etablissement_id").notNull(),
-  nom: text("nom").notNull(),
-  capacite: integer("capacite"),
-  type: typeSalleEnum("type").notNull().default("classe"),
-  actif: boolean("actif").notNull().default(true),
-  created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updated_at: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  id:                uuid("id").primaryKey().defaultRandom(),
+  etablissement_id:  uuid("etablissement_id").notNull(),
+  nom:               text("nom").notNull(),
+  type:              typeSalleEnum("type").notNull().default("classe"),
+  capacite:          integer("capacite"),
+  equipements:       text("equipements").array(),
+  etage:             text("etage"),
+  batiment:          text("batiment"),
+  actif:             boolean("actif").notNull().default(true),
+  created_at:        timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updated_at:        timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const insertSalleSchema = createInsertSchema(sallesTable).omit({

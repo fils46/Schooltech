@@ -47,6 +47,7 @@ const navConfig: Record<string, Section[]> = {
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
         { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
+        { label: "Salles & Espaces", href: "/salles",            icon: Building  },
         { label: "Matières",         href: "/matieres",         icon: BookMarked },
         { label: "Mat. par classe",  href: "/matieres/classe",  icon: BookMarked },
       ],
@@ -191,6 +192,7 @@ const navConfig: Record<string, Section[]> = {
       title: "QUOTIDIEN",
       links: [
         { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
+        { label: "Salles & Espaces",href: "/salles",          icon: Building  },
         { label: "Absences",        href: "/absences",        icon: UserMinus },
       ],
     },
@@ -480,6 +482,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard":        "Tableau de bord",
   "/eleve/dashboard":  "Tableau de bord",
   "/profil":           "Mon profil",
+  "/salles":           "Salles & Espaces",
   "/etablissements":   "Établissements",
   "/utilisateurs":     "Utilisateurs",
   "/parents":          "Parents",

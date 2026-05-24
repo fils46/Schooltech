@@ -1439,7 +1439,10 @@ export const ListerSallesResponse = zod.object({
   "etablissement_id": zod.string(),
   "nom": zod.string(),
   "capacite": zod.number().nullish(),
-  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).nullish(),
+  "etage": zod.string().nullish(),
+  "batiment": zod.string().nullish(),
   "actif": zod.boolean(),
   "created_at": zod.coerce.date().optional()
 })),
@@ -1453,7 +1456,10 @@ export const ListerSallesResponse = zod.object({
 export const CreerSalleBody = zod.object({
   "nom": zod.string(),
   "capacite": zod.number().optional(),
-  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).optional(),
+  "etage": zod.string().optional(),
+  "batiment": zod.string().optional(),
   "actif": zod.boolean().optional(),
   "etablissement_id": zod.string().optional()
 })
@@ -1469,7 +1475,10 @@ export const ModifierSalleParams = zod.object({
 export const ModifierSalleBody = zod.object({
   "nom": zod.string(),
   "capacite": zod.number().optional(),
-  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).optional(),
+  "etage": zod.string().optional(),
+  "batiment": zod.string().optional(),
   "actif": zod.boolean().optional(),
   "etablissement_id": zod.string().optional()
 })
@@ -1479,7 +1488,10 @@ export const ModifierSalleResponse = zod.object({
   "etablissement_id": zod.string(),
   "nom": zod.string(),
   "capacite": zod.number().nullish(),
-  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).nullish(),
+  "etage": zod.string().nullish(),
+  "batiment": zod.string().nullish(),
   "actif": zod.boolean(),
   "created_at": zod.coerce.date().optional()
 })
@@ -1497,9 +1509,89 @@ export const DesactiverSalleResponse = zod.object({
   "etablissement_id": zod.string(),
   "nom": zod.string(),
   "capacite": zod.number().nullish(),
-  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'autre']),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).nullish(),
+  "etage": zod.string().nullish(),
+  "batiment": zod.string().nullish(),
   "actif": zod.boolean(),
   "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Disponibilité d'une salle sur la semaine
+ */
+export const GetDisponibiliteSalleParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetDisponibiliteSalleQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string()
+})
+
+export const GetDisponibiliteSalleResponse = zod.object({
+  "salle": zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "capacite": zod.number().nullish(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).nullish(),
+  "etage": zod.string().nullish(),
+  "batiment": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+}).optional(),
+  "creneaux_occupes": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "creneaux_libres": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+
+
+/**
+ * @summary Salles libres sur un créneau donné
+ */
+export const GetSallesDisponiblesQueryParams = zod.object({
+  "jour": zod.coerce.string(),
+  "creneau_id": zod.coerce.string(),
+  "annee_scolaire_id": zod.coerce.string(),
+  "capacite_min": zod.coerce.number().optional(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetSallesDisponiblesResponse = zod.object({
+  "salles": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "capacite": zod.number().nullish(),
+  "type": zod.enum(['classe', 'laboratoire', 'salle_info', 'gymnase', 'bibliotheque', 'salle_reunion', 'amphitheatre', 'autre']),
+  "equipements": zod.array(zod.string()).nullish(),
+  "etage": zod.string().nullish(),
+  "batiment": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional()
+})).optional(),
+  "total": zod.number().optional()
+})
+
+
+/**
+ * @summary Détecter les conflits de réservation de salles
+ */
+export const GetConflitsSallesQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string(),
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const GetConflitsSallesResponse = zod.object({
+  "conflits": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "total": zod.number().optional()
 })
 
 

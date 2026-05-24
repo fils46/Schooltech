@@ -1880,6 +1880,87 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /salles/{id}/disponibilite:
+    get:
+      operationId: getDisponibiliteSalle
+      tags: [salles]
+      summary: Disponibilité d'une salle sur la semaine
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Disponibilités de la salle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SalleDisponibiliteResponse"
+
+  /salles/disponibles:
+    get:
+      operationId: getSallesDisponibles
+      tags: [salles]
+      summary: Salles libres sur un créneau donné
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: jour
+          in: query
+          required: true
+          schema: { type: string }
+        - name: creneau_id
+          in: query
+          required: true
+          schema: { type: string }
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+        - name: capacite_min
+          in: query
+          schema: { type: integer }
+        - name: etablissement_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Salles disponibles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SallesDisponiblesResponse"
+
+  /salles/conflits:
+    get:
+      operationId: getConflitsSalles
+      tags: [salles]
+      summary: Détecter les conflits de réservation de salles
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+        - name: etablissement_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Conflits détectés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflitsSallesResponse"
+
   /emploi-du-temps/creer:
     post:
       operationId: creerCours
@@ -7922,7 +8003,14 @@ components:
           type: ["integer", "null"]
         type:
           type: string
-          enum: [classe, laboratoire, salle_info, gymnase, autre]
+          enum: [classe, laboratoire, salle_info, gymnase, bibliotheque, salle_reunion, amphitheatre, autre]
+        equipements:
+          type: ["array", "null"]
+          items: { type: string }
+        etage:
+          type: ["string", "null"]
+        batiment:
+          type: ["string", "null"]
         actif:
           type: boolean
         created_at:
@@ -7939,7 +8027,14 @@ components:
           type: integer
         type:
           type: string
-          enum: [classe, laboratoire, salle_info, gymnase, autre]
+          enum: [classe, laboratoire, salle_info, gymnase, bibliotheque, salle_reunion, amphitheatre, autre]
+        equipements:
+          type: array
+          items: { type: string }
+        etage:
+          type: string
+        batiment:
+          type: string
         actif:
           type: boolean
         etablissement_id:
@@ -7955,6 +8050,33 @@ components:
             $ref: "#/components/schemas/Salle"
         total:
           type: integer
+
+    SalleDisponibiliteResponse:
+      type: object
+      properties:
+        salle: { $ref: "#/components/schemas/Salle" }
+        creneaux_occupes:
+          type: array
+          items: { type: object }
+        creneaux_libres:
+          type: array
+          items: { type: object }
+
+    SallesDisponiblesResponse:
+      type: object
+      properties:
+        salles:
+          type: array
+          items: { $ref: "#/components/schemas/Salle" }
+        total: { type: integer }
+
+    ConflitsSallesResponse:
+      type: object
+      properties:
+        conflits:
+          type: array
+          items: { type: object }
+        total: { type: integer }
 
     CoursInput:
       type: object

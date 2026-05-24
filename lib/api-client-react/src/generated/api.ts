@@ -80,6 +80,7 @@ import type {
   ConfirmerPresence200,
   ConfirmerRendezVousInput,
   ConflitsResponse,
+  ConflitsSallesResponse,
   ConseilClasseItemResponse,
   ConseilEnCoursResponse,
   ConseilParticipantsResponse,
@@ -163,9 +164,11 @@ import type {
   GetClubsClubIdActivitesParams,
   GetClubsIdMembresParams,
   GetClubsParams,
+  GetConflitsSallesParams,
   GetCriteresParams,
   GetDashboardFinancierParams,
   GetDevoirsAVenirParams,
+  GetDisponibiliteSalleParams,
   GetElevesARisqueParams,
   GetEmploiClasseParams,
   GetEmploiProfesseurParams,
@@ -192,6 +195,7 @@ import type {
   GetRecapHonorairesParams,
   GetRecapPrestationsParams,
   GetResumeAbsencesEleveParams,
+  GetSallesDisponiblesParams,
   GetScolariteClasseClasseId200,
   GetScolariteClasseClasseIdParams,
   GetScolariteEleveEleveIdParams,
@@ -329,7 +333,9 @@ import type {
   SaisirPresencesInput,
   SaisirResultatsInput,
   Salle,
+  SalleDisponibiliteResponse,
   SalleInput,
+  SallesDisponiblesResponse,
   SallesListeResponse,
   ScolariteEleveDetailResponse,
   ScolariteEleveResponse,
@@ -5989,6 +5995,263 @@ export const useDesactiverSalle = <TError = ErrorType<ErrorResponse>,
       > => {
       return useMutation(getDesactiverSalleMutationOptions(options));
     }
+
+export const getGetDisponibiliteSalleUrl = (id: string,
+    params: GetDisponibiliteSalleParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/salles/${id}/disponibilite?${stringifiedParams}` : `/api/salles/${id}/disponibilite`
+}
+
+/**
+ * @summary Disponibilité d'une salle sur la semaine
+ */
+export const getDisponibiliteSalle = async (id: string,
+    params: GetDisponibiliteSalleParams, options?: RequestInit): Promise<SalleDisponibiliteResponse> => {
+
+  return customFetch<SalleDisponibiliteResponse>(getGetDisponibiliteSalleUrl(id,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDisponibiliteSalleQueryKey = (id: string,
+    params?: GetDisponibiliteSalleParams,) => {
+    return [
+    `/api/salles/${id}/disponibilite`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetDisponibiliteSalleQueryOptions = <TData = Awaited<ReturnType<typeof getDisponibiliteSalle>>, TError = ErrorType<unknown>>(id: string,
+    params: GetDisponibiliteSalleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDisponibiliteSalle>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDisponibiliteSalleQueryKey(id,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDisponibiliteSalle>>> = ({ signal }) => getDisponibiliteSalle(id,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDisponibiliteSalle>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDisponibiliteSalleQueryResult = NonNullable<Awaited<ReturnType<typeof getDisponibiliteSalle>>>
+export type GetDisponibiliteSalleQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Disponibilité d'une salle sur la semaine
+ */
+
+export function useGetDisponibiliteSalle<TData = Awaited<ReturnType<typeof getDisponibiliteSalle>>, TError = ErrorType<unknown>>(
+ id: string,
+    params: GetDisponibiliteSalleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDisponibiliteSalle>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDisponibiliteSalleQueryOptions(id,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSallesDisponiblesUrl = (params: GetSallesDisponiblesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/salles/disponibles?${stringifiedParams}` : `/api/salles/disponibles`
+}
+
+/**
+ * @summary Salles libres sur un créneau donné
+ */
+export const getSallesDisponibles = async (params: GetSallesDisponiblesParams, options?: RequestInit): Promise<SallesDisponiblesResponse> => {
+
+  return customFetch<SallesDisponiblesResponse>(getGetSallesDisponiblesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSallesDisponiblesQueryKey = (params?: GetSallesDisponiblesParams,) => {
+    return [
+    `/api/salles/disponibles`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetSallesDisponiblesQueryOptions = <TData = Awaited<ReturnType<typeof getSallesDisponibles>>, TError = ErrorType<unknown>>(params: GetSallesDisponiblesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSallesDisponibles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSallesDisponiblesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSallesDisponibles>>> = ({ signal }) => getSallesDisponibles(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSallesDisponibles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSallesDisponiblesQueryResult = NonNullable<Awaited<ReturnType<typeof getSallesDisponibles>>>
+export type GetSallesDisponiblesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Salles libres sur un créneau donné
+ */
+
+export function useGetSallesDisponibles<TData = Awaited<ReturnType<typeof getSallesDisponibles>>, TError = ErrorType<unknown>>(
+ params: GetSallesDisponiblesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSallesDisponibles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSallesDisponiblesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetConflitsSallesUrl = (params: GetConflitsSallesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/salles/conflits?${stringifiedParams}` : `/api/salles/conflits`
+}
+
+/**
+ * @summary Détecter les conflits de réservation de salles
+ */
+export const getConflitsSalles = async (params: GetConflitsSallesParams, options?: RequestInit): Promise<ConflitsSallesResponse> => {
+
+  return customFetch<ConflitsSallesResponse>(getGetConflitsSallesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetConflitsSallesQueryKey = (params?: GetConflitsSallesParams,) => {
+    return [
+    `/api/salles/conflits`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetConflitsSallesQueryOptions = <TData = Awaited<ReturnType<typeof getConflitsSalles>>, TError = ErrorType<unknown>>(params: GetConflitsSallesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConflitsSalles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetConflitsSallesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getConflitsSalles>>> = ({ signal }) => getConflitsSalles(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getConflitsSalles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetConflitsSallesQueryResult = NonNullable<Awaited<ReturnType<typeof getConflitsSalles>>>
+export type GetConflitsSallesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Détecter les conflits de réservation de salles
+ */
+
+export function useGetConflitsSalles<TData = Awaited<ReturnType<typeof getConflitsSalles>>, TError = ErrorType<unknown>>(
+ params: GetConflitsSallesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConflitsSalles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetConflitsSallesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getCreerCoursUrl = () => {
 
