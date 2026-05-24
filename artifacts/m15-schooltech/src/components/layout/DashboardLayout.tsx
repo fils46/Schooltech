@@ -17,6 +17,8 @@ import {
   ShieldAlert, DollarSign, Banknote, Receipt,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 /* ─── NAV CONFIG avec sections ─────────────────────────────── */
 type NavLink = { label: string; href: string; icon: React.ElementType };
@@ -625,6 +627,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const qc = useQueryClient();
   const socketRef = useRef<Socket | null>(null);
 
@@ -735,7 +738,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
             {/* Déconnexion */}
             <button
-              onClick={logout}
+              onClick={() => setShowLogoutConfirm(true)}
               title="Se déconnecter"
               className="w-9 h-9 flex items-center justify-center rounded-xl transition-all"
               style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}
@@ -751,6 +754,26 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+
+      {/* Modale confirmation déconnexion */}
+      <Dialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Se déconnecter ?</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Vous allez quitter votre session. Toute activité non enregistrée sera perdue.
+          </p>
+          <DialogFooter className="gap-2 mt-2">
+            <Button variant="outline" onClick={() => setShowLogoutConfirm(false)}>
+              Annuler
+            </Button>
+            <Button variant="destructive" onClick={logout}>
+              Se déconnecter
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

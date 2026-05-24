@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const NAV_SECTIONS = [
   {
@@ -116,6 +118,7 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { logout } = useAuth();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   return (
     <div className="flex min-h-screen" style={{ fontFamily: "Poppins, sans-serif", backgroundColor: "var(--m15-navy)" }}>
@@ -136,7 +139,7 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             {/* Déconnexion */}
             <button
-              onClick={logout}
+              onClick={() => setShowLogoutConfirm(true)}
               title="Se déconnecter"
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all"
               style={{ backgroundColor: "rgba(255,77,109,0.1)", color: "#FF4D6D" }}
@@ -165,6 +168,26 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+
+      {/* Modale confirmation déconnexion */}
+      <Dialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Se déconnecter ?</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Vous allez quitter votre session. Toute activité non enregistrée sera perdue.
+          </p>
+          <DialogFooter className="gap-2 mt-2">
+            <Button variant="outline" onClick={() => setShowLogoutConfirm(false)}>
+              Annuler
+            </Button>
+            <Button variant="destructive" onClick={logout}>
+              Se déconnecter
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
