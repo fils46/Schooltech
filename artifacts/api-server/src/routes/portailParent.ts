@@ -144,6 +144,8 @@ router.get("/parent/dashboard", authMiddleware, async (req, res) => {
       prenoms: eleve?.prenoms ?? "",
       matricule: eleve?.matricule ?? "",
       classe_nom: ctx?.classe?.nom ?? "—",
+      classe_id: ctx?.eleveClasse?.classe_id ?? null,
+      annee_scolaire_id: ctx?.eleveClasse?.annee_scolaire_id ?? null,
       filiere_nom: ctx?.filiere?.nom ?? null,
       annee_scolaire: ctx?.annee?.libelle ?? "—",
       moyenne_generale: bulletinRef?.moyenne_generale != null ? Number(bulletinRef.moyenne_generale) : null,

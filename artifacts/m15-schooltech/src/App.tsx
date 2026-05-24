@@ -118,6 +118,9 @@ import ResultatsAnnuels from "@/pages/cloture/ResultatsAnnuels";
 import DashboardEleve from "@/pages/dashboard-eleve";
 import MonProfil from "@/pages/mon-profil";
 import GestionSalles from "@/pages/salles/GestionSalles";
+import MonEdtProf from "@/pages/mon-edt-prof";
+import MonEdtEleve from "@/pages/mon-edt-eleve";
+import EdtParent from "@/pages/edt-parent";
 
 const queryClient = new QueryClient();
 
@@ -259,6 +262,30 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <EmploiDuTemps />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mon-edt">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MonEdtProf />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/mon-edt-eleve">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MonEdtEleve />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/edt-parent">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <EdtParent />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

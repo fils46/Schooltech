@@ -273,7 +273,8 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "QUOTIDIEN",
       links: [
-        { label: "Appel",    href: "/appel",    icon: ClipboardList },
+        { label: "Appel",               href: "/appel",   icon: ClipboardList },
+        { label: "Mon emploi du temps", href: "/mon-edt", icon: Calendar },
       ],
     },
     {
@@ -331,7 +332,7 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ÉCOLE",
       links: [
-        { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
+        { label: "Emploi du temps", href: "/mon-edt-eleve",   icon: Calendar },
         { label: "Mes absences",    href: "/mes-absences",    icon: UserMinus },
         { label: "Bibliothèque",    href: "/bibliotheque",    icon: Library },
       ],
@@ -424,8 +425,9 @@ const navConfig: Record<string, Section[]> = {
       title: "MON ENFANT",
       links: [
         { label: "Suivi scolaire",  href: "/suivi-scolaire",    icon: BookOpen },
-        { label: "Bulletins",       href: "/bulletins-parent",  icon: FileSpreadsheet },
-        { label: "Absences",        href: "/absences-parent",   icon: UserMinus },
+        { label: "Bulletins",         href: "/bulletins-parent",  icon: FileSpreadsheet },
+        { label: "Emploi du temps",   href: "/edt-parent",        icon: Calendar },
+        { label: "Absences",          href: "/absences-parent",   icon: UserMinus },
       ],
     },
     {
@@ -505,6 +507,9 @@ const PAGE_TITLES: Record<string, string> = {
   "/eleves":           "Élèves",
   "/eleves/inscrire":  "Inscrire un élève",
   "/emploi-du-temps":  "Emploi du temps",
+  "/mon-edt":          "Mon emploi du temps",
+  "/mon-edt-eleve":    "Mon emploi du temps",
+  "/edt-parent":       "Emploi du temps",
   "/absences":         "Gestion des Absences",
   "/mes-classes":      "Mes classes",
   "/evaluations":      "Évaluations",

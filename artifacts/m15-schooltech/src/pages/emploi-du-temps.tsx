@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthContext";
 import {
   useListerCreneaux, useCreerCreneau, useModifierCreneau, useSupprimerCreneau,
@@ -16,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Calendar, Clock, Building2, AlertTriangle, Plus, Pencil, Trash2,
-  X, ChevronDown, CheckCircle, RefreshCw, Copy,
+  X, ChevronDown, CheckCircle, RefreshCw, Copy, Eye, EyeOff,
 } from "lucide-react";
 
 /* ─── Types ──────────────────────────────────────────────── */
@@ -553,6 +554,30 @@ function TabEmploi({
     lundi: [], mardi: [], mercredi: [], jeudi: [], vendredi: [], samedi: [],
   };
 
+  const tousLesCours = (JOURS as readonly string[]).flatMap(j => grilleData[j as Jour] ?? []);
+  const estPublie = tousLesCours.length > 0 && tousLesCours.every(c => (c as Record<string, unknown>).publie === true);
+
+  const publierMutation = useMutation({
+    mutationFn: async ({ publie }: { publie: boolean }) => {
+      const base = (import.meta.env.BASE_URL as string).replace(/\/$/, "");
+      const token = localStorage.getItem("m15_token");
+      const res = await fetch(`${base}/api/emploi-du-temps/classe/${classeId}/publier`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token ?? ""}` },
+        body: JSON.stringify({ annee_scolaire_id: anneeId, publie }),
+      });
+      if (!res.ok) throw new Error("Erreur de publication");
+      return res.json();
+    },
+    onSuccess: (_data, { publie }) => {
+      toast({ title: publie ? "Emploi du temps publié !" : "Emploi du temps dépublié." });
+      void emploiClasse.refetch();
+    },
+    onError: () => {
+      toast({ title: "Erreur", description: "Impossible de modifier la publication.", variant: "destructive" });
+    },
+  });
+
   function handleCellClick(jour: Jour, creneauId: string) {
     setCoursToEdit(null);
     setDefaultJour(jour);
@@ -648,6 +673,34 @@ function TabEmploi({
           style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}>
           <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
         </button>
+
+        {/* Bouton publication (censeur / directeur / dev, vue classe uniquement) */}
+        {canEdit && vue === "classe" && classeId && anneeId && (
+          estPublie ? (
+            <button
+              onClick={() => publierMutation.mutate({ publie: false })}
+              disabled={publierMutation.isPending}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
+              style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.3)", color: "#00C9A7" }}>
+              <CheckCircle className="w-4 h-4" />
+              Publié — Dépublier
+            </button>
+          ) : (
+            <button
+              onClick={() => publierMutation.mutate({ publie: true })}
+              disabled={publierMutation.isPending || tousLesCours.length === 0}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
+              style={{
+                background: tousLesCours.length === 0 ? "var(--m15-card)" : "linear-gradient(135deg, #00C9A7, #0080FF)",
+                border: tousLesCours.length === 0 ? "1px solid var(--m15-border)" : "none",
+                color: tousLesCours.length === 0 ? "var(--m15-muted)" : "#fff",
+                opacity: publierMutation.isPending ? 0.7 : 1,
+              }}>
+              <Eye className="w-4 h-4" />
+              {publierMutation.isPending ? "Publication..." : "Publier l'EDT"}
+            </button>
+          )
+        )}
       </div>
 
       {/* Grille */}

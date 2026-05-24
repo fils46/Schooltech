@@ -26,6 +26,7 @@ export const emploisDuTempsTable = pgTable(
     jour: jourSemaineEnum("jour").notNull(),
     creneau_id: uuid("creneau_id").notNull(),
     couleur: text("couleur"),
+    publie: boolean("publie").notNull().default(false),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updated_at: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

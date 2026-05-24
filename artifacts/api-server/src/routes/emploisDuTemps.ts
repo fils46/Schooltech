@@ -3,7 +3,7 @@ import { eq, and, ne, inArray } from "drizzle-orm";
 import {
   db, emploisDuTempsTable, creneauxHorairesTable,
   classesTable, sallesTable, utilisateursTable,
-  professeurClassesTable, anneesScolairesTable,
+  professeurClassesTable, anneesScolairesTable, eleveClassesTable,
 } from "@workspace/db";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 
@@ -356,6 +356,9 @@ router.get(
 
       const conditions = [eq(emploisDuTempsTable.classe_id, classeId)];
       if (anneeId) conditions.push(eq(emploisDuTempsTable.annee_scolaire_id, anneeId));
+      if (user.role === "eleve" || user.role === "parent") {
+        conditions.push(eq(emploisDuTempsTable.publie, true));
+      }
 
       const coursList = await db
         .select()
@@ -395,6 +398,9 @@ router.get(
 
       const conditions = [eq(emploisDuTempsTable.professeur_id, profId)];
       if (anneeId) conditions.push(eq(emploisDuTempsTable.annee_scolaire_id, anneeId));
+      if (user.role === "professeur") {
+        conditions.push(eq(emploisDuTempsTable.publie, true));
+      }
 
       const coursList = await db
         .select()
@@ -623,6 +629,110 @@ router.post(
         message: `${copies} cours dupliqué(s), ${conflitsMessages.length} conflit(s) ignoré(s).`,
         copies,
         conflits: conflitsMessages,
+      });
+    } catch (err) {
+      req.log.error(err);
+      res.status(500).json({ message: "Erreur serveur." });
+    }
+  }
+);
+
+/* ─── Emploi du temps d'un élève (via sa classe active) ─── */
+router.get(
+  "/emploi-du-temps/eleve/:eleveId",
+  authMiddleware,
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    const eleveId = Array.isArray(req.params.eleveId) ? req.params.eleveId[0] : req.params.eleveId;
+    const anneeId = req.query.annee_scolaire_id as string | undefined;
+
+    if (user.role === "eleve" && user.id !== eleveId) {
+      res.status(403).json({ message: "Accès refusé." }); return;
+    }
+
+    try {
+      const [eleveClasse] = await db
+        .select()
+        .from(eleveClassesTable)
+        .where(and(eq(eleveClassesTable.eleve_id, eleveId), eq(eleveClassesTable.statut, "actif")))
+        .limit(1);
+
+      if (!eleveClasse) {
+        res.status(404).json({ message: "Aucune classe active pour cet élève." }); return;
+      }
+
+      const [classe] = await db
+        .select()
+        .from(classesTable)
+        .where(eq(classesTable.id, eleveClasse.classe_id))
+        .limit(1);
+
+      if (!classe) {
+        res.status(404).json({ message: "Classe introuvable." }); return;
+      }
+
+      const conditions = [
+        eq(emploisDuTempsTable.classe_id, eleveClasse.classe_id),
+        eq(emploisDuTempsTable.publie, true),
+      ];
+      const anneeCible = anneeId ?? eleveClasse.annee_scolaire_id;
+      conditions.push(eq(emploisDuTempsTable.annee_scolaire_id, anneeCible));
+
+      const coursList = await db
+        .select()
+        .from(emploisDuTempsTable)
+        .where(and(...conditions));
+
+      const grille = await construireGrille(coursList, classe.etablissement_id);
+      res.json({ ...grille, classe_nom: classe.nom, classe_id: classe.id });
+    } catch (err) {
+      req.log.error(err);
+      res.status(500).json({ message: "Erreur serveur." });
+    }
+  }
+);
+
+/* ─── Publier / dépublier l'EDT d'une classe ────────────── */
+router.put(
+  "/emploi-du-temps/classe/:classeId/publier",
+  authMiddleware,
+  requireRole("directeur", "censeur"),
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    const classeId = Array.isArray(req.params.classeId) ? req.params.classeId[0] : req.params.classeId;
+    const { annee_scolaire_id, publie = true } = req.body as { annee_scolaire_id?: string; publie?: boolean };
+
+    if (!annee_scolaire_id) {
+      res.status(400).json({ message: "annee_scolaire_id est requis." }); return;
+    }
+
+    try {
+      const [classe] = await db
+        .select()
+        .from(classesTable)
+        .where(eq(classesTable.id, classeId))
+        .limit(1);
+
+      if (!classe) { res.status(404).json({ message: "Classe introuvable." }); return; }
+      if (user.role !== "dev" && user.etablissement_id !== classe.etablissement_id) {
+        res.status(403).json({ message: "Accès refusé." }); return;
+      }
+
+      const result = await db
+        .update(emploisDuTempsTable)
+        .set({ publie: publie !== false, updated_at: new Date() })
+        .where(and(
+          eq(emploisDuTempsTable.classe_id, classeId),
+          eq(emploisDuTempsTable.annee_scolaire_id, annee_scolaire_id)
+        ));
+
+      const count = (result as unknown as { rowCount?: number }).rowCount ?? 0;
+      res.json({
+        message: publie !== false
+          ? `EDT publié — ${count} cours mis à jour.`
+          : `EDT dépublié — ${count} cours mis à jour.`,
+        publie: publie !== false,
+        count,
       });
     } catch (err) {
       req.log.error(err);
