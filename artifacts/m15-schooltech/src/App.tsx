@@ -113,6 +113,8 @@ import ConfigurationCriteres from "@/pages/cloture/ConfigurationCriteres";
 import DecisionsClasse from "@/pages/cloture/DecisionsClasse";
 import ValidationPromotion from "@/pages/cloture/ValidationPromotion";
 import ResultatsAnnuels from "@/pages/cloture/ResultatsAnnuels";
+import DashboardEleve from "@/pages/dashboard-eleve";
+import MonProfil from "@/pages/mon-profil";
 
 const queryClient = new QueryClient();
 
@@ -906,6 +908,18 @@ function Router() {
       <Route path="/cloture">
         <ProtectedRoute>
           <DashboardLayout><DashboardCloture /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/eleve/dashboard">
+        <ProtectedRoute>
+          <DashboardLayout><DashboardEleve /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/profil">
+        <ProtectedRoute>
+          <DashboardLayout><MonProfil /></DashboardLayout>
         </ProtectedRoute>
       </Route>
 

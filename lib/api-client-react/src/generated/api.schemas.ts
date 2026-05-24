@@ -3658,6 +3658,81 @@ export interface CreerParentResponse {
   mot_de_passe_temporaire?: string;
 }
 
+export type EleaveDashboardResponseEleve = { [key: string]: unknown };
+
+export type EleaveDashboardResponseClasse = { [key: string]: unknown };
+
+export type EleaveDashboardResponseKpis = {
+  /** @nullable */
+  moyenne_generale?: string | null;
+  absences_non_justifiees?: number;
+  bulletins_disponibles?: number;
+  devoirs_urgents?: number;
+  notifs_non_lues?: number;
+};
+
+export type EleaveDashboardResponseNotesRecentesItem = { [key: string]: unknown };
+
+export type EleaveDashboardResponseAbsencesRecentesItem = { [key: string]: unknown };
+
+export type EleaveDashboardResponseBulletinsItem = { [key: string]: unknown };
+
+export type EleaveDashboardResponseDevoirsUrgentsItem = { [key: string]: unknown };
+
+export interface EleaveDashboardResponse {
+  eleve?: EleaveDashboardResponseEleve;
+  classe?: EleaveDashboardResponseClasse;
+  kpis?: EleaveDashboardResponseKpis;
+  notes_recentes?: EleaveDashboardResponseNotesRecentesItem[];
+  absences_recentes?: EleaveDashboardResponseAbsencesRecentesItem[];
+  bulletins?: EleaveDashboardResponseBulletinsItem[];
+  devoirs_urgents?: EleaveDashboardResponseDevoirsUrgentsItem[];
+}
+
+export type MonProfilResponsePreferencesNotifs = { [key: string]: unknown };
+
+export type MonProfilResponseEtablissement = { [key: string]: unknown };
+
+export interface MonProfilResponse {
+  id?: string;
+  nom?: string;
+  /** @nullable */
+  prenoms?: string | null;
+  email?: string;
+  /** @nullable */
+  telephone?: string | null;
+  role?: string;
+  actif?: boolean;
+  premier_login?: boolean;
+  /** @nullable */
+  photo_url?: string | null;
+  preferences_notifs?: MonProfilResponsePreferencesNotifs;
+  created_at?: string;
+  etablissement?: MonProfilResponseEtablissement;
+}
+
+export interface ModifierProfilBody {
+  nom?: string;
+  prenoms?: string;
+  telephone?: string;
+}
+
+export interface UploaderPhotoBody {
+  photo_base64: string;
+}
+
+export interface ChangerMotDePasseBody {
+  mot_de_passe_actuel: string;
+  nouveau_mot_de_passe: string;
+  confirmation: string;
+}
+
+export type ModifierPreferencesNotifsBodyPreferencesNotifs = { [key: string]: unknown };
+
+export interface ModifierPreferencesNotifsBody {
+  preferences_notifs: ModifierPreferencesNotifsBodyPreferencesNotifs;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -4313,5 +4388,22 @@ annee_scolaire_id: string;
 export type GetHistoriquePromotionsParams = {
 annee_scolaire_id?: string;
 classe_id?: string;
+};
+
+export type UploaderPhoto200 = {
+  photo_url?: string;
+  message?: string;
+};
+
+export type ChangerMotDePasse200 = {
+  success?: boolean;
+  message?: string;
+};
+
+export type ModifierPreferencesNotifs200PreferencesNotifs = { [key: string]: unknown };
+
+export type ModifierPreferencesNotifs200 = {
+  preferences_notifs?: ModifierPreferencesNotifs200PreferencesNotifs;
+  message?: string;
 };
 

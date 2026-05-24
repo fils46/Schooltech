@@ -319,7 +319,7 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "PRINCIPAL",
       links: [
-        { label: "Tableau de bord", href: "/dashboard",     icon: LayoutDashboard },
+        { label: "Tableau de bord", href: "/eleve/dashboard", icon: LayoutDashboard },
         { label: "Mes bulletins",   href: "/mes-bulletins", icon: FileSpreadsheet },
         { label: "Notes",           href: "/notes",         icon: Award },
       ],
@@ -478,6 +478,8 @@ const navConfig: Record<string, Section[]> = {
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard":        "Tableau de bord",
+  "/eleve/dashboard":  "Tableau de bord",
+  "/profil":           "Mon profil",
   "/etablissements":   "Établissements",
   "/utilisateurs":     "Utilisateurs",
   "/parents":          "Parents",
@@ -758,6 +760,20 @@ function SidebarContent({ location, onClose, onLogoutRequest }: { location: stri
             </p>
           </div>
         </div>
+        <Link href="/profil"
+          onClick={onClose}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all mb-2"
+          style={{
+            background: "rgba(0,201,167,0.06)",
+            border: "1px solid rgba(0,201,167,0.15)",
+            color: "#00C9A7",
+          }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,201,167,0.12)"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLElement).style.background = "rgba(0,201,167,0.06)"; }}
+        >
+          <UserCircle className="w-4 h-4" />
+          Mon profil
+        </Link>
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"

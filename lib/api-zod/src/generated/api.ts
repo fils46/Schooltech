@@ -8266,3 +8266,132 @@ export const GetHistoriquePromotionsResponse = zod.object({
 })
 
 
+/**
+ * @summary Tableau de bord élève
+ */
+export const GetEleaveDashboardResponse = zod.object({
+  "eleve": zod.object({
+
+}).passthrough().optional(),
+  "classe": zod.object({
+
+}).passthrough().optional(),
+  "kpis": zod.object({
+  "moyenne_generale": zod.string().nullish(),
+  "absences_non_justifiees": zod.number().optional(),
+  "bulletins_disponibles": zod.number().optional(),
+  "devoirs_urgents": zod.number().optional(),
+  "notifs_non_lues": zod.number().optional()
+}).optional(),
+  "notes_recentes": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "absences_recentes": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "bulletins": zod.array(zod.object({
+
+}).passthrough()).optional(),
+  "devoirs_urgents": zod.array(zod.object({
+
+}).passthrough()).optional()
+})
+
+
+/**
+ * @summary Mon profil utilisateur
+ */
+export const GetMonProfilResponse = zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().nullish(),
+  "email": zod.string().optional(),
+  "telephone": zod.string().nullish(),
+  "role": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "premier_login": zod.boolean().optional(),
+  "photo_url": zod.string().nullish(),
+  "preferences_notifs": zod.object({
+
+}).passthrough().optional(),
+  "created_at": zod.string().optional(),
+  "etablissement": zod.object({
+
+}).passthrough().optional()
+})
+
+
+/**
+ * @summary Modifier mon profil
+ */
+export const ModifierMonProfilBody = zod.object({
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "telephone": zod.string().optional()
+})
+
+export const ModifierMonProfilResponse = zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().nullish(),
+  "email": zod.string().optional(),
+  "telephone": zod.string().nullish(),
+  "role": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "premier_login": zod.boolean().optional(),
+  "photo_url": zod.string().nullish(),
+  "preferences_notifs": zod.object({
+
+}).passthrough().optional(),
+  "created_at": zod.string().optional(),
+  "etablissement": zod.object({
+
+}).passthrough().optional()
+})
+
+
+/**
+ * @summary Uploader photo de profil (base64)
+ */
+export const UploaderPhotoBody = zod.object({
+  "photo_base64": zod.string()
+})
+
+export const UploaderPhotoResponse = zod.object({
+  "photo_url": zod.string().optional(),
+  "message": zod.string().optional()
+})
+
+
+/**
+ * @summary Changer son mot de passe
+ */
+export const ChangerMotDePasseBody = zod.object({
+  "mot_de_passe_actuel": zod.string(),
+  "nouveau_mot_de_passe": zod.string(),
+  "confirmation": zod.string()
+})
+
+export const ChangerMotDePasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier préférences de notifications
+ */
+export const ModifierPreferencesNotifsBody = zod.object({
+  "preferences_notifs": zod.object({
+
+}).passthrough()
+})
+
+export const ModifierPreferencesNotifsResponse = zod.object({
+  "preferences_notifs": zod.object({
+
+}).passthrough().optional(),
+  "message": zod.string().optional()
+})
+
+

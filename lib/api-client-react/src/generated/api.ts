@@ -58,6 +58,8 @@ import type {
   CahierTextesEnfantResponse,
   CalculerResultatsClasseParams,
   ChangePasswordInput,
+  ChangerMotDePasse200,
+  ChangerMotDePasseBody,
   ChangerStatutInput,
   Classe,
   ClasseDetail,
@@ -114,6 +116,7 @@ import type {
   DupliquerEmploiInput,
   DupliquerEmploiResponse,
   DupliquerMatieresPourClasseInput,
+  EleaveDashboardResponse,
   EleveDetail,
   EleveResume,
   ElevesClasseResponse,
@@ -250,11 +253,15 @@ import type {
   ModifierConseilInput,
   ModifierEleveInput,
   ModifierLiaisonBody,
+  ModifierPreferencesNotifs200,
+  ModifierPreferencesNotifsBody,
   ModifierPrestationBody,
+  ModifierProfilBody,
   ModifierRessourceInput,
   ModifierTrimestresBody,
   ModifierTypeProfesseurBody,
   MonEtablissementResponse,
+  MonProfilResponse,
   MonteeClasseInput,
   MonteeClasseResponse,
   MouvementStockInput,
@@ -357,6 +364,8 @@ import type {
   UpdateConsultationInput,
   UpdateMonEtablissementBody,
   UpdateSessionInput,
+  UploaderPhoto200,
+  UploaderPhotoBody,
   Utilisateur,
   UtilisateurCreatedResponse,
   UtilisateurInput,
@@ -24684,4 +24693,442 @@ export function useGetHistoriquePromotions<TData = Awaited<ReturnType<typeof get
 
 
 
+
+export const getGetEleaveDashboardUrl = () => {
+
+
+
+
+  return `/api/api/eleve/dashboard`
+}
+
+/**
+ * @summary Tableau de bord élève
+ */
+export const getEleaveDashboard = async ( options?: RequestInit): Promise<EleaveDashboardResponse> => {
+
+  return customFetch<EleaveDashboardResponse>(getGetEleaveDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetEleaveDashboardQueryKey = () => {
+    return [
+    `/api/api/eleve/dashboard`
+    ] as const;
+    }
+
+
+export const getGetEleaveDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getEleaveDashboard>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEleaveDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEleaveDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEleaveDashboard>>> = ({ signal }) => getEleaveDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEleaveDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetEleaveDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getEleaveDashboard>>>
+export type GetEleaveDashboardQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Tableau de bord élève
+ */
+
+export function useGetEleaveDashboard<TData = Awaited<ReturnType<typeof getEleaveDashboard>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEleaveDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetEleaveDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMonProfilUrl = () => {
+
+
+
+
+  return `/api/api/profil`
+}
+
+/**
+ * @summary Mon profil utilisateur
+ */
+export const getMonProfil = async ( options?: RequestInit): Promise<MonProfilResponse> => {
+
+  return customFetch<MonProfilResponse>(getGetMonProfilUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMonProfilQueryKey = () => {
+    return [
+    `/api/api/profil`
+    ] as const;
+    }
+
+
+export const getGetMonProfilQueryOptions = <TData = Awaited<ReturnType<typeof getMonProfil>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMonProfil>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMonProfilQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMonProfil>>> = ({ signal }) => getMonProfil({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMonProfil>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMonProfilQueryResult = NonNullable<Awaited<ReturnType<typeof getMonProfil>>>
+export type GetMonProfilQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Mon profil utilisateur
+ */
+
+export function useGetMonProfil<TData = Awaited<ReturnType<typeof getMonProfil>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMonProfil>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMonProfilQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getModifierMonProfilUrl = () => {
+
+
+
+
+  return `/api/api/profil`
+}
+
+/**
+ * @summary Modifier mon profil
+ */
+export const modifierMonProfil = async (modifierProfilBody: ModifierProfilBody, options?: RequestInit): Promise<MonProfilResponse> => {
+
+  return customFetch<MonProfilResponse>(getModifierMonProfilUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierProfilBody,)
+  }
+);}
+
+
+
+
+export const getModifierMonProfilMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierMonProfil>>, TError,{data: BodyType<ModifierProfilBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierMonProfil>>, TError,{data: BodyType<ModifierProfilBody>}, TContext> => {
+
+const mutationKey = ['modifierMonProfil'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierMonProfil>>, {data: BodyType<ModifierProfilBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  modifierMonProfil(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierMonProfilMutationResult = NonNullable<Awaited<ReturnType<typeof modifierMonProfil>>>
+    export type ModifierMonProfilMutationBody = BodyType<ModifierProfilBody>
+    export type ModifierMonProfilMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier mon profil
+ */
+export const useModifierMonProfil = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierMonProfil>>, TError,{data: BodyType<ModifierProfilBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierMonProfil>>,
+        TError,
+        {data: BodyType<ModifierProfilBody>},
+        TContext
+      > => {
+      return useMutation(getModifierMonProfilMutationOptions(options));
+    }
+
+export const getUploaderPhotoUrl = () => {
+
+
+
+
+  return `/api/api/profil/photo`
+}
+
+/**
+ * @summary Uploader photo de profil (base64)
+ */
+export const uploaderPhoto = async (uploaderPhotoBody: UploaderPhotoBody, options?: RequestInit): Promise<UploaderPhoto200> => {
+
+  return customFetch<UploaderPhoto200>(getUploaderPhotoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      uploaderPhotoBody,)
+  }
+);}
+
+
+
+
+export const getUploaderPhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploaderPhoto>>, TError,{data: BodyType<UploaderPhotoBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploaderPhoto>>, TError,{data: BodyType<UploaderPhotoBody>}, TContext> => {
+
+const mutationKey = ['uploaderPhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploaderPhoto>>, {data: BodyType<UploaderPhotoBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploaderPhoto(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploaderPhotoMutationResult = NonNullable<Awaited<ReturnType<typeof uploaderPhoto>>>
+    export type UploaderPhotoMutationBody = BodyType<UploaderPhotoBody>
+    export type UploaderPhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Uploader photo de profil (base64)
+ */
+export const useUploaderPhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploaderPhoto>>, TError,{data: BodyType<UploaderPhotoBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof uploaderPhoto>>,
+        TError,
+        {data: BodyType<UploaderPhotoBody>},
+        TContext
+      > => {
+      return useMutation(getUploaderPhotoMutationOptions(options));
+    }
+
+export const getChangerMotDePasseUrl = () => {
+
+
+
+
+  return `/api/api/profil/mot-de-passe`
+}
+
+/**
+ * @summary Changer son mot de passe
+ */
+export const changerMotDePasse = async (changerMotDePasseBody: ChangerMotDePasseBody, options?: RequestInit): Promise<ChangerMotDePasse200> => {
+
+  return customFetch<ChangerMotDePasse200>(getChangerMotDePasseUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      changerMotDePasseBody,)
+  }
+);}
+
+
+
+
+export const getChangerMotDePasseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changerMotDePasse>>, TError,{data: BodyType<ChangerMotDePasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof changerMotDePasse>>, TError,{data: BodyType<ChangerMotDePasseBody>}, TContext> => {
+
+const mutationKey = ['changerMotDePasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changerMotDePasse>>, {data: BodyType<ChangerMotDePasseBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  changerMotDePasse(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChangerMotDePasseMutationResult = NonNullable<Awaited<ReturnType<typeof changerMotDePasse>>>
+    export type ChangerMotDePasseMutationBody = BodyType<ChangerMotDePasseBody>
+    export type ChangerMotDePasseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Changer son mot de passe
+ */
+export const useChangerMotDePasse = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changerMotDePasse>>, TError,{data: BodyType<ChangerMotDePasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof changerMotDePasse>>,
+        TError,
+        {data: BodyType<ChangerMotDePasseBody>},
+        TContext
+      > => {
+      return useMutation(getChangerMotDePasseMutationOptions(options));
+    }
+
+export const getModifierPreferencesNotifsUrl = () => {
+
+
+
+
+  return `/api/api/profil/preferences-notifs`
+}
+
+/**
+ * @summary Modifier préférences de notifications
+ */
+export const modifierPreferencesNotifs = async (modifierPreferencesNotifsBody: ModifierPreferencesNotifsBody, options?: RequestInit): Promise<ModifierPreferencesNotifs200> => {
+
+  return customFetch<ModifierPreferencesNotifs200>(getModifierPreferencesNotifsUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierPreferencesNotifsBody,)
+  }
+);}
+
+
+
+
+export const getModifierPreferencesNotifsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierPreferencesNotifs>>, TError,{data: BodyType<ModifierPreferencesNotifsBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierPreferencesNotifs>>, TError,{data: BodyType<ModifierPreferencesNotifsBody>}, TContext> => {
+
+const mutationKey = ['modifierPreferencesNotifs'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierPreferencesNotifs>>, {data: BodyType<ModifierPreferencesNotifsBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  modifierPreferencesNotifs(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierPreferencesNotifsMutationResult = NonNullable<Awaited<ReturnType<typeof modifierPreferencesNotifs>>>
+    export type ModifierPreferencesNotifsMutationBody = BodyType<ModifierPreferencesNotifsBody>
+    export type ModifierPreferencesNotifsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier préférences de notifications
+ */
+export const useModifierPreferencesNotifs = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierPreferencesNotifs>>, TError,{data: BodyType<ModifierPreferencesNotifsBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierPreferencesNotifs>>,
+        TError,
+        {data: BodyType<ModifierPreferencesNotifsBody>},
+        TContext
+      > => {
+      return useMutation(getModifierPreferencesNotifsMutationOptions(options));
+    }
 

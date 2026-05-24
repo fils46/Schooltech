@@ -38,6 +38,10 @@ tags:
     description: Prise de rendez-vous parents/professeurs
   - name: annonces
     description: Annonces et communication établissement
+  - name: eleve-espace
+    description: Espace personnel élève (dashboard, notes, absences, devoirs)
+  - name: profil
+    description: Profil utilisateur et préférences (tous rôles)
 
 paths:
   /healthz:
@@ -6464,6 +6468,121 @@ paths:
               schema:
                 $ref: "#/components/schemas/HistoriquePromotionsResponse"
 
+  /api/eleve/dashboard:
+    get:
+      operationId: getEleaveDashboard
+      summary: Tableau de bord élève
+      tags: [eleve-espace]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Données dashboard élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EleaveDashboardResponse"
+
+  /api/profil:
+    get:
+      operationId: getMonProfil
+      summary: Mon profil utilisateur
+      tags: [profil]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Profil de l'utilisateur connecté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonProfilResponse"
+    put:
+      operationId: modifierMonProfil
+      summary: Modifier mon profil
+      tags: [profil]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifierProfilBody"
+      responses:
+        "200":
+          description: Profil mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonProfilResponse"
+
+  /api/profil/photo:
+    post:
+      operationId: uploaderPhoto
+      summary: Uploader photo de profil (base64)
+      tags: [profil]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploaderPhotoBody"
+      responses:
+        "200":
+          description: Photo mise à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photo_url: { type: string }
+                  message: { type: string }
+
+  /api/profil/mot-de-passe:
+    put:
+      operationId: changerMotDePasse
+      summary: Changer son mot de passe
+      tags: [profil]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangerMotDePasseBody"
+      responses:
+        "200":
+          description: Mot de passe changé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+
+  /api/profil/preferences-notifs:
+    put:
+      operationId: modifierPreferencesNotifs
+      summary: Modifier préférences de notifications
+      tags: [profil]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifierPreferencesNotifsBody"
+      responses:
+        "200":
+          description: Préférences mises à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  preferences_notifs: { type: object }
+                  message: { type: string }
+
 
 components:
   securitySchemes:
@@ -10691,5 +10810,66 @@ components:
         liaison: { $ref: "#/components/schemas/LiaisonParentEleve" }
         nouveau: { type: boolean }
         mot_de_passe_temporaire: { type: string }
+
+    EleaveDashboardResponse:
+      type: object
+      properties:
+        eleve: { type: object }
+        classe: { type: object }
+        kpis:
+          type: object
+          properties:
+            moyenne_generale: { type: ["string", "null"] }
+            absences_non_justifiees: { type: integer }
+            bulletins_disponibles: { type: integer }
+            devoirs_urgents: { type: integer }
+            notifs_non_lues: { type: integer }
+        notes_recentes: { type: array, items: { type: object } }
+        absences_recentes: { type: array, items: { type: object } }
+        bulletins: { type: array, items: { type: object } }
+        devoirs_urgents: { type: array, items: { type: object } }
+
+    MonProfilResponse:
+      type: object
+      properties:
+        id: { type: string }
+        nom: { type: string }
+        prenoms: { type: ["string", "null"] }
+        email: { type: string }
+        telephone: { type: ["string", "null"] }
+        role: { type: string }
+        actif: { type: boolean }
+        premier_login: { type: boolean }
+        photo_url: { type: ["string", "null"] }
+        preferences_notifs: { type: object }
+        created_at: { type: string }
+        etablissement: { type: object }
+
+    ModifierProfilBody:
+      type: object
+      properties:
+        nom: { type: string }
+        prenoms: { type: string }
+        telephone: { type: string }
+
+    UploaderPhotoBody:
+      type: object
+      required: [photo_base64]
+      properties:
+        photo_base64: { type: string }
+
+    ChangerMotDePasseBody:
+      type: object
+      required: [mot_de_passe_actuel, nouveau_mot_de_passe, confirmation]
+      properties:
+        mot_de_passe_actuel: { type: string }
+        nouveau_mot_de_passe: { type: string }
+        confirmation: { type: string }
+
+    ModifierPreferencesNotifsBody:
+      type: object
+      required: [preferences_notifs]
+      properties:
+        preferences_notifs: { type: object }
 
 

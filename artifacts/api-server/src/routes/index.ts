@@ -39,6 +39,8 @@ import financesRouter from "./finances";
 import clotureAnneeRouter from "./clotureAnnee";
 import matieresRouter from "./matieres";
 import parentsRouter from "./parents";
+import eleveRouter from "./eleve";
+import profilRouter from "./profil";
 
 const router: IRouter = Router();
 
@@ -82,5 +84,7 @@ router.use(financesRouter);
 router.use(clotureAnneeRouter);
 router.use(matieresRouter);
 router.use(parentsRouter);
+router.use(eleveRouter);
+router.use(profilRouter);
 
 export default router;
