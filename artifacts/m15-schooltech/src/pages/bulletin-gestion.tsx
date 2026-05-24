@@ -212,7 +212,7 @@ export default function BulletinGestion() {
             {calcRangs.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <TrendingUp className="w-4 h-4" />}
             Recalculer les rangs
           </button>
-          {user?.role === "directeur" || user?.role === "dev" ? (
+          {(user?.role === "directeur" || user?.role === "dev" || user?.role === "censeur") ? (
             <button
               onClick={handlePublierClasse}
               disabled={publierClasse.isPending || bulletins.filter(b => !b.publie).length === 0}

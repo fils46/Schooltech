@@ -14,7 +14,7 @@ import {
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
   Trophy, Activity, Star as StarIcon,
-  ShieldAlert, DollarSign, Banknote, Receipt, CheckCircle2,
+  ShieldAlert, DollarSign, Banknote, Receipt, CheckCircle2, Send,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -55,11 +55,12 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "BULLETINS",
       links: [
-        { label: "Config. matières", href: "/matieres-config",   icon: BookMarked },
-        { label: "Matières",         href: "/matieres",          icon: BookMarked },
-        { label: "Mat. par classe",  href: "/matieres/classe",   icon: BookMarked },
-        { label: "Bulletins",        href: "/bulletins",         icon: FileSpreadsheet },
-        { label: "Conseils classe",  href: "/conseils-classe",   icon: UsersRound },
+        { label: "Config. matières", href: "/matieres-config",       icon: BookMarked },
+        { label: "Matières",         href: "/matieres",              icon: BookMarked },
+        { label: "Mat. par classe",  href: "/matieres/classe",       icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",             icon: FileSpreadsheet },
+        { label: "Publier résultats",href: "/publication-bulletins", icon: Send },
+        { label: "Conseils classe",  href: "/conseils-classe",       icon: UsersRound },
       ],
     },
     {
@@ -173,11 +174,12 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "BULLETINS",
       links: [
-        { label: "Config. matières", href: "/matieres-config",   icon: BookMarked },
-        { label: "Matières",         href: "/matieres",          icon: BookMarked },
-        { label: "Mat. par classe",  href: "/matieres/classe",   icon: BookMarked },
-        { label: "Bulletins",        href: "/bulletins",         icon: FileSpreadsheet },
-        { label: "Conseils classe",  href: "/conseils-classe",   icon: UsersRound },
+        { label: "Config. matières", href: "/matieres-config",        icon: BookMarked },
+        { label: "Matières",         href: "/matieres",               icon: BookMarked },
+        { label: "Mat. par classe",  href: "/matieres/classe",        icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",              icon: FileSpreadsheet },
+        { label: "Publier résultats",href: "/publication-bulletins",  icon: Send },
+        { label: "Conseils classe",  href: "/conseils-classe",        icon: UsersRound },
       ],
     },
     {
@@ -421,9 +423,9 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "MON ENFANT",
       links: [
-        { label: "Suivi scolaire",  href: "/suivi-scolaire",  icon: BookOpen },
-        { label: "Bulletins",       href: "/mes-bulletins",   icon: FileSpreadsheet },
-        { label: "Absences",        href: "/absences-parent", icon: UserMinus },
+        { label: "Suivi scolaire",  href: "/suivi-scolaire",    icon: BookOpen },
+        { label: "Bulletins",       href: "/bulletins-parent",  icon: FileSpreadsheet },
+        { label: "Absences",        href: "/absences-parent",   icon: UserMinus },
       ],
     },
     {
@@ -518,8 +520,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/matieres-config":  "Configuration des Matières",
   "/matieres":         "Gestion des Matières",
   "/matieres/classe":  "Matières par classe",
-  "/bulletins":        "Gestion des Bulletins",
-  "/mes-bulletins":    "Mes Bulletins",
+  "/bulletins":               "Gestion des Bulletins",
+  "/mes-bulletins":           "Mes Bulletins",
+  "/publication-bulletins":   "Publication des Résultats",
+  "/bulletins-parent":        "Bulletins de mes enfants",
   "/conseils-classe":          "Conseils de Classe",
   "/conseils-classe/salle":    "Salle de Conseil",
   "/conseils-classe/resultats": "Résultats du Conseil",

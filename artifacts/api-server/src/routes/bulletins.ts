@@ -426,8 +426,8 @@ router.put(
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
-    if (user.role !== "directeur" && user.role !== "dev") {
-      res.status(403).json({ message: "Seul le directeur peut publier les bulletins." });
+    if (user.role !== "directeur" && user.role !== "dev" && user.role !== "censeur") {
+      res.status(403).json({ message: "Accès réservé au directeur ou au censeur." });
       return;
     }
 
@@ -641,8 +641,8 @@ router.put(
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
-    if (user.role !== "directeur" && user.role !== "dev") {
-      res.status(403).json({ message: "Seul le directeur peut publier les bulletins." });
+    if (user.role !== "directeur" && user.role !== "dev" && user.role !== "censeur") {
+      res.status(403).json({ message: "Accès réservé au directeur ou au censeur." });
       return;
     }
 

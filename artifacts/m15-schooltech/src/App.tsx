@@ -43,6 +43,8 @@ import MatieresByClasse from "@/pages/matieres/MatieresByClasse";
 import BulletinGestion from "@/pages/bulletin-gestion";
 import BulletinDetail from "@/pages/bulletin-detail";
 import MesBulletins from "@/pages/mes-bulletins";
+import PublicationBulletins from "@/pages/publication-bulletins";
+import BulletinsParent from "@/pages/bulletins-parent";
 import ConseilClasse from "@/pages/conseil-classe";
 import ConseilSalle from "@/pages/conseil-salle";
 import ConseilResultats from "@/pages/conseil-resultats";
@@ -356,6 +358,22 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <MesBulletins />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/publication-bulletins">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <PublicationBulletins />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/bulletins-parent">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <BulletinsParent />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
