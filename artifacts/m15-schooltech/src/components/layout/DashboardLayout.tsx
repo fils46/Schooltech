@@ -37,7 +37,6 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ACADÉMIQUE",
       links: [
-        { label: "Censeurs",         href: "/censeurs",         icon: Users },
         { label: "Classes",          href: "/classes",          icon: UsersRound },
         { label: "Élèves",           href: "/eleves",           icon: UserSquare },
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
