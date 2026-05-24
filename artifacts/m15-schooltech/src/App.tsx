@@ -27,6 +27,7 @@ import ClasseDetail from "@/pages/classe-detail";
 import AnneesScolaires from "@/pages/annees-scolaires";
 import Filieres from "@/pages/filieres";
 import EnConstruction from "@/pages/en-construction";
+import Professeurs from "@/pages/professeurs";
 import EmploiDuTemps from "@/pages/emploi-du-temps";
 import ProfesseurDashboard from "@/pages/professeur-dashboard";
 import FaireAppel from "@/pages/faire-appel";
@@ -166,6 +167,14 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <Censeurs />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/professeurs">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Professeurs />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
@@ -771,7 +780,6 @@ function Router() {
       {[
         "/licences", "/statistiques",
         "/rapports",
-        "/professeurs",
         "/notes", "/mon-enfant",
       ].map((path) => (
         <Route key={path} path={path}>

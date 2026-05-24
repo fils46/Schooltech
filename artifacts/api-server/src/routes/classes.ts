@@ -421,6 +421,44 @@ router.delete(
   }
 );
 
+/* ─── Classes d'un professeur ────────────────────────────── */
+router.get(
+  "/professeurs/:id/classes",
+  authMiddleware,
+  requireRole("directeur", "censeur", "dev"),
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    const profId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    try {
+      const rows = await db
+        .select({
+          id: professeurClassesTable.id,
+          classe_id: professeurClassesTable.classe_id,
+          classe_nom: classesTable.nom,
+          classe_niveau: classesTable.niveau,
+          matiere: professeurClassesTable.matiere,
+          annee_scolaire_id: professeurClassesTable.annee_scolaire_id,
+          annee_label: anneesScolairesTable.libelle,
+        })
+        .from(professeurClassesTable)
+        .innerJoin(classesTable, eq(professeurClassesTable.classe_id, classesTable.id))
+        .leftJoin(anneesScolairesTable, eq(professeurClassesTable.annee_scolaire_id, anneesScolairesTable.id))
+        .where(
+          user.role === "dev"
+            ? eq(professeurClassesTable.professeur_id, profId)
+            : and(
+                eq(professeurClassesTable.professeur_id, profId),
+                eq(classesTable.etablissement_id, user.etablissement_id!)
+              )
+        );
+      res.json({ success: true, data: rows });
+    } catch (err) {
+      req.log.error(err);
+      res.status(500).json({ message: "Erreur serveur." });
+    }
+  }
+);
+
 /* ─── Montée de classe ───────────────────────────────────── */
 router.post(
   "/classes/montee",
