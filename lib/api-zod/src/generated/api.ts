@@ -177,6 +177,76 @@ export const DesactiverUtilisateurResponse = zod.object({
 
 
 /**
+ * @summary Réinitialiser le mot de passe d'un utilisateur
+ */
+export const ReinitialiserMotDePasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ReinitialiserMotDePasseResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Obtenir les informations de son établissement
+ */
+export const GetMonEtablissementResponse = zod.object({
+  "id": zod.string(),
+  "nom": zod.string(),
+  "type": zod.string().nullish(),
+  "ville": zod.string().nullish(),
+  "telephone": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "licence_active": zod.boolean(),
+  "date_expiration_licence": zod.string().nullish(),
+  "licence": zod.object({
+  "id": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_debut": zod.string().optional(),
+  "date_expiration": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "montant": zod.string().optional(),
+  "renouvellement_auto": zod.boolean().optional()
+}).nullish()
+})
+
+
+/**
+ * @summary Modifier les informations de son établissement
+ */
+export const UpdateMonEtablissementBody = zod.object({
+  "nom": zod.string().optional(),
+  "ville": zod.string().nullish(),
+  "telephone": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "adresse": zod.string().nullish()
+})
+
+export const UpdateMonEtablissementResponse = zod.object({
+  "id": zod.string(),
+  "nom": zod.string(),
+  "type": zod.string().nullish(),
+  "ville": zod.string().nullish(),
+  "telephone": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "licence_active": zod.boolean(),
+  "date_expiration_licence": zod.string().nullish(),
+  "licence": zod.object({
+  "id": zod.string().optional(),
+  "type": zod.string().optional(),
+  "date_debut": zod.string().optional(),
+  "date_expiration": zod.string().optional(),
+  "actif": zod.boolean().optional(),
+  "montant": zod.string().optional(),
+  "renouvellement_auto": zod.boolean().optional()
+}).nullish()
+})
+
+
+/**
  * @summary Lister tous les établissements (dev only)
  */
 export const ListerEtablissementsResponseItem = zod.object({

@@ -3021,6 +3021,51 @@ export interface RapportCaisseResponse {
   data?: RapportCaisseResponseData;
 }
 
+/**
+ * @nullable
+ */
+export type MonEtablissementResponseLicence = {
+  id?: string;
+  type?: string;
+  date_debut?: string;
+  date_expiration?: string;
+  actif?: boolean;
+  montant?: string;
+  renouvellement_auto?: boolean;
+} | null;
+
+export interface MonEtablissementResponse {
+  id: string;
+  nom: string;
+  /** @nullable */
+  type?: string | null;
+  /** @nullable */
+  ville?: string | null;
+  /** @nullable */
+  telephone?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  adresse?: string | null;
+  licence_active: boolean;
+  /** @nullable */
+  date_expiration_licence?: string | null;
+  /** @nullable */
+  licence?: MonEtablissementResponseLicence;
+}
+
+export interface UpdateMonEtablissementBody {
+  nom?: string;
+  /** @nullable */
+  ville?: string | null;
+  /** @nullable */
+  telephone?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  adresse?: string | null;
+}
+
 export interface RelanceInput {
   eleve_ids: string[];
   type_relance: string;

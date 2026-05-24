@@ -207,6 +207,7 @@ import type {
   ModifierConseilInput,
   ModifierEleveInput,
   ModifierRessourceInput,
+  MonEtablissementResponse,
   MonteeClasseInput,
   MonteeClasseResponse,
   MouvementStockInput,
@@ -291,6 +292,7 @@ import type {
   TraiterJustificationInput,
   TraiterMembreInput,
   UpdateConsultationInput,
+  UpdateMonEtablissementBody,
   UpdateSessionInput,
   Utilisateur,
   UtilisateurCreatedResponse,
@@ -1114,6 +1116,224 @@ export const useDesactiverUtilisateur = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getDesactiverUtilisateurMutationOptions(options));
+    }
+
+export const getReinitialiserMotDePasseUrl = (id: string,) => {
+
+
+
+
+  return `/api/utilisateurs/${id}/reinitialiser-mdp`
+}
+
+/**
+ * @summary Réinitialiser le mot de passe d'un utilisateur
+ */
+export const reinitialiserMotDePasse = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getReinitialiserMotDePasseUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getReinitialiserMotDePasseMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMotDePasse>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMotDePasse>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['reinitialiserMotDePasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reinitialiserMotDePasse>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  reinitialiserMotDePasse(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReinitialiserMotDePasseMutationResult = NonNullable<Awaited<ReturnType<typeof reinitialiserMotDePasse>>>
+
+    export type ReinitialiserMotDePasseMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Réinitialiser le mot de passe d'un utilisateur
+ */
+export const useReinitialiserMotDePasse = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMotDePasse>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reinitialiserMotDePasse>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getReinitialiserMotDePasseMutationOptions(options));
+    }
+
+export const getGetMonEtablissementUrl = () => {
+
+
+
+
+  return `/api/etablissement/moi`
+}
+
+/**
+ * @summary Obtenir les informations de son établissement
+ */
+export const getMonEtablissement = async ( options?: RequestInit): Promise<MonEtablissementResponse> => {
+
+  return customFetch<MonEtablissementResponse>(getGetMonEtablissementUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMonEtablissementQueryKey = () => {
+    return [
+    `/api/etablissement/moi`
+    ] as const;
+    }
+
+
+export const getGetMonEtablissementQueryOptions = <TData = Awaited<ReturnType<typeof getMonEtablissement>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMonEtablissement>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMonEtablissementQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMonEtablissement>>> = ({ signal }) => getMonEtablissement({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMonEtablissement>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMonEtablissementQueryResult = NonNullable<Awaited<ReturnType<typeof getMonEtablissement>>>
+export type GetMonEtablissementQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir les informations de son établissement
+ */
+
+export function useGetMonEtablissement<TData = Awaited<ReturnType<typeof getMonEtablissement>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMonEtablissement>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMonEtablissementQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getUpdateMonEtablissementUrl = () => {
+
+
+
+
+  return `/api/etablissement/moi`
+}
+
+/**
+ * @summary Modifier les informations de son établissement
+ */
+export const updateMonEtablissement = async (updateMonEtablissementBody: UpdateMonEtablissementBody, options?: RequestInit): Promise<MonEtablissementResponse> => {
+
+  return customFetch<MonEtablissementResponse>(getUpdateMonEtablissementUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      updateMonEtablissementBody,)
+  }
+);}
+
+
+
+
+export const getUpdateMonEtablissementMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMonEtablissement>>, TError,{data: BodyType<UpdateMonEtablissementBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMonEtablissement>>, TError,{data: BodyType<UpdateMonEtablissementBody>}, TContext> => {
+
+const mutationKey = ['updateMonEtablissement'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMonEtablissement>>, {data: BodyType<UpdateMonEtablissementBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateMonEtablissement(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMonEtablissementMutationResult = NonNullable<Awaited<ReturnType<typeof updateMonEtablissement>>>
+    export type UpdateMonEtablissementMutationBody = BodyType<UpdateMonEtablissementBody>
+    export type UpdateMonEtablissementMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Modifier les informations de son établissement
+ */
+export const useUpdateMonEtablissement = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMonEtablissement>>, TError,{data: BodyType<UpdateMonEtablissementBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMonEtablissement>>,
+        TError,
+        {data: BodyType<UpdateMonEtablissementBody>},
+        TContext
+      > => {
+      return useMutation(getUpdateMonEtablissementMutationOptions(options));
     }
 
 export const getListerEtablissementsUrl = () => {

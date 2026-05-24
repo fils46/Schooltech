@@ -8,6 +8,7 @@ import {
   useActiverUtilisateur,
   useDesactiverUtilisateur,
   useListerEtablissements,
+  useReinitialiserMotDePasse,
   getListerUtilisateursQueryKey,
   getListerEtablissementsQueryKey,
   UtilisateurInputRole
@@ -24,7 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, KeyRound } from "lucide-react";
 import { format } from "date-fns";
 
 const roleColors: Record<string, string> = {
@@ -52,6 +53,8 @@ export default function Utilisateurs() {
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState<string | null>(null);
   const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [resetTarget, setResetTarget] = useState<{ id: string; nom: string } | null>(null);
+  const [resetPassword, setResetPassword] = useState<string | null>(null);
   
   const { user } = useAuth();
   const { toast } = useToast();
@@ -77,6 +80,26 @@ export default function Utilisateurs() {
   const createMutation = useCreerUtilisateur();
   const activerMutation = useActiverUtilisateur();
   const desactiverMutation = useDesactiverUtilisateur();
+  const resetMdpMutation = useReinitialiserMotDePasse();
+
+  const handleResetMdp = (id: string, nom: string) => {
+    setResetTarget({ id, nom });
+    setResetPassword(null);
+  };
+
+  const confirmResetMdp = () => {
+    if (!resetTarget) return;
+    resetMdpMutation.mutate({ id: resetTarget.id }, {
+      onSuccess: (res: any) => {
+        setResetPassword(res.passwordTemporaire ?? null);
+        toast({ title: "Mot de passe réinitialisé", description: `Nouveau mot de passe généré pour ${resetTarget.nom}.` });
+      },
+      onError: (err: Error) => {
+        toast({ title: "Erreur", description: err.message, variant: "destructive" });
+        setResetTarget(null);
+      }
+    });
+  };
 
   const form = useForm<UtilisateurFormValues>({
     resolver: zodResolver(utilisateurSchema),
@@ -127,6 +150,7 @@ export default function Utilisateurs() {
   };
 
   return (
+    <>
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Utilisateurs</h1>
@@ -314,13 +338,24 @@ export default function Utilisateurs() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
+                      {isDirecteur && u.id !== user?.id && (
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="w-8 h-8"
+                          title="Réinitialiser le mot de passe"
+                          onClick={() => handleResetMdp(u.id, u.nom)}
+                        >
+                          <KeyRound className="w-3.5 h-3.5" />
+                        </Button>
+                      )}
                       {activerMutation.isPending || desactiverMutation.isPending ? (
                          <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                       ) : (
                         <Switch 
                           checked={u.actif} 
                           onCheckedChange={() => handleToggleActif(u.id, u.actif)}
-                          disabled={u.id === user?.id} // Cannot disable self
+                          disabled={u.id === user?.id}
                         />
                       )}
                     </div>
@@ -339,5 +374,48 @@ export default function Utilisateurs() {
         )}
       </div>
     </div>
+
+    {/* ── Dialog réinitialisation mot de passe ── */}
+    
+    <Dialog open={!!resetTarget} onOpenChange={(v) => { if (!v) { setResetTarget(null); setResetPassword(null); } }}>
+      <DialogContent className="sm:max-w-[420px]">
+        <DialogHeader>
+          <DialogTitle>Réinitialiser le mot de passe</DialogTitle>
+          <DialogDescription>
+            {resetPassword
+              ? "Nouveau mot de passe temporaire généré."
+              : `Générer un nouveau mot de passe temporaire pour ${resetTarget?.nom} ?`}
+          </DialogDescription>
+        </DialogHeader>
+        {resetPassword ? (
+          <div className="py-4 space-y-4 text-center">
+            <div className="bg-muted p-4 rounded-md">
+              <p className="text-sm text-muted-foreground mb-2">Mot de passe temporaire :</p>
+              <code className="text-xl font-mono bg-background px-3 py-1 rounded border shadow-sm select-all">
+                {resetPassword}
+              </code>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Communiquez ce mot de passe à l'utilisateur. Il devra le changer à sa prochaine connexion.
+            </p>
+            <Button className="w-full" onClick={() => { setResetTarget(null); setResetPassword(null); }}>
+              Fermer
+            </Button>
+          </div>
+        ) : (
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="outline" onClick={() => setResetTarget(null)}>Annuler</Button>
+            <Button
+              onClick={confirmResetMdp}
+              disabled={resetMdpMutation.isPending}
+            >
+              {resetMdpMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Confirmer
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

@@ -121,7 +121,9 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "PRINCIPAL",
       links: [
-        { label: "Tableau de bord", href: "/dashboard", icon: LayoutDashboard },
+        { label: "Tableau de bord",     href: "/dashboard",          icon: LayoutDashboard },
+        { label: "Mon établissement",   href: "/mon-etablissement",  icon: Building },
+        { label: "Équipe pédagogique",  href: "/utilisateurs",       icon: Users },
       ],
     },
     {
@@ -204,6 +206,14 @@ const navConfig: Record<string, Section[]> = {
     },
   ],
   censeur: [
+    {
+      title: "PRINCIPAL",
+      links: [
+        { label: "Tableau de bord",    href: "/dashboard",         icon: LayoutDashboard },
+        { label: "Mon établissement",  href: "/mon-etablissement", icon: Building },
+        { label: "Équipe pédagogique", href: "/utilisateurs",      icon: Users },
+      ],
+    },
     {
       title: "ANALYTIQUE",
       links: [

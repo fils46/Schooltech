@@ -218,4 +218,48 @@ router.put(
   }
 );
 
+// POST /utilisateurs/:id/reinitialiser-mdp
+router.post(
+  "/utilisateurs/:id/reinitialiser-mdp",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur"),
+  async (req, res): Promise<void> => {
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const createur = req.user!;
+
+    const [cible] = await db
+      .select()
+      .from(utilisateursTable)
+      .where(eq(utilisateursTable.id, rawId));
+
+    if (!cible) {
+      res.status(404).json({ message: "Utilisateur introuvable." });
+      return;
+    }
+
+    // Isolation établissement
+    if (createur.role !== "dev" && cible.etablissement_id !== createur.etablissement_id) {
+      res.status(403).json({ message: "Accès refusé." });
+      return;
+    }
+
+    const passwordTemporaire = generateTempPassword(10);
+    const hashedPassword = await bcrypt.hash(passwordTemporaire, 10);
+
+    await db
+      .update(utilisateursTable)
+      .set({ password: hashedPassword, premier_login: true })
+      .where(eq(utilisateursTable.id, rawId));
+
+    req.log.info({ userId: rawId }, "Mot de passe réinitialisé");
+
+    res.json({
+      success: true,
+      message: "Mot de passe réinitialisé avec succès.",
+      passwordTemporaire,
+    });
+  }
+);
+
 export default router;

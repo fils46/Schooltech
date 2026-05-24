@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { eq, count } from "drizzle-orm";
-import { db, etablissementsTable, utilisateursTable } from "@workspace/db";
+import { db, etablissementsTable, utilisateursTable, licencesTable } from "@workspace/db";
 import { CreerEtablissementBody, UpdateEtablissementBody } from "@workspace/api-zod";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
@@ -263,6 +263,135 @@ router.put(
 
     res.json({
       message: "Établissement désactivé et tous ses comptes suspendus.",
+    });
+  }
+);
+
+// GET /etablissement/moi
+router.get(
+  "/etablissement/moi",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur", "censeur"),
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    if (!user.etablissement_id) {
+      res.status(404).json({ message: "Aucun établissement associé à ce compte." });
+      return;
+    }
+
+    const [etab] = await db
+      .select()
+      .from(etablissementsTable)
+      .where(eq(etablissementsTable.id, user.etablissement_id));
+
+    if (!etab) {
+      res.status(404).json({ message: "Établissement introuvable." });
+      return;
+    }
+
+    const [licence] = await db
+      .select()
+      .from(licencesTable)
+      .where(eq(licencesTable.etablissement_id, user.etablissement_id));
+
+    res.json({
+      id: etab.id,
+      nom: etab.nom,
+      type: etab.type,
+      ville: etab.ville,
+      telephone: etab.telephone,
+      email: etab.email,
+      adresse: etab.adresse,
+      licence_active: etab.licence_active,
+      date_expiration_licence: etab.date_expiration_licence,
+      licence: licence
+        ? {
+            id: licence.id,
+            type: licence.type,
+            date_debut: licence.date_debut,
+            date_expiration: licence.date_expiration,
+            actif: licence.actif,
+            montant: licence.montant,
+            renouvellement_auto: licence.renouvellement_auto,
+          }
+        : null,
+    });
+  }
+);
+
+// PUT /etablissement/moi
+router.put(
+  "/etablissement/moi",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur"),
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    if (!user.etablissement_id) {
+      res.status(404).json({ message: "Aucun établissement associé à ce compte." });
+      return;
+    }
+
+    const { nom, ville, telephone, email, adresse } = req.body as {
+      nom?: string;
+      ville?: string | null;
+      telephone?: string | null;
+      email?: string | null;
+      adresse?: string | null;
+    };
+
+    const updates: Record<string, unknown> = {};
+    if (nom !== undefined) updates.nom = nom;
+    if (ville !== undefined) updates.ville = ville;
+    if (telephone !== undefined) updates.telephone = telephone;
+    if (email !== undefined) updates.email = email;
+    if (adresse !== undefined) updates.adresse = adresse;
+
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ message: "Aucun champ à mettre à jour." });
+      return;
+    }
+
+    const [updated] = await db
+      .update(etablissementsTable)
+      .set(updates)
+      .where(eq(etablissementsTable.id, user.etablissement_id))
+      .returning();
+
+    if (!updated) {
+      res.status(404).json({ message: "Établissement introuvable." });
+      return;
+    }
+
+    const [licence] = await db
+      .select()
+      .from(licencesTable)
+      .where(eq(licencesTable.etablissement_id, user.etablissement_id));
+
+    req.log.info({ etabId: updated.id }, "Établissement mis à jour");
+
+    res.json({
+      id: updated.id,
+      nom: updated.nom,
+      type: updated.type,
+      ville: updated.ville,
+      telephone: updated.telephone,
+      email: updated.email,
+      adresse: updated.adresse,
+      licence_active: updated.licence_active,
+      date_expiration_licence: updated.date_expiration_licence,
+      licence: licence
+        ? {
+            id: licence.id,
+            type: licence.type,
+            date_debut: licence.date_debut,
+            date_expiration: licence.date_expiration,
+            actif: licence.actif,
+            montant: licence.montant,
+            renouvellement_auto: licence.renouvellement_auto,
+          }
+        : null,
     });
   }
 );

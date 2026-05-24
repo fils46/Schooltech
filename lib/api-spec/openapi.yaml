@@ -289,6 +289,73 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /utilisateurs/{id}/reinitialiser-mdp:
+    post:
+      operationId: reinitialiserMotDePasse
+      tags: [utilisateurs]
+      summary: Réinitialiser le mot de passe d'un utilisateur
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mot de passe réinitialisé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "403":
+          description: Permission insuffisante
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /etablissement/moi:
+    get:
+      operationId: getMonEtablissement
+      tags: [etablissements]
+      summary: Obtenir les informations de son établissement
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Informations de l'établissement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonEtablissementResponse"
+    put:
+      operationId: updateMonEtablissement
+      tags: [etablissements]
+      summary: Modifier les informations de son établissement
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMonEtablissementBody"
+      responses:
+        "200":
+          description: Établissement mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonEtablissementResponse"
+        "403":
+          description: Permission insuffisante
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /etablissements:
     get:
       operationId: listerEtablissements
@@ -8794,6 +8861,39 @@ components:
             total: { type: number }
             par_mode: { type: object }
             par_type: { type: object }
+
+    MonEtablissementResponse:
+      type: object
+      required: [id, nom, licence_active]
+      properties:
+        id: { type: string }
+        nom: { type: string }
+        type: { type: ["string", "null"] }
+        ville: { type: ["string", "null"] }
+        telephone: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        adresse: { type: ["string", "null"] }
+        licence_active: { type: boolean }
+        date_expiration_licence: { type: ["string", "null"] }
+        licence:
+          type: ["object", "null"]
+          properties:
+            id: { type: string }
+            type: { type: string }
+            date_debut: { type: string }
+            date_expiration: { type: string }
+            actif: { type: boolean }
+            montant: { type: string }
+            renouvellement_auto: { type: boolean }
+
+    UpdateMonEtablissementBody:
+      type: object
+      properties:
+        nom: { type: string }
+        ville: { type: ["string", "null"] }
+        telephone: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        adresse: { type: ["string", "null"] }
 
     RelanceInput:
       type: object
