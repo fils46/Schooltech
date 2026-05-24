@@ -532,12 +532,25 @@ export interface StatsEtablissement {
   repartitionRoles?: RoleCount[];
 }
 
+export type EleveResumeMatriculeStatut = typeof EleveResumeMatriculeStatut[keyof typeof EleveResumeMatriculeStatut];
+
+
+export const EleveResumeMatriculeStatut = {
+  en_attente: 'en_attente',
+  provisoire: 'provisoire',
+  officiel: 'officiel',
+} as const;
+
 export interface EleveResume {
   id: string;
   etablissement_id?: string;
   /** @nullable */
   utilisateur_id?: string | null;
-  matricule: string;
+  /** @nullable */
+  matricule?: string | null;
+  matricule_statut: EleveResumeMatriculeStatut;
+  /** @nullable */
+  matricule_provisoire?: string | null;
   nom: string;
   prenoms: string;
   date_naissance?: string;
@@ -598,6 +611,15 @@ export interface ElevesListeResponse {
   limit: number;
 }
 
+export type InscrireEleveInputMatriculeStatut = typeof InscrireEleveInputMatriculeStatut[keyof typeof InscrireEleveInputMatriculeStatut];
+
+
+export const InscrireEleveInputMatriculeStatut = {
+  en_attente: 'en_attente',
+  provisoire: 'provisoire',
+  officiel: 'officiel',
+} as const;
+
 export interface InscrireEleveInput {
   nom: string;
   prenoms: string;
@@ -607,6 +629,9 @@ export interface InscrireEleveInput {
   adresse?: string;
   situation_familiale?: string;
   annee_inscription: number;
+  matricule?: string;
+  matricule_statut?: InscrireEleveInputMatriculeStatut;
+  matricule_provisoire?: string;
   parent_nom: string;
   parent_prenoms: string;
   parent_email: string;
@@ -615,11 +640,45 @@ export interface InscrireEleveInput {
 }
 
 export interface InscrireEleveResponse {
+  success?: boolean;
   message?: string;
   eleve?: EleveResume;
-  matricule?: string;
+  /** @nullable */
+  matricule?: string | null;
+  matricule_statut?: string;
   email_eleve?: string;
   password_eleve_temporaire?: string;
+}
+
+export type MettreAJourMatriculeInputMatriculeStatut = typeof MettreAJourMatriculeInputMatriculeStatut[keyof typeof MettreAJourMatriculeInputMatriculeStatut];
+
+
+export const MettreAJourMatriculeInputMatriculeStatut = {
+  en_attente: 'en_attente',
+  provisoire: 'provisoire',
+  officiel: 'officiel',
+} as const;
+
+export interface MettreAJourMatriculeInput {
+  /** @nullable */
+  matricule?: string | null;
+  matricule_statut?: MettreAJourMatriculeInputMatriculeStatut;
+  /** @nullable */
+  matricule_provisoire?: string | null;
+}
+
+export interface MettreAJourMatriculeResponse {
+  success?: boolean;
+  message?: string;
+  eleve?: EleveResume;
+}
+
+export interface ElevesSansMatriculeResponse {
+  success?: boolean;
+  eleves?: EleveResume[];
+  total?: number;
+  page?: number;
+  limit?: number;
 }
 
 export interface ModifierEleveInput {
@@ -3774,6 +3833,11 @@ export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
 etablissement_id?: string;
+};
+
+export type GetElevesSansMatriculeParams = {
+page?: number;
+limit?: number;
 };
 
 export type ListerElevesParams = {

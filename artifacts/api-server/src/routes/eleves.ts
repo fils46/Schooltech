@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { eq, and, count, sql } from "drizzle-orm";
-import { db, elevesTable, parentsElevesTable, documentsElevesTable, utilisateursTable, etablissementsTable } from "@workspace/db";
+import { eq, and, count, isNull, or, ne, sql } from "drizzle-orm";
+import { db, elevesTable, parentsElevesTable, documentsElevesTable, utilisateursTable } from "@workspace/db";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
 import bcrypt from "bcrypt";
@@ -34,42 +34,6 @@ const upload = multer({
 
 const router = Router();
 
-/* ─── Génération matricule ───────────────────────────────── */
-async function genererMatricule(etablissementId: string): Promise<string> {
-  const [etab] = await db
-    .select({ ville: etablissementsTable.ville })
-    .from(etablissementsTable)
-    .where(eq(etablissementsTable.id, etablissementId));
-
-  const villeCode = (etab?.ville ?? "GEN").slice(0, 3).toUpperCase().replace(/\s/g, "");
-  const annee = new Date().getFullYear();
-
-  const [countResult] = await db
-    .select({ count: count() })
-    .from(elevesTable)
-    .where(
-      and(
-        eq(elevesTable.etablissement_id, etablissementId),
-        sql`EXTRACT(YEAR FROM ${elevesTable.created_at}) = ${annee}`
-      )
-    );
-
-  const numero = (Number(countResult?.count ?? 0) + 1).toString().padStart(4, "0");
-  const candidat = `CI-${villeCode}-${annee}-${numero}`;
-
-  const [existing] = await db
-    .select({ id: elevesTable.id })
-    .from(elevesTable)
-    .where(eq(elevesTable.matricule, candidat));
-
-  if (existing) {
-    const fallback = `CI-${villeCode}-${annee}-${Date.now().toString().slice(-4)}`;
-    return fallback;
-  }
-
-  return candidat;
-}
-
 /* ─── POST /eleves/inscrire ─────────────────────────────── */
 router.post(
   "/eleves/inscrire",
@@ -82,6 +46,7 @@ router.post(
       nom, prenoms, date_naissance, lieu_naissance, sexe,
       adresse, situation_familiale, annee_inscription,
       parent_nom, parent_prenoms, parent_email, parent_lien, parent_telephone,
+      matricule, matricule_statut, matricule_provisoire,
     } = req.body as Record<string, string>;
 
     if (!nom || !prenoms || !date_naissance || !sexe || !annee_inscription ||
@@ -99,8 +64,26 @@ router.post(
       return;
     }
 
-    const matricule = await genererMatricule(etablissementId);
-    const emailEleve = `${prenoms.toLowerCase().split(" ")[0]}.${nom.toLowerCase().replace(/\s/g, "")}${matricule.slice(-4)}@m15.ci`;
+    const matriculeValide = matricule?.trim() || null;
+
+    if (matriculeValide) {
+      const [existing] = await db
+        .select({ id: elevesTable.id })
+        .from(elevesTable)
+        .where(and(eq(elevesTable.etablissement_id, etablissementId), eq(elevesTable.matricule, matriculeValide)));
+      if (existing) {
+        res.status(400).json({ message: `Le matricule "${matriculeValide}" est déjà utilisé dans cet établissement.` });
+        return;
+      }
+    }
+
+    const validStatuts = ["en_attente", "provisoire", "officiel"];
+    const statutMatricule = validStatuts.includes(matricule_statut ?? "")
+      ? matricule_statut
+      : matriculeValide ? "officiel" : "en_attente";
+
+    const suffix = Date.now().toString(36).slice(-4);
+    const emailEleve = `${prenoms.toLowerCase().split(" ")[0]}.${nom.toLowerCase().replace(/\s/g, "")}${suffix}@m15.ci`;
     const passwordEleve = generateTempPassword(8);
     const hashedEleve = await bcrypt.hash(passwordEleve, 10);
 
@@ -123,7 +106,9 @@ router.post(
       .values({
         etablissement_id: etablissementId,
         utilisateur_id: eleveUser.id,
-        matricule,
+        matricule: matriculeValide,
+        matricule_statut: statutMatricule,
+        matricule_provisoire: matricule_provisoire?.trim() || null,
         nom,
         prenoms,
         date_naissance,
@@ -172,27 +157,55 @@ router.post(
       est_principal: true,
     });
 
-    req.log.info({ eleveId: eleve.id, matricule }, "Élève inscrit");
+    req.log.info({ eleveId: eleve.id, matricule: matriculeValide, statutMatricule }, "Élève inscrit");
 
     res.status(201).json({
+      success: true,
       message: "Élève inscrit avec succès.",
-      eleve: {
-        id: eleve.id,
-        matricule: eleve.matricule,
-        nom: eleve.nom,
-        prenoms: eleve.prenoms,
-        statut: eleve.statut,
-        annee_inscription: eleve.annee_inscription,
-        sexe: eleve.sexe,
-        etablissement_id: eleve.etablissement_id,
-        utilisateur_id: eleve.utilisateur_id,
-        date_naissance: eleve.date_naissance,
-        created_at: eleve.created_at,
-      },
-      matricule,
+      eleve: mapEleve(eleve),
+      matricule: matriculeValide,
+      matricule_statut: statutMatricule,
       email_eleve: emailEleve,
       password_eleve_temporaire: passwordEleve,
       ...(passwordParentTemporaire ? { email_parent: emailParentNorm, password_parent_temporaire: passwordParentTemporaire } : {}),
+    });
+  }
+);
+
+/* ─── GET /eleves/sans-matricule ─────────────────────────── */
+router.get(
+  "/eleves/sans-matricule",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur", "censeur"),
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+    const page = parseInt((req.query.page as string) || "1");
+    const limit = parseInt((req.query.limit as string) || "20");
+    const offset = (page - 1) * limit;
+
+    const etabCondition = user.role !== "dev" && user.etablissement_id
+      ? eq(elevesTable.etablissement_id, user.etablissement_id)
+      : undefined;
+
+    const sansMatriculeCondition = or(
+      isNull(elevesTable.matricule),
+      ne(elevesTable.matricule_statut, "officiel")
+    );
+
+    const whereClause = etabCondition
+      ? and(etabCondition, sansMatriculeCondition)
+      : sansMatriculeCondition;
+
+    const [totalResult] = await db.select({ count: count() }).from(elevesTable).where(whereClause);
+    const rows = await db.select().from(elevesTable).where(whereClause).limit(limit).offset(offset);
+
+    res.json({
+      success: true,
+      eleves: rows.map(mapEleve),
+      total: Number(totalResult?.count ?? 0),
+      page,
+      limit,
     });
   }
 );
@@ -205,7 +218,7 @@ router.get(
   requireRole("directeur", "censeur", "professeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
-    const { q, statut, sexe } = req.query as Record<string, string>;
+    const { q, statut, sexe, matricule_statut } = req.query as Record<string, string>;
     const annee = req.query.annee ? parseInt(req.query.annee as string) : undefined;
 
     const conditions: ReturnType<typeof eq>[] = [];
@@ -216,6 +229,7 @@ router.get(
     if (statut) conditions.push(eq(elevesTable.statut, statut));
     if (sexe) conditions.push(eq(elevesTable.sexe, sexe));
     if (annee) conditions.push(eq(elevesTable.annee_inscription, annee));
+    if (matricule_statut) conditions.push(eq(elevesTable.matricule_statut, matricule_statut));
 
     let rows = conditions.length
       ? await db.select().from(elevesTable).where(and(...conditions)).limit(50)
@@ -227,7 +241,7 @@ router.get(
         (e) =>
           e.nom.toLowerCase().includes(ql) ||
           e.prenoms.toLowerCase().includes(ql) ||
-          e.matricule.toLowerCase().includes(ql)
+          (e.matricule ?? "").toLowerCase().includes(ql)
       );
     }
 
@@ -243,7 +257,7 @@ router.get(
   requireRole("directeur", "censeur", "professeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
-    const { statut, sexe } = req.query as Record<string, string>;
+    const { statut, sexe, matricule_statut } = req.query as Record<string, string>;
     const annee = req.query.annee_inscription ? parseInt(req.query.annee_inscription as string) : undefined;
     const page = parseInt((req.query.page as string) || "1");
     const limit = parseInt((req.query.limit as string) || "20");
@@ -257,6 +271,7 @@ router.get(
     if (statut) conditions.push(eq(elevesTable.statut, statut));
     if (sexe) conditions.push(eq(elevesTable.sexe, sexe));
     if (annee) conditions.push(eq(elevesTable.annee_inscription, annee));
+    if (matricule_statut) conditions.push(eq(elevesTable.matricule_statut, matricule_statut));
 
     const whereClause = conditions.length ? and(...conditions) : undefined;
 
@@ -328,6 +343,66 @@ router.get(
       parents,
       documents,
     });
+  }
+);
+
+/* ─── PUT /eleves/:id/matricule ──────────────────────────── */
+router.put(
+  "/eleves/:id/matricule",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur", "censeur"),
+  async (req, res): Promise<void> => {
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const user = req.user!;
+    const { matricule, matricule_statut, matricule_provisoire } = req.body as {
+      matricule?: string;
+      matricule_statut?: string;
+      matricule_provisoire?: string;
+    };
+
+    const [eleve] = await db.select().from(elevesTable).where(eq(elevesTable.id, rawId));
+    if (!eleve) { res.status(404).json({ message: "Élève introuvable." }); return; }
+    if (user.role !== "dev" && user.etablissement_id !== eleve.etablissement_id) {
+      res.status(403).json({ message: "Accès refusé." }); return;
+    }
+
+    const validStatuts = ["en_attente", "provisoire", "officiel"];
+    if (matricule_statut && !validStatuts.includes(matricule_statut)) {
+      res.status(400).json({ message: `Statut invalide. Valeurs acceptées : ${validStatuts.join(", ")}` });
+      return;
+    }
+
+    const matriculeValide = matricule?.trim() || null;
+
+    if (matriculeValide) {
+      const [conflict] = await db.select({ id: elevesTable.id })
+        .from(elevesTable)
+        .where(
+          and(
+            eq(elevesTable.etablissement_id, eleve.etablissement_id),
+            eq(elevesTable.matricule, matriculeValide),
+            ne(elevesTable.id, rawId)
+          )
+        );
+      if (conflict) {
+        res.status(400).json({ message: `Le matricule "${matriculeValide}" est déjà utilisé dans cet établissement.` });
+        return;
+      }
+    }
+
+    const updateData: Record<string, unknown> = {
+      updated_at: new Date(),
+      matricule: matriculeValide,
+      matricule_statut: matricule_statut ?? (matriculeValide ? "officiel" : "en_attente"),
+      matricule_provisoire: matricule_provisoire?.trim() || null,
+    };
+
+    const [updated] = await db.update(elevesTable).set(updateData).where(eq(elevesTable.id, rawId)).returning();
+
+    req.log.info({ eleveId: rawId, matricule: matriculeValide, par: user.id }, "Matricule mis à jour");
+
+    res.json({ success: true, message: "Matricule mis à jour.", eleve: mapEleve(updated) });
   }
 );
 
@@ -550,6 +625,8 @@ function mapEleve(e: typeof elevesTable.$inferSelect) {
     etablissement_id: e.etablissement_id,
     utilisateur_id: e.utilisateur_id,
     matricule: e.matricule,
+    matricule_statut: e.matricule_statut,
+    matricule_provisoire: e.matricule_provisoire,
     nom: e.nom,
     prenoms: e.prenoms,
     date_naissance: e.date_naissance,

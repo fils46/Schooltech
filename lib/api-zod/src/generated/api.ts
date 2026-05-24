@@ -414,6 +414,41 @@ export const GetStatsEtablissementResponse = zod.object({
 
 
 /**
+ * @summary Lister les élèves sans matricule officiel
+ */
+export const GetElevesSansMatriculeQueryParams = zod.object({
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetElevesSansMatriculeResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "eleves": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+})).optional(),
+  "total": zod.number().optional(),
+  "page": zod.number().optional(),
+  "limit": zod.number().optional()
+})
+
+
+/**
  * @summary Inscrire un nouvel élève avec compte + parent
  */
 export const InscrireEleveBody = zod.object({
@@ -425,6 +460,9 @@ export const InscrireEleveBody = zod.object({
   "adresse": zod.string().optional(),
   "situation_familiale": zod.string().optional(),
   "annee_inscription": zod.number(),
+  "matricule": zod.string().optional(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']).optional(),
+  "matricule_provisoire": zod.string().optional(),
   "parent_nom": zod.string(),
   "parent_prenoms": zod.string(),
   "parent_email": zod.string(),
@@ -449,7 +487,9 @@ export const ListerElevesResponse = zod.object({
   "id": zod.string(),
   "etablissement_id": zod.string().optional(),
   "utilisateur_id": zod.string().nullish(),
-  "matricule": zod.string(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
   "nom": zod.string(),
   "prenoms": zod.string(),
   "date_naissance": zod.string().optional(),
@@ -482,7 +522,9 @@ export const RechercherElevesResponseItem = zod.object({
   "id": zod.string(),
   "etablissement_id": zod.string().optional(),
   "utilisateur_id": zod.string().nullish(),
-  "matricule": zod.string(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
   "nom": zod.string(),
   "prenoms": zod.string(),
   "date_naissance": zod.string().optional(),
@@ -509,7 +551,9 @@ export const GetEleveResponse = zod.object({
   "id": zod.string(),
   "etablissement_id": zod.string().optional(),
   "utilisateur_id": zod.string().nullish(),
-  "matricule": zod.string(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
   "nom": zod.string(),
   "prenoms": zod.string(),
   "date_naissance": zod.string().optional(),
@@ -570,7 +614,9 @@ export const ModifierEleveResponse = zod.object({
   "id": zod.string(),
   "etablissement_id": zod.string().optional(),
   "utilisateur_id": zod.string().nullish(),
-  "matricule": zod.string(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
   "nom": zod.string(),
   "prenoms": zod.string(),
   "date_naissance": zod.string().optional(),
@@ -594,6 +640,44 @@ export const SupprimerEleveParams = zod.object({
 
 export const SupprimerEleveResponse = zod.object({
   "message": zod.string()
+})
+
+
+/**
+ * @summary Mettre à jour le matricule d'un élève
+ */
+export const MettreAJourMatriculeParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const MettreAJourMatriculeBody = zod.object({
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']).optional(),
+  "matricule_provisoire": zod.string().nullish()
+})
+
+export const MettreAJourMatriculeResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional(),
+  "eleve": zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string().optional(),
+  "utilisateur_id": zod.string().nullish(),
+  "matricule": zod.string().nullish(),
+  "matricule_statut": zod.enum(['en_attente', 'provisoire', 'officiel']),
+  "matricule_provisoire": zod.string().nullish(),
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "date_naissance": zod.string().optional(),
+  "lieu_naissance": zod.string().nullish(),
+  "sexe": zod.string(),
+  "photo_url": zod.string().nullish(),
+  "adresse": zod.string().nullish(),
+  "situation_familiale": zod.string().nullish(),
+  "annee_inscription": zod.number(),
+  "statut": zod.string(),
+  "created_at": zod.coerce.date().optional()
+}).optional()
 })
 
 

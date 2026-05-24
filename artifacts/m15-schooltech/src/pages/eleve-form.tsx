@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useInscrireEleve } from "@workspace/api-client-react";
+import { useInscrireEleve, type InscrireEleveInputMatriculeStatut } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   UserSquare, ArrowLeft, ArrowRight, Check, CheckCircle2,
@@ -77,6 +77,7 @@ const inputStyle = {
 interface EleveData {
   nom: string; prenoms: string; date_naissance: string; lieu_naissance: string;
   sexe: string; adresse: string; situation_familiale: string; annee_inscription: string;
+  matricule: string; matricule_statut: string; matricule_provisoire: string;
 }
 interface ParentData {
   parent_nom: string; parent_prenoms: string; parent_email: string;
@@ -135,6 +136,65 @@ function EtapeEleve({ data, onChange }: { data: EleveData; onChange: (d: Partial
           <option value="tuteur">Sous tutelle</option>
         </select>
       </Field>
+
+      {/* ── Matricule ── */}
+      <div className="md:col-span-2 rounded-xl p-4 space-y-3" style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>
+            Matricule élève
+          </span>
+          <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "rgba(245,200,66,0.12)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.25)" }}>
+            Attribué par le Ministère
+          </span>
+        </div>
+        <input
+          style={inputStyle}
+          value={data.matricule}
+          onChange={e => onChange({ matricule: e.target.value })}
+          placeholder="Ex: CI-2024-ABJ-00123  —  format libre"
+        />
+        {!data.matricule && (
+          <p className="text-xs flex items-center gap-1.5" style={{ color: "#F5C842" }}>
+            ⚠️ L'élève pourra être inscrit sans matricule. Pensez à le renseigner dès réception du document ministériel.
+          </p>
+        )}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+            Statut du matricule
+          </label>
+          <div className="flex gap-2 flex-wrap">
+            {[
+              { val: "en_attente", label: "⏳ En attente", color: "#F5C842" },
+              { val: "provisoire", label: "🔵 Provisoire", color: "#0080FF" },
+              { val: "officiel",   label: "✅ Officiel",   color: "#00C9A7" },
+            ].map(({ val, label, color }) => (
+              <button key={val} type="button"
+                onClick={() => onChange({ matricule_statut: val })}
+                className="flex-1 py-2 rounded-xl text-xs font-semibold transition-all"
+                style={{
+                  background: data.matricule_statut === val ? `${color}20` : "var(--m15-card)",
+                  border: `1px solid ${data.matricule_statut === val ? color : "var(--m15-border)"}`,
+                  color: data.matricule_statut === val ? color : "var(--m15-muted)",
+                }}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {data.matricule_statut === "provisoire" && (
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-widest mb-1.5" style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+              Numéro provisoire interne
+            </label>
+            <input
+              style={inputStyle}
+              value={data.matricule_provisoire}
+              onChange={e => onChange({ matricule_provisoire: e.target.value })}
+              placeholder="Référence interne temporaire"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -264,11 +324,18 @@ function EtapeRecap({
 
 /* ─── Succès ──────────────────────────────────────────────── */
 function EtapeSucces({
-  matricule, emailEleve, passwordEleve, onReset,
+  matricule, matricule_statut, emailEleve, passwordEleve, onReset,
 }: {
-  matricule?: string; emailEleve?: string; passwordEleve?: string; onReset: () => void;
+  matricule?: string | null; matricule_statut?: string;
+  emailEleve?: string; passwordEleve?: string; onReset: () => void;
 }) {
   const [, setLocation] = useLocation();
+  const statut = matricule_statut ?? "en_attente";
+  const badgeLabel = statut === "officiel" ? "✅ Matricule officiel"
+    : statut === "provisoire" ? "🔵 Provisoire"
+    : "⏳ En attente d'attribution";
+  const badgeColor = statut === "officiel" ? "#00C9A7" : statut === "provisoire" ? "#0080FF" : "#F5C842";
+
   return (
     <div className="flex flex-col items-center text-center gap-5 py-6">
       <div className="w-16 h-16 rounded-full flex items-center justify-center"
@@ -284,30 +351,41 @@ function EtapeSucces({
         </p>
       </div>
 
-      {matricule && (
-        <div className="rounded-xl p-4 w-full text-left space-y-3"
-          style={{ background: "var(--elevate-1)", border: "1px solid rgba(0,201,167,0.2)" }}>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--m15-muted)" }}>Matricule</span>
+      <div className="rounded-xl p-4 w-full text-left space-y-3"
+        style={{ background: "var(--elevate-1)", border: "1px solid rgba(0,201,167,0.2)" }}>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--m15-muted)" }}>Matricule</span>
+          {matricule ? (
             <span className="text-sm font-mono font-bold px-3 py-1 rounded-lg"
               style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7" }}>
               {matricule}
             </span>
-          </div>
-          {emailEleve && (
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "var(--m15-muted)" }}>
-                Identifiants élève (à communiquer)
-              </p>
-              <p className="text-sm" style={{ color: "var(--m15-white)" }}>Email : {emailEleve}</p>
-              {passwordEleve && <p className="text-sm" style={{ color: "var(--m15-white)" }}>Mot de passe temporaire : <strong style={{ color: "#F5C842" }}>{passwordEleve}</strong></p>}
-            </div>
+          ) : (
+            <span className="text-sm italic" style={{ color: "var(--m15-muted)" }}>Non renseigné</span>
           )}
-          <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
-            Lors de la première connexion, l'élève et le parent devront changer leur mot de passe.
-          </p>
+          <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
+            style={{ background: `${badgeColor}18`, color: badgeColor, border: `1px solid ${badgeColor}40` }}>
+            {badgeLabel}
+          </span>
         </div>
-      )}
+        {statut !== "officiel" && (
+          <p className="text-xs" style={{ color: "#F5C842" }}>
+            ⚠️ Pensez à renseigner le matricule officiel dès réception du document du Ministère.
+          </p>
+        )}
+        {emailEleve && (
+          <div className="pt-2" style={{ borderTop: "1px solid var(--m15-border)" }}>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "var(--m15-muted)" }}>
+              Identifiants élève (à communiquer)
+            </p>
+            <p className="text-sm" style={{ color: "var(--m15-white)" }}>Email : {emailEleve}</p>
+            {passwordEleve && <p className="text-sm" style={{ color: "var(--m15-white)" }}>Mot de passe temporaire : <strong style={{ color: "#F5C842" }}>{passwordEleve}</strong></p>}
+          </div>
+        )}
+        <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
+          Lors de la première connexion, l'élève et le parent devront changer leur mot de passe.
+        </p>
+      </div>
 
       <div className="flex gap-3 w-full">
         <button onClick={onReset}
@@ -331,12 +409,13 @@ export default function EleveForm() {
   const [, setLocation] = useLocation();
   const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
-  const [resultat, setResultat] = useState<{ matricule?: string; emailEleve?: string; passwordEleve?: string }>({});
+  const [resultat, setResultat] = useState<{ matricule?: string | null; matricule_statut?: string; emailEleve?: string; passwordEleve?: string }>({});
 
   const ANNEE = new Date().getFullYear();
   const [eleveData, setEleveData] = useState<EleveData>({
     nom: "", prenoms: "", date_naissance: "", lieu_naissance: "",
     sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE),
+    matricule: "", matricule_statut: "en_attente", matricule_provisoire: "",
   });
   const [parentData, setParentData] = useState<ParentData>({
     parent_nom: "", parent_prenoms: "", parent_email: "",
@@ -385,6 +464,9 @@ export default function EleveForm() {
           adresse: eleveData.adresse || undefined,
           situation_familiale: eleveData.situation_familiale || undefined,
           annee_inscription: parseInt(eleveData.annee_inscription),
+          matricule: eleveData.matricule || undefined,
+          matricule_statut: (eleveData.matricule_statut || undefined) as InscrireEleveInputMatriculeStatut | undefined,
+          matricule_provisoire: eleveData.matricule_provisoire || undefined,
           parent_nom: parentData.parent_nom,
           parent_prenoms: parentData.parent_prenoms,
           parent_email: parentData.parent_email,
@@ -393,7 +475,8 @@ export default function EleveForm() {
         },
       });
       setResultat({
-        matricule: result.matricule,
+        matricule: (result as unknown as Record<string, unknown>).matricule as string | null,
+        matricule_statut: (result as unknown as Record<string, unknown>).matricule_statut as string,
         emailEleve: result.email_eleve,
         passwordEleve: result.password_eleve_temporaire,
       });
@@ -406,7 +489,7 @@ export default function EleveForm() {
 
   const handleReset = () => {
     setStep(1); setSuccess(false); setConfirme(false); setResultat({});
-    setEleveData({ nom: "", prenoms: "", date_naissance: "", lieu_naissance: "", sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE) });
+    setEleveData({ nom: "", prenoms: "", date_naissance: "", lieu_naissance: "", sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE), matricule: "", matricule_statut: "en_attente", matricule_provisoire: "" });
     setParentData({ parent_nom: "", parent_prenoms: "", parent_email: "", parent_telephone: "", parent_lien: "", est_principal: true });
   };
 
@@ -437,7 +520,7 @@ export default function EleveForm() {
         {!success && <div className="mb-8"><Stepper current={step} /></div>}
 
         {success ? (
-          <EtapeSucces matricule={resultat.matricule} emailEleve={resultat.emailEleve} passwordEleve={resultat.passwordEleve} onReset={handleReset} />
+          <EtapeSucces matricule={resultat.matricule} matricule_statut={resultat.matricule_statut} emailEleve={resultat.emailEleve} passwordEleve={resultat.passwordEleve} onReset={handleReset} />
         ) : (
           <>
             <div className="mb-6">

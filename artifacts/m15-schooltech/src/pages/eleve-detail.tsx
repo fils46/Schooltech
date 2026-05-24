@@ -152,12 +152,174 @@ async function uploadDocument(eleveId: string, file: File, typeDocument: string,
   return res.json();
 }
 
+/* ─── Badge statut matricule ──────────────────────────────── */
+function BadgeMatricule({ statut }: { statut: string }) {
+  if (statut === "officiel") {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+        style={{ background: "rgba(0,201,167,0.15)", border: "1px solid rgba(0,201,167,0.4)", color: "#00C9A7" }}>
+        ✅ Matricule officiel
+      </span>
+    );
+  }
+  if (statut === "provisoire") {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+        style={{ background: "rgba(0,128,255,0.15)", border: "1px solid rgba(0,128,255,0.4)", color: "#0080FF" }}>
+        🔵 Matricule provisoire
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+      style={{ background: "rgba(245,200,66,0.15)", border: "1px solid rgba(245,200,66,0.4)", color: "#F5C842" }}>
+      ⏳ En attente
+    </span>
+  );
+}
+
+/* ─── Modal saisir matricule ──────────────────────────────── */
+function ModalSaisirMatricule({
+  eleveId, currentStatut, currentMatricule, currentProvisoire, onClose, onSuccess,
+}: {
+  eleveId: string;
+  currentStatut: string;
+  currentMatricule?: string | null;
+  currentProvisoire?: string | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const { toast } = useToast();
+  const token = localStorage.getItem("m15_token") ?? "";
+  const [matricule, setMatricule] = useState(currentMatricule ?? "");
+  const [statut, setStatut] = useState(currentStatut ?? "en_attente");
+  const [provisoire, setProvisoire] = useState(currentProvisoire ?? "");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+      const res = await fetch(`${basePath}/api/eleves/${eleveId}/matricule`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          matricule: matricule.trim() || null,
+          matricule_statut: statut,
+          matricule_provisoire: provisoire.trim() || null,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message ?? "Erreur");
+      }
+      toast({ title: "Matricule mis à jour" });
+      onSuccess();
+    } catch (err: unknown) {
+      toast({ title: "Erreur", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.7)" }} onClick={onClose} />
+      <div className="relative rounded-2xl p-6 w-full max-w-md space-y-5"
+        style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", zIndex: 1 }}>
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-lg" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
+            Saisir le matricule
+          </h3>
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg"
+            style={{ background: "var(--elevate-1)", color: "var(--m15-muted)" }}>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <p className="text-xs rounded-lg px-3 py-2" style={{ background: "rgba(245,200,66,0.08)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.2)" }}>
+          Le matricule est attribué exclusivement par le Ministère de l'Éducation Nationale. Aucun format imposé.
+        </p>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+              style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+              Numéro matricule
+            </label>
+            <input
+              value={matricule}
+              onChange={(e) => setMatricule(e.target.value)}
+              placeholder="Ex: CI-2024-ABJ-00123"
+              className="w-full outline-none rounded-xl px-3 py-2.5 text-sm font-mono"
+              style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+              style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+              Statut du matricule
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { val: "en_attente", label: "⏳ En attente", color: "#F5C842" },
+                { val: "provisoire", label: "🔵 Provisoire", color: "#0080FF" },
+                { val: "officiel",   label: "✅ Officiel",   color: "#00C9A7" },
+              ].map(({ val, label, color }) => (
+                <button key={val} onClick={() => setStatut(val)}
+                  className="py-2 rounded-xl text-xs font-semibold transition-all"
+                  style={{
+                    background: statut === val ? `${color}20` : "var(--elevate-1)",
+                    border: `1px solid ${statut === val ? color : "var(--m15-border)"}`,
+                    color: statut === val ? color : "var(--m15-muted)",
+                  }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {statut === "provisoire" && (
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+                style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+                Numéro provisoire interne
+              </label>
+              <input
+                value={provisoire}
+                onChange={(e) => setProvisoire(e.target.value)}
+                placeholder="Référence interne temporaire"
+                className="w-full outline-none rounded-xl px-3 py-2.5 text-sm"
+                style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-3 pt-2">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
+            style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}>
+            Annuler
+          </button>
+          <button onClick={handleSubmit} disabled={loading}
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+            style={{ background: "linear-gradient(135deg, #00C9A7, #0080FF)", color: "#fff", opacity: loading ? 0.7 : 1 }}>
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+            Enregistrer
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Onglet Informations ─────────────────────────────────── */
-function TabInfos({ eleve }: { eleve: Record<string, unknown> }) {
+function TabInfos({ eleve, canManage, onSaisirMatricule }: { eleve: Record<string, unknown>; canManage: boolean; onSaisirMatricule: () => void }) {
   const sfLabel: Record<string, string> = { pere_mere: "Père et mère", mere: "Mère seule", pere: "Père seul", tuteur: "Sous tutelle" };
+  const statutMatricule = String(eleve.matricule_statut ?? "en_attente");
   const rows = [
     { label: "Nom complet",         value: `${eleve.prenoms} ${eleve.nom}` },
-    { label: "Matricule",           value: String(eleve.matricule ?? "") },
     { label: "Date de naissance",   value: String(eleve.date_naissance ?? "—") },
     { label: "Lieu de naissance",   value: String(eleve.lieu_naissance ?? "—") },
     { label: "Sexe",                value: eleve.sexe === "M" ? "Masculin" : "Féminin" },
@@ -165,17 +327,45 @@ function TabInfos({ eleve }: { eleve: Record<string, unknown> }) {
     { label: "Situation familiale", value: sfLabel[String(eleve.situation_familiale ?? "")] ?? "—" },
     { label: "Année d'inscription", value: String(eleve.annee_inscription ?? "—") },
   ];
+  const affMatricule = eleve.matricule
+    ? String(eleve.matricule)
+    : eleve.matricule_provisoire
+      ? `${String(eleve.matricule_provisoire)} (provisoire)`
+      : "Non attribué";
+
   return (
     <div className="divide-y" style={{ borderColor: "var(--m15-border)" }}>
+      {/* Ligne matricule spéciale */}
+      <div className="flex items-center px-4 py-3 gap-4 flex-wrap">
+        <span className="text-xs w-40 flex-shrink-0 font-semibold uppercase tracking-wide"
+          style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>Matricule</span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-sm font-mono px-2 py-0.5 rounded text-xs"
+            style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7" }}>
+            {affMatricule}
+          </span>
+          <BadgeMatricule statut={statutMatricule} />
+          {canManage && statutMatricule !== "officiel" && (
+            <button onClick={onSaisirMatricule}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all"
+              style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}>
+              <Edit3 className="w-3 h-3" /> Saisir le matricule officiel
+            </button>
+          )}
+          {canManage && statutMatricule === "officiel" && (
+            <button onClick={onSaisirMatricule}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all"
+              style={{ background: "var(--elevate-1)", color: "var(--m15-muted)", border: "1px solid var(--m15-border)" }}>
+              <Edit3 className="w-3 h-3" /> Modifier
+            </button>
+          )}
+        </div>
+      </div>
       {rows.map(({ label, value }) => (
         <div key={label} className="flex items-center px-4 py-3 gap-4">
           <span className="text-xs w-40 flex-shrink-0 font-semibold uppercase tracking-wide"
             style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>{label}</span>
-          <span className="text-sm" style={{ color: "var(--m15-white)" }}>
-            {label === "Matricule"
-              ? <span className="font-mono px-2 py-0.5 rounded text-xs" style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7" }}>{value}</span>
-              : value}
-          </span>
+          <span className="text-sm" style={{ color: "var(--m15-white)" }}>{value}</span>
         </div>
       ))}
     </div>
@@ -490,6 +680,7 @@ export default function EleveDetail() {
 
   const [activeTab, setActiveTab] = useState("infos");
   const [showStatutModal, setShowStatutModal] = useState(false);
+  const [showMatriculeModal, setShowMatriculeModal] = useState(false);
 
   const { data: eleve, isLoading, error } = useGetEleve(
     eleveId,
@@ -547,6 +738,19 @@ export default function EleveDetail() {
           }}
         />
       )}
+      {showMatriculeModal && (
+        <ModalSaisirMatricule
+          eleveId={eleveId}
+          currentStatut={String(e.matricule_statut ?? "en_attente")}
+          currentMatricule={e.matricule as string | null}
+          currentProvisoire={e.matricule_provisoire as string | null}
+          onClose={() => setShowMatriculeModal(false)}
+          onSuccess={() => {
+            setShowMatriculeModal(false);
+            queryClient.invalidateQueries({ queryKey: getGetEleveQueryKey(eleveId) });
+          }}
+        />
+      )}
 
       {/* ── Header navigation ── */}
       <div className="flex items-center gap-3">
@@ -574,9 +778,10 @@ export default function EleveDetail() {
           <div className="flex items-center gap-3 mt-1.5 flex-wrap">
             <span className="text-xs font-mono px-2.5 py-1 rounded-lg"
               style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7" }}>
-              {String(e.matricule ?? "")}
+              {e.matricule ? String(e.matricule) : e.matricule_provisoire ? `${String(e.matricule_provisoire)} (prov.)` : "Sans matricule"}
             </span>
             <BadgeStatut statut={String(e.statut ?? "actif")} />
+            <BadgeMatricule statut={String(e.matricule_statut ?? "en_attente")} />
           </div>
         </div>
         {canManage && (
@@ -653,7 +858,7 @@ export default function EleveDetail() {
                 ))}
               </div>
             ) : (
-              <TabInfos eleve={e} />
+              <TabInfos eleve={e} canManage={canManage} onSaisirMatricule={() => setShowMatriculeModal(true)} />
             )
           )}
           {activeTab === "parents" && (

@@ -7,13 +7,15 @@ import {
   useRechercherEleves,
   getRechercherElevesQueryKey,
 } from "@workspace/api-client-react";
+import { useQuery } from "@tanstack/react-query";
 import {
   UserSquare, Plus, Search, Filter, Download,
   RefreshCw, ChevronLeft, ChevronRight, Users,
-  CheckCircle, ArrowRightLeft, XCircle, UserX,
+  CheckCircle, ArrowRightLeft, XCircle, UserX, AlertTriangle,
+  Clock, FileText,
 } from "lucide-react";
 
-/* ─── Badge statut ───────────────────────────────────────── */
+/* ─── Badge statut élève ─────────────────────────────────── */
 const STATUT_STYLES: Record<string, { bg: string; color: string; label: string }> = {
   actif:    { bg: "rgba(0,201,167,0.12)",  color: "#00C9A7", label: "Actif" },
   inactif:  { bg: "rgba(139,157,195,0.12)", color: "var(--m15-muted)", label: "Inactif" },
@@ -26,6 +28,25 @@ function BadgeStatut({ statut }: { statut: string }) {
   return (
     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
       style={{ background: s.bg, color: s.color }}>
+      {s.label}
+    </span>
+  );
+}
+
+/* ─── Badge matricule statut ─────────────────────────────── */
+const MAT_STATUT: Record<string, { bg: string; color: string; label: string; icon: typeof Clock }> = {
+  en_attente: { bg: "rgba(255,179,0,0.12)",  color: "#FFB300", label: "En attente", icon: Clock },
+  provisoire: { bg: "rgba(0,128,255,0.12)",  color: "#0080FF", label: "Provisoire",  icon: FileText },
+  officiel:   { bg: "rgba(0,201,167,0.12)",  color: "#00C9A7", label: "Officiel",    icon: CheckCircle },
+};
+
+function BadgeMatriculeStatut({ statut }: { statut: string }) {
+  const s = MAT_STATUT[statut] ?? MAT_STATUT.en_attente;
+  const Icon = s.icon;
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ background: s.bg, color: s.color }}>
+      <Icon className="w-3 h-3" />
       {s.label}
     </span>
   );
@@ -44,9 +65,13 @@ function Avatar({ nom, prenoms, photoUrl }: { nom: string; prenoms: string; phot
 
 /* ─── Export CSV ─────────────────────────────────────────── */
 function exportCsv(eleves: Array<Record<string, unknown>>) {
-  const header = ["Matricule", "Nom", "Prénoms", "Sexe", "Année inscription", "Statut"];
+  const header = ["Matricule", "Statut matricule", "Nom", "Prénoms", "Sexe", "Année inscription", "Statut"];
   const rows = eleves.map((e) => [
-    e.matricule, e.nom, e.prenoms, e.sexe === "M" ? "Masculin" : "Féminin", e.annee_inscription, e.statut,
+    e.matricule ?? "",
+    e.matricule_statut ?? "",
+    e.nom, e.prenoms,
+    e.sexe === "M" ? "Masculin" : "Féminin",
+    e.annee_inscription, e.statut,
   ]);
   const csv = [header, ...rows].map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -64,8 +89,25 @@ export default function EleveListe() {
   const [filtreStatut, setFiltreStatut] = useState("");
   const [filtreAnnee, setFiltreAnnee] = useState("");
   const [filtreSexe, setFiltreSexe] = useState("");
+  const [filtreMatriculeStatut, setFiltreMatriculeStatut] = useState("");
   const [recherche, setRecherche] = useState("");
   const [rechercheDebounced, setRechercheDebounced] = useState("");
+
+  const { data: sansMatData } = useQuery({
+    queryKey: ["eleves-sans-matricule-count"],
+    queryFn: async () => {
+      const token = localStorage.getItem("m15_token") ?? "";
+      const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+      const res = await fetch(`${basePath}/api/eleves/sans-matricule?limit=1`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return { total: 0 };
+      return res.json() as Promise<{ total: number }>;
+    },
+    enabled: canManage,
+    staleTime: 30000,
+  });
+  const nbSansMatricule = (sansMatData as { total?: number } | undefined)?.total ?? 0;
 
   const LIMIT = 20;
   const anneeActuelle = new Date().getFullYear();
@@ -92,14 +134,19 @@ export default function EleveListe() {
     { query: { queryKey: getRechercherElevesQueryKey(), enabled: isSearching } }
   );
 
-  const eleves = isSearching ? (searchData ?? []) : (listeData?.eleves ?? []);
-  const total = isSearching ? eleves.length : (listeData?.total ?? 0);
+  const elevesRaw = isSearching ? (searchData ?? []) : (listeData?.eleves ?? []);
+
+  const eleves = filtreMatriculeStatut
+    ? elevesRaw.filter((e) => (e as { matricule_statut?: string }).matricule_statut === filtreMatriculeStatut)
+    : elevesRaw;
+
+  const total = isSearching ? elevesRaw.length : (listeData?.total ?? 0);
   const totalPages = Math.ceil(total / LIMIT);
   const isLoading = isSearching ? searchLoading : listeLoading;
 
-  const totalActifs  = eleves.filter((e) => e.statut === "actif").length;
-  const totalTrans   = eleves.filter((e) => e.statut === "transfere").length;
-  const totalExclus  = eleves.filter((e) => e.statut === "exclu").length;
+  const totalActifs  = elevesRaw.filter((e) => e.statut === "actif").length;
+  const totalTrans   = elevesRaw.filter((e) => e.statut === "transfere").length;
+  const totalExclus  = elevesRaw.filter((e) => e.statut === "exclu").length;
 
   const handleRecherche = (v: string) => {
     setRecherche(v);
@@ -109,10 +156,12 @@ export default function EleveListe() {
 
   const resetFiltres = () => {
     setFiltreStatut(""); setFiltreAnnee(""); setFiltreSexe("");
+    setFiltreMatriculeStatut("");
     setRecherche(""); setRechercheDebounced(""); setPage(1);
   };
 
   const annees = Array.from({ length: 5 }, (_, i) => anneeActuelle - i);
+  const hasFiltres = !!(filtreStatut || filtreAnnee || filtreSexe || filtreMatriculeStatut || recherche);
 
   return (
     <div className="space-y-6 page-fade-in">
@@ -155,6 +204,25 @@ export default function EleveListe() {
           )}
         </div>
       </div>
+
+      {/* ── Bannière élèves sans matricule officiel ── */}
+      {canManage && nbSansMatricule > 0 && (
+        <div className="flex items-center justify-between gap-4 rounded-xl px-4 py-3"
+          style={{ background: "rgba(255,179,0,0.08)", border: "1px solid rgba(255,179,0,0.25)" }}>
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="w-4 h-4 flex-shrink-0" style={{ color: "#FFB300" }} />
+            <span className="text-sm font-medium" style={{ color: "#FFB300" }}>
+              {nbSansMatricule} élève{nbSansMatricule > 1 ? "s" : ""} sans matricule officiel
+            </span>
+          </div>
+          <button
+            onClick={() => { setFiltreMatriculeStatut("en_attente"); setPage(1); }}
+            className="text-xs px-3 py-1.5 rounded-lg font-medium flex-shrink-0 transition-all"
+            style={{ background: "rgba(255,179,0,0.15)", color: "#FFB300", border: "1px solid rgba(255,179,0,0.3)" }}>
+            Voir les élèves
+          </button>
+        </div>
+      )}
 
       {/* ── Compteurs ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -208,6 +276,24 @@ export default function EleveListe() {
         </select>
 
         <select
+          value={filtreMatriculeStatut}
+          onChange={(e) => { setFiltreMatriculeStatut(e.target.value); setPage(1); }}
+          className="px-3 py-2 rounded-lg text-sm outline-none"
+          style={{
+            background: "var(--elevate-1)",
+            border: filtreMatriculeStatut === "en_attente"
+              ? "1px solid rgba(255,179,0,0.4)"
+              : "1px solid var(--m15-border)",
+            color: filtreMatriculeStatut === "en_attente" ? "#FFB300" : "var(--m15-muted)",
+            fontFamily: "'DM Sans', sans-serif",
+          }}>
+          <option value="">Tout matricule</option>
+          <option value="en_attente">En attente de matricule</option>
+          <option value="provisoire">Matricule provisoire</option>
+          <option value="officiel">Matricule officiel</option>
+        </select>
+
+        <select
           value={filtreAnnee}
           onChange={(e) => { setFiltreAnnee(e.target.value); setPage(1); }}
           className="px-3 py-2 rounded-lg text-sm outline-none"
@@ -226,7 +312,7 @@ export default function EleveListe() {
           <option value="F">Féminin</option>
         </select>
 
-        {(filtreStatut || filtreAnnee || filtreSexe || recherche) && (
+        {hasFiltres && (
           <button onClick={resetFiltres} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm"
             style={{ color: "#FF4D6D", background: "rgba(255,77,109,0.08)", border: "1px solid rgba(255,77,109,0.2)" }}>
             <Filter className="w-3.5 h-3.5" /> Réinitialiser
@@ -258,44 +344,55 @@ export default function EleveListe() {
                 <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Aucun élève trouvé</p>
               </td></tr>
             ) : (
-              eleves.map((e) => (
-                <tr key={e.id}
-                  style={{ borderBottom: "1px solid var(--m15-border)" }}
-                  onMouseEnter={el => { (el.currentTarget as HTMLElement).style.background = "var(--elevate-1)"; }}
-                  onMouseLeave={el => { (el.currentTarget as HTMLElement).style.background = "transparent"; }}>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar nom={e.nom} prenoms={e.prenoms} photoUrl={e.photo_url} />
-                      <div>
-                        <p className="font-medium text-sm" style={{ color: "var(--m15-white)" }}>
-                          {e.prenoms} {e.nom}
-                        </p>
+              eleves.map((e) => {
+                const matStatut = (e as { matricule_statut?: string }).matricule_statut ?? "en_attente";
+                const matricule = (e as { matricule?: string | null }).matricule;
+                return (
+                  <tr key={e.id}
+                    style={{ borderBottom: "1px solid var(--m15-border)" }}
+                    onMouseEnter={el => { (el.currentTarget as HTMLElement).style.background = "var(--elevate-1)"; }}
+                    onMouseLeave={el => { (el.currentTarget as HTMLElement).style.background = "transparent"; }}>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar nom={e.nom} prenoms={e.prenoms} photoUrl={e.photo_url} />
+                        <div>
+                          <p className="font-medium text-sm" style={{ color: "var(--m15-white)" }}>
+                            {e.prenoms} {e.nom}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-xs font-mono px-2 py-0.5 rounded"
-                      style={{ background: "var(--elevate-2)", color: "#00C9A7" }}>
-                      {e.matricule}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm" style={{ color: "var(--m15-muted)" }}>
-                    {e.sexe === "M" ? "♂ Masculin" : "♀ Féminin"}
-                  </td>
-                  <td className="px-4 py-3 text-sm" style={{ color: "var(--m15-muted)" }}>
-                    {e.annee_inscription}
-                  </td>
-                  <td className="px-4 py-3"><BadgeStatut statut={e.statut} /></td>
-                  <td className="px-4 py-3 text-right">
-                    <Link href={`/eleves/${e.id}`}>
-                      <button className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all"
-                        style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
-                        Dossier →
-                      </button>
-                    </Link>
-                  </td>
-                </tr>
-              ))
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-1">
+                        {matricule ? (
+                          <span className="text-xs font-mono px-2 py-0.5 rounded w-fit"
+                            style={{ background: "var(--elevate-2)", color: "#00C9A7" }}>
+                            {matricule}
+                          </span>
+                        ) : (
+                          <span className="text-xs italic" style={{ color: "var(--m15-muted)" }}>—</span>
+                        )}
+                        <BadgeMatriculeStatut statut={matStatut} />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm" style={{ color: "var(--m15-muted)" }}>
+                      {e.sexe === "M" ? "♂ Masculin" : "♀ Féminin"}
+                    </td>
+                    <td className="px-4 py-3 text-sm" style={{ color: "var(--m15-muted)" }}>
+                      {e.annee_inscription}
+                    </td>
+                    <td className="px-4 py-3"><BadgeStatut statut={e.statut} /></td>
+                    <td className="px-4 py-3 text-right">
+                      <Link href={`/eleves/${e.id}`}>
+                        <button className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all"
+                          style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
+                          Dossier →
+                        </button>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

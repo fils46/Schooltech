@@ -123,6 +123,7 @@ import type {
   ElevesClasseResponse,
   ElevesListeResponse,
   ElevesRisqueResponse,
+  ElevesSansMatriculeResponse,
   EmettreFactureBody,
   EmploiGrilleResponse,
   EmploiTempsEnfantResponse,
@@ -170,6 +171,7 @@ import type {
   GetDevoirsAVenirParams,
   GetDisponibiliteSalleParams,
   GetElevesARisqueParams,
+  GetElevesSansMatriculeParams,
   GetEmploiClasseParams,
   GetEmploiProfesseurParams,
   GetEmploiSalleParams,
@@ -253,6 +255,8 @@ import type {
   MessageItemResponse,
   MessageResponse,
   MessagesListeResponse,
+  MettreAJourMatriculeInput,
+  MettreAJourMatriculeResponse,
   ModifierCoefficientInput,
   ModifierConseilInput,
   ModifierEleveInput,
@@ -2076,6 +2080,90 @@ export function useGetStatsEtablissement<TData = Awaited<ReturnType<typeof getSt
 
 
 
+export const getGetElevesSansMatriculeUrl = (params?: GetElevesSansMatriculeParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/eleves/sans-matricule?${stringifiedParams}` : `/api/eleves/sans-matricule`
+}
+
+/**
+ * @summary Lister les élèves sans matricule officiel
+ */
+export const getElevesSansMatricule = async (params?: GetElevesSansMatriculeParams, options?: RequestInit): Promise<ElevesSansMatriculeResponse> => {
+
+  return customFetch<ElevesSansMatriculeResponse>(getGetElevesSansMatriculeUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetElevesSansMatriculeQueryKey = (params?: GetElevesSansMatriculeParams,) => {
+    return [
+    `/api/eleves/sans-matricule`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetElevesSansMatriculeQueryOptions = <TData = Awaited<ReturnType<typeof getElevesSansMatricule>>, TError = ErrorType<unknown>>(params?: GetElevesSansMatriculeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElevesSansMatricule>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetElevesSansMatriculeQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getElevesSansMatricule>>> = ({ signal }) => getElevesSansMatricule(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getElevesSansMatricule>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetElevesSansMatriculeQueryResult = NonNullable<Awaited<ReturnType<typeof getElevesSansMatricule>>>
+export type GetElevesSansMatriculeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les élèves sans matricule officiel
+ */
+
+export function useGetElevesSansMatricule<TData = Awaited<ReturnType<typeof getElevesSansMatricule>>, TError = ErrorType<unknown>>(
+ params?: GetElevesSansMatriculeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getElevesSansMatricule>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetElevesSansMatriculeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export const getInscrireEleveUrl = () => {
 
 
@@ -2532,6 +2620,78 @@ export const useSupprimerEleve = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getSupprimerEleveMutationOptions(options));
+    }
+
+export const getMettreAJourMatriculeUrl = (id: string,) => {
+
+
+
+
+  return `/api/eleves/${id}/matricule`
+}
+
+/**
+ * @summary Mettre à jour le matricule d'un élève
+ */
+export const mettreAJourMatricule = async (id: string,
+    mettreAJourMatriculeInput: MettreAJourMatriculeInput, options?: RequestInit): Promise<MettreAJourMatriculeResponse> => {
+
+  return customFetch<MettreAJourMatriculeResponse>(getMettreAJourMatriculeUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      mettreAJourMatriculeInput,)
+  }
+);}
+
+
+
+
+export const getMettreAJourMatriculeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mettreAJourMatricule>>, TError,{id: string;data: BodyType<MettreAJourMatriculeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof mettreAJourMatricule>>, TError,{id: string;data: BodyType<MettreAJourMatriculeInput>}, TContext> => {
+
+const mutationKey = ['mettreAJourMatricule'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof mettreAJourMatricule>>, {id: string;data: BodyType<MettreAJourMatriculeInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  mettreAJourMatricule(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MettreAJourMatriculeMutationResult = NonNullable<Awaited<ReturnType<typeof mettreAJourMatricule>>>
+    export type MettreAJourMatriculeMutationBody = BodyType<MettreAJourMatriculeInput>
+    export type MettreAJourMatriculeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Mettre à jour le matricule d'un élève
+ */
+export const useMettreAJourMatricule = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mettreAJourMatricule>>, TError,{id: string;data: BodyType<MettreAJourMatriculeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof mettreAJourMatricule>>,
+        TError,
+        {id: string;data: BodyType<MettreAJourMatriculeInput>},
+        TContext
+      > => {
+      return useMutation(getMettreAJourMatriculeMutationOptions(options));
     }
 
 export const getChangerStatutEleveUrl = (id: string,) => {

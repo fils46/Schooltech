@@ -550,6 +550,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatsEtablissement"
 
+  /eleves/sans-matricule:
+    get:
+      operationId: getElevesSansMatricule
+      tags: [eleves]
+      summary: Lister les élèves sans matricule officiel
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Élèves sans matricule officiel
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ElevesSansMatriculeResponse"
+
   /eleves/inscrire:
     post:
       operationId: inscrireEleve
@@ -705,6 +729,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
+
+  /eleves/{id}/matricule:
+    put:
+      operationId: mettreAJourMatricule
+      tags: [eleves]
+      summary: Mettre à jour le matricule d'un élève
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MettreAJourMatriculeInput"
+      responses:
+        "200":
+          description: Matricule mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MettreAJourMatriculeResponse"
 
   /eleves/{id}/statut:
     put:
@@ -7220,7 +7271,7 @@ components:
 
     EleveResume:
       type: object
-      required: [id, matricule, nom, prenoms, sexe, annee_inscription, statut]
+      required: [id, nom, prenoms, sexe, annee_inscription, statut, matricule_statut]
       properties:
         id:
           type: string
@@ -7229,7 +7280,12 @@ components:
         utilisateur_id:
           type: ["string", "null"]
         matricule:
+          type: ["string", "null"]
+        matricule_statut:
           type: string
+          enum: [en_attente, provisoire, officiel]
+        matricule_provisoire:
+          type: ["string", "null"]
         nom:
           type: string
         prenoms:
@@ -7352,6 +7408,13 @@ components:
           type: string
         annee_inscription:
           type: integer
+        matricule:
+          type: string
+        matricule_statut:
+          type: string
+          enum: [en_attente, provisoire, officiel]
+        matricule_provisoire:
+          type: string
         parent_nom:
           type: string
         parent_prenoms:
@@ -7366,16 +7429,57 @@ components:
     InscrireEleveResponse:
       type: object
       properties:
+        success:
+          type: boolean
         message:
           type: string
         eleve:
           $ref: "#/components/schemas/EleveResume"
         matricule:
+          type: ["string", "null"]
+        matricule_statut:
           type: string
         email_eleve:
           type: string
         password_eleve_temporaire:
           type: string
+
+    MettreAJourMatriculeInput:
+      type: object
+      properties:
+        matricule:
+          type: ["string", "null"]
+        matricule_statut:
+          type: string
+          enum: [en_attente, provisoire, officiel]
+        matricule_provisoire:
+          type: ["string", "null"]
+
+    MettreAJourMatriculeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        eleve:
+          $ref: "#/components/schemas/EleveResume"
+
+    ElevesSansMatriculeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        eleves:
+          type: array
+          items:
+            $ref: "#/components/schemas/EleveResume"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
 
     ModifierEleveInput:
       type: object
