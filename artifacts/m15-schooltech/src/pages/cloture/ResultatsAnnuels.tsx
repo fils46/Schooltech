@@ -40,8 +40,8 @@ const DECISION_LABELS: Record<string, { label: string; color: string }> = {
 export default function ResultatsAnnuels() {
   const { user } = useAuth();
   const [anneeId, setAnneeId] = useState("");
-  const [classeId, setClasseId] = useState("");
-  const [filtreDecision, setFiltreDecision] = useState("");
+  const [classeId, setClasseId] = useState("__all__");
+  const [filtreDecision, setFiltreDecision] = useState("__all__");
   const [search, setSearch] = useState("");
 
   const { data: anneesData } = useListerAnneesScolaires();
@@ -53,9 +53,9 @@ export default function ResultatsAnnuels() {
   const classes = (classesData as { data?: { classes?: Array<{ id: string; nom: string }> } })?.data?.classes ?? [];
 
   const { data: resultatsData } = useCalculerResultatsClasse(
-    classeId,
+    classeId === "__all__" ? "" : classeId,
     { annee_scolaire_id: selectedAnnee },
-    { query: { enabled: !!classeId && !!selectedAnnee, queryKey: getCalculerResultatsClasseQueryKey(classeId, { annee_scolaire_id: selectedAnnee }) } }
+    { query: { enabled: !!classeId && classeId !== "__all__" && !!selectedAnnee, queryKey: getCalculerResultatsClasseQueryKey(classeId === "__all__" ? "" : classeId, { annee_scolaire_id: selectedAnnee }) } }
   );
   const resultats = (resultatsData as { data?: { eleves?: EleveResult[]; stats?: { total: number; admis: number; redoublants: number; sans_decision: number } } })?.data;
   const eleves = resultats?.eleves ?? [];
@@ -63,13 +63,13 @@ export default function ResultatsAnnuels() {
 
   const { data: statsGlobData } = useGetStatsCloture(
     { annee_scolaire_id: selectedAnnee },
-    { query: { enabled: !!selectedAnnee && !classeId, queryKey: getGetStatsClotureQueryKey({ annee_scolaire_id: selectedAnnee }) } }
+    { query: { enabled: !!selectedAnnee && classeId === "__all__", queryKey: getGetStatsClotureQueryKey({ annee_scolaire_id: selectedAnnee }) } }
   );
   const totaux = (statsGlobData as { data?: { totaux?: { total: number; admis: number; redoublants: number; taux_reussite: number } } })?.data?.totaux;
 
   const filtered = eleves.filter(e => {
     const matchSearch = !search || `${e.prenom} ${e.nom} ${e.matricule ?? ""}`.toLowerCase().includes(search.toLowerCase());
-    const matchDecision = !filtreDecision || e.decision_enregistree === filtreDecision;
+    const matchDecision = filtreDecision === "__all__" || e.decision_enregistree === filtreDecision;
     return matchSearch && matchDecision;
   });
 
@@ -86,7 +86,7 @@ export default function ResultatsAnnuels() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `resultats_annuels_${classeId || "etablissement"}.csv`;
+    a.download = `resultats_annuels_${classeId === "__all__" ? "etablissement" : classeId}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -163,7 +163,7 @@ export default function ResultatsAnnuels() {
             <SelectValue placeholder="Toutes les classes" />
           </SelectTrigger>
           <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            <SelectItem value="" className="text-white">Toutes les classes</SelectItem>
+            <SelectItem value="__all__" className="text-white">Toutes les classes</SelectItem>
             {classes.map(c => <SelectItem key={c.id} value={c.id} className="text-white">{c.nom}</SelectItem>)}
           </SelectContent>
         </Select>
@@ -172,7 +172,7 @@ export default function ResultatsAnnuels() {
             <SelectValue placeholder="Toutes décisions" />
           </SelectTrigger>
           <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            <SelectItem value="" className="text-white">Toutes décisions</SelectItem>
+            <SelectItem value="__all__" className="text-white">Toutes décisions</SelectItem>
             {Object.entries(DECISION_LABELS).map(([k, v]) => (
               <SelectItem key={k} value={k} className="text-white">{v.label}</SelectItem>
             ))}
@@ -204,7 +204,7 @@ export default function ResultatsAnnuels() {
                 </tr>
               </thead>
               <tbody>
-                {!classeId ? (
+                {classeId === "__all__" ? (
                   <tr><td colSpan={5} className="text-center text-[#8B9DC3] py-8">
                     Sélectionnez une classe pour voir les résultats individuels
                   </td></tr>
