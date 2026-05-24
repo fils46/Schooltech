@@ -13,7 +13,7 @@ const router = Router();
 // Dev ne crée que les directeurs ; c'est le directeur qui crée les membres de son école.
 const CREATION_PERMISSIONS: Record<string, string[]> = {
   dev: ["directeur"],
-  directeur: ["censeur", "professeur", "eleve", "parent"],
+  directeur: ["censeur", "professeur", "eleve", "parent", "infirmier"],
   censeur: ["professeur", "eleve", "parent"],
 };
 
@@ -56,6 +56,27 @@ router.post(
     if (existing) {
       res.status(400).json({ message: "Un utilisateur avec cet email existe déjà." });
       return;
+    }
+
+    // Vérifier unicité infirmier par établissement
+    if (role === "infirmier" && etabId) {
+      const [infirmierExistant] = await db
+        .select()
+        .from(utilisateursTable)
+        .where(
+          and(
+            eq(utilisateursTable.etablissement_id, etabId),
+            eq(utilisateursTable.role, "infirmier"),
+            eq(utilisateursTable.actif, true)
+          )
+        );
+      if (infirmierExistant) {
+        res.status(400).json({
+          message:
+            "Un compte infirmier est déjà actif pour cet établissement. Désactivez-le avant d'en créer un nouveau.",
+        });
+        return;
+      }
     }
 
     // Générer mot de passe temporaire

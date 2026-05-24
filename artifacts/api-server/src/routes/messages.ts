@@ -104,6 +104,17 @@ router.get("/messages/contacts", authMiddleware, async (req, res) => {
     );
     contacts.push(...parents, ...admins);
 
+  } else if (user.role === "infirmier") {
+    /* Infirmier → directeur + censeur uniquement */
+    const admins = await db.select().from(utilisateursTable).where(
+      and(
+        eq(utilisateursTable.etablissement_id, etabId),
+        or(eq(utilisateursTable.role, "directeur"), eq(utilisateursTable.role, "censeur")),
+        eq(utilisateursTable.actif, true)
+      )
+    );
+    contacts.push(...admins);
+
   } else if (user.role === "educateur") {
     /* Parents de l'établissement + censeur + directeur */
     const parents = await db.select().from(utilisateursTable).where(

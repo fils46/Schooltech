@@ -33,7 +33,8 @@ const roleColors: Record<string, string> = {
   censeur: "bg-cyan-500",
   professeur: "bg-orange-500",
   eleve: "bg-green-500",
-  parent: "bg-[var(--m15-card2)]"
+  parent: "bg-[var(--m15-card2)]",
+  infirmier: "bg-teal-600",
 };
 
 const utilisateurSchema = z.object({
@@ -41,7 +42,7 @@ const utilisateurSchema = z.object({
   prenoms: z.string().optional(),
   email: z.string().email("Invalide"),
   telephone: z.string().optional(),
-  role: z.enum(["dev", "directeur", "censeur", "professeur", "eleve", "parent"]),
+  role: z.enum(["dev", "directeur", "censeur", "professeur", "eleve", "parent", "infirmier"]),
   etablissement_id: z.string().optional()
 });
 
@@ -57,10 +58,16 @@ export default function Utilisateurs() {
   const queryClient = useQueryClient();
 
   const isDev = user?.role === "dev";
+  const isDirecteur = user?.role === "directeur";
 
   const { data: utilisateurs, isLoading } = useListerUtilisateurs(
     { role: roleFilter !== "all" ? roleFilter : undefined },
     { query: { queryKey: getListerUtilisateursQueryKey({ role: roleFilter !== "all" ? roleFilter : undefined }) } }
+  );
+
+  const { data: infirmierActif } = useListerUtilisateurs(
+    { role: "infirmier", actif: "true" } as any,
+    { query: { queryKey: getListerUtilisateursQueryKey({ role: "infirmier" }), enabled: isDirecteur } }
   );
 
   const { data: etablissements } = useListerEtablissements(
@@ -82,6 +89,9 @@ export default function Utilisateurs() {
       etablissement_id: ""
     },
   });
+
+  const selectedRole = form.watch("role");
+  const infirmierDejaActif = isDirecteur && (infirmierActif as any)?.length > 0;
 
   const onSubmit = (data: UtilisateurFormValues) => {
     createMutation.mutate({ 
@@ -134,6 +144,7 @@ export default function Utilisateurs() {
               <SelectItem value="professeur">Professeur</SelectItem>
               <SelectItem value="eleve">Élève</SelectItem>
               <SelectItem value="parent">Parent</SelectItem>
+              <SelectItem value="infirmier">Infirmier</SelectItem>
             </SelectContent>
           </Select>
 
@@ -215,12 +226,19 @@ export default function Utilisateurs() {
                               <SelectItem value="professeur">Professeur</SelectItem>
                               <SelectItem value="eleve">Élève</SelectItem>
                               <SelectItem value="parent">Parent</SelectItem>
+                              <SelectItem value="infirmier">Infirmier(e)</SelectItem>
                             </>
                           )}
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
+
+                  {selectedRole === "infirmier" && infirmierDejaActif && (
+                    <div className="rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-400">
+                      Un compte infirmier est déjà actif pour cet établissement. Désactivez-le avant d'en créer un nouveau.
+                    </div>
+                  )}
 
                   {isDev && (
                     <div className="space-y-2">
