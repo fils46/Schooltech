@@ -673,6 +673,122 @@ export interface ClassesListeResponse {
   total: number;
 }
 
+export type TrimestreNumero = typeof TrimestreNumero[keyof typeof TrimestreNumero];
+
+
+export const TrimestreNumero = {
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+} as const;
+
+export interface Trimestre {
+  numero: TrimestreNumero;
+  date_debut: string;
+  date_fin: string;
+}
+
+export interface TrimestreActifResponse {
+  annee_scolaire_id?: string;
+  trimestre_numero?: number | null;
+  trimestre?: Trimestre | null;
+}
+
+export interface MatiereInput {
+  nom: string;
+  code: string;
+  couleur?: string | null;
+  etablissement_id?: string;
+}
+
+export interface MatiereResponse {
+  id: string;
+  etablissement_id: string;
+  nom: string;
+  code: string;
+  couleur?: string | null;
+  actif: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface MatieresListResponse {
+  matieres: MatiereResponse[];
+  total: number;
+}
+
+export interface MatiereClasseResponse {
+  id: string;
+  matiere_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  coefficient: number;
+  nb_heures_semaine?: number | null;
+  est_eliminatoire?: boolean;
+  matiere_nom?: string;
+  matiere_code?: string;
+  matiere_couleur?: string | null;
+}
+
+export interface MatieresByClasseResponse {
+  matieres: MatiereClasseResponse[];
+  total_coefficient: number;
+}
+
+export interface AssignerMatiereInput {
+  matiere_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  coefficient?: number;
+  nb_heures_semaine?: number | null;
+  est_eliminatoire?: boolean;
+}
+
+export type AssignerMatieresMasseInputMatieresItem = {
+  matiere_id: string;
+  coefficient?: number;
+  nb_heures_semaine?: number | null;
+  est_eliminatoire?: boolean;
+};
+
+export interface AssignerMatieresMasseInput {
+  classe_id: string;
+  annee_scolaire_id: string;
+  matieres: AssignerMatieresMasseInputMatieresItem[];
+}
+
+export interface AssignerMasseResponse {
+  success: boolean;
+  total: number;
+  errors: string[];
+}
+
+export interface ModifierCoefficientInput {
+  coefficient?: number;
+  nb_heures_semaine?: number | null;
+  est_eliminatoire?: boolean;
+}
+
+export interface DupliquerMatieresPourClasseInput {
+  source_classe_id: string;
+  cible_classe_id: string;
+  annee_scolaire_id: string;
+}
+
+export interface DupliquerAnneeInput {
+  source_annee_id: string;
+  cible_annee_id: string;
+}
+
+export type AnneeScolaireStatut = typeof AnneeScolaireStatut[keyof typeof AnneeScolaireStatut];
+
+
+export const AnneeScolaireStatut = {
+  a_venir: 'a_venir',
+  en_cours: 'en_cours',
+  cloturee: 'cloturee',
+} as const;
+
 export interface AnneeScolaire {
   id: string;
   etablissement_id: string;
@@ -680,6 +796,8 @@ export interface AnneeScolaire {
   date_debut: string;
   date_fin: string;
   est_active: boolean;
+  statut: AnneeScolaireStatut;
+  trimestres?: Trimestre[] | null;
   created_at?: string;
 }
 
@@ -3409,6 +3527,25 @@ export type ListerClassesParams = {
 annee_scolaire?: number;
 annee_scolaire_id?: string;
 niveau?: string;
+};
+
+export type ModifierTrimestresBody = {
+  trimestres: Trimestre[];
+};
+
+export type ListerMatieresParams = {
+actif?: boolean;
+classe_id?: string;
+annee_scolaire_id?: string;
+};
+
+export type GetMatieresByClasseParams = {
+annee_scolaire_id?: string;
+};
+
+export type RetirerMatiereClasse200 = {
+  success?: boolean;
+  message?: string;
 };
 
 export type ListerCreneauxParams = {

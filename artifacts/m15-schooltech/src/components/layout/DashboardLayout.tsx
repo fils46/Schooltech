@@ -47,14 +47,18 @@ const navConfig: Record<string, Section[]> = {
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
         { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
+        { label: "Matières",         href: "/matieres",         icon: BookMarked },
+        { label: "Mat. par classe",  href: "/matieres/classe",  icon: BookMarked },
       ],
     },
     {
       title: "BULLETINS",
       links: [
-        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
-        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
-        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
+        { label: "Config. matières", href: "/matieres-config",   icon: BookMarked },
+        { label: "Matières",         href: "/matieres",          icon: BookMarked },
+        { label: "Mat. par classe",  href: "/matieres/classe",   icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",         icon: FileSpreadsheet },
+        { label: "Conseils classe",  href: "/conseils-classe",   icon: UsersRound },
       ],
     },
     {
@@ -168,9 +172,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "BULLETINS",
       links: [
-        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
-        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
-        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
+        { label: "Config. matières", href: "/matieres-config",   icon: BookMarked },
+        { label: "Matières",         href: "/matieres",          icon: BookMarked },
+        { label: "Mat. par classe",  href: "/matieres/classe",   icon: BookMarked },
+        { label: "Bulletins",        href: "/bulletins",         icon: FileSpreadsheet },
+        { label: "Conseils classe",  href: "/conseils-classe",   icon: UsersRound },
       ],
     },
     {
@@ -504,6 +510,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/annees-scolaires": "Années scolaires",
   "/filieres":         "Filières",
   "/matieres-config":  "Configuration des Matières",
+  "/matieres":         "Gestion des Matières",
+  "/matieres/classe":  "Matières par classe",
   "/bulletins":        "Gestion des Bulletins",
   "/mes-bulletins":    "Mes Bulletins",
   "/conseils-classe":          "Conseils de Classe",

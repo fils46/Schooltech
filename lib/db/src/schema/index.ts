@@ -42,3 +42,5 @@ export * from "./sanctions";
 export * from "./scolarite";
 export * from "./honoraires";
 export * from "./clotureAnnee";
+export * from "./matieres";
+export * from "./matiereClasses";

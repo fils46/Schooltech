@@ -96,6 +96,14 @@ Module 03-B — Clôture d'année & Promotions (complet) :
 - Notifications parents automatiques lors de la publication des décisions
 - Historique des promotions par établissement/année
 
+Module 04-B — Matières, Coefficients & Années Scolaires (complet) :
+- 2 tables DB : matieres (catalogue par établissement), matiere_classes (liaison matière↔classe avec coeff, heures, éliminatoire)
+- Enrichissement table annees_scolaires : enum statut (en_preparation, active, cloturee), colonne trimestres (JSONB)
+- 15 endpoints API REST : 7 sous /api/annees-scolaires/... + 8 sous /api/matieres/...
+- Pages : GestionMatieres (/matieres), MatieresByClasse (/matieres/classe), annees-scolaires enrichi (trimestres, clôture)
+- Sidebar ACADÉMIQUE directeur + BULLETINS censeur : liens Matières + Mat. par classe ajoutés
+- Titles de page enregistrés dans DashboardLayout
+
 Module 16 — Infirmerie Numérique (complet) :
 - 4 tables DB : dossiers_medicaux, consultations_infirmerie, stocks_infirmerie, mouvements_stocks
 - 15 endpoints API REST sous /api/infirmerie/...

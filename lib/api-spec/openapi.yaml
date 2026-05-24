@@ -1246,6 +1246,330 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /annees-scolaires/{id}/cloturer:
+    put:
+      operationId: cloturerAnneeScolaire
+      tags: [annees-scolaires]
+      summary: Clôturer une année scolaire
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Année clôturée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolaire"
+        "400":
+          description: Promotions non effectuées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /annees-scolaires/{id}/trimestres:
+    put:
+      operationId: modifierTrimestres
+      tags: [annees-scolaires]
+      summary: Modifier les trimestres d'une année scolaire
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [trimestres]
+              properties:
+                trimestres:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Trimestre"
+      responses:
+        "200":
+          description: Trimestres modifiés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnneeScolaire"
+
+  /annees-scolaires/trimestres/actifs:
+    get:
+      operationId: getTrimestresActifs
+      tags: [annees-scolaires]
+      summary: Trimestre en cours selon la date du jour
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Trimestre actif
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrimestreActifResponse"
+
+  /matieres:
+    get:
+      operationId: listerMatieres
+      tags: [matieres]
+      summary: Lister les matières d'un établissement
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: actif
+          in: query
+          schema: { type: boolean }
+        - name: classe_id
+          in: query
+          schema: { type: string }
+        - name: annee_scolaire_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des matières
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatieresListResponse"
+    post:
+      operationId: creerMatiere
+      tags: [matieres]
+      summary: Créer une matière
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatiereInput"
+      responses:
+        "201":
+          description: Matière créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereResponse"
+
+  /matieres/{id}:
+    put:
+      operationId: modifierMatiere
+      tags: [matieres]
+      summary: Modifier une matière
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatiereInput"
+      responses:
+        "200":
+          description: Matière modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereResponse"
+
+  /matieres/{id}/desactiver:
+    put:
+      operationId: desactiverMatiere
+      tags: [matieres]
+      summary: Désactiver une matière
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matière désactivée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereResponse"
+
+  /matieres/assigner:
+    post:
+      operationId: assignerMatiereClasse
+      tags: [matieres]
+      summary: Assigner une matière à une classe
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignerMatiereInput"
+      responses:
+        "201":
+          description: Liaison créée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereClasseResponse"
+
+  /matieres/assigner/masse:
+    post:
+      operationId: assignerMatieresMasse
+      tags: [matieres]
+      summary: Assigner plusieurs matières à une classe en masse
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignerMatieresMasseInput"
+      responses:
+        "200":
+          description: Assignation en masse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignerMasseResponse"
+
+  /matieres/classe/{classeId}:
+    get:
+      operationId: getMatieresByClasse
+      tags: [matieres]
+      summary: Matières d'une classe avec coefficients
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: annee_scolaire_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Matières de la classe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatieresByClasseResponse"
+
+  /matieres/assigner/{id}:
+    put:
+      operationId: modifierCoefficientClasse
+      tags: [matieres]
+      summary: Modifier coefficient / heures d'une liaison matière-classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifierCoefficientInput"
+      responses:
+        "200":
+          description: Liaison modifiée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatiereClasseResponse"
+    delete:
+      operationId: retirerMatiereClasse
+      tags: [matieres]
+      summary: Retirer une matière d'une classe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matière retirée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+
+  /matieres/dupliquer:
+    post:
+      operationId: dupliquerMatieresPourClasse
+      tags: [matieres]
+      summary: Dupliquer les matières d'une classe vers une autre
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DupliquerMatieresPourClasseInput"
+      responses:
+        "200":
+          description: Matières dupliquées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignerMasseResponse"
+
+  /matieres/dupliquer/annee:
+    post:
+      operationId: dupliquerVersNouvelleAnnee
+      tags: [matieres]
+      summary: Dupliquer toutes les matières vers une nouvelle année scolaire
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DupliquerAnneeInput"
+      responses:
+        "200":
+          description: Matières dupliquées vers nouvelle année
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignerMasseResponse"
+
   /filieres/creer:
     post:
       operationId: creerFiliere
@@ -6777,9 +7101,207 @@ components:
         total:
           type: integer
 
+    Trimestre:
+      type: object
+      required: [numero, date_debut, date_fin]
+      properties:
+        numero:
+          type: integer
+          enum: [1, 2, 3]
+        date_debut:
+          type: string
+        date_fin:
+          type: string
+
+    TrimestreActifResponse:
+      type: object
+      properties:
+        annee_scolaire_id:
+          type: string
+        trimestre_numero:
+          type: integer
+          nullable: true
+        trimestre:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/Trimestre"
+
+    MatiereInput:
+      type: object
+      required: [nom, code]
+      properties:
+        nom:
+          type: string
+        code:
+          type: string
+        couleur:
+          type: string
+          nullable: true
+        etablissement_id:
+          type: string
+
+    MatiereResponse:
+      type: object
+      required: [id, etablissement_id, nom, code, actif]
+      properties:
+        id:
+          type: string
+        etablissement_id:
+          type: string
+        nom:
+          type: string
+        code:
+          type: string
+        couleur:
+          type: string
+          nullable: true
+        actif:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    MatieresListResponse:
+      type: object
+      required: [matieres, total]
+      properties:
+        matieres:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatiereResponse"
+        total:
+          type: integer
+
+    MatiereClasseResponse:
+      type: object
+      required: [id, matiere_id, classe_id, annee_scolaire_id, coefficient]
+      properties:
+        id:
+          type: string
+        matiere_id:
+          type: string
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        coefficient:
+          type: number
+        nb_heures_semaine:
+          type: number
+          nullable: true
+        est_eliminatoire:
+          type: boolean
+        matiere_nom:
+          type: string
+        matiere_code:
+          type: string
+        matiere_couleur:
+          type: string
+          nullable: true
+
+    MatieresByClasseResponse:
+      type: object
+      required: [matieres, total_coefficient]
+      properties:
+        matieres:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatiereClasseResponse"
+        total_coefficient:
+          type: number
+
+    AssignerMatiereInput:
+      type: object
+      required: [matiere_id, classe_id, annee_scolaire_id]
+      properties:
+        matiere_id:
+          type: string
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        coefficient:
+          type: number
+        nb_heures_semaine:
+          type: number
+          nullable: true
+        est_eliminatoire:
+          type: boolean
+
+    AssignerMatieresMasseInput:
+      type: object
+      required: [classe_id, annee_scolaire_id, matieres]
+      properties:
+        classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+        matieres:
+          type: array
+          items:
+            type: object
+            required: [matiere_id]
+            properties:
+              matiere_id:
+                type: string
+              coefficient:
+                type: number
+              nb_heures_semaine:
+                type: number
+                nullable: true
+              est_eliminatoire:
+                type: boolean
+
+    AssignerMasseResponse:
+      type: object
+      required: [success, total, errors]
+      properties:
+        success:
+          type: boolean
+        total:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string
+
+    ModifierCoefficientInput:
+      type: object
+      properties:
+        coefficient:
+          type: number
+        nb_heures_semaine:
+          type: number
+          nullable: true
+        est_eliminatoire:
+          type: boolean
+
+    DupliquerMatieresPourClasseInput:
+      type: object
+      required: [source_classe_id, cible_classe_id, annee_scolaire_id]
+      properties:
+        source_classe_id:
+          type: string
+        cible_classe_id:
+          type: string
+        annee_scolaire_id:
+          type: string
+
+    DupliquerAnneeInput:
+      type: object
+      required: [source_annee_id, cible_annee_id]
+      properties:
+        source_annee_id:
+          type: string
+        cible_annee_id:
+          type: string
+
     AnneeScolaire:
       type: object
-      required: [id, etablissement_id, libelle, date_debut, date_fin, est_active]
+      required: [id, etablissement_id, libelle, date_debut, date_fin, est_active, statut]
       properties:
         id:
           type: string
@@ -6793,6 +7315,14 @@ components:
           type: string
         est_active:
           type: boolean
+        statut:
+          type: string
+          enum: [a_venir, en_cours, cloturee]
+        trimestres:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/Trimestre"
         created_at:
           type: string
           format: date-time

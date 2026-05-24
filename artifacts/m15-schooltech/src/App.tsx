@@ -37,6 +37,8 @@ import CahierTextesProfPage from "@/pages/cahier-textes-prof";
 import SaisieNotes from "@/pages/saisie-notes";
 import NoteEleveDetail from "@/pages/note-eleve-detail";
 import MatiereConfig from "@/pages/matiere-config";
+import GestionMatieres from "@/pages/matieres/GestionMatieres";
+import MatieresByClasse from "@/pages/matieres/MatieresByClasse";
 import BulletinGestion from "@/pages/bulletin-gestion";
 import BulletinDetail from "@/pages/bulletin-detail";
 import MesBulletins from "@/pages/mes-bulletins";
@@ -292,6 +294,23 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <SaisieNotes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* ── Module 04-B : Matières & Coefficients ── */}
+      <Route path="/matieres">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <GestionMatieres />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/matieres/classe">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MatieresByClasse />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

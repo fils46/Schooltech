@@ -934,6 +934,12 @@ export const ListerAnneesScolairesResponse = zod.object({
   "date_debut": zod.string(),
   "date_fin": zod.string(),
   "est_active": zod.boolean(),
+  "statut": zod.enum(['a_venir', 'en_cours', 'cloturee']),
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+})).nullish(),
   "created_at": zod.coerce.date().optional()
 })),
   "total": zod.number()
@@ -950,6 +956,12 @@ export const GetAnneeActiveResponse = zod.object({
   "date_debut": zod.string(),
   "date_fin": zod.string(),
   "est_active": zod.boolean(),
+  "statut": zod.enum(['a_venir', 'en_cours', 'cloturee']),
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+})).nullish(),
   "created_at": zod.coerce.date().optional()
 })
 
@@ -968,7 +980,296 @@ export const ActiverAnneeScolaireResponse = zod.object({
   "date_debut": zod.string(),
   "date_fin": zod.string(),
   "est_active": zod.boolean(),
+  "statut": zod.enum(['a_venir', 'en_cours', 'cloturee']),
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+})).nullish(),
   "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Clôturer une année scolaire
+ */
+export const CloturerAnneeScolaireParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const CloturerAnneeScolaireResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean(),
+  "statut": zod.enum(['a_venir', 'en_cours', 'cloturee']),
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+})).nullish(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Modifier les trimestres d'une année scolaire
+ */
+export const ModifierTrimestresParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierTrimestresBody = zod.object({
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+}))
+})
+
+export const ModifierTrimestresResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "libelle": zod.string(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string(),
+  "est_active": zod.boolean(),
+  "statut": zod.enum(['a_venir', 'en_cours', 'cloturee']),
+  "trimestres": zod.array(zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+})).nullish(),
+  "created_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Trimestre en cours selon la date du jour
+ */
+export const GetTrimestresActifsResponse = zod.object({
+  "annee_scolaire_id": zod.string().optional(),
+  "trimestre_numero": zod.number().nullish(),
+  "trimestre": zod.object({
+  "numero": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)]),
+  "date_debut": zod.string(),
+  "date_fin": zod.string()
+}).nullish()
+})
+
+
+/**
+ * @summary Lister les matières d'un établissement
+ */
+export const ListerMatieresQueryParams = zod.object({
+  "actif": zod.coerce.boolean().optional(),
+  "classe_id": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const ListerMatieresResponse = zod.object({
+  "matieres": zod.array(zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "couleur": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional(),
+  "updated_at": zod.coerce.date().optional()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Créer une matière
+ */
+export const CreerMatiereBody = zod.object({
+  "nom": zod.string(),
+  "code": zod.string(),
+  "couleur": zod.string().nullish(),
+  "etablissement_id": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier une matière
+ */
+export const ModifierMatiereParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierMatiereBody = zod.object({
+  "nom": zod.string(),
+  "code": zod.string(),
+  "couleur": zod.string().nullish(),
+  "etablissement_id": zod.string().optional()
+})
+
+export const ModifierMatiereResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "couleur": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional(),
+  "updated_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Désactiver une matière
+ */
+export const DesactiverMatiereParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DesactiverMatiereResponse = zod.object({
+  "id": zod.string(),
+  "etablissement_id": zod.string(),
+  "nom": zod.string(),
+  "code": zod.string(),
+  "couleur": zod.string().nullish(),
+  "actif": zod.boolean(),
+  "created_at": zod.coerce.date().optional(),
+  "updated_at": zod.coerce.date().optional()
+})
+
+
+/**
+ * @summary Assigner une matière à une classe
+ */
+export const AssignerMatiereClasseBody = zod.object({
+  "matiere_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "coefficient": zod.number().optional(),
+  "nb_heures_semaine": zod.number().nullish(),
+  "est_eliminatoire": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Assigner plusieurs matières à une classe en masse
+ */
+export const AssignerMatieresMasseBody = zod.object({
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "matieres": zod.array(zod.object({
+  "matiere_id": zod.string(),
+  "coefficient": zod.number().optional(),
+  "nb_heures_semaine": zod.number().nullish(),
+  "est_eliminatoire": zod.boolean().optional()
+}))
+})
+
+export const AssignerMatieresMasseResponse = zod.object({
+  "success": zod.boolean(),
+  "total": zod.number(),
+  "errors": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Matières d'une classe avec coefficients
+ */
+export const GetMatieresByClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const GetMatieresByClasseQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetMatieresByClasseResponse = zod.object({
+  "matieres": zod.array(zod.object({
+  "id": zod.string(),
+  "matiere_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "coefficient": zod.number(),
+  "nb_heures_semaine": zod.number().nullish(),
+  "est_eliminatoire": zod.boolean().optional(),
+  "matiere_nom": zod.string().optional(),
+  "matiere_code": zod.string().optional(),
+  "matiere_couleur": zod.string().nullish()
+})),
+  "total_coefficient": zod.number()
+})
+
+
+/**
+ * @summary Modifier coefficient / heures d'une liaison matière-classe
+ */
+export const ModifierCoefficientClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierCoefficientClasseBody = zod.object({
+  "coefficient": zod.number().optional(),
+  "nb_heures_semaine": zod.number().nullish(),
+  "est_eliminatoire": zod.boolean().optional()
+})
+
+export const ModifierCoefficientClasseResponse = zod.object({
+  "id": zod.string(),
+  "matiere_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "coefficient": zod.number(),
+  "nb_heures_semaine": zod.number().nullish(),
+  "est_eliminatoire": zod.boolean().optional(),
+  "matiere_nom": zod.string().optional(),
+  "matiere_code": zod.string().optional(),
+  "matiere_couleur": zod.string().nullish()
+})
+
+
+/**
+ * @summary Retirer une matière d'une classe
+ */
+export const RetirerMatiereClasseParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const RetirerMatiereClasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "message": zod.string().optional()
+})
+
+
+/**
+ * @summary Dupliquer les matières d'une classe vers une autre
+ */
+export const DupliquerMatieresPourClasseBody = zod.object({
+  "source_classe_id": zod.string(),
+  "cible_classe_id": zod.string(),
+  "annee_scolaire_id": zod.string()
+})
+
+export const DupliquerMatieresPourClasseResponse = zod.object({
+  "success": zod.boolean(),
+  "total": zod.number(),
+  "errors": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Dupliquer toutes les matières vers une nouvelle année scolaire
+ */
+export const DupliquerVersNouvelleAnneeBody = zod.object({
+  "source_annee_id": zod.string(),
+  "cible_annee_id": zod.string()
+})
+
+export const DupliquerVersNouvelleAnneeResponse = zod.object({
+  "success": zod.boolean(),
+  "total": zod.number(),
+  "errors": zod.array(zod.string())
 })
 
 
