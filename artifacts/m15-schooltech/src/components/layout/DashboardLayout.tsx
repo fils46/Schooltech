@@ -23,23 +23,6 @@ type NavLink = { label: string; href: string; icon: React.ElementType };
 type Section = { title: string; links: NavLink[] };
 
 const navConfig: Record<string, Section[]> = {
-  dev: [
-    {
-      title: "PRINCIPAL",
-      links: [
-        { label: "Tableau de bord", href: "/saas",                  icon: LayoutDashboard },
-        { label: "Établissements",  href: "/saas/etablissements",   icon: Building },
-        { label: "Logs d'activité", href: "/saas/logs",             icon: FileText },
-      ],
-    },
-    {
-      title: "GESTION",
-      links: [
-        { label: "Licences",     href: "/saas/licences", icon: Key },
-        { label: "Statistiques", href: "/saas",          icon: BarChart3 },
-      ],
-    },
-  ],
   directeur: [
     {
       title: "PRINCIPAL",

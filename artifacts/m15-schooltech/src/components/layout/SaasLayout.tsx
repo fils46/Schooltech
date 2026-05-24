@@ -3,18 +3,28 @@ import { useAuth } from "@/context/AuthContext";
 import {
   LayoutDashboard,
   Building2,
-  CreditCard,
   ScrollText,
   LogOut,
   ChevronRight,
+  Key,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const NAV = [
-  { href: "/saas", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/saas/etablissements", label: "Établissements", icon: Building2 },
-  { href: "/saas/licences", label: "Licences & Paiements", icon: CreditCard },
-  { href: "/saas/logs", label: "Logs & Activité", icon: ScrollText },
+const NAV_SECTIONS = [
+  {
+    title: "PRINCIPAL",
+    links: [
+      { href: "/saas",                  label: "Tableau de bord",  icon: LayoutDashboard, exact: true },
+      { href: "/saas/etablissements",   label: "Établissements",   icon: Building2 },
+      { href: "/saas/logs",             label: "Logs d'activité",  icon: ScrollText },
+    ],
+  },
+  {
+    title: "GESTION",
+    links: [
+      { href: "/saas/licences", label: "Licences & Paiements", icon: Key },
+    ],
+  },
 ];
 
 export function SaasLayout({ children }: { children: React.ReactNode }) {
@@ -34,31 +44,40 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
           <p className="text-xs font-medium mt-1 pl-1" style={{ color: "#00C9A7" }}>Admin SaaS</p>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {NAV.map(({ href, label, icon: Icon, exact }) => {
-            const active = exact ? location === href : location.startsWith(href);
-            return (
-              <Link key={href} href={href}>
-                <a
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
-                    active
-                      ? "text-[var(--m15-white)]"
-                      : "text-[var(--m15-muted)] hover:text-[var(--m15-white)]",
-                  )}
-                  style={active ? { backgroundColor: "rgba(0,201,167,0.15)", color: "#00C9A7" } : {}}
-                >
-                  <Icon
-                    className="w-4 h-4 flex-shrink-0"
-                    style={active ? { color: "#00C9A7" } : {}}
-                  />
-                  <span className="flex-1">{label}</span>
-                  {active && <ChevronRight className="w-3 h-3" style={{ color: "#00C9A7" }} />}
-                </a>
-              </Link>
-            );
-          })}
+        {/* Nav avec sections */}
+        <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+          {NAV_SECTIONS.map(({ title, links }) => (
+            <div key={title}>
+              <p className="px-3 mb-1 text-[10px] font-semibold tracking-widest uppercase" style={{ color: "rgba(139,157,195,0.6)" }}>
+                {title}
+              </p>
+              <div className="space-y-0.5">
+                {links.map(({ href, label, icon: Icon, exact }) => {
+                  const active = exact ? location === href : location.startsWith(href);
+                  return (
+                    <Link key={href} href={href}>
+                      <a
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
+                          active
+                            ? "text-[var(--m15-white)]"
+                            : "text-[var(--m15-muted)] hover:text-[var(--m15-white)]",
+                        )}
+                        style={active ? { backgroundColor: "rgba(0,201,167,0.15)", color: "#00C9A7" } : {}}
+                      >
+                        <Icon
+                          className="w-4 h-4 flex-shrink-0"
+                          style={active ? { color: "#00C9A7" } : {}}
+                        />
+                        <span className="flex-1">{label}</span>
+                        {active && <ChevronRight className="w-3 h-3" style={{ color: "#00C9A7" }} />}
+                      </a>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         {/* Utilisateur */}

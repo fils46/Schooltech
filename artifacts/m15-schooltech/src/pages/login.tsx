@@ -47,6 +47,8 @@ export default function Login() {
         login(tokens);
         if (tokens.premierLogin) {
           setLocation("/premier-login");
+        } else if (tokens.utilisateur.role === "dev") {
+          setLocation("/saas");
         } else {
           setLocation("/dashboard");
         }
