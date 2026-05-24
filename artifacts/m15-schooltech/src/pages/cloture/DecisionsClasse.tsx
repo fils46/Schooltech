@@ -200,14 +200,14 @@ export default function DecisionsClasse() {
   const needsDest = (dec: string) => dec === "admis" || dec === "admis_avec_reserve";
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white p-6">
+    <div className="min-h-screen bg-[#F0F4FF] dark:bg-[#0A1628] text-[#0A1628] dark:text-white p-6">
       {/* Header */}
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/cloture")} className="text-[#8B9DC3] hover:text-white">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/cloture")} className="text-[#5A6B8C] dark:text-[#8B9DC3] hover:text-[#0A1628] dark:hover:text-[#0A1628] dark:text-white">
           <ArrowLeft className="w-4 h-4 mr-1" /> Retour
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h1 className="text-2xl font-bold text-[#0A1628] dark:text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
             {classe?.nom ?? "Décisions de fin d'année"}
           </h1>
           {classe?.est_terminale && (
@@ -217,11 +217,11 @@ export default function DecisionsClasse() {
           )}
         </div>
         <Select value={selectedAnnee} onValueChange={setAnneeId}>
-          <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+          <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
             <SelectValue placeholder="Année" />
           </SelectTrigger>
-          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-white">{a.libelle}</SelectItem>)}
+          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+            {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-[#0A1628] dark:text-white">{a.libelle}</SelectItem>)}
           </SelectContent>
         </Select>
         <Button variant="outline" size="sm" onClick={appliquerAuto}
@@ -235,19 +235,19 @@ export default function DecisionsClasse() {
       </div>
 
       {/* Progression */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)] mb-4">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] mb-4">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[#8B9DC3] text-sm">{enregistrees} / {eleves.length} décisions enregistrées</span>
+            <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">{enregistrees} / {eleves.length} décisions enregistrées</span>
             <span className="text-[#00C9A7] font-bold">{pct}%</span>
           </div>
-          <div className="w-full bg-[#0A1628] rounded-full h-2">
+          <div className="w-full bg-[#F0F4FF] dark:bg-[#0A1628] rounded-full h-2">
             <div className="bg-[#00C9A7] h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
           </div>
           {criteres && (
-            <div className="flex gap-4 mt-2 text-xs text-[#8B9DC3]">
-              <span>Seuil admission : <b className="text-white">{criteres.moyenne_admission}/20</b></span>
-              <span>Seuil éliminatoire : <b className="text-white">{criteres.moyenne_eliminatoire ?? "5.00"}/20</b></span>
+            <div className="flex gap-4 mt-2 text-xs text-[#5A6B8C] dark:text-[#8B9DC3]">
+              <span>Seuil admission : <b className="text-[#0A1628] dark:text-white">{criteres.moyenne_admission}/20</b></span>
+              <span>Seuil éliminatoire : <b className="text-[#0A1628] dark:text-white">{criteres.moyenne_eliminatoire ?? "5.00"}/20</b></span>
             </div>
           )}
         </CardContent>
@@ -262,7 +262,7 @@ export default function DecisionsClasse() {
               "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
               filtre === f
                 ? "bg-[#00C9A7] text-[#0A1628] border-[#00C9A7]"
-                : "text-[#8B9DC3] border-[rgba(0,201,167,0.2)] hover:border-[#00C9A7]/50"
+                : "text-[#5A6B8C] dark:text-[#8B9DC3] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] hover:border-[#00C9A7]/50"
             )}>
             {f === "tous" ? "Tous" : f === "sans_decision" ? "Sans décision" : f === "admis" ? "Admis" : f === "redoublants" ? "Redoublants" : "Cas particuliers"}
           </button>
@@ -270,12 +270,12 @@ export default function DecisionsClasse() {
       </div>
 
       {/* Tableau */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[#8B9DC3] text-xs border-b border-[rgba(0,201,167,0.10)]">
+                <tr className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs border-b border-[rgba(0,0,0,0.06)] dark:border-[rgba(0,201,167,0.10)]">
                   <th className="text-left p-3 min-w-32">Élève</th>
                   <th className="text-center p-3">T1</th>
                   <th className="text-center p-3">T2</th>
@@ -290,7 +290,7 @@ export default function DecisionsClasse() {
               </thead>
               <tbody>
                 {filteredEleves.length === 0 ? (
-                  <tr><td colSpan={10} className="text-center text-[#8B9DC3] py-8">
+                  <tr><td colSpan={10} className="text-center text-[#5A6B8C] dark:text-[#8B9DC3] py-8">
                     {eleves.length === 0 ? "Aucun élève dans cette classe" : "Aucun élève dans ce filtre"}
                   </td></tr>
                 ) : filteredEleves.map((eleve) => {
@@ -303,10 +303,10 @@ export default function DecisionsClasse() {
 
                   return (
                     <tr key={eleve.eleve_id}
-                      className={cn("border-b border-[rgba(0,201,167,0.07)] hover:bg-[#0A1628]/30 transition-colors", rowColor)}>
+                      className={cn("border-b border-[rgba(0,0,0,0.04)] dark:border-[rgba(0,201,167,0.07)] hover:bg-[#E0E8F8] dark:hover:bg-[#F0F4FF] dark:bg-[#0A1628]/30 transition-colors", rowColor)}>
                       <td className="p-3">
-                        <div className="font-medium text-white">{eleve.prenom} {eleve.nom}</div>
-                        {eleve.matricule && <div className="text-[#8B9DC3] text-xs">{eleve.matricule}</div>}
+                        <div className="font-medium text-[#0A1628] dark:text-white">{eleve.prenom} {eleve.nom}</div>
+                        {eleve.matricule && <div className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">{eleve.matricule}</div>}
                         {eleve.bulletin_incomplet && (
                           <div className="flex items-center gap-1 text-[#F5C842] text-xs mt-0.5">
                             <AlertTriangle className="w-3 h-3" /> Bulletin incomplet
@@ -318,13 +318,13 @@ export default function DecisionsClasse() {
                           </div>
                         )}
                       </td>
-                      <td className="text-center p-3 text-[#8B9DC3] text-xs">{eleve.moyenne_t1?.toFixed(2) ?? "—"}</td>
-                      <td className="text-center p-3 text-[#8B9DC3] text-xs">{eleve.moyenne_t2?.toFixed(2) ?? "—"}</td>
-                      <td className="text-center p-3 text-[#8B9DC3] text-xs">{eleve.moyenne_t3?.toFixed(2) ?? "—"}</td>
+                      <td className="text-center p-3 text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">{eleve.moyenne_t1?.toFixed(2) ?? "—"}</td>
+                      <td className="text-center p-3 text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">{eleve.moyenne_t2?.toFixed(2) ?? "—"}</td>
+                      <td className="text-center p-3 text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">{eleve.moyenne_t3?.toFixed(2) ?? "—"}</td>
                       <td className="text-center p-3">
                         <span className={cn(
                           "text-lg font-bold",
-                          moy === null ? "text-[#8B9DC3]" : isAdmis ? "text-[#00C9A7]" : "text-[#FF4D6D]"
+                          moy === null ? "text-[#5A6B8C] dark:text-[#8B9DC3]" : isAdmis ? "text-[#00C9A7]" : "text-[#FF4D6D]"
                         )}>
                           {moy !== null ? moy.toFixed(2) : "—"}
                         </span>
@@ -344,10 +344,10 @@ export default function DecisionsClasse() {
                           value={dec?.decision || ""}
                           onValueChange={v => setDecision(eleve.eleve_id, "decision", v)}
                         >
-                          <SelectTrigger className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white text-xs h-8">
+                          <SelectTrigger className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white text-xs h-8">
                             <SelectValue placeholder="Choisir..." />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+                          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
                             {DECISION_OPTIONS
                               .filter(o => {
                                 if (classe?.est_terminale) return o.value === "oriente_sortie" || o.value === "exclu";
@@ -367,19 +367,19 @@ export default function DecisionsClasse() {
                             value={dec?.classe_destination_id || ""}
                             onValueChange={v => setDecision(eleve.eleve_id, "classe_destination_id", v)}
                           >
-                            <SelectTrigger className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white text-xs h-8">
+                            <SelectTrigger className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white text-xs h-8">
                               <SelectValue placeholder="Classe..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+                            <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
                               {classes.filter(c => c.id !== classeId).map(c => (
-                                <SelectItem key={c.id} value={c.id} className="text-white text-xs">{c.nom}</SelectItem>
+                                <SelectItem key={c.id} value={c.id} className="text-[#0A1628] dark:text-white text-xs">{c.nom}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         ) : dec?.decision === "redoublant" ? (
-                          <span className="text-[#8B9DC3] text-xs">Même classe</span>
+                          <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Même classe</span>
                         ) : (
-                          <span className="text-[#8B9DC3] text-xs">—</span>
+                          <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">—</span>
                         )}
                       </td>
                       <td className="p-3">
@@ -387,7 +387,7 @@ export default function DecisionsClasse() {
                           placeholder="Motif..."
                           value={dec?.motif || ""}
                           onChange={e => setDecision(eleve.eleve_id, "motif", e.target.value)}
-                          className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white text-xs h-8 w-28"
+                          className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white text-xs h-8 w-28"
                         />
                       </td>
                       <td className="p-3">

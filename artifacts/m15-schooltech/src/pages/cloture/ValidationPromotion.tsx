@@ -147,31 +147,31 @@ export default function ValidationPromotion() {
   const toutesEligibles = classesEligibles.length > 0 && classesEligibles.length === parClasse.filter(c => !c.promotion_effectuee).length;
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white p-6">
+    <div className="min-h-screen bg-[#F0F4FF] dark:bg-[#0A1628] text-[#0A1628] dark:text-white p-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h1 className="text-2xl font-bold text-[#0A1628] dark:text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
             Validation & Promotion
           </h1>
-          <p className="text-[#8B9DC3] text-sm">Finalisez l'année et promotionnez les élèves</p>
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">Finalisez l'année et promotionnez les élèves</p>
         </div>
         <div className="flex gap-3 flex-wrap">
           <Select value={selectedSource} onValueChange={setAnneeSourceId}>
-            <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+            <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
               <SelectValue placeholder="Année source" />
             </SelectTrigger>
-            <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-              {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-white">{a.libelle}</SelectItem>)}
+            <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+              {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-[#0A1628] dark:text-white">{a.libelle}</SelectItem>)}
             </SelectContent>
           </Select>
-          <ArrowRight className="w-5 h-5 text-[#8B9DC3] self-center" />
+          <ArrowRight className="w-5 h-5 text-[#5A6B8C] dark:text-[#8B9DC3] self-center" />
           <Select value={anneeDestId} onValueChange={setAnneeDestId}>
-            <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+            <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
               <SelectValue placeholder="Année destination" />
             </SelectTrigger>
-            <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+            <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
               {annees.filter(a => a.id !== selectedSource).map(a => (
-                <SelectItem key={a.id} value={a.id} className="text-white">{a.libelle}</SelectItem>
+                <SelectItem key={a.id} value={a.id} className="text-[#0A1628] dark:text-white">{a.libelle}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -179,13 +179,13 @@ export default function ValidationPromotion() {
       </div>
 
       {/* Notifications */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)] mb-6">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] mb-6">
         <CardContent className="p-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
               <Bell className="w-5 h-5 text-[#F5C842]" />
-              <h2 className="font-bold text-white">Notifications parents</h2>
-              <span className="text-[#8B9DC3] text-sm">— informer avant la promotion</span>
+              <h2 className="font-bold text-[#0A1628] dark:text-white">Notifications parents</h2>
+              <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">— informer avant la promotion</span>
             </div>
             <div className="flex gap-2">
               <Button
@@ -203,10 +203,10 @@ export default function ValidationPromotion() {
       </Card>
 
       {/* Classes à promouvoir */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)] mb-6">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] mb-6">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-white text-lg">Promotions par classe</h2>
+            <h2 className="font-bold text-[#0A1628] dark:text-white text-lg">Promotions par classe</h2>
             {toutesEligibles && (
               <Button
                 onClick={() => setConfirmAll(true)}
@@ -223,12 +223,12 @@ export default function ValidationPromotion() {
             {parClasse.map(c => (
               <div key={c.classe_id}
                 className={cn(
-                  "bg-[#0A1628] rounded-lg p-4 border transition-all",
+                  "bg-[#F0F4FF] dark:bg-[#0A1628] rounded-lg p-4 border transition-all",
                   c.promotion_effectuee ? "border-[#00C9A7]/30" :
-                  c.sans_decision > 0 ? "border-[#FF4D6D]/30" : "border-[rgba(0,201,167,0.15)]"
+                  c.sans_decision > 0 ? "border-[#FF4D6D]/30" : "border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]"
                 )}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-semibold text-white">{c.classe_nom}</span>
+                  <span className="font-semibold text-[#0A1628] dark:text-white">{c.classe_nom}</span>
                   {c.promotion_effectuee ? (
                     <Badge className="bg-[#00C9A7]/20 text-[#00C9A7] border border-[#00C9A7]/30 text-xs">
                       <CheckCircle className="w-3 h-3 mr-1" /> Promue
@@ -243,15 +243,15 @@ export default function ValidationPromotion() {
                     </Badge>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-1 text-xs text-[#8B9DC3] mb-3">
+                <div className="grid grid-cols-2 gap-1 text-xs text-[#5A6B8C] dark:text-[#8B9DC3] mb-3">
                   <span>Admis : <b className="text-[#00C9A7]">{c.admis}</b></span>
                   <span>Redoublants : <b className="text-[#F5C842]">{c.redoublants}</b></span>
                   <span>Exclus : <b className="text-[#FF4D6D]">{c.exclus}</b></span>
-                  <span>Sortie : <b className="text-[#8B9DC3]">{c.sortie}</b></span>
+                  <span>Sortie : <b className="text-[#5A6B8C] dark:text-[#8B9DC3]">{c.sortie}</b></span>
                 </div>
                 {!c.promotion_effectuee && c.sans_decision === 0 && (
                   <Button
-                    size="sm" className="w-full bg-[#0080FF] hover:bg-[#0080FF]/80 text-white text-xs"
+                    size="sm" className="w-full bg-[#0080FF] hover:bg-[#0080FF]/80 text-[#0A1628] dark:text-white text-xs"
                     onClick={() => setConfirmModal(c)}
                     disabled={!anneeDestId || promoting}
                   >
@@ -269,19 +269,19 @@ export default function ValidationPromotion() {
 
       {/* Historique */}
       {historique.length > 0 && (
-        <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+        <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
           <CardContent className="p-4">
-            <h2 className="font-bold text-white text-lg mb-4">Historique des promotions</h2>
+            <h2 className="font-bold text-[#0A1628] dark:text-white text-lg mb-4">Historique des promotions</h2>
             <div className="space-y-3">
               {historique.map(p => (
-                <div key={p.id} className="bg-[#0A1628] rounded-lg p-3 flex flex-wrap items-center gap-3">
+                <div key={p.id} className="bg-[#F0F4FF] dark:bg-[#0A1628] rounded-lg p-3 flex flex-wrap items-center gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{p.classe_source_nom}</span>
-                      <ArrowRight className="w-3 h-3 text-[#8B9DC3]" />
+                      <span className="font-medium text-[#0A1628] dark:text-white">{p.classe_source_nom}</span>
+                      <ArrowRight className="w-3 h-3 text-[#5A6B8C] dark:text-[#8B9DC3]" />
                       <span className="text-[#00C9A7]">{p.classe_destination_nom}</span>
                     </div>
-                    <div className="text-[#8B9DC3] text-xs mt-1">
+                    <div className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs mt-1">
                       {new Date(p.date_promotion).toLocaleDateString("fr-CI")} — par {p.effectuee_par}
                     </div>
                   </div>
@@ -292,7 +292,7 @@ export default function ValidationPromotion() {
                   <Badge className={cn(
                     "border text-xs",
                     p.statut === "terminee" ? "bg-[#00C9A7]/20 text-[#00C9A7] border-[#00C9A7]/30" :
-                    p.statut === "annulee" ? "bg-[#8B9DC3]/20 text-[#8B9DC3] border-[#8B9DC3]/30" :
+                    p.statut === "annulee" ? "bg-[#5A6B8C] dark:bg-[#8B9DC3]/20 text-[#5A6B8C] dark:text-[#8B9DC3] border-[#8B9DC3]/30" :
                     "bg-[#F5C842]/20 text-[#F5C842] border-[#F5C842]/30"
                   )}>
                     {p.statut}
@@ -313,21 +313,21 @@ export default function ValidationPromotion() {
 
       {/* Modal confirmation promotion classe */}
       <Dialog open={!!confirmModal} onOpenChange={() => setConfirmModal(null)}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+        <DialogContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-white">Confirmer la promotion</DialogTitle>
+            <DialogTitle className="text-[#0A1628] dark:text-white">Confirmer la promotion</DialogTitle>
           </DialogHeader>
           {confirmModal && (
             <div className="space-y-3">
-              <p className="text-[#8B9DC3]">
-                Vous allez promouvoir <b className="text-white">{confirmModal.admis} élèves</b> de{" "}
+              <p className="text-[#5A6B8C] dark:text-[#8B9DC3]">
+                Vous allez promouvoir <b className="text-[#0A1628] dark:text-white">{confirmModal.admis} élèves</b> de{" "}
                 <b className="text-[#00C9A7]">{confirmModal.classe_nom}</b> vers la classe supérieure.
               </p>
-              <div className="bg-[#0A1628] rounded p-3 text-sm space-y-1">
-                <div className="flex justify-between"><span className="text-[#8B9DC3]">Admis :</span> <span className="text-[#00C9A7] font-bold">{confirmModal.admis}</span></div>
-                <div className="flex justify-between"><span className="text-[#8B9DC3]">Redoublants :</span> <span className="text-[#F5C842] font-bold">{confirmModal.redoublants}</span></div>
-                <div className="flex justify-between"><span className="text-[#8B9DC3]">Exclus :</span> <span className="text-[#FF4D6D] font-bold">{confirmModal.exclus}</span></div>
-                <div className="flex justify-between"><span className="text-[#8B9DC3]">Sortie :</span> <span className="text-[#8B9DC3] font-bold">{confirmModal.sortie}</span></div>
+              <div className="bg-[#F0F4FF] dark:bg-[#0A1628] rounded p-3 text-sm space-y-1">
+                <div className="flex justify-between"><span className="text-[#5A6B8C] dark:text-[#8B9DC3]">Admis :</span> <span className="text-[#00C9A7] font-bold">{confirmModal.admis}</span></div>
+                <div className="flex justify-between"><span className="text-[#5A6B8C] dark:text-[#8B9DC3]">Redoublants :</span> <span className="text-[#F5C842] font-bold">{confirmModal.redoublants}</span></div>
+                <div className="flex justify-between"><span className="text-[#5A6B8C] dark:text-[#8B9DC3]">Exclus :</span> <span className="text-[#FF4D6D] font-bold">{confirmModal.exclus}</span></div>
+                <div className="flex justify-between"><span className="text-[#5A6B8C] dark:text-[#8B9DC3]">Sortie :</span> <span className="text-[#5A6B8C] dark:text-[#8B9DC3] font-bold">{confirmModal.sortie}</span></div>
               </div>
               <p className="text-[#FF4D6D] text-sm flex items-center gap-1">
                 <AlertTriangle className="w-4 h-4" />
@@ -336,7 +336,7 @@ export default function ValidationPromotion() {
             </div>
           )}
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setConfirmModal(null)} className="text-[#8B9DC3]">Annuler</Button>
+            <Button variant="ghost" onClick={() => setConfirmModal(null)} className="text-[#5A6B8C] dark:text-[#8B9DC3]">Annuler</Button>
             <Button
               onClick={() => confirmModal && lancerPromotion(confirmModal)}
               disabled={promoting}
@@ -350,16 +350,16 @@ export default function ValidationPromotion() {
 
       {/* Modal confirmation tout promouvoir */}
       <Dialog open={confirmAll} onOpenChange={setConfirmAll}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+        <DialogContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-white">Promouvoir toutes les classes</DialogTitle>
+            <DialogTitle className="text-[#0A1628] dark:text-white">Promouvoir toutes les classes</DialogTitle>
           </DialogHeader>
-          <p className="text-[#8B9DC3]">
-            Vous allez promouvoir <b className="text-white">{classesEligibles.length} classes</b> en une seule opération.
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3]">
+            Vous allez promouvoir <b className="text-[#0A1628] dark:text-white">{classesEligibles.length} classes</b> en une seule opération.
             Cette action est irréversible après 24h.
           </p>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setConfirmAll(false)} className="text-[#8B9DC3]">Annuler</Button>
+            <Button variant="ghost" onClick={() => setConfirmAll(false)} className="text-[#5A6B8C] dark:text-[#8B9DC3]">Annuler</Button>
             <Button onClick={lancerTout} disabled={promoting} className="bg-[#00C9A7] text-[#0A1628] font-semibold">
               {promoting ? "En cours..." : "Tout promouvoir"}
             </Button>
@@ -369,20 +369,20 @@ export default function ValidationPromotion() {
 
       {/* Modal annuler promotion */}
       <Dialog open={!!annulerModal} onOpenChange={() => setAnnulerModal(null)}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+        <DialogContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
           <DialogHeader>
-            <DialogTitle className="text-white text-[#FF4D6D]">Annuler cette promotion</DialogTitle>
+            <DialogTitle className="text-[#0A1628] dark:text-white text-[#FF4D6D]">Annuler cette promotion</DialogTitle>
           </DialogHeader>
-          <p className="text-[#8B9DC3]">
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3]">
             L'annulation est possible uniquement dans les 24h suivant la promotion.
             Toutes les inscriptions créées seront supprimées.
           </p>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setAnnulerModal(null)} className="text-[#8B9DC3]">Retour</Button>
+            <Button variant="ghost" onClick={() => setAnnulerModal(null)} className="text-[#5A6B8C] dark:text-[#8B9DC3]">Retour</Button>
             <Button
               onClick={() => annulerModal && annuler({ id: annulerModal })}
               disabled={annulant}
-              className="bg-[#FF4D6D] text-white"
+              className="bg-[#FF4D6D] text-[#0A1628] dark:text-white"
             >
               {annulant ? "Annulation..." : "Confirmer l'annulation"}
             </Button>

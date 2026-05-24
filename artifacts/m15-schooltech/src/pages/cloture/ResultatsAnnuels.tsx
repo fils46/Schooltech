@@ -109,17 +109,17 @@ export default function ResultatsAnnuels() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white p-6">
+    <div className="min-h-screen bg-[#F0F4FF] dark:bg-[#0A1628] text-[#0A1628] dark:text-white p-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h1 className="text-2xl font-bold text-[#0A1628] dark:text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
             Résultats annuels
           </h1>
-          <p className="text-[#8B9DC3] text-sm">Consultation des décisions de fin d'année</p>
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">Consultation des décisions de fin d'année</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button variant="outline" size="sm" onClick={exportCSV}
-            className="border-[rgba(0,201,167,0.3)] text-[#00C9A7] hover:bg-[#00C9A7]/10 text-xs">
+            className="border-[rgba(0,0,0,0.15)] dark:border-[rgba(0,201,167,0.3)] text-[#00C9A7] hover:bg-[#00C9A7]/10 text-xs">
             <Download className="w-3 h-3 mr-1" /> Export Excel
           </Button>
           <Button variant="outline" size="sm" onClick={exportPalmaresAdmis}
@@ -138,9 +138,9 @@ export default function ResultatsAnnuels() {
             { label: "Redoublants", value: (statsResult?.redoublants ?? totaux?.redoublants ?? 0), color: "#F5C842" },
             { label: "Taux réussite", value: `${totaux?.taux_reussite ?? 0}%`, color: "#00C9A7" },
           ].map(s => (
-            <Card key={s.label} className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+            <Card key={s.label} className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
               <CardContent className="p-3">
-                <div className="text-[#8B9DC3] text-xs mb-1">{s.label}</div>
+                <div className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs mb-1">{s.label}</div>
                 <div className="text-xl font-bold" style={{ color: s.color }}>{s.value}</div>
               </CardContent>
             </Card>
@@ -151,51 +151,51 @@ export default function ResultatsAnnuels() {
       {/* Filtres */}
       <div className="flex gap-3 mb-4 flex-wrap">
         <Select value={selectedAnnee} onValueChange={setAnneeId}>
-          <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+          <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
             <SelectValue placeholder="Année scolaire" />
           </SelectTrigger>
-          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-white">{a.libelle}</SelectItem>)}
+          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+            {annees.map(a => <SelectItem key={a.id} value={a.id} className="text-[#0A1628] dark:text-white">{a.libelle}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={classeId} onValueChange={setClasseId}>
-          <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+          <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
             <SelectValue placeholder="Toutes les classes" />
           </SelectTrigger>
-          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            <SelectItem value="__all__" className="text-white">Toutes les classes</SelectItem>
-            {classes.map(c => <SelectItem key={c.id} value={c.id} className="text-white">{c.nom}</SelectItem>)}
+          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+            <SelectItem value="__all__" className="text-[#0A1628] dark:text-white">Toutes les classes</SelectItem>
+            {classes.map(c => <SelectItem key={c.id} value={c.id} className="text-[#0A1628] dark:text-white">{c.nom}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={filtreDecision} onValueChange={setFiltreDecision}>
-          <SelectTrigger className="w-44 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+          <SelectTrigger className="w-44 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
             <SelectValue placeholder="Toutes décisions" />
           </SelectTrigger>
-          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            <SelectItem value="__all__" className="text-white">Toutes décisions</SelectItem>
+          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+            <SelectItem value="__all__" className="text-[#0A1628] dark:text-white">Toutes décisions</SelectItem>
             {Object.entries(DECISION_LABELS).map(([k, v]) => (
-              <SelectItem key={k} value={k} className="text-white">{v.label}</SelectItem>
+              <SelectItem key={k} value={k} className="text-[#0A1628] dark:text-white">{v.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>
         <div className="relative flex-1 min-w-40">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B9DC3]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5A6B8C] dark:text-[#8B9DC3]" />
           <Input
             placeholder="Rechercher un élève..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white placeholder:text-[#8B9DC3]"
+            className="pl-9 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white placeholder:text-[#5A6B8C] dark:text-[#8B9DC3]"
           />
         </div>
       </div>
 
       {/* Tableau */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[#8B9DC3] text-xs border-b border-[rgba(0,201,167,0.10)]">
+                <tr className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs border-b border-[rgba(0,0,0,0.06)] dark:border-[rgba(0,201,167,0.10)]">
                   <th className="text-left p-3">Élève</th>
                   <th className="text-center p-3">Moy. annuelle</th>
                   <th className="text-center p-3">Décision</th>
@@ -205,23 +205,23 @@ export default function ResultatsAnnuels() {
               </thead>
               <tbody>
                 {classeId === "__all__" ? (
-                  <tr><td colSpan={5} className="text-center text-[#8B9DC3] py-8">
+                  <tr><td colSpan={5} className="text-center text-[#5A6B8C] dark:text-[#8B9DC3] py-8">
                     Sélectionnez une classe pour voir les résultats individuels
                   </td></tr>
                 ) : filtered.length === 0 ? (
-                  <tr><td colSpan={5} className="text-center text-[#8B9DC3] py-8">Aucun résultat</td></tr>
+                  <tr><td colSpan={5} className="text-center text-[#5A6B8C] dark:text-[#8B9DC3] py-8">Aucun résultat</td></tr>
                 ) : filtered.map(e => {
                   const decConfig = e.decision_enregistree ? DECISION_LABELS[e.decision_enregistree] : null;
                   return (
-                    <tr key={e.eleve_id} className="border-b border-[rgba(0,201,167,0.07)] hover:bg-[#0A1628]/30">
+                    <tr key={e.eleve_id} className="border-b border-[rgba(0,0,0,0.04)] dark:border-[rgba(0,201,167,0.07)] hover:bg-[#E0E8F8] dark:hover:bg-[#F0F4FF] dark:bg-[#0A1628]/30">
                       <td className="p-3">
-                        <div className="font-medium text-white">{e.prenom} {e.nom}</div>
-                        {e.matricule && <div className="text-[#8B9DC3] text-xs">{e.matricule}</div>}
+                        <div className="font-medium text-[#0A1628] dark:text-white">{e.prenom} {e.nom}</div>
+                        {e.matricule && <div className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">{e.matricule}</div>}
                       </td>
                       <td className="text-center p-3">
                         <span className={cn(
                           "text-lg font-bold",
-                          e.moyenne_annuelle === null ? "text-[#8B9DC3]" :
+                          e.moyenne_annuelle === null ? "text-[#5A6B8C] dark:text-[#8B9DC3]" :
                           e.moyenne_annuelle >= 10 ? "text-[#00C9A7]" : "text-[#FF4D6D]"
                         )}>
                           {e.moyenne_annuelle?.toFixed(2) ?? "—"}
@@ -231,17 +231,17 @@ export default function ResultatsAnnuels() {
                         {decConfig ? (
                           <Badge className={cn("border text-xs", decConfig.color)}>{decConfig.label}</Badge>
                         ) : (
-                          <span className="text-[#8B9DC3] text-xs">Non décidé</span>
+                          <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Non décidé</span>
                         )}
                       </td>
-                      <td className="text-center p-3 text-[#8B9DC3] text-sm">
+                      <td className="text-center p-3 text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">
                         {e.classe_destination_nom ?? "—"}
                       </td>
                       <td className="text-center p-3">
                         {e.parent_notifie ? (
                           <span className="text-[#00C9A7] text-xs">✓ Oui</span>
                         ) : (
-                          <span className="text-[#8B9DC3] text-xs">Non</span>
+                          <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Non</span>
                         )}
                       </td>
                     </tr>

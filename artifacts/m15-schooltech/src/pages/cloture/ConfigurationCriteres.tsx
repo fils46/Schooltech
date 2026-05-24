@@ -141,53 +141,53 @@ export default function ConfigurationCriteres() {
   const CritereForm = ({ form, setForm }: { form: Critere; setForm: (f: Critere) => void }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="space-y-1">
-        <Label className="text-[#8B9DC3] text-xs">Moyenne d'admission (/20)</Label>
+        <Label className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Moyenne d'admission (/20)</Label>
         <Input
           type="number" step="0.5" min="0" max="20"
           value={form.moyenne_admission}
           onChange={e => setForm({ ...form, moyenne_admission: e.target.value })}
-          className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white"
+          className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white"
         />
       </div>
       <div className="space-y-1">
-        <Label className="text-[#8B9DC3] text-xs">Moyenne éliminatoire (/20)</Label>
+        <Label className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Moyenne éliminatoire (/20)</Label>
         <Input
           type="number" step="0.5" min="0" max="20"
           value={form.moyenne_eliminatoire ?? ""}
           onChange={e => setForm({ ...form, moyenne_eliminatoire: e.target.value })}
-          className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white"
+          className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white"
         />
       </div>
       <div className="space-y-1">
-        <Label className="text-[#8B9DC3] text-xs">Nb max matières éliminatoires</Label>
+        <Label className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Nb max matières éliminatoires</Label>
         <Input
           type="number" min="0" max="10"
           value={form.nb_matieres_eliminatoires_max}
           onChange={e => setForm({ ...form, nb_matieres_eliminatoires_max: parseInt(e.target.value) || 0 })}
-          className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white"
+          className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white"
         />
       </div>
       <div className="space-y-1">
-        <Label className="text-[#8B9DC3] text-xs">Conseil de classe obligatoire</Label>
+        <Label className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Conseil de classe obligatoire</Label>
         <Select
           value={form.conseil_obligatoire ? "oui" : "non"}
           onValueChange={v => setForm({ ...form, conseil_obligatoire: v === "oui" })}
         >
-          <SelectTrigger className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white">
+          <SelectTrigger className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
-            <SelectItem value="oui" className="text-white">Oui</SelectItem>
-            <SelectItem value="non" className="text-white">Non</SelectItem>
+          <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
+            <SelectItem value="oui" className="text-[#0A1628] dark:text-white">Oui</SelectItem>
+            <SelectItem value="non" className="text-[#0A1628] dark:text-white">Non</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="md:col-span-2 space-y-1">
-        <Label className="text-[#8B9DC3] text-xs">Notes / remarques</Label>
+        <Label className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Notes / remarques</Label>
         <Textarea
           value={form.notes_criteres ?? ""}
           onChange={e => setForm({ ...form, notes_criteres: e.target.value })}
-          className="bg-[#0A1628] border-[rgba(0,201,167,0.2)] text-white resize-none"
+          className="bg-[#F0F4FF] dark:bg-[#0A1628] border-[rgba(0,0,0,0.12)] dark:border-[rgba(0,201,167,0.2)] text-[#0A1628] dark:text-white resize-none"
           rows={3}
         />
       </div>
@@ -195,25 +195,25 @@ export default function ConfigurationCriteres() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-white p-6">
+    <div className="min-h-screen bg-[#F0F4FF] dark:bg-[#0A1628] text-[#0A1628] dark:text-white p-6">
       <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/cloture")} className="text-[#8B9DC3] hover:text-white">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/cloture")} className="text-[#5A6B8C] dark:text-[#8B9DC3] hover:text-[#0A1628] dark:hover:text-[#0A1628] dark:text-white">
           <ArrowLeft className="w-4 h-4 mr-1" /> Retour
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h1 className="text-2xl font-bold text-[#0A1628] dark:text-white" style={{ fontFamily: "Poppins, sans-serif" }}>
             Critères d'admission
           </h1>
-          <p className="text-[#8B9DC3] text-sm">Définissez les seuils de passage</p>
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm">Définissez les seuils de passage</p>
         </div>
         <div className="ml-auto">
           <Select value={selectedAnnee} onValueChange={setAnneeId}>
-            <SelectTrigger className="w-48 bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white">
+            <SelectTrigger className="w-48 bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white">
               <SelectValue placeholder="Année scolaire" />
             </SelectTrigger>
-            <SelectContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+            <SelectContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
               {annees.map(a => (
-                <SelectItem key={a.id} value={a.id} className="text-white">{a.libelle}</SelectItem>
+                <SelectItem key={a.id} value={a.id} className="text-[#0A1628] dark:text-white">{a.libelle}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -221,11 +221,11 @@ export default function ConfigurationCriteres() {
       </div>
 
       {/* Critères globaux */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)] mb-6">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] mb-6">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <Settings className="w-5 h-5 text-[#00C9A7]" />
-            <h2 className="font-bold text-white text-lg">Critères globaux</h2>
+            <h2 className="font-bold text-[#0A1628] dark:text-white text-lg">Critères globaux</h2>
             <Badge className="bg-[#0080FF]/20 text-[#0080FF] border border-[#0080FF]/30 text-xs ml-1">
               Appliqués à toutes les classes par défaut
             </Badge>
@@ -243,13 +243,13 @@ export default function ConfigurationCriteres() {
       </Card>
 
       {/* Critères par classe */}
-      <Card className="bg-[#111E35] border-[rgba(0,201,167,0.15)]">
+      <Card className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)]">
         <CardContent className="p-6">
-          <h2 className="font-bold text-white text-lg mb-4">Critères par classe</h2>
+          <h2 className="font-bold text-[#0A1628] dark:text-white text-lg mb-4">Critères par classe</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[#8B9DC3] text-xs border-b border-[rgba(0,201,167,0.10)]">
+                <tr className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs border-b border-[rgba(0,0,0,0.06)] dark:border-[rgba(0,201,167,0.10)]">
                   <th className="text-left p-3">Classe</th>
                   <th className="text-center p-3">Moy. admission</th>
                   <th className="text-center p-3">Moy. élim.</th>
@@ -261,19 +261,19 @@ export default function ConfigurationCriteres() {
                 {classes.map((c) => {
                   const specifique = criteres?.par_classe?.find(p => p.classe_id === c.id);
                   return (
-                    <tr key={c.id} className="border-b border-[rgba(0,201,167,0.07)] hover:bg-[#0A1628]/40">
-                      <td className="p-3 font-medium text-white">{c.nom}</td>
+                    <tr key={c.id} className="border-b border-[rgba(0,0,0,0.04)] dark:border-[rgba(0,201,167,0.07)] hover:bg-[#E0E8F8] dark:hover:bg-[#F0F4FF] dark:bg-[#0A1628]/40">
+                      <td className="p-3 font-medium text-[#0A1628] dark:text-white">{c.nom}</td>
                       <td className="text-center p-3 text-[#00C9A7]">
                         {specifique?.moyenne_admission ?? globalForm.moyenne_admission}
                       </td>
-                      <td className="text-center p-3 text-[#8B9DC3]">
+                      <td className="text-center p-3 text-[#5A6B8C] dark:text-[#8B9DC3]">
                         {specifique?.moyenne_eliminatoire ?? globalForm.moyenne_eliminatoire ?? "5.00"}
                       </td>
                       <td className="text-center p-3">
                         {specifique ? (
                           <Badge className="bg-[#F5C842]/20 text-[#F5C842] border border-[#F5C842]/30 text-xs">Personnalisé</Badge>
                         ) : (
-                          <span className="text-[#8B9DC3] text-xs">Global</span>
+                          <span className="text-[#5A6B8C] dark:text-[#8B9DC3] text-xs">Global</span>
                         )}
                       </td>
                       <td className="text-center p-3">
@@ -296,16 +296,16 @@ export default function ConfigurationCriteres() {
 
       {/* Modal personnalisation classe */}
       <Dialog open={classeModal} onOpenChange={setClasseModal}>
-        <DialogContent className="bg-[#111E35] border-[rgba(0,201,167,0.15)] text-white max-w-2xl">
+        <DialogContent className="bg-white dark:bg-[#111E35] border-[rgba(0,0,0,0.08)] dark:border-[rgba(0,201,167,0.15)] text-[#0A1628] dark:text-white max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-white">
+            <DialogTitle className="text-[#0A1628] dark:text-white">
               Critères — {classes.find(c => c.id === selectedClasse)?.nom}
             </DialogTitle>
           </DialogHeader>
-          <p className="text-[#8B9DC3] text-sm mb-4">Ces critères remplacent les critères globaux pour cette classe.</p>
+          <p className="text-[#5A6B8C] dark:text-[#8B9DC3] text-sm mb-4">Ces critères remplacent les critères globaux pour cette classe.</p>
           <CritereForm form={classeForm} setForm={setClasseForm} />
           <div className="flex justify-end gap-2 mt-4">
-            <Button variant="ghost" onClick={() => setClasseModal(false)} className="text-[#8B9DC3]">Annuler</Button>
+            <Button variant="ghost" onClick={() => setClasseModal(false)} className="text-[#5A6B8C] dark:text-[#8B9DC3]">Annuler</Button>
             <Button onClick={saveClasse} disabled={isPending} className="bg-[#00C9A7] text-[#0A1628] font-semibold">
               <Save className="w-4 h-4 mr-2" /> Enregistrer
             </Button>
