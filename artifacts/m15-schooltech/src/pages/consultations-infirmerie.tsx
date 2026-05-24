@@ -75,7 +75,7 @@ export default function ConsultationsInfirmerie() {
           </h1>
           <p className="text-[var(--m15-muted)] text-sm mt-1">{total} consultation(s) au total</p>
         </div>
-        {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
+        {user?.role === "infirmier" && (
           <Button
             onClick={() => navigate("/infirmerie/nouvelle-consultation")}
             className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2"

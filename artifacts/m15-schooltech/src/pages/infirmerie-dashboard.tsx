@@ -82,7 +82,7 @@ export default function InfirmerieDashboard() {
           </h1>
           <p className="text-[var(--m15-muted)] text-sm mt-1">Tableau de bord médical</p>
         </div>
-        {["infirmier", "dev"].includes(user?.role ?? "") && (
+        {user?.role === "infirmier" && (
           <Button
             onClick={() => navigate("/infirmerie/nouvelle-consultation")}
             className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2"
