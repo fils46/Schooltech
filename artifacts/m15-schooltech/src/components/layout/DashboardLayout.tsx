@@ -27,16 +27,16 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "PRINCIPAL",
       links: [
-        { label: "Tableau de bord", href: "/dashboard",      icon: LayoutDashboard },
-        { label: "Établissements",  href: "/etablissements", icon: Building },
-        { label: "Utilisateurs",    href: "/utilisateurs",   icon: Users },
+        { label: "Tableau de bord", href: "/saas",                  icon: LayoutDashboard },
+        { label: "Établissements",  href: "/saas/etablissements",   icon: Building },
+        { label: "Logs d'activité", href: "/saas/logs",             icon: FileText },
       ],
     },
     {
       title: "GESTION",
       links: [
-        { label: "Licences",     href: "/licences",     icon: Key },
-        { label: "Statistiques", href: "/statistiques", icon: BarChart3 },
+        { label: "Licences",     href: "/saas/licences", icon: Key },
+        { label: "Statistiques", href: "/saas",          icon: BarChart3 },
       ],
     },
   ],
