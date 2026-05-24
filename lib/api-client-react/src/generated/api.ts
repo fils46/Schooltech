@@ -89,6 +89,8 @@ import type {
   CoursDetail,
   CoursInput,
   CreerContratBody,
+  CreerParentBody,
+  CreerParentResponse,
   CreerRessourceInput,
   Creneau,
   CreneauInput,
@@ -120,6 +122,7 @@ import type {
   EmettreFactureBody,
   EmploiGrilleResponse,
   EmploiTempsEnfantResponse,
+  EnfantParent,
   EnregistrerDecisionBody,
   EnvoyerConvocations200,
   EnvoyerMessageInput,
@@ -208,6 +211,8 @@ import type {
   JustificationInput,
   JustificationItemResponse,
   JustificationsListeResponse,
+  LiaisonParentEleve,
+  LierParentBody,
   LierParentInput,
   ListerAbsencesParams,
   ListerClassesParams,
@@ -219,6 +224,7 @@ import type {
   ListerFeuillesHeuresParams,
   ListerJustificationsParams,
   ListerMatieresParams,
+  ListerParentsParams,
   ListerPrestationsParams,
   ListerRendezVousParams,
   ListerSallesParams,
@@ -243,6 +249,7 @@ import type {
   ModifierCoefficientInput,
   ModifierConseilInput,
   ModifierEleveInput,
+  ModifierLiaisonBody,
   ModifierPrestationBody,
   ModifierRessourceInput,
   ModifierTrimestresBody,
@@ -267,7 +274,9 @@ import type {
   OuvrirConsultationInput,
   PaiementEnregistreResponse,
   PaiementInput,
+  ParentAvecEnfants,
   ParentDashboardResponse,
+  ParentLiaisonDetail,
   PayerFacturePrestationBody,
   PayerFeuilleHeuresBody,
   PlanifierConseilInput,
@@ -293,6 +302,7 @@ import type {
   RapportInput,
   RechercherElevesParams,
   RecuResponse,
+  ReinitialiserMdpParent200,
   RejeterFeuilleHeuresBody,
   RelanceInput,
   RelanceResponse,
@@ -337,6 +347,7 @@ import type {
   SujetExamenInput,
   SujetExamenResponse,
   SujetsListeResponse,
+  SupprimerLiaison200,
   SupprimerNote200,
   SupprimerSeance200,
   TerminerConseilInput,
@@ -11626,6 +11637,598 @@ export const useSupprimerNotification = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getSupprimerNotificationMutationOptions(options));
+    }
+
+export const getListerParentsUrl = (params?: ListerParentsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/parents?${stringifiedParams}` : `/api/api/parents`
+}
+
+/**
+ * @summary Lister tous les parents de l'établissement
+ */
+export const listerParents = async (params?: ListerParentsParams, options?: RequestInit): Promise<ParentAvecEnfants[]> => {
+
+  return customFetch<ParentAvecEnfants[]>(getListerParentsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerParentsQueryKey = (params?: ListerParentsParams,) => {
+    return [
+    `/api/api/parents`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerParentsQueryOptions = <TData = Awaited<ReturnType<typeof listerParents>>, TError = ErrorType<unknown>>(params?: ListerParentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerParents>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerParentsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerParents>>> = ({ signal }) => listerParents(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerParents>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerParentsQueryResult = NonNullable<Awaited<ReturnType<typeof listerParents>>>
+export type ListerParentsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister tous les parents de l'établissement
+ */
+
+export function useListerParents<TData = Awaited<ReturnType<typeof listerParents>>, TError = ErrorType<unknown>>(
+ params?: ListerParentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerParents>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerParentsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreerCompteParentUrl = () => {
+
+
+
+
+  return `/api/api/parents/creer`
+}
+
+/**
+ * @summary Créer un compte parent et le lier à un élève
+ */
+export const creerCompteParent = async (creerParentBody: CreerParentBody, options?: RequestInit): Promise<CreerParentResponse> => {
+
+  return customFetch<CreerParentResponse>(getCreerCompteParentUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      creerParentBody,)
+  }
+);}
+
+
+
+
+export const getCreerCompteParentMutationOptions = <TError = ErrorType<MessageResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof creerCompteParent>>, TError,{data: BodyType<CreerParentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof creerCompteParent>>, TError,{data: BodyType<CreerParentBody>}, TContext> => {
+
+const mutationKey = ['creerCompteParent'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof creerCompteParent>>, {data: BodyType<CreerParentBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  creerCompteParent(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreerCompteParentMutationResult = NonNullable<Awaited<ReturnType<typeof creerCompteParent>>>
+    export type CreerCompteParentMutationBody = BodyType<CreerParentBody>
+    export type CreerCompteParentMutationError = ErrorType<MessageResponse>
+
+    /**
+ * @summary Créer un compte parent et le lier à un élève
+ */
+export const useCreerCompteParent = <TError = ErrorType<MessageResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof creerCompteParent>>, TError,{data: BodyType<CreerParentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof creerCompteParent>>,
+        TError,
+        {data: BodyType<CreerParentBody>},
+        TContext
+      > => {
+      return useMutation(getCreerCompteParentMutationOptions(options));
+    }
+
+export const getLierParentExistantUrl = () => {
+
+
+
+
+  return `/api/api/parents/lier`
+}
+
+/**
+ * @summary Lier un compte parent existant à un élève
+ */
+export const lierParentExistant = async (lierParentBody: LierParentBody, options?: RequestInit): Promise<LiaisonParentEleve> => {
+
+  return customFetch<LiaisonParentEleve>(getLierParentExistantUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      lierParentBody,)
+  }
+);}
+
+
+
+
+export const getLierParentExistantMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lierParentExistant>>, TError,{data: BodyType<LierParentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof lierParentExistant>>, TError,{data: BodyType<LierParentBody>}, TContext> => {
+
+const mutationKey = ['lierParentExistant'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lierParentExistant>>, {data: BodyType<LierParentBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  lierParentExistant(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LierParentExistantMutationResult = NonNullable<Awaited<ReturnType<typeof lierParentExistant>>>
+    export type LierParentExistantMutationBody = BodyType<LierParentBody>
+    export type LierParentExistantMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Lier un compte parent existant à un élève
+ */
+export const useLierParentExistant = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lierParentExistant>>, TError,{data: BodyType<LierParentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof lierParentExistant>>,
+        TError,
+        {data: BodyType<LierParentBody>},
+        TContext
+      > => {
+      return useMutation(getLierParentExistantMutationOptions(options));
+    }
+
+export const getListerParentsEleveUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/api/parents/eleve/${eleveId}`
+}
+
+/**
+ * @summary Lister les parents d'un élève
+ */
+export const listerParentsEleve = async (eleveId: string, options?: RequestInit): Promise<ParentLiaisonDetail[]> => {
+
+  return customFetch<ParentLiaisonDetail[]>(getListerParentsEleveUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerParentsEleveQueryKey = (eleveId: string,) => {
+    return [
+    `/api/api/parents/eleve/${eleveId}`
+    ] as const;
+    }
+
+
+export const getListerParentsEleveQueryOptions = <TData = Awaited<ReturnType<typeof listerParentsEleve>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerParentsEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerParentsEleveQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerParentsEleve>>> = ({ signal }) => listerParentsEleve(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerParentsEleve>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerParentsEleveQueryResult = NonNullable<Awaited<ReturnType<typeof listerParentsEleve>>>
+export type ListerParentsEleveQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les parents d'un élève
+ */
+
+export function useListerParentsEleve<TData = Awaited<ReturnType<typeof listerParentsEleve>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerParentsEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerParentsEleveQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getListerEnfantsParentUrl = (parentId: string,) => {
+
+
+
+
+  return `/api/api/parents/${parentId}/enfants`
+}
+
+/**
+ * @summary Lister les enfants d'un parent
+ */
+export const listerEnfantsParent = async (parentId: string, options?: RequestInit): Promise<EnfantParent[]> => {
+
+  return customFetch<EnfantParent[]>(getListerEnfantsParentUrl(parentId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerEnfantsParentQueryKey = (parentId: string,) => {
+    return [
+    `/api/api/parents/${parentId}/enfants`
+    ] as const;
+    }
+
+
+export const getListerEnfantsParentQueryOptions = <TData = Awaited<ReturnType<typeof listerEnfantsParent>>, TError = ErrorType<unknown>>(parentId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerEnfantsParent>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerEnfantsParentQueryKey(parentId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerEnfantsParent>>> = ({ signal }) => listerEnfantsParent(parentId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(parentId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerEnfantsParent>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerEnfantsParentQueryResult = NonNullable<Awaited<ReturnType<typeof listerEnfantsParent>>>
+export type ListerEnfantsParentQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les enfants d'un parent
+ */
+
+export function useListerEnfantsParent<TData = Awaited<ReturnType<typeof listerEnfantsParent>>, TError = ErrorType<unknown>>(
+ parentId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerEnfantsParent>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerEnfantsParentQueryOptions(parentId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getModifierLiaisonUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/parents/liaison/${id}`
+}
+
+/**
+ * @summary Modifier une liaison parent-élève
+ */
+export const modifierLiaison = async (id: string,
+    modifierLiaisonBody: ModifierLiaisonBody, options?: RequestInit): Promise<LiaisonParentEleve> => {
+
+  return customFetch<LiaisonParentEleve>(getModifierLiaisonUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      modifierLiaisonBody,)
+  }
+);}
+
+
+
+
+export const getModifierLiaisonMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierLiaison>>, TError,{id: string;data: BodyType<ModifierLiaisonBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof modifierLiaison>>, TError,{id: string;data: BodyType<ModifierLiaisonBody>}, TContext> => {
+
+const mutationKey = ['modifierLiaison'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof modifierLiaison>>, {id: string;data: BodyType<ModifierLiaisonBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  modifierLiaison(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ModifierLiaisonMutationResult = NonNullable<Awaited<ReturnType<typeof modifierLiaison>>>
+    export type ModifierLiaisonMutationBody = BodyType<ModifierLiaisonBody>
+    export type ModifierLiaisonMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Modifier une liaison parent-élève
+ */
+export const useModifierLiaison = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof modifierLiaison>>, TError,{id: string;data: BodyType<ModifierLiaisonBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof modifierLiaison>>,
+        TError,
+        {id: string;data: BodyType<ModifierLiaisonBody>},
+        TContext
+      > => {
+      return useMutation(getModifierLiaisonMutationOptions(options));
+    }
+
+export const getSupprimerLiaisonUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/parents/liaison/${id}`
+}
+
+/**
+ * @summary Supprimer une liaison parent-élève
+ */
+export const supprimerLiaison = async (id: string, options?: RequestInit): Promise<SupprimerLiaison200> => {
+
+  return customFetch<SupprimerLiaison200>(getSupprimerLiaisonUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getSupprimerLiaisonMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerLiaison>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof supprimerLiaison>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['supprimerLiaison'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof supprimerLiaison>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  supprimerLiaison(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SupprimerLiaisonMutationResult = NonNullable<Awaited<ReturnType<typeof supprimerLiaison>>>
+
+    export type SupprimerLiaisonMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Supprimer une liaison parent-élève
+ */
+export const useSupprimerLiaison = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof supprimerLiaison>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof supprimerLiaison>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSupprimerLiaisonMutationOptions(options));
+    }
+
+export const getReinitialiserMdpParentUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/parents/${id}/reinitialiser-mdp`
+}
+
+/**
+ * @summary Réinitialiser le mot de passe d'un parent
+ */
+export const reinitialiserMdpParent = async (id: string, options?: RequestInit): Promise<ReinitialiserMdpParent200> => {
+
+  return customFetch<ReinitialiserMdpParent200>(getReinitialiserMdpParentUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getReinitialiserMdpParentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMdpParent>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMdpParent>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['reinitialiserMdpParent'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reinitialiserMdpParent>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  reinitialiserMdpParent(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReinitialiserMdpParentMutationResult = NonNullable<Awaited<ReturnType<typeof reinitialiserMdpParent>>>
+
+    export type ReinitialiserMdpParentMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Réinitialiser le mot de passe d'un parent
+ */
+export const useReinitialiserMdpParent = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reinitialiserMdpParent>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reinitialiserMdpParent>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getReinitialiserMdpParentMutationOptions(options));
     }
 
 export const getGetParentDashboardUrl = () => {

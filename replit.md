@@ -104,6 +104,14 @@ Module 04-B — Matières, Coefficients & Années Scolaires (complet) :
 - Sidebar ACADÉMIQUE directeur + BULLETINS censeur : liens Matières + Mat. par classe ajoutés
 - Titles de page enregistrés dans DashboardLayout
 
+Module 03-C — Gestion Parents & Liaison Parent-Élève (complet) :
+- 4 colonnes ajoutées à `parents_eleves` : etablissement_id, peut_consulter_notes, peut_consulter_absences, peut_envoyer_messages
+- 8 endpoints API REST sous /api/parents/ : creerCompteParent, lierParentExistant, listerParentsEleve, listerEnfantsParent, modifierLiaison, supprimerLiaison, listerParents, reinitialiserMdpParent
+- Page `/parents` enrichie : liste parents + nb enfants + modal 2 onglets (Créer compte parent / Lier parent existant)
+- Page `/parents/detail/:id` : fiche parent complète + onglet enfants + modal modifier liaison + modal ajouter enfant + réinitialisation mot de passe
+- Onglet Parents dans fiche élève enrichi : bouton "Fiche" par parent + bouton "Ajouter un parent" avec modal de liaison
+- Permissions : consult notes, absences, messages configurables par liaison
+
 Module 16 — Infirmerie Numérique (complet) :
 - 4 tables DB : dossiers_medicaux, consultations_infirmerie, stocks_infirmerie, mouvements_stocks
 - 15 endpoints API REST sous /api/infirmerie/...

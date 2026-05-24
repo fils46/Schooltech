@@ -3502,6 +3502,162 @@ export interface RelanceResponse {
   data?: RelanceResponseData;
 }
 
+export type LiaisonParentEleveLien = typeof LiaisonParentEleveLien[keyof typeof LiaisonParentEleveLien];
+
+
+export const LiaisonParentEleveLien = {
+  pere: 'pere',
+  mere: 'mere',
+  tuteur: 'tuteur',
+  autre: 'autre',
+} as const;
+
+export interface LiaisonParentEleve {
+  id?: string;
+  eleve_id?: string;
+  utilisateur_id?: string;
+  /** @nullable */
+  etablissement_id?: string | null;
+  lien?: LiaisonParentEleveLien;
+  est_principal?: boolean;
+  peut_consulter_notes?: boolean;
+  peut_consulter_absences?: boolean;
+  peut_envoyer_messages?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ParentLiaisonDetail {
+  liaison_id?: string;
+  utilisateur_id?: string;
+  lien?: string;
+  est_principal?: boolean;
+  peut_consulter_notes?: boolean;
+  peut_consulter_absences?: boolean;
+  peut_envoyer_messages?: boolean;
+  nom?: string;
+  prenoms?: string;
+  email?: string;
+  /** @nullable */
+  telephone?: string | null;
+  actif?: boolean;
+}
+
+export interface EnfantParent {
+  liaison_id?: string;
+  eleve_id?: string;
+  lien?: string;
+  est_principal?: boolean;
+  peut_consulter_notes?: boolean;
+  peut_consulter_absences?: boolean;
+  peut_envoyer_messages?: boolean;
+  nom?: string;
+  prenoms?: string;
+  matricule?: string;
+  statut?: string;
+  /** @nullable */
+  classe?: string | null;
+  /** @nullable */
+  classe_id?: string | null;
+  /** @nullable */
+  annee?: string | null;
+}
+
+export type ParentAvecEnfantsEnfantsItem = {
+  id?: string;
+  nom?: string;
+  prenoms?: string;
+  lien?: string;
+  est_principal?: boolean;
+};
+
+export interface ParentAvecEnfants {
+  id?: string;
+  nom?: string;
+  prenoms?: string;
+  email?: string;
+  /** @nullable */
+  telephone?: string | null;
+  actif?: boolean;
+  created_at?: string;
+  nb_enfants?: number;
+  enfants?: ParentAvecEnfantsEnfantsItem[];
+}
+
+export type CreerParentBodyLien = typeof CreerParentBodyLien[keyof typeof CreerParentBodyLien];
+
+
+export const CreerParentBodyLien = {
+  pere: 'pere',
+  mere: 'mere',
+  tuteur: 'tuteur',
+  autre: 'autre',
+} as const;
+
+export interface CreerParentBody {
+  nom: string;
+  prenoms: string;
+  email: string;
+  telephone?: string;
+  eleve_id: string;
+  lien: CreerParentBodyLien;
+  est_principal?: boolean;
+}
+
+export type LierParentBodyLien = typeof LierParentBodyLien[keyof typeof LierParentBodyLien];
+
+
+export const LierParentBodyLien = {
+  pere: 'pere',
+  mere: 'mere',
+  tuteur: 'tuteur',
+  autre: 'autre',
+} as const;
+
+export interface LierParentBody {
+  utilisateur_id: string;
+  eleve_id: string;
+  lien: LierParentBodyLien;
+  est_principal?: boolean;
+}
+
+export type ModifierLiaisonBodyLien = typeof ModifierLiaisonBodyLien[keyof typeof ModifierLiaisonBodyLien];
+
+
+export const ModifierLiaisonBodyLien = {
+  pere: 'pere',
+  mere: 'mere',
+  tuteur: 'tuteur',
+  autre: 'autre',
+} as const;
+
+export interface ModifierLiaisonBody {
+  lien?: ModifierLiaisonBodyLien;
+  est_principal?: boolean;
+  peut_consulter_notes?: boolean;
+  peut_consulter_absences?: boolean;
+  peut_envoyer_messages?: boolean;
+}
+
+export type CreerParentResponseParent = {
+  id?: string;
+  nom?: string;
+  prenoms?: string;
+  email?: string;
+  /** @nullable */
+  telephone?: string | null;
+  role?: string;
+  actif?: boolean;
+  premier_login?: boolean;
+};
+
+export interface CreerParentResponse {
+  parent?: CreerParentResponseParent;
+  liaison?: LiaisonParentEleve;
+  nouveau?: boolean;
+  mot_de_passe_temporaire?: string;
+}
+
 export type ListerUtilisateursParams = {
 role?: string;
 actif?: string;
@@ -3740,6 +3896,20 @@ lu?: boolean;
 type?: string;
 page?: number;
 limit?: number;
+};
+
+export type ListerParentsParams = {
+etablissement_id?: string;
+};
+
+export type SupprimerLiaison200 = {
+  message?: string;
+  parent_desactive?: boolean;
+};
+
+export type ReinitialiserMdpParent200 = {
+  message?: string;
+  nouveau_mot_de_passe?: string;
 };
 
 export type GetNotesEnfantParams = {

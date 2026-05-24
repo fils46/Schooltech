@@ -19,6 +19,7 @@ import Dashboard from "@/pages/dashboard";
 import Etablissements from "@/pages/etablissements";
 import Utilisateurs from "@/pages/utilisateurs";
 import Parents from "@/pages/parents";
+import DetailParent from "@/pages/detail-parent";
 import MonEtablissement from "@/pages/mon-etablissement";
 import EleveListe from "@/pages/eleves";
 import EleveForm from "@/pages/eleve-form";
@@ -157,6 +158,14 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <Parents />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/parents/detail/:id">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <DetailParent />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

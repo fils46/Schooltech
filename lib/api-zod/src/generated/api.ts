@@ -3665,6 +3665,164 @@ export const SupprimerNotificationResponse = zod.object({
 
 
 /**
+ * @summary Lister tous les parents de l'établissement
+ */
+export const ListerParentsQueryParams = zod.object({
+  "etablissement_id": zod.coerce.string().optional()
+})
+
+export const ListerParentsResponseItem = zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "email": zod.string().optional(),
+  "telephone": zod.string().nullish(),
+  "actif": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "nb_enfants": zod.number().optional(),
+  "enfants": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "lien": zod.string().optional(),
+  "est_principal": zod.boolean().optional()
+})).optional()
+})
+export const ListerParentsResponse = zod.array(ListerParentsResponseItem)
+
+
+/**
+ * @summary Créer un compte parent et le lier à un élève
+ */
+export const CreerCompteParentBody = zod.object({
+  "nom": zod.string(),
+  "prenoms": zod.string(),
+  "email": zod.string(),
+  "telephone": zod.string().optional(),
+  "eleve_id": zod.string(),
+  "lien": zod.enum(['pere', 'mere', 'tuteur', 'autre']),
+  "est_principal": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Lier un compte parent existant à un élève
+ */
+export const LierParentExistantBody = zod.object({
+  "utilisateur_id": zod.string(),
+  "eleve_id": zod.string(),
+  "lien": zod.enum(['pere', 'mere', 'tuteur', 'autre']),
+  "est_principal": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Lister les parents d'un élève
+ */
+export const ListerParentsEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const ListerParentsEleveResponseItem = zod.object({
+  "liaison_id": zod.string().optional(),
+  "utilisateur_id": zod.string().optional(),
+  "lien": zod.string().optional(),
+  "est_principal": zod.boolean().optional(),
+  "peut_consulter_notes": zod.boolean().optional(),
+  "peut_consulter_absences": zod.boolean().optional(),
+  "peut_envoyer_messages": zod.boolean().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "email": zod.string().optional(),
+  "telephone": zod.string().nullish(),
+  "actif": zod.boolean().optional()
+})
+export const ListerParentsEleveResponse = zod.array(ListerParentsEleveResponseItem)
+
+
+/**
+ * @summary Lister les enfants d'un parent
+ */
+export const ListerEnfantsParentParams = zod.object({
+  "parentId": zod.coerce.string()
+})
+
+export const ListerEnfantsParentResponseItem = zod.object({
+  "liaison_id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "lien": zod.string().optional(),
+  "est_principal": zod.boolean().optional(),
+  "peut_consulter_notes": zod.boolean().optional(),
+  "peut_consulter_absences": zod.boolean().optional(),
+  "peut_envoyer_messages": zod.boolean().optional(),
+  "nom": zod.string().optional(),
+  "prenoms": zod.string().optional(),
+  "matricule": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "classe": zod.string().nullish(),
+  "classe_id": zod.string().nullish(),
+  "annee": zod.string().nullish()
+})
+export const ListerEnfantsParentResponse = zod.array(ListerEnfantsParentResponseItem)
+
+
+/**
+ * @summary Modifier une liaison parent-élève
+ */
+export const ModifierLiaisonParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierLiaisonBody = zod.object({
+  "lien": zod.enum(['pere', 'mere', 'tuteur', 'autre']).optional(),
+  "est_principal": zod.boolean().optional(),
+  "peut_consulter_notes": zod.boolean().optional(),
+  "peut_consulter_absences": zod.boolean().optional(),
+  "peut_envoyer_messages": zod.boolean().optional()
+})
+
+export const ModifierLiaisonResponse = zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "utilisateur_id": zod.string().optional(),
+  "etablissement_id": zod.string().nullish(),
+  "lien": zod.enum(['pere', 'mere', 'tuteur', 'autre']).optional(),
+  "est_principal": zod.boolean().optional(),
+  "peut_consulter_notes": zod.boolean().optional(),
+  "peut_consulter_absences": zod.boolean().optional(),
+  "peut_envoyer_messages": zod.boolean().optional(),
+  "created_at": zod.string().optional(),
+  "updated_at": zod.string().optional()
+})
+
+
+/**
+ * @summary Supprimer une liaison parent-élève
+ */
+export const SupprimerLiaisonParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const SupprimerLiaisonResponse = zod.object({
+  "message": zod.string().optional(),
+  "parent_desactive": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Réinitialiser le mot de passe d'un parent
+ */
+export const ReinitialiserMdpParentParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ReinitialiserMdpParentResponse = zod.object({
+  "message": zod.string().optional(),
+  "nouveau_mot_de_passe": zod.string().optional()
+})
+
+
+/**
  * @summary Dashboard parent — tous les enfants
  */
 export const GetParentDashboardResponse = zod.object({

@@ -38,6 +38,7 @@ import prestationsRouter from "./prestations";
 import financesRouter from "./finances";
 import clotureAnneeRouter from "./clotureAnnee";
 import matieresRouter from "./matieres";
+import parentsRouter from "./parents";
 
 const router: IRouter = Router();
 
@@ -80,5 +81,6 @@ router.use(prestationsRouter);
 router.use(financesRouter);
 router.use(clotureAnneeRouter);
 router.use(matieresRouter);
+router.use(parentsRouter);
 
 export default router;

@@ -28,6 +28,8 @@ tags:
     description: Gestion des justifications d'absences
   - name: notifications
     description: Notifications temps réel
+  - name: parents
+    description: Gestion parents et liaisons parent-élève
   - name: portail-parent
     description: Portail parents — suivi scolaire enfants
   - name: messages
@@ -3413,6 +3415,172 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
+
+  # ── Gestion Parents ─────────────────────────────────────────
+  /api/parents:
+    get:
+      operationId: listerParents
+      tags: [parents]
+      summary: Lister tous les parents de l'établissement
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: etablissement_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liste des parents avec leurs enfants
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ParentAvecEnfants" }
+
+  /api/parents/creer:
+    post:
+      operationId: creerCompteParent
+      tags: [parents]
+      summary: Créer un compte parent et le lier à un élève
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreerParentBody" }
+      responses:
+        "201":
+          description: Parent créé ou lié
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreerParentResponse" }
+        "400":
+          description: Données invalides
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MessageResponse" }
+
+  /api/parents/lier:
+    post:
+      operationId: lierParentExistant
+      tags: [parents]
+      summary: Lier un compte parent existant à un élève
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LierParentBody" }
+      responses:
+        "201":
+          description: Liaison créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LiaisonParentEleve" }
+
+  /api/parents/eleve/{eleveId}:
+    get:
+      operationId: listerParentsEleve
+      tags: [parents]
+      summary: Lister les parents d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Parents liés à l'élève
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ParentLiaisonDetail" }
+
+  /api/parents/{parentId}/enfants:
+    get:
+      operationId: listerEnfantsParent
+      tags: [parents]
+      summary: Lister les enfants d'un parent
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: parentId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Enfants du parent
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/EnfantParent" }
+
+  /api/parents/liaison/{id}:
+    put:
+      operationId: modifierLiaison
+      tags: [parents]
+      summary: Modifier une liaison parent-élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ModifierLiaisonBody" }
+      responses:
+        "200":
+          description: Liaison modifiée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LiaisonParentEleve" }
+    delete:
+      operationId: supprimerLiaison
+      tags: [parents]
+      summary: Supprimer une liaison parent-élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Liaison supprimée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  parent_desactive: { type: boolean }
+
+  /api/parents/{id}/reinitialiser-mdp:
+    post:
+      operationId: reinitialiserMdpParent
+      tags: [parents]
+      summary: Réinitialiser le mot de passe d'un parent
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Mot de passe réinitialisé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  nouveau_mot_de_passe: { type: string }
 
   # ── Portail Parent ──────────────────────────────────────────
   /parent/dashboard:
@@ -10404,5 +10572,124 @@ components:
             erreurs:
               type: array
               items: { type: string }
+
+    LiaisonParentEleve:
+      type: object
+      properties:
+        id: { type: string }
+        eleve_id: { type: string }
+        utilisateur_id: { type: string }
+        etablissement_id: { type: ["string", "null"] }
+        lien: { type: string, enum: [pere, mere, tuteur, autre] }
+        est_principal: { type: boolean }
+        peut_consulter_notes: { type: boolean }
+        peut_consulter_absences: { type: boolean }
+        peut_envoyer_messages: { type: boolean }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    ParentLiaisonDetail:
+      type: object
+      properties:
+        liaison_id: { type: string }
+        utilisateur_id: { type: string }
+        lien: { type: string }
+        est_principal: { type: boolean }
+        peut_consulter_notes: { type: boolean }
+        peut_consulter_absences: { type: boolean }
+        peut_envoyer_messages: { type: boolean }
+        nom: { type: string }
+        prenoms: { type: string }
+        email: { type: string }
+        telephone: { type: ["string", "null"] }
+        actif: { type: boolean }
+
+    EnfantParent:
+      type: object
+      properties:
+        liaison_id: { type: string }
+        eleve_id: { type: string }
+        lien: { type: string }
+        est_principal: { type: boolean }
+        peut_consulter_notes: { type: boolean }
+        peut_consulter_absences: { type: boolean }
+        peut_envoyer_messages: { type: boolean }
+        nom: { type: string }
+        prenoms: { type: string }
+        matricule: { type: string }
+        statut: { type: string }
+        classe: { type: ["string", "null"] }
+        classe_id: { type: ["string", "null"] }
+        annee: { type: ["string", "null"] }
+
+    ParentAvecEnfants:
+      type: object
+      properties:
+        id: { type: string }
+        nom: { type: string }
+        prenoms: { type: string }
+        email: { type: string }
+        telephone: { type: ["string", "null"] }
+        actif: { type: boolean }
+        created_at: { type: string }
+        nb_enfants: { type: integer }
+        enfants:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              nom: { type: string }
+              prenoms: { type: string }
+              lien: { type: string }
+              est_principal: { type: boolean }
+
+    CreerParentBody:
+      type: object
+      required: [nom, prenoms, email, eleve_id, lien]
+      properties:
+        nom: { type: string }
+        prenoms: { type: string }
+        email: { type: string }
+        telephone: { type: string }
+        eleve_id: { type: string }
+        lien: { type: string, enum: [pere, mere, tuteur, autre] }
+        est_principal: { type: boolean }
+
+    LierParentBody:
+      type: object
+      required: [utilisateur_id, eleve_id, lien]
+      properties:
+        utilisateur_id: { type: string }
+        eleve_id: { type: string }
+        lien: { type: string, enum: [pere, mere, tuteur, autre] }
+        est_principal: { type: boolean }
+
+    ModifierLiaisonBody:
+      type: object
+      properties:
+        lien: { type: string, enum: [pere, mere, tuteur, autre] }
+        est_principal: { type: boolean }
+        peut_consulter_notes: { type: boolean }
+        peut_consulter_absences: { type: boolean }
+        peut_envoyer_messages: { type: boolean }
+
+    CreerParentResponse:
+      type: object
+      properties:
+        parent:
+          type: object
+          properties:
+            id: { type: string }
+            nom: { type: string }
+            prenoms: { type: string }
+            email: { type: string }
+            telephone: { type: ["string", "null"] }
+            role: { type: string }
+            actif: { type: boolean }
+            premier_login: { type: boolean }
+        liaison: { $ref: "#/components/schemas/LiaisonParentEleve" }
+        nouveau: { type: boolean }
+        mot_de_passe_temporaire: { type: string }
 
 

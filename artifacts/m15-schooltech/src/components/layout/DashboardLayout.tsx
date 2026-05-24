@@ -481,6 +481,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/etablissements":   "Établissements",
   "/utilisateurs":     "Utilisateurs",
   "/parents":          "Parents",
+  "/parents/detail":   "Fiche parent",
   "/licences":         "Licences",
   "/statistiques":     "Statistiques",
   "/censeurs":         "Censeurs",

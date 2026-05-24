@@ -9,13 +9,18 @@ import {
   useSupprimerDocumentEleve,
   useListerDocumentsEleve,
   getListerDocumentsEleveQueryKey,
+  useLierParentExistant,
+  getListerEnfantsParentQueryKey,
+  useListerUtilisateurs,
+  getListerUtilisateursQueryKey,
+  type LierParentBodyLien,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft, UserSquare, Info, Users, FileText, Clock,
   Edit3, ShieldAlert, Loader2, X, Check, Upload, Trash2,
-  Download, ExternalLink,
+  Download, ExternalLink, Eye, Plus, UserCircle,
 } from "lucide-react";
 
 /* ─── Badge statut ───────────────────────────────────────── */
@@ -178,32 +183,159 @@ function TabInfos({ eleve }: { eleve: Record<string, unknown> }) {
 }
 
 /* ─── Onglet Parents ──────────────────────────────────────── */
-function TabParents({ parents }: { parents: Array<Record<string, unknown>> }) {
-  const lienLabel: Record<string, string> = { pere: "Père", mere: "Mère", tuteur: "Tuteur" };
-  if (!parents?.length) {
-    return <p className="px-4 py-8 text-center text-sm" style={{ color: "var(--m15-muted)" }}>Aucun parent lié à cet élève.</p>;
-  }
+const LIEN_OPTS: { value: LierParentBodyLien; label: string }[] = [
+  { value: "pere", label: "Père" },
+  { value: "mere", label: "Mère" },
+  { value: "tuteur", label: "Tuteur" },
+  { value: "autre", label: "Autre" },
+];
+
+function ModalAjouterParent({ eleveId, onClose, onSuccess }: { eleveId: string; onClose: () => void; onSuccess: () => void }) {
+  const { toast } = useToast();
+  const mutation = useLierParentExistant();
+  const [search, setSearch] = useState("");
+  const [lien, setLien] = useState<LierParentBodyLien>("tuteur");
+  const [estPrincipal, setEstPrincipal] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState("");
+
+  const { data: utilisateurs = [] } = useListerUtilisateurs(
+    { role: "parent" },
+    { query: { queryKey: getListerUtilisateursQueryKey({ role: "parent" }), enabled: search.length >= 2 } }
+  );
+  const filtres = (utilisateurs as unknown as Array<Record<string, unknown>>).filter(u => {
+    const q = search.toLowerCase();
+    return String(u.nom ?? "").toLowerCase().includes(q) ||
+      String(u.prenoms ?? "").toLowerCase().includes(q) ||
+      String(u.email ?? "").toLowerCase().includes(q);
+  }).slice(0, 6);
+
+  const handleSubmit = async () => {
+    if (!selectedId) return;
+    try {
+      await mutation.mutateAsync({ data: { utilisateur_id: selectedId, eleve_id: eleveId, lien, est_principal: estPrincipal } });
+      toast({ title: "Parent lié avec succès" });
+      onSuccess();
+    } catch {
+      toast({ title: "Erreur", description: "Impossible de lier ce parent.", variant: "destructive" });
+    }
+  };
+
   return (
-    <div className="divide-y" style={{ borderColor: "var(--m15-border)" }}>
-      {parents.map((p: Record<string, unknown>) => (
-        <div key={String(p.utilisateur_id)} className="flex items-center gap-4 px-4 py-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
-            style={{ background: "rgba(245,200,66,0.12)", color: "#F5C842", fontFamily: "'Syne', sans-serif" }}>
-            {String(p.prenoms ?? "").charAt(0)}{String(p.nom ?? "").charAt(0)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold text-sm" style={{ color: "var(--m15-white)" }}>
-              {String(p.prenoms ?? "")} {String(p.nom ?? "")}
-              {Boolean(p.est_principal) && (
-                <span className="ml-2 text-xs px-2 py-0.5 rounded-full"
-                  style={{ background: "rgba(0,201,167,0.12)", color: "#00C9A7" }}>Principal</span>
-              )}
-            </p>
-            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>{String(p.email ?? "")} · {lienLabel[String(p.lien ?? "")] ?? String(p.lien ?? "")}</p>
-            {p.telephone ? <p className="text-xs" style={{ color: "var(--m15-muted)" }}>{String(p.telephone)}</p> : null}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(10,14,39,0.85)" }}>
+      <div className="w-full max-w-md rounded-2xl p-6 space-y-5 shadow-2xl" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-lg" style={{ color: "var(--m15-white)", fontFamily: "'Syne', sans-serif" }}>Ajouter un parent</h2>
+          <button onClick={onClose}><X className="w-5 h-5" style={{ color: "var(--m15-muted)" }} /></button>
+        </div>
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-widest text-[var(--m15-muted)] block mb-1.5">Rechercher un parent</label>
+          <input
+            value={search}
+            onChange={e => { setSearch(e.target.value); setSelectedId(""); setSelectedLabel(""); }}
+            placeholder="Nom, prénom ou email…"
+            className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
+            style={{ background: "var(--m15-navy)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}
+          />
+          {search.length >= 2 && filtres.length > 0 && !selectedId && (
+            <div className="mt-1 rounded-xl overflow-hidden" style={{ border: "1px solid var(--m15-border)", background: "var(--m15-navy)" }}>
+              {filtres.map(u => (
+                <button key={String(u.id)} onClick={() => { setSelectedId(String(u.id)); setSelectedLabel(`${String(u.prenoms ?? "")} ${String(u.nom ?? "")}`); setSearch(`${String(u.prenoms ?? "")} ${String(u.nom ?? "")}`); }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-[rgba(0,201,167,0.08)]">
+                  <UserCircle className="w-4 h-4 flex-shrink-0" style={{ color: "#F5C842" }} />
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: "var(--m15-white)" }}>{String(u.prenoms ?? "")} {String(u.nom ?? "")}</p>
+                    <p className="text-xs" style={{ color: "var(--m15-muted)" }}>{String(u.email ?? "")}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {selectedLabel && <p className="mt-1.5 text-xs" style={{ color: "#00C9A7" }}>✓ {selectedLabel} sélectionné(e)</p>}
+        </div>
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-widest text-[var(--m15-muted)] block mb-1.5">Lien de parenté</label>
+          <div className="flex gap-2 flex-wrap">
+            {LIEN_OPTS.map(o => (
+              <button key={o.value} onClick={() => setLien(o.value)}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                style={{ background: lien === o.value ? "rgba(0,201,167,0.15)" : "var(--m15-navy)", color: lien === o.value ? "#00C9A7" : "var(--m15-muted)", border: `1px solid ${lien === o.value ? "#00C9A7" : "var(--m15-border)"}` }}>
+                {o.label}
+              </button>
+            ))}
           </div>
         </div>
-      ))}
+        <div className="flex items-center gap-2">
+          <div className={`w-10 h-5 rounded-full cursor-pointer transition-colors flex-shrink-0 ${estPrincipal ? "bg-[#00C9A7]" : "bg-[var(--m15-border)]"}`}
+            onClick={() => setEstPrincipal(p => !p)}>
+            <div className={`w-4 h-4 rounded-full bg-white shadow m-0.5 transition-transform ${estPrincipal ? "translate-x-5" : ""}`} />
+          </div>
+          <span className="text-sm" style={{ color: "var(--m15-muted)" }}>Contact principal</span>
+        </div>
+        <div className="flex gap-2 pt-1">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-semibold" style={{ background: "var(--m15-navy)", color: "var(--m15-muted)", border: "1px solid var(--m15-border)" }}>Annuler</button>
+          <button onClick={handleSubmit} disabled={!selectedId || mutation.isPending}
+            className="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+            style={{ background: !selectedId ? "rgba(0,201,167,0.2)" : "#00C9A7", color: !selectedId ? "var(--m15-muted)" : "#0A0E27" }}>
+            {mutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" />Lier</>}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TabParents({ parents, eleveId, canManage, onRefresh }: { parents: Array<Record<string, unknown>>; eleveId: string; canManage: boolean; onRefresh: () => void }) {
+  const [, setLocation] = useLocation();
+  const [showModal, setShowModal] = useState(false);
+  const lienLabel: Record<string, string> = { pere: "Père", mere: "Mère", tuteur: "Tuteur", autre: "Autre" };
+
+  return (
+    <div>
+      {showModal && (
+        <ModalAjouterParent eleveId={eleveId} onClose={() => setShowModal(false)} onSuccess={() => { setShowModal(false); onRefresh(); }} />
+      )}
+      {canManage && (
+        <div className="px-4 pt-4 pb-2 flex justify-end">
+          <button onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors"
+            style={{ background: "rgba(0,201,167,0.12)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}>
+            <Plus className="w-4 h-4" />Ajouter un parent
+          </button>
+        </div>
+      )}
+      {!parents?.length ? (
+        <p className="px-4 py-8 text-center text-sm" style={{ color: "var(--m15-muted)" }}>Aucun parent lié à cet élève.</p>
+      ) : (
+        <div className="divide-y" style={{ borderColor: "var(--m15-border)" }}>
+          {parents.map((p: Record<string, unknown>) => (
+            <div key={String(p.utilisateur_id)} className="flex items-center gap-4 px-4 py-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
+                style={{ background: "rgba(245,200,66,0.12)", color: "#F5C842", fontFamily: "'Syne', sans-serif" }}>
+                {String(p.prenoms ?? "").charAt(0)}{String(p.nom ?? "").charAt(0)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm" style={{ color: "var(--m15-white)" }}>
+                  {String(p.prenoms ?? "")} {String(p.nom ?? "")}
+                  {Boolean(p.est_principal) && (
+                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full"
+                      style={{ background: "rgba(0,201,167,0.12)", color: "#00C9A7" }}>Principal</span>
+                  )}
+                </p>
+                <p className="text-xs" style={{ color: "var(--m15-muted)" }}>{String(p.email ?? "")} · {lienLabel[String(p.lien ?? "")] ?? String(p.lien ?? "")}</p>
+                {!!p.telephone && <p className="text-xs" style={{ color: "var(--m15-muted)" }}>{String(p.telephone)}</p>}
+              </div>
+              {canManage && (
+                <button onClick={() => setLocation(`/parents/detail/${String(p.utilisateur_id)}`)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold flex-shrink-0"
+                  style={{ background: "rgba(0,128,255,0.10)", color: "#0080FF", border: "1px solid rgba(0,128,255,0.2)" }}>
+                  <Eye className="w-3.5 h-3.5" />Fiche
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -524,7 +656,14 @@ export default function EleveDetail() {
               <TabInfos eleve={e} />
             )
           )}
-          {activeTab === "parents" && <TabParents parents={parents} />}
+          {activeTab === "parents" && (
+            <TabParents
+              parents={parents}
+              eleveId={eleveId}
+              canManage={canManage}
+              onRefresh={() => queryClient.invalidateQueries({ queryKey: getGetEleveQueryKey(eleveId) })}
+            />
+          )}
           {activeTab === "documents" && <TabDocuments eleveId={eleveId} canManage={canManage} token={token} />}
           {activeTab === "historique" && <TabHistorique historique={historique} />}
           {activeTab === "discipline" && (
