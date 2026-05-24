@@ -555,8 +555,8 @@ function NavLinks({ sections, location, onClose }: {
 }
 
 /* ─── Sidebar content ────────────────────────────────────── */
-function SidebarContent({ location, onClose }: { location: string; onClose: () => void }) {
-  const { user, logout } = useAuth();
+function SidebarContent({ location, onClose, onLogoutRequest }: { location: string; onClose: () => void; onLogoutRequest: () => void }) {
+  const { user } = useAuth();
   const [, setLocation] = useLocation();
 
   const role = user?.role || "eleve";
@@ -565,8 +565,7 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
 
   const handleLogout = () => {
     onClose();
-    logout();
-    setLocation("/login");
+    onLogoutRequest();
   };
 
   return (
@@ -667,7 +666,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside className="hidden md:block w-64 flex-shrink-0 h-screen sticky top-0">
-        <SidebarContent location={location} onClose={() => {}} />
+        <SidebarContent location={location} onClose={() => {}} onLogoutRequest={() => setShowLogoutConfirm(true)} />
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -687,7 +686,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0 border-0">
-                <SidebarContent location={location} onClose={() => setIsMobileOpen(false)} />
+                <SidebarContent location={location} onClose={() => setIsMobileOpen(false)} onLogoutRequest={() => setShowLogoutConfirm(true)} />
               </SheetContent>
             </Sheet>
 
