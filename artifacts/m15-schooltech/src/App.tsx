@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { SplashScreen } from "@/components/SplashScreen";
+import InstallBanner from "@/components/pwa/InstallBanner";
 import { useState } from "react";
 
 // Pages
@@ -1019,6 +1020,7 @@ function App() {
               <Router />
             </WouterRouter>
             <Toaster />
+            <InstallBanner />
           </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>
