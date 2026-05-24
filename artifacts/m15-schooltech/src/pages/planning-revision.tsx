@@ -238,7 +238,7 @@ export default function PlanningRevision() {
               className="h-2 rounded-full transition-all duration-500"
             />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               { label: "Faites", val: completion.fait,     color: "#00C9A7" },
               { label: "Planifiées", val: completion.planifie, color: "var(--m15-muted)" },

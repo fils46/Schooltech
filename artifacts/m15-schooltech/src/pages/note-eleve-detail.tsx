@@ -136,7 +136,7 @@ export default function NoteEleveDetail() {
       </div>
 
       {/* Stats rapides */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Moyenne T1", value: moyTrimestres[0].value > 0 ? moyTrimestres[0].value.toFixed(2) : "—", color: moyTrimestres[0].value >= 10 ? "#00C9A7" : moyTrimestres[0].value >= 8 ? "#F5C842" : "#FF4D6D" },
           { label: "Moyenne T2", value: moyTrimestres[1].value > 0 ? moyTrimestres[1].value.toFixed(2) : "—", color: moyTrimestres[1].value >= 10 ? "#00C9A7" : moyTrimestres[1].value >= 8 ? "#F5C842" : "#FF4D6D" },

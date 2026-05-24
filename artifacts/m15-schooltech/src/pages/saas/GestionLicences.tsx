@@ -86,10 +86,10 @@ export default function GestionLicences() {
   ] : [];
 
   return (
-    <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Licences & Paiements</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[var(--m15-white)]">Licences & Paiements</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>Gestion des licences et suivi des paiements</p>
         </div>
         <button onClick={load} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm" style={{ backgroundColor: "rgba(0,201,167,.12)", color: C.cyan, border: `1px solid ${C.border}` }}>
@@ -104,7 +104,7 @@ export default function GestionLicences() {
       ) : (
         <>
           {/* KPIs */}
-          <div className="grid grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {kpis.map((k) => (
               <div key={k.label} className="rounded-xl p-4 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
                 <p className="text-xs mb-2" style={{ color: C.muted }}>{k.label}</p>
@@ -120,6 +120,7 @@ export default function GestionLicences() {
                 <AlertTriangle className="w-4 h-4" style={{ color: C.gold }} />
                 <h3 className="text-sm font-semibold text-[var(--m15-white)]">Licences expirant dans 30 jours</h3>
               </div>
+              <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -156,11 +157,12 @@ export default function GestionLicences() {
                   })}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
 
           {/* Charts */}
-          <div className="grid grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <div className="rounded-xl p-5 border" style={{ backgroundColor: C.card, borderColor: C.border }}>
               <h3 className="text-sm font-semibold text-[var(--m15-white)] mb-4">Revenus par mois (FCFA)</h3>
               {chartData.length > 0 ? (
@@ -205,7 +207,7 @@ export default function GestionLicences() {
             </div>
 
             {/* Filtres */}
-            <div className="px-5 py-3 flex gap-3 border-b" style={{ borderColor: C.border }}>
+            <div className="px-5 py-3 flex flex-wrap gap-3 border-b" style={{ borderColor: C.border }}>
               <select className="px-3 py-2 rounded-lg text-sm border outline-none" style={{ backgroundColor: C.navy, borderColor: C.border, color: filtreStatut ? "white" : C.muted }} value={filtreStatut} onChange={(e) => setFiltreStatut(e.target.value)}>
                 <option value="">Tous statuts</option>
                 <option value="confirme">Confirmé</option>
@@ -220,6 +222,7 @@ export default function GestionLicences() {
               <input type="date" className="px-3 py-2 rounded-lg text-sm border outline-none" style={{ backgroundColor: C.navy, borderColor: C.border, color: C.muted }} value={dateFin} onChange={(e) => setDateFin(e.target.value)} />
             </div>
 
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -251,6 +254,7 @@ export default function GestionLicences() {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
         </>
       )}

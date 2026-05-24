@@ -108,7 +108,7 @@ export default function MesBulletins() {
 
       {/* Stats */}
       {bulletins.length > 0 && (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="rounded-xl p-4" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
             <p className="text-xs mb-1" style={{ color: "var(--m15-muted)" }}>Bulletins publiés</p>
             <p className="text-2xl font-bold" style={{ color: "var(--m15-white)", fontFamily: "'Syne', sans-serif" }}>{nbPublies}</p>

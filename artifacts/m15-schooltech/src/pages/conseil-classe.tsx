@@ -228,7 +228,7 @@ export default function ConseilClasse() {
 
       {/* Stats */}
       {conseils.length > 0 && (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { label: "Total",     value: conseils.length,                                      color: "var(--m15-white)" },
             { label: "En cours",  value: conseils.filter(c => c.statut === "en_cours").length,  color: "#0080FF" },

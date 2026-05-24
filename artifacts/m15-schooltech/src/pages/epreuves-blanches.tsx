@@ -263,7 +263,7 @@ function ModalStats({ epreuveId, titre, onClose }: { epreuveId: string; titre: s
               ))}
             </div>
             <h3 className="text-sm font-semibold text-[var(--m15-muted)] mb-3">Distribution des notes</h3>
-            <div className="grid grid-cols-4 gap-3 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
               {Object.entries(stats.distribution).map(([range, count]) => (
                 <div key={range} style={{ background: "var(--m15-navy)" }} className="rounded-xl p-3 text-center">
                   <p className="text-xs text-[var(--m15-muted)]">{range}</p>

@@ -265,7 +265,7 @@ export default function SuiviScolaire() {
 
         {/* ── Absences ── */}
         <TabsContent value="absences">
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <Card className="border-0 shadow-sm text-center">
               <CardContent className="p-3">
                 <p className="text-2xl font-bold">{resume.total ?? 0}</p>

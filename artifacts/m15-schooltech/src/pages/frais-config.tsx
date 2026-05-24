@@ -249,7 +249,7 @@ export default function FraisConfig() {
                 style={{ background: "var(--m15-card2)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }} />
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { label: "Tranche 1", val: t1, set: setT1, lim: limT1, setLim: setLimT1 },
                 { label: "Tranche 2", val: t2, set: setT2, lim: limT2, setLim: setLimT2 },

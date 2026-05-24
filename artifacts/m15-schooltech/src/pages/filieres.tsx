@@ -201,7 +201,7 @@ export default function Filieres() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {["lycee", "college", "mixte"].map((type) => {
           const cnt = filieres.filter(f => f.type_etablissement === type).length;
           const color = TYPE_COLORS[type];

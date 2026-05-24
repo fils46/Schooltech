@@ -200,7 +200,7 @@ export default function BulletinDetail() {
       </div>
 
       {/* Résumé */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl p-5 text-center" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
           <p className="text-xs mb-2" style={{ color: "var(--m15-muted)" }}>Moyenne Générale</p>
           <p className="text-3xl font-bold" style={{ color: bulletin.moyenne_generale !== null ? (bulletin.moyenne_generale >= 10 ? "#00C9A7" : "#FF4D6D") : "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>

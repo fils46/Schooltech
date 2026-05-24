@@ -110,7 +110,7 @@ function NouvelleEvalModal({
               style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }} />
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1 uppercase tracking-wider" style={{ color: "var(--m15-muted)" }}>
                 Note sur

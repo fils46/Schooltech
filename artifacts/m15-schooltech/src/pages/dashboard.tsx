@@ -205,7 +205,7 @@ function DevDashboard() {
               Voir tout
             </Link>
           </div>
-          <div>
+          <div className="overflow-x-auto">
             {etabsLoading ? (
               <div className="p-5 space-y-3">
                 {[1, 2, 3].map(i => (

@@ -201,7 +201,7 @@ export default function StocksInfirmerie() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
           <CardContent className="p-4 text-center">
             <p className="text-[var(--m15-muted)] text-xs">Total articles</p>

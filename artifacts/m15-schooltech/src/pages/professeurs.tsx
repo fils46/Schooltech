@@ -220,7 +220,7 @@ export default function Professeurs() {
       </div>
 
       {/* ── Stats ── */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Total", value: total, icon: Users, color: "#00C9A7" },
           { label: "Actifs", value: actifCount, icon: CheckCircle2, color: "#0080FF" },

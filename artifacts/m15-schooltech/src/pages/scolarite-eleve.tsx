@@ -163,7 +163,7 @@ export default function ScolariteEleve() {
       </Card>
 
       {/* Résumé financier */}
-      <div className="grid grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         {[
           { label: "Total dû", value: scol.montant_total_du, color: "#8B9DC3" },
           { label: "Total payé", value: scol.montant_total_paye, color: "#00C9A7" },

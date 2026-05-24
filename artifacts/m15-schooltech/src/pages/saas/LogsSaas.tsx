@@ -74,10 +74,10 @@ export default function LogsSaas() {
   const pagination = data?.pagination;
 
   return (
-    <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Logs & Activité SaaS</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[var(--m15-white)]">Logs & Activité SaaS</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>
             {pagination?.total ?? 0} événement(s) au total
           </p>

@@ -191,7 +191,7 @@ export default function FicheEtablissement() {
   );
 
   if (!etab) return (
-    <div className="p-8" style={{ backgroundColor: C.navy }}>
+    <div className="p-4 md:p-8" style={{ backgroundColor: C.navy }}>
       <p style={{ color: C.muted }}>Établissement introuvable.</p>
     </div>
   );
@@ -200,13 +200,13 @@ export default function FicheEtablissement() {
   const is = { backgroundColor: C.navy, borderColor: C.border };
 
   return (
-    <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
+    <div className="p-4 md:p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
       {showPaiement && licence && (
         <ModalPaiement licenceId={licence.id} onClose={() => setShowPaiement(false)} onSaved={load} />
       )}
 
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex flex-wrap items-center gap-4 mb-6">
         <Link href="/saas/etablissements">
           <a className="p-2 rounded-lg" style={{ backgroundColor: C.card, color: C.muted }}>
             <ArrowLeft className="w-4 h-4" />
@@ -249,8 +249,8 @@ export default function FicheEtablissement() {
 
       {/* Vue générale */}
       {onglet === "general" && (
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 rounded-xl border p-5" style={{ backgroundColor: C.card, borderColor: C.border }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 rounded-xl border p-5" style={{ backgroundColor: C.card, borderColor: C.border }}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-[var(--m15-white)]">Informations établissement</h3>
               {editMode
@@ -362,7 +362,7 @@ export default function FicheEtablissement() {
               )}
             </div>
             {licence ? (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   ["Type", licence.type], ["Début", new Date(licence.date_debut).toLocaleDateString("fr-FR")],
                   ["Expiration", new Date(licence.date_expiration).toLocaleDateString("fr-FR")],
@@ -384,6 +384,7 @@ export default function FicheEtablissement() {
             <div className="px-5 py-4 border-b" style={{ borderColor: C.border }}>
               <h3 className="text-sm font-semibold text-[var(--m15-white)]">Historique des paiements</h3>
             </div>
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -411,6 +412,7 @@ export default function FicheEtablissement() {
                 }
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}

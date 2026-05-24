@@ -290,12 +290,12 @@ export default function GestionEtablissements() {
   });
 
   return (
-    <div className="p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
+    <div className="p-4 md:p-8 min-h-screen" style={{ backgroundColor: C.navy }}>
       {showModal && <ModalCreer onClose={() => setShowModal(false)} onCreated={load} />}
 
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--m15-white)]">Établissements</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[var(--m15-white)]">Établissements</h1>
           <p className="text-sm mt-1" style={{ color: C.muted }}>{etabs.length} établissement(s) au total</p>
         </div>
         <button
@@ -308,7 +308,7 @@ export default function GestionEtablissements() {
       </div>
 
       {/* Filtres */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: C.muted }} />
           <input
@@ -339,6 +339,7 @@ export default function GestionEtablissements() {
             <div className="w-7 h-7 rounded-full border-2 animate-spin" style={{ borderColor: C.cyan, borderTopColor: "transparent" }} />
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -402,6 +403,7 @@ export default function GestionEtablissements() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

@@ -186,7 +186,7 @@ export default function MatiereConfig() {
 
       {/* Stats */}
       {matieres.length > 0 && (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <CardStat label="Matières" value={matieres.length} color="#00C9A7" />
           <CardStat label="Total coefficients" value={matieres.reduce((s, m) => s + m.coefficient, 0)} color="#0080FF" />
           <CardStat label="Coeff. moyen" value={(matieres.reduce((s, m) => s + m.coefficient, 0) / matieres.length).toFixed(1)} color="#F5C842" />

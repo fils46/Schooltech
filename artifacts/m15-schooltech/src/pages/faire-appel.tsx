@@ -351,7 +351,7 @@ function AppelEnCours({ appelId, onTermine }: { appelId: string; onTermine: () =
         </div>
 
         {/* Compteurs */}
-        <div className="grid grid-cols-4 gap-3 mt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
           {Object.entries(STATUT_CONFIG).map(([key, cfg]) => {
             const n = key === "present" ? resume.presents : key === "absent" ? resume.absents : key === "retard" ? resume.retards : resume.excused;
             return (

@@ -77,7 +77,7 @@ export default function HistoriqueDisciplinaire() {
             <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Matricule : {eleve.matricule}</p>
           </div>
         </div>
-        <div className="mt-5 grid grid-cols-3 gap-3">
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { label: "Total incidents", value: resume?.total_incidents ?? 0, color: "#FF4D6D" },
             { label: "Sanctions actives", value: resume?.sanctions_actives ?? 0, color: "#F5C842" },
