@@ -4,6 +4,7 @@ import { db, etablissementsTable, utilisateursTable, licencesTable } from "@work
 import { CreerEtablissementBody, UpdateEtablissementBody } from "@workspace/api-zod";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
+import { objectStorageService } from "../lib/objectStorage";
 
 const router = Router();
 
@@ -303,6 +304,13 @@ router.get(
       telephone: etab.telephone,
       email: etab.email,
       adresse: etab.adresse,
+      logo_url: etab.logo_url,
+      cachet_url: etab.cachet_url,
+      signature_directeur_url: etab.signature_directeur_url,
+      email_contact: etab.email_contact,
+      bp: etab.bp,
+      site_web: etab.site_web,
+      devise: etab.devise,
       licence_active: etab.licence_active,
       date_expiration_licence: etab.date_expiration_licence,
       licence: licence
@@ -333,12 +341,16 @@ router.put(
       return;
     }
 
-    const { nom, ville, telephone, email, adresse } = req.body as {
+    const { nom, ville, telephone, email, adresse, email_contact, bp, site_web, devise } = req.body as {
       nom?: string;
       ville?: string | null;
       telephone?: string | null;
       email?: string | null;
       adresse?: string | null;
+      email_contact?: string | null;
+      bp?: string | null;
+      site_web?: string | null;
+      devise?: string | null;
     };
 
     const updates: Record<string, unknown> = {};
@@ -347,6 +359,10 @@ router.put(
     if (telephone !== undefined) updates.telephone = telephone;
     if (email !== undefined) updates.email = email;
     if (adresse !== undefined) updates.adresse = adresse;
+    if (email_contact !== undefined) updates.email_contact = email_contact;
+    if (bp !== undefined) updates.bp = bp;
+    if (site_web !== undefined) updates.site_web = site_web;
+    if (devise !== undefined) updates.devise = devise;
 
     if (Object.keys(updates).length === 0) {
       res.status(400).json({ message: "Aucun champ à mettre à jour." });
@@ -379,6 +395,13 @@ router.put(
       telephone: updated.telephone,
       email: updated.email,
       adresse: updated.adresse,
+      logo_url: updated.logo_url,
+      cachet_url: updated.cachet_url,
+      signature_directeur_url: updated.signature_directeur_url,
+      email_contact: updated.email_contact,
+      bp: updated.bp,
+      site_web: updated.site_web,
+      devise: updated.devise,
       licence_active: updated.licence_active,
       date_expiration_licence: updated.date_expiration_licence,
       licence: licence
@@ -395,5 +418,123 @@ router.put(
     });
   }
 );
+
+/* ────────────────────────────────────────────────────────────
+   Helpers upload identité visuelle
+   ──────────────────────────────────────────────────────────── */
+
+type AssetField = "logo" | "cachet" | "signature";
+
+const ASSET_FIELDS: Record<AssetField, { url: string; path: string }> = {
+  logo:      { url: "logo_url",                   path: "logo_path" },
+  cachet:    { url: "cachet_url",                 path: "cachet_path" },
+  signature: { url: "signature_directeur_url",    path: "signature_directeur_path" },
+};
+
+function assetFields(asset: AssetField) {
+  return ASSET_FIELDS[asset];
+}
+
+function buildServingUrl(objectPath: string): string {
+  return `/api/storage/objects${objectPath}`;
+}
+
+async function deleteAssetFromStorage(objectPath: string): Promise<void> {
+  try {
+    const file = await objectStorageService.getObjectEntityFile(objectPath);
+    await file.delete();
+  } catch {
+    // Fichier déjà supprimé ou inexistant — OK
+  }
+}
+
+/* ── POST /etablissement/:asset  (logo | cachet | signature) ── */
+for (const asset of ["logo", "cachet", "signature"] as AssetField[]) {
+  router.post(
+    `/etablissement/${asset}`,
+    authMiddleware,
+    verifierLicence,
+    requireRole("directeur"),
+    async (req, res): Promise<void> => {
+      const user = req.user!;
+      if (!user.etablissement_id) {
+        res.status(404).json({ message: "Aucun établissement associé." });
+        return;
+      }
+
+      const { objectPath } = req.body as { objectPath?: string };
+      if (!objectPath || typeof objectPath !== "string") {
+        res.status(400).json({ message: "objectPath requis." });
+        return;
+      }
+
+      const fields = assetFields(asset);
+
+      // Supprimer l'ancien fichier si existant
+      const [current] = await db.select().from(etablissementsTable)
+        .where(eq(etablissementsTable.id, user.etablissement_id)).limit(1);
+
+      if (current?.[fields.path as keyof typeof current]) {
+        await deleteAssetFromStorage(current[fields.path as keyof typeof current] as string);
+      }
+
+      const servingUrl = buildServingUrl(objectPath);
+
+      await db.update(etablissementsTable)
+        .set({
+          [fields.url]: servingUrl,
+          [fields.path]: objectPath,
+          updated_at: new Date(),
+        })
+        .where(eq(etablissementsTable.id, user.etablissement_id));
+
+      req.log.info({ etabId: user.etablissement_id, asset }, `${asset} mis à jour`);
+      res.json({ [fields.url]: servingUrl, [fields.path]: objectPath });
+    }
+  );
+}
+
+/* ── DELETE /etablissement/:asset  (logo | cachet | signature) ── */
+for (const asset of ["logo", "cachet", "signature"] as AssetField[]) {
+  router.delete(
+    `/etablissement/${asset}`,
+    authMiddleware,
+    verifierLicence,
+    requireRole("directeur"),
+    async (req, res): Promise<void> => {
+      const user = req.user!;
+      if (!user.etablissement_id) {
+        res.status(404).json({ message: "Aucun établissement associé." });
+        return;
+      }
+
+      const fields = assetFields(asset);
+
+      const [current] = await db.select().from(etablissementsTable)
+        .where(eq(etablissementsTable.id, user.etablissement_id)).limit(1);
+
+      if (!current) {
+        res.status(404).json({ message: "Établissement introuvable." });
+        return;
+      }
+
+      const currentPath = current[fields.path as keyof typeof current] as string | null;
+      if (currentPath) {
+        await deleteAssetFromStorage(currentPath);
+      }
+
+      await db.update(etablissementsTable)
+        .set({
+          [fields.url]: null,
+          [fields.path]: null,
+          updated_at: new Date(),
+        })
+        .where(eq(etablissementsTable.id, user.etablissement_id));
+
+      req.log.info({ etabId: user.etablissement_id, asset }, `${asset} supprimé`);
+      res.json({ message: `${asset} supprimé.` });
+    }
+  );
+}
 
 export default router;

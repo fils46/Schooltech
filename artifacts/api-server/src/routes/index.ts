@@ -41,6 +41,7 @@ import matieresRouter from "./matieres";
 import parentsRouter from "./parents";
 import eleveRouter from "./eleve";
 import profilRouter from "./profil";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
@@ -86,5 +87,6 @@ router.use(matieresRouter);
 router.use(parentsRouter);
 router.use(eleveRouter);
 router.use(profilRouter);
+router.use(storageRouter);
 
 export default router;

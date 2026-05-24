@@ -131,6 +131,18 @@ Module 16 — Infirmerie Numérique (complet) :
 |-------|-------------|------|
 | dev@m15-schooltech.ci | Dev@M15Tech2026 | dev |
 
+Module 02 & 22 — Identité visuelle & En-têtes PDF (complet) :
+- 8 nouvelles colonnes DB sur `etablissements` : `logo_path`, `cachet_url`, `cachet_path`, `signature_directeur_url`, `signature_directeur_path`, `email_contact`, `bp`, `site_web`, `devise`
+- Infrastructure Object Storage Replit (GCS) : `objectStorage.ts`, `objectAcl.ts`, `storageRouter` monté sur `/api/storage/...`
+- Presigned URL upload flow : `POST /api/storage/uploads/request-url` → upload direct GCS → `POST /api/etablissement/logo|cachet|signature`
+- 6 routes API identité visuelle : `POST/DELETE /api/etablissement/logo|cachet|signature`
+- `lib/pdfHeader.ts` : `genererEntete()` + `genererPiedDePage()` — téléchargement image depuis Object Storage, fallback gracieux
+- `generatePV.ts` mis à jour : accepte `etablissement?: EtablissementPDFInfo`, utilise les vrais en-têtes avec logo, cachet, signature
+- `conseilsClasse.ts` mis à jour : passe les données etab complètes (logo_path, cachet_path, etc.) à `generatePV()`
+- Page `/mon-etablissement` : section "Identité visuelle" avec 3 `CarteUploadIdentite` (logo, cachet, signature)
+- Formulaire étendu : `email_contact`, `bp`, `site_web`, `devise` éditables par le directeur
+- `CarteUploadIdentite.tsx` : composant upload/delete avec prévisualisation, validation type/taille (max 3 Mo)
+
 ## Gotchas
 
 - Toujours relancer `pnpm --filter @workspace/api-spec run codegen` après modification de `openapi.yaml`

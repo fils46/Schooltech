@@ -14,9 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CarteUploadIdentite } from "@/components/etablissement/CarteUploadIdentite";
 import {
   Building2, MapPin, Phone, Mail, ShieldCheck, ShieldOff,
   CalendarClock, Pencil, X, Check, AlertTriangle, Clock,
+  Globe, FileText, Sparkles,
 } from "lucide-react";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -38,6 +40,10 @@ const editSchema = z.object({
   telephone: z.string().optional(),
   email: z.string().email("Email invalide").optional().or(z.literal("")),
   adresse: z.string().optional(),
+  email_contact: z.string().email("Email invalide").optional().or(z.literal("")),
+  bp: z.string().optional(),
+  site_web: z.string().optional(),
+  devise: z.string().optional(),
 });
 
 type EditForm = z.infer<typeof editSchema>;
@@ -49,7 +55,7 @@ function joursRestants(date: string | null | undefined): number | null {
 }
 
 export default function MonEtablissement() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const isDirecteur = user?.role === "directeur";
@@ -61,22 +67,29 @@ export default function MonEtablissement() {
   const form = useForm<EditForm>({
     resolver: zodResolver(editSchema),
     defaultValues: {
-      nom: "",
-      ville: "",
-      telephone: "",
-      email: "",
-      adresse: "",
+      nom: "", ville: "", telephone: "", email: "",
+      adresse: "", email_contact: "", bp: "", site_web: "", devise: "",
     },
   });
 
   function startEdit() {
     if (!etab) return;
+    const e = etab as unknown as {
+      email_contact?: string | null;
+      bp?: string | null;
+      site_web?: string | null;
+      devise?: string | null;
+    };
     form.reset({
       nom: etab.nom ?? "",
       ville: etab.ville ?? "",
       telephone: etab.telephone ?? "",
       email: etab.email ?? "",
       adresse: etab.adresse ?? "",
+      email_contact: e.email_contact ?? "",
+      bp: e.bp ?? "",
+      site_web: e.site_web ?? "",
+      devise: e.devise ?? "",
     });
     setEditing(true);
   }
@@ -95,7 +108,11 @@ export default function MonEtablissement() {
           telephone: data.telephone || null,
           email: data.email || null,
           adresse: data.adresse || null,
-        },
+          email_contact: data.email_contact || null,
+          bp: data.bp || null,
+          site_web: data.site_web || null,
+          devise: data.devise || null,
+        } as Parameters<typeof updateMutation.mutate>[0]["data"],
       },
       {
         onSuccess: () => {
@@ -110,10 +127,24 @@ export default function MonEtablissement() {
     );
   }
 
+  function refreshEtab() {
+    queryClient.invalidateQueries({ queryKey: getGetMonEtablissementQueryKey() });
+  }
+
   const jours = joursRestants(etab?.date_expiration_licence ?? etab?.licence?.date_expiration);
   const licenceActive = etab?.licence_active ?? false;
   const licenceAlerte = jours !== null && jours > 0 && jours <= 30;
   const licenceExpiree = jours !== null && jours <= 0;
+
+  const etabExtra = etab as (typeof etab & {
+    logo_url?: string | null;
+    cachet_url?: string | null;
+    signature_directeur_url?: string | null;
+    email_contact?: string | null;
+    bp?: string | null;
+    site_web?: string | null;
+    devise?: string | null;
+  }) | undefined;
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -129,7 +160,7 @@ export default function MonEtablissement() {
             Mon établissement
           </h1>
           <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
-            Informations et statut de votre licence
+            Informations, identité visuelle et statut de votre licence
           </p>
         </div>
       </div>
@@ -138,6 +169,7 @@ export default function MonEtablissement() {
         <div className="space-y-4">
           <Skeleton className="h-56 w-full rounded-2xl" />
           <Skeleton className="h-40 w-full rounded-2xl" />
+          <Skeleton className="h-48 w-full rounded-2xl" />
         </div>
       ) : !etab ? (
         <div className="rounded-2xl p-8 text-center" style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
@@ -170,7 +202,7 @@ export default function MonEtablissement() {
 
             {!editing ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <InfoRow label="Nom" value={etab.nom} />
+                <InfoRow label="Nom" value={etab.nom ?? "—"} />
                 <InfoRow
                   label="Type"
                   value={etab.type ? TYPE_LABELS[etab.type] ?? etab.type : "—"}
@@ -186,11 +218,30 @@ export default function MonEtablissement() {
                   icon={<Phone className="w-3.5 h-3.5" style={{ color: "#00C9A7" }} />}
                 />
                 <InfoRow
-                  label="Email"
-                  value={etab.email ?? "—"}
+                  label="Email de contact"
+                  value={etabExtra?.email_contact ?? etab.email ?? "—"}
                   icon={<Mail className="w-3.5 h-3.5" style={{ color: "#00C9A7" }} />}
                 />
                 <InfoRow label="Adresse" value={etab.adresse ?? "—"} />
+                {etabExtra?.bp && (
+                  <InfoRow label="Boîte postale" value={`B.P. ${etabExtra.bp}`} />
+                )}
+                {etabExtra?.site_web && (
+                  <InfoRow
+                    label="Site web"
+                    value={etabExtra.site_web}
+                    icon={<Globe className="w-3.5 h-3.5" style={{ color: "#00C9A7" }} />}
+                  />
+                )}
+                {etabExtra?.devise && (
+                  <div className="sm:col-span-2">
+                    <InfoRow
+                      label="Devise"
+                      value={`« ${etabExtra.devise} »`}
+                      icon={<Sparkles className="w-3.5 h-3.5" style={{ color: "#F5C842" }} />}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -212,14 +263,33 @@ export default function MonEtablissement() {
                   </div>
                   <div className="space-y-1.5">
                     <Label>Email de contact</Label>
-                    <Input {...form.register("email")} type="email" placeholder="contact@ecole.ci" />
-                    {form.formState.errors.email && (
-                      <p className="text-xs text-red-400">{form.formState.errors.email.message}</p>
+                    <Input {...form.register("email_contact")} type="email" placeholder="contact@ecole.ci" />
+                    {form.formState.errors.email_contact && (
+                      <p className="text-xs text-red-400">{form.formState.errors.email_contact.message}</p>
                     )}
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
                     <Label>Adresse</Label>
                     <Input {...form.register("adresse")} placeholder="Adresse complète" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Boîte postale</Label>
+                    <Input {...form.register("bp")} placeholder="Ex : 1234" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Site web</Label>
+                    <Input {...form.register("site_web")} placeholder="https://monecole.ci" />
+                  </div>
+                  <div className="space-y-1.5 sm:col-span-2">
+                    <Label>Devise / Slogan</Label>
+                    <Input {...form.register("devise")} placeholder="Ex : L'excellence au quotidien" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Email administratif (login)</Label>
+                    <Input {...form.register("email")} type="email" placeholder="admin@ecole.ci" />
+                    {form.formState.errors.email && (
+                      <p className="text-xs text-red-400">{form.formState.errors.email.message}</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-2">
@@ -248,6 +318,62 @@ export default function MonEtablissement() {
               </form>
             )}
           </div>
+
+          {/* ── Card Identité visuelle ── */}
+          {isDirecteur && (
+            <div
+              className="rounded-2xl p-6 space-y-4"
+              style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}
+            >
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4" style={{ color: "#00C9A7" }} />
+                <h2 className="font-semibold text-base" style={{ color: "var(--m15-white)" }}>
+                  Identité visuelle
+                </h2>
+              </div>
+              <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
+                Ces éléments sont utilisés dans les en-têtes et pieds de page de tous les documents PDF générés (bulletins, procès-verbaux, etc.).
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <CarteUploadIdentite
+                  label="Logo"
+                  description="Logo principal (PNG/SVG recommandé)"
+                  currentUrl={etabExtra?.logo_url ?? null}
+                  endpoint="logo"
+                  token={token}
+                  onUpdated={refreshEtab}
+                />
+                <CarteUploadIdentite
+                  label="Cachet officiel"
+                  description="Cachet/tampon de l'établissement"
+                  currentUrl={etabExtra?.cachet_url ?? null}
+                  endpoint="cachet"
+                  token={token}
+                  onUpdated={refreshEtab}
+                />
+                <CarteUploadIdentite
+                  label="Signature directeur"
+                  description="Signature du directeur (PNG transparent)"
+                  currentUrl={etabExtra?.signature_directeur_url ?? null}
+                  endpoint="signature"
+                  token={token}
+                  onUpdated={refreshEtab}
+                />
+              </div>
+
+              <div
+                className="rounded-xl p-3 flex items-start gap-2"
+                style={{ background: "rgba(0,128,255,0.06)", border: "1px solid rgba(0,128,255,0.15)" }}
+              >
+                <FileText className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: "#0080FF" }} />
+                <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
+                  Formats acceptés : PNG, JPG, SVG, WebP — Taille max 3 Mo.
+                  Les images apparaîtront sur tous les documents officiels après enregistrement.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* ── Card licence ── */}
           <div
@@ -315,7 +441,6 @@ export default function MonEtablissement() {
               )}
             </div>
 
-            {/* Countdown */}
             {jours !== null && (
               <div
                 className="rounded-xl p-4 flex items-center gap-3"

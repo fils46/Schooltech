@@ -584,13 +584,32 @@ router.post(
     ]);
 
     let etablissementNom = "Établissement";
+    let etablissementInfo = null;
     try {
-      const [etab] = await db.select({ nom: etablissementsTable.nom }).from(etablissementsTable).where(eq(etablissementsTable.id, conseil.etablissement_id)).limit(1);
-      if (etab) etablissementNom = etab.nom;
+      const [etab] = await db.select({
+        nom: etablissementsTable.nom,
+        type: etablissementsTable.type,
+        ville: etablissementsTable.ville,
+        telephone: etablissementsTable.telephone,
+        email: etablissementsTable.email,
+        adresse: etablissementsTable.adresse,
+        email_contact: etablissementsTable.email_contact,
+        bp: etablissementsTable.bp,
+        site_web: etablissementsTable.site_web,
+        devise: etablissementsTable.devise,
+        logo_path: etablissementsTable.logo_path,
+        cachet_path: etablissementsTable.cachet_path,
+        signature_directeur_path: etablissementsTable.signature_directeur_path,
+      }).from(etablissementsTable).where(eq(etablissementsTable.id, conseil.etablissement_id)).limit(1);
+      if (etab) {
+        etablissementNom = etab.nom;
+        etablissementInfo = etab;
+      }
     } catch {}
 
     const pdfBuffer = await generatePV({
       conseil: { ...enrichedConseil, etablissement_nom: etablissementNom },
+      etablissement: etablissementInfo,
       deliberations: enrichedDelibs.map(d => ({
         eleve_nom:    d.eleve_nom,
         eleve_prenoms: d.eleve_prenoms,
