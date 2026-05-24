@@ -5,7 +5,7 @@ import {
   useListerAnneesScolaires,
   getGetNotesEleveQueryKey, getGetPresencesEleveQueryKey,
 } from "@workspace/api-client-react";
-import { Award, ChevronLeft, TrendingUp, BookOpen, UserCheck } from "lucide-react";
+import { Award, ChevronLeft, TrendingUp, BookOpen, UserCheck, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 /* ─── Types ─────────────────────────────────────────────────── */
@@ -19,7 +19,13 @@ type PresenceTaux = { matiere: string; taux: number; presents: number; total: nu
 
 const TRIMESTRES = ["1", "2", "3"] as const;
 const TYPE_EVAL_LABEL: Record<string, string> = {
-  devoir: "Devoir", interrogation: "Interro", composition: "Compo", examen_blanc: "Examen blanc",
+  devoir: "Devoir",
+  interrogation: "Interro",
+  composition: "Compo",
+  examen_blanc: "Examen blanc",
+  tp: "TP",
+  expose: "Exposé",
+  autre: "Autre",
 };
 
 function noteColor(note: number, noteSur: number) {
@@ -52,6 +58,81 @@ function BarChart({ data }: { data: { label: string; value: number; max?: number
   );
 }
 
+/* ─── Détail calcul pondéré ──────────────────────────────────── */
+function DetailCalcul({ notes, matiere }: { notes: NoteItem[]; matiere: string }) {
+  const lignes = notes.map(n => {
+    const note20 = n.note_sur > 0 ? (n.note / n.note_sur) * 20 : 0;
+    const pondere = note20 * n.coefficient;
+    return { ...n, note20, pondere };
+  });
+  const sommeCoef = lignes.reduce((a, l) => a + l.coefficient, 0);
+  const sommePond = lignes.reduce((a, l) => a + l.pondere, 0);
+  const moyenne = sommeCoef > 0 ? sommePond / sommeCoef : 0;
+
+  return (
+    <div className="mx-4 mb-3 rounded-xl overflow-hidden"
+      style={{ border: "1px solid rgba(0,201,167,0.2)", background: "rgba(0,201,167,0.03)" }}>
+      <div className="px-4 py-2 text-xs font-semibold uppercase tracking-wider"
+        style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", borderBottom: "1px solid rgba(0,201,167,0.15)" }}>
+        Détail du calcul — {matiere}
+      </div>
+      <table className="w-full text-xs">
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--m15-border)" }}>
+            {["Évaluation", "Type", "Note /20", "× Coeff", "= Pondéré"].map(h => (
+              <th key={h} className="px-4 py-2 text-left font-semibold" style={{ color: "var(--m15-muted)" }}>
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {lignes.map((l, i) => (
+            <tr key={l.id} style={{ borderBottom: i < lignes.length - 1 ? "1px solid var(--m15-border)" : "none" }}>
+              <td className="px-4 py-2 font-medium" style={{ color: "var(--m15-white)" }}>{l.intitule}</td>
+              <td className="px-4 py-2">
+                <span className="px-1.5 py-0.5 rounded-md text-xs"
+                  style={{ background: "rgba(0,128,255,0.1)", color: "#0080FF" }}>
+                  {TYPE_EVAL_LABEL[l.type_evaluation] ?? l.type_evaluation}
+                </span>
+              </td>
+              <td className="px-4 py-2 font-semibold" style={{ color: noteColor(l.note20, 20) }}>
+                {l.note20.toFixed(2)}
+              </td>
+              <td className="px-4 py-2" style={{ color: "var(--m15-muted)" }}>×{l.coefficient}</td>
+              <td className="px-4 py-2 font-semibold" style={{ color: "var(--m15-white)" }}>
+                {l.pondere.toFixed(2)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr style={{ borderTop: "2px solid rgba(0,201,167,0.3)", background: "rgba(0,201,167,0.05)" }}>
+            <td colSpan={2} className="px-4 py-2.5 font-semibold" style={{ color: "var(--m15-muted)" }}>
+              Total
+            </td>
+            <td className="px-4 py-2.5" style={{ color: "var(--m15-muted)" }}></td>
+            <td className="px-4 py-2.5 font-semibold" style={{ color: "var(--m15-muted)" }}>
+              Σ coeff = {sommeCoef}
+            </td>
+            <td className="px-4 py-2.5 font-semibold" style={{ color: "var(--m15-white)" }}>
+              Σ = {sommePond.toFixed(2)}
+            </td>
+          </tr>
+          <tr style={{ background: "rgba(0,201,167,0.08)" }}>
+            <td colSpan={4} className="px-4 py-2.5 font-bold" style={{ color: "#00C9A7" }}>
+              Moyenne pondérée = {sommePond.toFixed(2)} ÷ {sommeCoef}
+            </td>
+            <td className="px-4 py-2.5 font-bold text-lg" style={{ color: noteColor(moyenne, 20), fontFamily: "'Syne', sans-serif" }}>
+              {moyenne.toFixed(2)}/20
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  );
+}
+
 /* ─── Page principale ──────────────────────────────────────── */
 export default function NoteEleveDetail() {
   const { user } = useAuth();
@@ -66,6 +147,7 @@ export default function NoteEleveDetail() {
 
   const [trimestre, setTrimestre] = useState<"1" | "2" | "3">("1");
   const [onglet, setOnglet] = useState<"notes" | "presences">("notes");
+  const [expandedMatieres, setExpandedMatieres] = useState<Set<string>>(new Set());
 
   const { data: notesData } = useGetNotesEleve(
     eleveId,
@@ -95,14 +177,12 @@ export default function NoteEleveDetail() {
 
   const eleveNom = notes[0] ? `${notes[0].eleve_prenoms ?? ""} ${notes[0].eleve_nom ?? ""}`.trim() : "Élève";
 
-  // Grouper notes par matière
   const parMatiere: Record<string, NoteItem[]> = {};
   for (const n of notes) {
     if (!parMatiere[n.matiere]) parMatiere[n.matiere] = [];
     parMatiere[n.matiere].push(n);
   }
 
-  // Moyennes par trimestre (pour graphique)
   const moyTrimestres = TRIMESTRES.map(t => {
     const moysT = moyennes.filter(m => m.trimestre === t);
     if (moysT.length === 0) return { label: `T${t}`, value: 0 };
@@ -114,6 +194,14 @@ export default function NoteEleveDetail() {
   const moyGenT = moyTrimestres.find(m => m.label === `T${trimestre}`)?.value ?? 0;
 
   const canSeePresences = ["directeur", "censeur", "dev", "professeur", "parent", "eleve"].includes(user?.role ?? "");
+
+  const toggleMatiere = (mat: string) => {
+    setExpandedMatieres(prev => {
+      const next = new Set(prev);
+      if (next.has(mat)) next.delete(mat); else next.add(mat);
+      return next;
+    });
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -230,6 +318,7 @@ export default function NoteEleveDetail() {
           ) : (
             Object.entries(parMatiere).map(([mat, ns]) => {
               const moyMat = moyennes.find(m => m.matiere === mat && m.trimestre === trimestre);
+              const isExpanded = expandedMatieres.has(mat);
               return (
                 <div key={mat} className="rounded-2xl overflow-hidden"
                   style={{ border: "1px solid var(--m15-border)" }}>
@@ -239,17 +328,33 @@ export default function NoteEleveDetail() {
                       <BookOpen className="w-4 h-4" style={{ color: "#0080FF" }} />
                       <span className="font-semibold" style={{ color: "var(--m15-white)" }}>{mat}</span>
                     </div>
-                    {moyMat && (
-                      <div className="text-right">
-                        <span className="text-sm font-bold" style={{ color: noteColor(moyMat.moyenne, 20) }}>
-                          Moy: {moyMat.moyenne.toFixed(2)}/20
-                        </span>
-                        <span className="text-xs ml-2" style={{ color: "var(--m15-muted)" }}>
-                          (coeff total: {moyMat.coefficient_total})
-                        </span>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-3">
+                      {moyMat && (
+                        <div className="text-right">
+                          <span className="text-sm font-bold" style={{ color: noteColor(moyMat.moyenne, 20) }}>
+                            Moy: {moyMat.moyenne.toFixed(2)}/20
+                          </span>
+                          <span className="text-xs ml-2" style={{ color: "var(--m15-muted)" }}>
+                            (coeff total: {moyMat.coefficient_total})
+                          </span>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => toggleMatiere(mat)}
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all"
+                        style={{
+                          background: isExpanded ? "rgba(0,201,167,0.15)" : "rgba(0,201,167,0.08)",
+                          color: "#00C9A7",
+                          border: "1px solid rgba(0,201,167,0.2)",
+                        }}>
+                        {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                        {isExpanded ? "Masquer" : "Voir calcul"}
+                      </button>
+                    </div>
                   </div>
+
+                  {isExpanded && <DetailCalcul notes={ns} matiere={mat} />}
+
                   <div style={{ background: "var(--m15-card)" }}>
                     <table className="w-full text-sm">
                       <thead>

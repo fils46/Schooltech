@@ -11,6 +11,13 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 /* ─── Types ─────────────────────────────────────────────────── */
+type TypeConfig = {
+  id: string;
+  type_evaluation: string;
+  libelle: string;
+  coefficient_defaut: number;
+  actif: boolean;
+};
 type Evaluation = {
   id?: string; intitule: string; type_evaluation: string;
   trimestre: string; note_sur: number; coefficient: number; date_evaluation: string;
@@ -26,11 +33,15 @@ type EleveClassement = {
 type Classe = { id: string; nom: string };
 
 const TRIMESTRES = ["1", "2", "3"] as const;
-const TYPE_EVAL = [
-  { value: "devoir", label: "Devoir" },
-  { value: "interrogation", label: "Interrogation" },
-  { value: "composition", label: "Composition" },
-  { value: "examen_blanc", label: "Examen blanc" },
+
+const TYPES_EVAL_DEFAUT: TypeConfig[] = [
+  { id: "composition",   type_evaluation: "composition",   libelle: "Composition",               coefficient_defaut: 2, actif: true },
+  { id: "devoir",        type_evaluation: "devoir",        libelle: "Devoir surveillé",           coefficient_defaut: 1, actif: true },
+  { id: "interrogation", type_evaluation: "interrogation", libelle: "Interrogation orale/écrite", coefficient_defaut: 1, actif: true },
+  { id: "tp",            type_evaluation: "tp",            libelle: "Travaux pratiques",          coefficient_defaut: 1, actif: true },
+  { id: "expose",        type_evaluation: "expose",        libelle: "Exposé",                     coefficient_defaut: 1, actif: true },
+  { id: "examen_blanc",  type_evaluation: "examen_blanc",  libelle: "Examen blanc",               coefficient_defaut: 1, actif: true },
+  { id: "autre",         type_evaluation: "autre",         libelle: "Autre",                      coefficient_defaut: 1, actif: true },
 ];
 
 function noteColor(note: number, noteSur: number): string {
@@ -49,20 +60,34 @@ function noteTextColor(note: number, noteSur: number): string {
 
 /* ─── Modal Nouvelle Évaluation ──────────────────────────────── */
 function NouvelleEvalModal({
-  trimestre, onClose, onCreated,
+  trimestre, typesConfig, onClose, onCreated,
 }: {
   trimestre: string;
+  typesConfig: TypeConfig[];
   onClose: () => void;
   onCreated: (e: Evaluation) => void;
 }) {
+  const typesActifs = typesConfig.filter(t => t.actif);
   const [form, setForm] = useState<Evaluation>({
     intitule: "",
-    type_evaluation: "devoir",
+    type_evaluation: typesActifs[0]?.type_evaluation ?? "devoir",
     trimestre,
     note_sur: 20,
-    coefficient: 1,
+    coefficient: typesActifs[0]?.coefficient_defaut ?? 1,
     date_evaluation: new Date().toISOString().slice(0, 10),
   });
+
+  const handleTypeChange = (typeVal: string) => {
+    const cfg = typesConfig.find(t => t.type_evaluation === typeVal);
+    setForm(f => ({
+      ...f,
+      type_evaluation: typeVal,
+      coefficient: cfg?.coefficient_defaut ?? 1,
+    }));
+  };
+
+  const configDuType = typesConfig.find(t => t.type_evaluation === form.type_evaluation);
+  const coeffDefaut = configDuType?.coefficient_defaut ?? 1;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -80,10 +105,12 @@ function NouvelleEvalModal({
                 Type
               </label>
               <select value={form.type_evaluation}
-                onChange={e => setForm(f => ({ ...f, type_evaluation: e.target.value }))}
+                onChange={e => handleTypeChange(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl text-sm outline-none"
                 style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
-                {TYPE_EVAL.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                {typesActifs.map(t => (
+                  <option key={t.type_evaluation} value={t.type_evaluation}>{t.libelle}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -139,6 +166,18 @@ function NouvelleEvalModal({
                 style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }} />
             </div>
           </div>
+
+          {form.coefficient !== coeffDefaut && (
+            <p className="text-xs px-3 py-1.5 rounded-lg"
+              style={{ background: "rgba(245,200,66,0.08)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.2)" }}>
+              Coeff. par défaut pour ce type : <strong>×{coeffDefaut}</strong> — modifié à ×{form.coefficient}
+            </p>
+          )}
+          {form.coefficient === coeffDefaut && (
+            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
+              Coeff. par défaut pour ce type : ×{coeffDefaut} — modifiable si besoin
+            </p>
+          )}
         </div>
 
         <div className="flex gap-3 mt-5">
@@ -181,7 +220,22 @@ export default function SaisieNotes() {
   const [notesMap, setNotesMap] = useState<Record<string, Record<string, string>>>({});
   const [evalModalOpen, setEvalModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [typesConfig, setTypesConfig] = useState<TypeConfig[]>(TYPES_EVAL_DEFAUT);
   const autosaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Charger la configuration des types d'évaluations
+  useEffect(() => {
+    const token = localStorage.getItem("m15_token");
+    if (!token) return;
+    fetch("/api/notes/types-config", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.types?.length > 0) setTypesConfig(data.types);
+      })
+      .catch(() => {});
+  }, []);
 
   // Charger notes existantes
   const { data: notesData, refetch: refetchNotes } = useGetNotesClasse(
@@ -226,7 +280,6 @@ export default function SaisieNotes() {
     }
   }, [notesData]);
 
-  // Autosave
   const triggerAutosave = () => {
     if (autosaveRef.current) clearTimeout(autosaveRef.current);
     autosaveRef.current = setTimeout(handleSave, 30000);
@@ -296,11 +349,14 @@ export default function SaisieNotes() {
 
   const eleves = classement;
 
-  // Calcul moyennes par éval (ligne de bas)
   const moyenneParEval = (ev: Evaluation): string => {
     const vals = eleves.map(e => Number(notesMap[e.eleve_id]?.[ev.intitule] ?? "")).filter(n => !isNaN(n));
     if (vals.length === 0) return "—";
     return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2);
+  };
+
+  const getTypeLabel = (typeVal: string): string => {
+    return typesConfig.find(t => t.type_evaluation === typeVal)?.libelle ?? typeVal;
   };
 
   return (
@@ -414,9 +470,14 @@ export default function SaisieNotes() {
                   </th>
                   {evaluations.map(ev => (
                     <th key={ev.intitule} className="px-3 py-3 text-center font-semibold"
-                      style={{ color: "var(--m15-muted)", minWidth: "100px" }}>
-                      <div>{ev.intitule}</div>
-                      <div className="text-xs font-normal">/{ ev.note_sur} · c{ev.coefficient}</div>
+                      style={{ color: "var(--m15-muted)", minWidth: "110px" }}>
+                      <div style={{ color: "var(--m15-white)" }}>{ev.intitule}</div>
+                      <div className="text-xs font-normal mt-0.5" style={{ color: "var(--m15-muted)" }}>
+                        {getTypeLabel(ev.type_evaluation)}
+                      </div>
+                      <div className="text-xs font-normal" style={{ color: "var(--m15-muted)" }}>
+                        /{ev.note_sur} · ×{ev.coefficient}
+                      </div>
                     </th>
                   ))}
                   {evaluations.length === 0 && (
@@ -477,7 +538,6 @@ export default function SaisieNotes() {
                     </td>
                   </tr>
                 ))}
-                {/* Ligne moyenne classe */}
                 {eleves.length > 0 && evaluations.length > 0 && (
                   <tr style={{ background: "rgba(0,201,167,0.04)", borderTop: "2px solid var(--m15-border)" }}>
                     <td className="px-4 py-3 font-semibold sticky left-0"
@@ -499,10 +559,10 @@ export default function SaisieNotes() {
         </div>
       )}
 
-      {/* Modal nouvelle éval */}
       {evalModalOpen && (
         <NouvelleEvalModal
           trimestre={trimestre}
+          typesConfig={typesConfig}
           onClose={() => setEvalModalOpen(false)}
           onCreated={handleAddEval}
         />

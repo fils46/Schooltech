@@ -121,6 +121,7 @@ import GestionSalles from "@/pages/salles/GestionSalles";
 import MonEdtProf from "@/pages/mon-edt-prof";
 import MonEdtEleve from "@/pages/mon-edt-eleve";
 import EdtParent from "@/pages/edt-parent";
+import ConfigEvaluations from "@/pages/config-evaluations";
 
 const queryClient = new QueryClient();
 
@@ -361,6 +362,14 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <MatiereConfig />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/config-evaluations">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConfigEvaluations />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

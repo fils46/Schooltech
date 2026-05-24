@@ -2,12 +2,36 @@ import { Router } from "express";
 import { eq, and, desc, sql } from "drizzle-orm";
 import {
   db, notesTable, elevesTable, eleveClassesTable,
-  utilisateursTable, professeurClassesTable,
+  utilisateursTable, professeurClassesTable, typesEvaluationsConfigTable,
 } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
 
 const router = Router();
+
+type TypeEval = "devoir" | "interrogation" | "composition" | "examen_blanc" | "tp" | "expose" | "autre";
+
+const TYPES_DEFAUT = [
+  { type_evaluation: "composition",   libelle: "Composition",                 coefficient_defaut: "2.00" },
+  { type_evaluation: "devoir",        libelle: "Devoir surveillé",            coefficient_defaut: "1.00" },
+  { type_evaluation: "interrogation", libelle: "Interrogation orale/écrite",  coefficient_defaut: "1.00" },
+  { type_evaluation: "tp",            libelle: "Travaux pratiques",           coefficient_defaut: "1.00" },
+  { type_evaluation: "expose",        libelle: "Exposé",                      coefficient_defaut: "1.00" },
+  { type_evaluation: "examen_blanc",  libelle: "Examen blanc",                coefficient_defaut: "1.00" },
+  { type_evaluation: "autre",         libelle: "Autre",                       coefficient_defaut: "1.00" },
+];
+
+async function seederConfigDefaut(etablissement_id: string): Promise<void> {
+  const existing = await db
+    .select()
+    .from(typesEvaluationsConfigTable)
+    .where(eq(typesEvaluationsConfigTable.etablissement_id, etablissement_id))
+    .limit(1);
+  if (existing.length > 0) return;
+  await db.insert(typesEvaluationsConfigTable).values(
+    TYPES_DEFAUT.map(t => ({ etablissement_id, ...t }))
+  ).onConflictDoNothing();
+}
 
 function normalizeId(v: string | string[]): string {
   return Array.isArray(v) ? v[0] : v;
@@ -29,6 +53,69 @@ async function enrichirNote(n: typeof notesTable.$inferSelect) {
   };
 }
 
+/* ─── GET /api/notes/types-config ───────────────────────── */
+router.get(
+  "/api/notes/types-config",
+  authMiddleware, verifierLicence,
+  async (req, res) => {
+    const user = req.user!;
+    const etabId = user.etablissement_id ?? "";
+    if (!etabId) {
+      res.json({ types: TYPES_DEFAUT.map((t, i) => ({ id: String(i), ...t, actif: true })) });
+      return;
+    }
+    await seederConfigDefaut(etabId);
+    const types = await db
+      .select()
+      .from(typesEvaluationsConfigTable)
+      .where(eq(typesEvaluationsConfigTable.etablissement_id, etabId))
+      .orderBy(typesEvaluationsConfigTable.libelle);
+    res.json({ types: types.map(t => ({ ...t, coefficient_defaut: Number(t.coefficient_defaut) })) });
+  }
+);
+
+/* ─── PUT /api/notes/types-config/:id ───────────────────── */
+router.put(
+  "/api/notes/types-config/:id",
+  authMiddleware, verifierLicence,
+  async (req, res) => {
+    const user = req.user!;
+    if (!["directeur", "dev"].includes(user.role)) {
+      res.status(403).json({ message: "Accès réservé au directeur." });
+      return;
+    }
+    const id = normalizeId(req.params.id);
+    const { libelle, coefficient_defaut, actif } = req.body as {
+      libelle?: string;
+      coefficient_defaut?: number;
+      actif?: boolean;
+    };
+    const updates: Record<string, unknown> = { updated_at: new Date() };
+    if (libelle !== undefined) updates.libelle = libelle;
+    if (coefficient_defaut !== undefined) {
+      if (coefficient_defaut < 0.5 || coefficient_defaut > 10) {
+        res.status(400).json({ message: "Le coefficient doit être entre 0.5 et 10." });
+        return;
+      }
+      updates.coefficient_defaut = String(coefficient_defaut);
+    }
+    if (actif !== undefined) updates.actif = actif;
+    const [updated] = await db
+      .update(typesEvaluationsConfigTable)
+      .set(updates)
+      .where(and(
+        eq(typesEvaluationsConfigTable.id, id),
+        eq(typesEvaluationsConfigTable.etablissement_id, user.etablissement_id ?? "")
+      ))
+      .returning();
+    if (!updated) {
+      res.status(404).json({ message: "Configuration introuvable." });
+      return;
+    }
+    res.json({ message: "Configuration mise à jour.", config: { ...updated, coefficient_defaut: Number(updated.coefficient_defaut) } });
+  }
+);
+
 /* ─── POST /api/notes/saisir ─────────────────────────────── */
 router.post(
   "/api/notes/saisir",
@@ -38,7 +125,7 @@ router.post(
     const {
       eleve_id, classe_id, annee_scolaire_id, matiere,
       type_evaluation, trimestre, intitule, note,
-      note_sur = 20, coefficient = 1, date_evaluation, observations,
+      note_sur = 20, coefficient = 1, periode, date_evaluation, observations,
     } = req.body as Record<string, string | number>;
 
     if (!eleve_id || !classe_id || !matiere || !type_evaluation ||
@@ -54,7 +141,6 @@ router.post(
       return;
     }
 
-    // Vérifier que le prof enseigne dans cette classe
     if (user.role === "professeur") {
       const [assoc] = await db
         .select()
@@ -72,7 +158,6 @@ router.post(
         return;
       }
 
-      // Vérifier que l'élève est dans la classe
       const [eleveClasse] = await db
         .select()
         .from(eleveClassesTable)
@@ -99,12 +184,13 @@ router.post(
         classe_id: String(classe_id),
         annee_scolaire_id: String(annee_scolaire_id),
         matiere: String(matiere),
-        type_evaluation: String(type_evaluation) as "devoir" | "interrogation" | "composition" | "examen_blanc",
+        type_evaluation: String(type_evaluation) as TypeEval,
         trimestre: String(trimestre) as "1" | "2" | "3",
         intitule: String(intitule),
         note: String(n),
         note_sur: String(ns),
         coefficient: String(Number(coefficient)),
+        periode: periode ? String(periode) : null,
         date_evaluation: String(date_evaluation),
         observations: observations ? String(observations) : null,
       })
@@ -123,7 +209,7 @@ router.post(
     const {
       classe_id, matiere, type_evaluation, trimestre, intitule,
       annee_scolaire_id, note_sur = 20, coefficient = 1,
-      date_evaluation, notes,
+      date_evaluation, periode, notes,
     } = req.body as {
       classe_id: string;
       matiere: string;
@@ -134,6 +220,7 @@ router.post(
       note_sur?: number;
       coefficient?: number;
       date_evaluation: string;
+      periode?: string;
       notes: { eleve_id: string; note: number; observations?: string }[];
     };
 
@@ -161,12 +248,13 @@ router.post(
           classe_id,
           annee_scolaire_id,
           matiere,
-          type_evaluation: type_evaluation as "devoir" | "interrogation" | "composition" | "examen_blanc",
+          type_evaluation: type_evaluation as TypeEval,
           trimestre: trimestre as "1" | "2" | "3",
           intitule,
           note: String(n),
           note_sur: String(ns),
           coefficient: String(Number(coefficient)),
+          periode: periode ?? null,
           date_evaluation,
           observations: item.observations ?? null,
         });
@@ -197,7 +285,7 @@ router.get(
     if (matiere) conditions.push(eq(notesTable.matiere, matiere));
     if (trimestre) conditions.push(eq(notesTable.trimestre, trimestre as "1" | "2" | "3"));
     if (type_evaluation)
-      conditions.push(eq(notesTable.type_evaluation, type_evaluation as "devoir" | "interrogation" | "composition" | "examen_blanc"));
+      conditions.push(eq(notesTable.type_evaluation, type_evaluation as TypeEval));
     if (annee_scolaire_id)
       conditions.push(eq(notesTable.annee_scolaire_id, annee_scolaire_id));
 
@@ -250,7 +338,7 @@ router.get(
 
     const enriched = await Promise.all(rows.map(enrichirNote));
 
-    // Calculer moyennes par matière + trimestre
+    // Calcul moyennes pondérées par matière + trimestre
     type Acc = Record<string, { somme_pond: number; somme_coef: number }>;
     const accMap: Acc = {};
     for (const n of enriched) {
@@ -297,7 +385,6 @@ router.get(
       .from(notesTable)
       .where(and(...conditions));
 
-    // Grouper par élève
     const parEleve: Record<string, { somme_pond: number; somme_coef: number }> = {};
     const notesParEleve: Record<string, { matiere: string; notes: number[]; coefs: number[] }[]> = {};
 
@@ -319,7 +406,6 @@ router.get(
       matiereEntry.coefs.push(coef);
     }
 
-    // Récupérer noms élèves
     const eleveIds = Object.keys(parEleve);
     const elevesInfos = eleveIds.length > 0
       ? await db.select().from(elevesTable).where(
@@ -423,7 +509,6 @@ router.put(
       return;
     }
 
-    // Prof : limite 7 jours
     if (user.role === "professeur") {
       if (existing.professeur_id !== user.id) {
         res.status(403).json({ message: "Non autorisé." });
