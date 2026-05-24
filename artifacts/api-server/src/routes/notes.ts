@@ -53,9 +53,9 @@ async function enrichirNote(n: typeof notesTable.$inferSelect) {
   };
 }
 
-/* ─── GET /api/notes/types-config ───────────────────────── */
+/* ─── GET /notes/types-config ───────────────────────── */
 router.get(
-  "/api/notes/types-config",
+  "/notes/types-config",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -74,14 +74,18 @@ router.get(
   }
 );
 
-/* ─── PUT /api/notes/types-config/:id ───────────────────── */
+/* ─── PUT /notes/types-config/:id ───────────────────── */
 router.put(
-  "/api/notes/types-config/:id",
+  "/notes/types-config/:id",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
     if (!["directeur", "dev"].includes(user.role)) {
       res.status(403).json({ message: "Accès réservé au directeur." });
+      return;
+    }
+    if (!user.etablissement_id) {
+      res.status(400).json({ message: "Aucun établissement associé à ce compte." });
       return;
     }
     const id = normalizeId(req.params.id);
