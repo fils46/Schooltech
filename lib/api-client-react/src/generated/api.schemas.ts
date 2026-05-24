@@ -1939,6 +1939,180 @@ export interface AbsenceItemResponse {
   absence: AbsenceItem;
 }
 
+export type ConfigAbsencesResponseConfig = {
+  id?: string;
+  etablissement_id?: string;
+  mode_saisie?: string;
+  seuil_alerte_1?: number;
+  seuil_alerte_2?: number;
+  seuil_alerte_3?: number;
+  periode_calcul?: string;
+  heure_debut_matin?: string;
+  heure_fin_matin?: string;
+  heure_debut_aprem?: string;
+  heure_fin_aprem?: string;
+  notifier_parent_seuil_1?: boolean;
+  notifier_parent_seuil_2?: boolean;
+  notifier_parent_seuil_3?: boolean;
+  notifier_censeur_seuil_1?: boolean;
+  notifier_censeur_seuil_2?: boolean;
+  notifier_censeur_seuil_3?: boolean;
+  notifier_directeur_seuil_3?: boolean;
+};
+
+export interface ConfigAbsencesResponse {
+  config: ConfigAbsencesResponseConfig;
+}
+
+export interface ConfigAbsencesInput {
+  mode_saisie?: string;
+  seuil_alerte_1?: number;
+  seuil_alerte_2?: number;
+  seuil_alerte_3?: number;
+  periode_calcul?: string;
+  heure_debut_matin?: string;
+  heure_fin_matin?: string;
+  heure_debut_aprem?: string;
+  heure_fin_aprem?: string;
+  notifier_parent_seuil_1?: boolean;
+  notifier_parent_seuil_2?: boolean;
+  notifier_parent_seuil_3?: boolean;
+  notifier_censeur_seuil_1?: boolean;
+  notifier_censeur_seuil_2?: boolean;
+  notifier_censeur_seuil_3?: boolean;
+  notifier_directeur_seuil_3?: boolean;
+}
+
+export type AbsenceDemiJourneeInputPeriode = typeof AbsenceDemiJourneeInputPeriode[keyof typeof AbsenceDemiJourneeInputPeriode];
+
+
+export const AbsenceDemiJourneeInputPeriode = {
+  matin: 'matin',
+  apres_midi: 'apres_midi',
+  journee_entiere: 'journee_entiere',
+} as const;
+
+export interface AbsenceDemiJourneeInput {
+  eleve_ids: string[];
+  date_absence: string;
+  periode: AbsenceDemiJourneeInputPeriode;
+  motif_absence?: string;
+  annee_scolaire_id: string;
+  classe_id: string;
+}
+
+export type AbsenceDemiJourneeResponseAbsencesItem = { [key: string]: unknown };
+
+export interface AbsenceDemiJourneeResponse {
+  success: boolean;
+  nb_creees: number;
+  absences: AbsenceDemiJourneeResponseAbsencesItem[];
+}
+
+export type AbsencesDemiJourneeListeResponseAbsencesItem = {
+  id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  classe_nom?: string;
+  date_absence?: string;
+  periode?: string;
+  statut?: string;
+  motif_absence?: string;
+};
+
+export interface AbsencesDemiJourneeListeResponse {
+  success: boolean;
+  absences: AbsencesDemiJourneeListeResponseAbsencesItem[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export type AlerteAbsenceItemResponseAlerte = {
+  id?: string;
+  eleve_id?: string;
+  eleve_nom?: string;
+  eleve_prenoms?: string;
+  classe_nom?: string;
+  niveau_alerte?: number;
+  nb_absences_nj_atteint?: number;
+  date_declenchement?: string;
+  traitement_statut?: string;
+  traitement_notes?: string;
+  trimestre?: number;
+};
+
+export interface AlerteAbsenceItemResponse {
+  success?: boolean;
+  alerte?: AlerteAbsenceItemResponseAlerte;
+}
+
+export type AlertesAbsencesResponseStats = {
+  niveau_1?: number;
+  niveau_2?: number;
+  niveau_3?: number;
+};
+
+export interface AlertesAbsencesResponse {
+  success: boolean;
+  alertes: AlerteAbsenceItemResponse[];
+  stats: AlertesAbsencesResponseStats;
+}
+
+export type StatsAbsencesEleveResponseStatsAbsencesParMatiereItem = {
+  matiere?: string;
+  nb?: number;
+};
+
+export type StatsAbsencesEleveResponseStats = {
+  nb_absences_total?: number;
+  nb_absences_justifiees?: number;
+  nb_absences_non_justifiees?: number;
+  nb_demi_journees_total?: number;
+  taux_presence?: number;
+  absences_par_matiere?: StatsAbsencesEleveResponseStatsAbsencesParMatiereItem[];
+  seuil_atteint?: number;
+  prochaine_alerte_dans?: number;
+  seuil_1?: number;
+  seuil_2?: number;
+  seuil_3?: number;
+};
+
+export interface StatsAbsencesEleveResponse {
+  success: boolean;
+  stats: StatsAbsencesEleveResponseStats;
+}
+
+export type AlertesEleveResponseAlertesItem = {
+  id?: string;
+  niveau_alerte?: number;
+  nb_absences_nj_atteint?: number;
+  date_declenchement?: string;
+  traitement_statut?: string;
+  trimestre?: number;
+};
+
+export interface AlertesEleveResponse {
+  success: boolean;
+  alertes: AlertesEleveResponseAlertesItem[];
+}
+
+export type TraiterAlerteInputTraitementStatut = typeof TraiterAlerteInputTraitementStatut[keyof typeof TraiterAlerteInputTraitementStatut];
+
+
+export const TraiterAlerteInputTraitementStatut = {
+  nouvelle: 'nouvelle',
+  en_cours: 'en_cours',
+  traitee: 'traitee',
+  ignoree: 'ignoree',
+} as const;
+
+export interface TraiterAlerteInput {
+  traitement_statut: TraiterAlerteInputTraitementStatut;
+  traitement_notes?: string;
+}
+
 export interface AbsencesListeResponse {
   absences: AbsenceItem[];
   total: number;
@@ -4047,6 +4221,27 @@ export type AjouterIntervention201 = {
 export type GenererPV200 = {
   pv_url?: string;
   conseil?: ConseilClasseItem;
+};
+
+export type ListerAbsencesDemiJourneeParams = {
+classe_id?: string;
+date?: string;
+annee_scolaire_id?: string;
+periode?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListerAlertesAbsencesParams = {
+niveau_alerte?: number;
+statut?: string;
+classe_id?: string;
+trimestre?: number;
+};
+
+export type GetStatsAbsencesEleveParams = {
+trimestre?: number;
+annee_scolaire_id?: string;
 };
 
 export type ListerAbsencesParams = {

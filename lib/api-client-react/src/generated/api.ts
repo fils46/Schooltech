@@ -20,9 +20,12 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AbsenceDemiJourneeInput,
+  AbsenceDemiJourneeResponse,
   AbsenceInput,
   AbsenceItemResponse,
   AbsenceUpdateInput,
+  AbsencesDemiJourneeListeResponse,
   AbsencesEnfantResponse,
   AbsencesListeResponse,
   ActiviteInput,
@@ -32,6 +35,9 @@ import type {
   AffecterProfesseurInput,
   AjouterIntervention201,
   AjouterInterventionInput,
+  AlerteAbsenceItemResponse,
+  AlertesAbsencesResponse,
+  AlertesEleveResponse,
   AnneeScolaire,
   AnneeScolaireInput,
   AnneeScolairesListeResponse,
@@ -73,6 +79,8 @@ import type {
   ClubsListeResponse,
   ClubsStatsResponse,
   CompletionPlanningResponse,
+  ConfigAbsencesInput,
+  ConfigAbsencesResponse,
   ConfigurerCriteresBody,
   ConfigurerMatieresInput,
   ConfigurerPrestationBody,
@@ -210,6 +218,7 @@ import type {
   GetScolariteStatistiquesParams,
   GetStatistiquesAbsencesParams,
   GetStatistiquesNotesParams,
+  GetStatsAbsencesEleveParams,
   GetStatsClotureParams,
   HealthStatus,
   HistoriquePromotionsResponse,
@@ -223,7 +232,9 @@ import type {
   LiaisonParentEleve,
   LierParentBody,
   LierParentInput,
+  ListerAbsencesDemiJourneeParams,
   ListerAbsencesParams,
+  ListerAlertesAbsencesParams,
   ListerClassesParams,
   ListerConseilsParams,
   ListerContratsParams,
@@ -351,6 +362,7 @@ import type {
   SnapshotInput,
   SoumettreFeuilleHeuresBody,
   StatistiquesAbsencesResponse,
+  StatsAbsencesEleveResponse,
   StatsClotureResponse,
   StatsEpreuveResponse,
   StatsEtablissement,
@@ -368,6 +380,7 @@ import type {
   SupprimerNote200,
   SupprimerSeance200,
   TerminerConseilInput,
+  TraiterAlerteInput,
   TraiterJustificationInput,
   TraiterMembreInput,
   TrimestreActifResponse,
@@ -10840,6 +10853,631 @@ export function useGetConseilParticipants<TData = Awaited<ReturnType<typeof getC
 
 
 
+
+export const getGetConfigAbsencesUrl = () => {
+
+
+
+
+  return `/api/absences/config`
+}
+
+/**
+ * @summary Récupérer la configuration des absences
+ */
+export const getConfigAbsences = async ( options?: RequestInit): Promise<ConfigAbsencesResponse> => {
+
+  return customFetch<ConfigAbsencesResponse>(getGetConfigAbsencesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetConfigAbsencesQueryKey = () => {
+    return [
+    `/api/absences/config`
+    ] as const;
+    }
+
+
+export const getGetConfigAbsencesQueryOptions = <TData = Awaited<ReturnType<typeof getConfigAbsences>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConfigAbsences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetConfigAbsencesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getConfigAbsences>>> = ({ signal }) => getConfigAbsences({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getConfigAbsences>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetConfigAbsencesQueryResult = NonNullable<Awaited<ReturnType<typeof getConfigAbsences>>>
+export type GetConfigAbsencesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Récupérer la configuration des absences
+ */
+
+export function useGetConfigAbsences<TData = Awaited<ReturnType<typeof getConfigAbsences>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getConfigAbsences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetConfigAbsencesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getMettreAJourConfigAbsencesUrl = () => {
+
+
+
+
+  return `/api/absences/config`
+}
+
+/**
+ * @summary Mettre à jour la configuration des absences
+ */
+export const mettreAJourConfigAbsences = async (configAbsencesInput: ConfigAbsencesInput, options?: RequestInit): Promise<ConfigAbsencesResponse> => {
+
+  return customFetch<ConfigAbsencesResponse>(getMettreAJourConfigAbsencesUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      configAbsencesInput,)
+  }
+);}
+
+
+
+
+export const getMettreAJourConfigAbsencesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mettreAJourConfigAbsences>>, TError,{data: BodyType<ConfigAbsencesInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof mettreAJourConfigAbsences>>, TError,{data: BodyType<ConfigAbsencesInput>}, TContext> => {
+
+const mutationKey = ['mettreAJourConfigAbsences'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof mettreAJourConfigAbsences>>, {data: BodyType<ConfigAbsencesInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  mettreAJourConfigAbsences(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MettreAJourConfigAbsencesMutationResult = NonNullable<Awaited<ReturnType<typeof mettreAJourConfigAbsences>>>
+    export type MettreAJourConfigAbsencesMutationBody = BodyType<ConfigAbsencesInput>
+    export type MettreAJourConfigAbsencesMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Mettre à jour la configuration des absences
+ */
+export const useMettreAJourConfigAbsences = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mettreAJourConfigAbsences>>, TError,{data: BodyType<ConfigAbsencesInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof mettreAJourConfigAbsences>>,
+        TError,
+        {data: BodyType<ConfigAbsencesInput>},
+        TContext
+      > => {
+      return useMutation(getMettreAJourConfigAbsencesMutationOptions(options));
+    }
+
+export const getSaisirAbsencesDemiJourneeUrl = () => {
+
+
+
+
+  return `/api/absences/demi-journee`
+}
+
+/**
+ * @summary Saisir des absences demi-journée
+ */
+export const saisirAbsencesDemiJournee = async (absenceDemiJourneeInput: AbsenceDemiJourneeInput, options?: RequestInit): Promise<AbsenceDemiJourneeResponse> => {
+
+  return customFetch<AbsenceDemiJourneeResponse>(getSaisirAbsencesDemiJourneeUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      absenceDemiJourneeInput,)
+  }
+);}
+
+
+
+
+export const getSaisirAbsencesDemiJourneeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>, TError,{data: BodyType<AbsenceDemiJourneeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>, TError,{data: BodyType<AbsenceDemiJourneeInput>}, TContext> => {
+
+const mutationKey = ['saisirAbsencesDemiJournee'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>, {data: BodyType<AbsenceDemiJourneeInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  saisirAbsencesDemiJournee(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SaisirAbsencesDemiJourneeMutationResult = NonNullable<Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>>
+    export type SaisirAbsencesDemiJourneeMutationBody = BodyType<AbsenceDemiJourneeInput>
+    export type SaisirAbsencesDemiJourneeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Saisir des absences demi-journée
+ */
+export const useSaisirAbsencesDemiJournee = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>, TError,{data: BodyType<AbsenceDemiJourneeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof saisirAbsencesDemiJournee>>,
+        TError,
+        {data: BodyType<AbsenceDemiJourneeInput>},
+        TContext
+      > => {
+      return useMutation(getSaisirAbsencesDemiJourneeMutationOptions(options));
+    }
+
+export const getListerAbsencesDemiJourneeUrl = (params?: ListerAbsencesDemiJourneeParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/absences/demi-journee/liste?${stringifiedParams}` : `/api/absences/demi-journee/liste`
+}
+
+/**
+ * @summary Lister les absences demi-journée
+ */
+export const listerAbsencesDemiJournee = async (params?: ListerAbsencesDemiJourneeParams, options?: RequestInit): Promise<AbsencesDemiJourneeListeResponse> => {
+
+  return customFetch<AbsencesDemiJourneeListeResponse>(getListerAbsencesDemiJourneeUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerAbsencesDemiJourneeQueryKey = (params?: ListerAbsencesDemiJourneeParams,) => {
+    return [
+    `/api/absences/demi-journee/liste`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerAbsencesDemiJourneeQueryOptions = <TData = Awaited<ReturnType<typeof listerAbsencesDemiJournee>>, TError = ErrorType<unknown>>(params?: ListerAbsencesDemiJourneeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerAbsencesDemiJournee>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerAbsencesDemiJourneeQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerAbsencesDemiJournee>>> = ({ signal }) => listerAbsencesDemiJournee(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerAbsencesDemiJournee>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerAbsencesDemiJourneeQueryResult = NonNullable<Awaited<ReturnType<typeof listerAbsencesDemiJournee>>>
+export type ListerAbsencesDemiJourneeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les absences demi-journée
+ */
+
+export function useListerAbsencesDemiJournee<TData = Awaited<ReturnType<typeof listerAbsencesDemiJournee>>, TError = ErrorType<unknown>>(
+ params?: ListerAbsencesDemiJourneeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerAbsencesDemiJournee>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerAbsencesDemiJourneeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getListerAlertesAbsencesUrl = (params?: ListerAlertesAbsencesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/absences/alertes?${stringifiedParams}` : `/api/absences/alertes`
+}
+
+/**
+ * @summary Lister les alertes d'absences
+ */
+export const listerAlertesAbsences = async (params?: ListerAlertesAbsencesParams, options?: RequestInit): Promise<AlertesAbsencesResponse> => {
+
+  return customFetch<AlertesAbsencesResponse>(getListerAlertesAbsencesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListerAlertesAbsencesQueryKey = (params?: ListerAlertesAbsencesParams,) => {
+    return [
+    `/api/absences/alertes`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListerAlertesAbsencesQueryOptions = <TData = Awaited<ReturnType<typeof listerAlertesAbsences>>, TError = ErrorType<unknown>>(params?: ListerAlertesAbsencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerAlertesAbsences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListerAlertesAbsencesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listerAlertesAbsences>>> = ({ signal }) => listerAlertesAbsences(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listerAlertesAbsences>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListerAlertesAbsencesQueryResult = NonNullable<Awaited<ReturnType<typeof listerAlertesAbsences>>>
+export type ListerAlertesAbsencesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Lister les alertes d'absences
+ */
+
+export function useListerAlertesAbsences<TData = Awaited<ReturnType<typeof listerAlertesAbsences>>, TError = ErrorType<unknown>>(
+ params?: ListerAlertesAbsencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listerAlertesAbsences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListerAlertesAbsencesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetStatsAbsencesEleveUrl = (eleveId: string,
+    params?: GetStatsAbsencesEleveParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/absences/stats/eleve/${eleveId}?${stringifiedParams}` : `/api/absences/stats/eleve/${eleveId}`
+}
+
+/**
+ * @summary Statistiques absences d'un élève
+ */
+export const getStatsAbsencesEleve = async (eleveId: string,
+    params?: GetStatsAbsencesEleveParams, options?: RequestInit): Promise<StatsAbsencesEleveResponse> => {
+
+  return customFetch<StatsAbsencesEleveResponse>(getGetStatsAbsencesEleveUrl(eleveId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetStatsAbsencesEleveQueryKey = (eleveId: string,
+    params?: GetStatsAbsencesEleveParams,) => {
+    return [
+    `/api/absences/stats/eleve/${eleveId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetStatsAbsencesEleveQueryOptions = <TData = Awaited<ReturnType<typeof getStatsAbsencesEleve>>, TError = ErrorType<unknown>>(eleveId: string,
+    params?: GetStatsAbsencesEleveParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getStatsAbsencesEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetStatsAbsencesEleveQueryKey(eleveId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStatsAbsencesEleve>>> = ({ signal }) => getStatsAbsencesEleve(eleveId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStatsAbsencesEleve>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetStatsAbsencesEleveQueryResult = NonNullable<Awaited<ReturnType<typeof getStatsAbsencesEleve>>>
+export type GetStatsAbsencesEleveQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Statistiques absences d'un élève
+ */
+
+export function useGetStatsAbsencesEleve<TData = Awaited<ReturnType<typeof getStatsAbsencesEleve>>, TError = ErrorType<unknown>>(
+ eleveId: string,
+    params?: GetStatsAbsencesEleveParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getStatsAbsencesEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetStatsAbsencesEleveQueryOptions(eleveId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetAlertesAbsencesEleveUrl = (eleveId: string,) => {
+
+
+
+
+  return `/api/absences/alertes/eleve/${eleveId}`
+}
+
+/**
+ * @summary Alertes absences d'un élève
+ */
+export const getAlertesAbsencesEleve = async (eleveId: string, options?: RequestInit): Promise<AlertesEleveResponse> => {
+
+  return customFetch<AlertesEleveResponse>(getGetAlertesAbsencesEleveUrl(eleveId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAlertesAbsencesEleveQueryKey = (eleveId: string,) => {
+    return [
+    `/api/absences/alertes/eleve/${eleveId}`
+    ] as const;
+    }
+
+
+export const getGetAlertesAbsencesEleveQueryOptions = <TData = Awaited<ReturnType<typeof getAlertesAbsencesEleve>>, TError = ErrorType<unknown>>(eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAlertesAbsencesEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAlertesAbsencesEleveQueryKey(eleveId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAlertesAbsencesEleve>>> = ({ signal }) => getAlertesAbsencesEleve(eleveId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(eleveId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAlertesAbsencesEleve>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAlertesAbsencesEleveQueryResult = NonNullable<Awaited<ReturnType<typeof getAlertesAbsencesEleve>>>
+export type GetAlertesAbsencesEleveQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Alertes absences d'un élève
+ */
+
+export function useGetAlertesAbsencesEleve<TData = Awaited<ReturnType<typeof getAlertesAbsencesEleve>>, TError = ErrorType<unknown>>(
+ eleveId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAlertesAbsencesEleve>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAlertesAbsencesEleveQueryOptions(eleveId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getTraiterAlerteAbsenceUrl = (id: string,) => {
+
+
+
+
+  return `/api/absences/alertes/${id}/traiter`
+}
+
+/**
+ * @summary Traiter une alerte d'absence
+ */
+export const traiterAlerteAbsence = async (id: string,
+    traiterAlerteInput: TraiterAlerteInput, options?: RequestInit): Promise<AlerteAbsenceItemResponse> => {
+
+  return customFetch<AlerteAbsenceItemResponse>(getTraiterAlerteAbsenceUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      traiterAlerteInput,)
+  }
+);}
+
+
+
+
+export const getTraiterAlerteAbsenceMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof traiterAlerteAbsence>>, TError,{id: string;data: BodyType<TraiterAlerteInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof traiterAlerteAbsence>>, TError,{id: string;data: BodyType<TraiterAlerteInput>}, TContext> => {
+
+const mutationKey = ['traiterAlerteAbsence'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof traiterAlerteAbsence>>, {id: string;data: BodyType<TraiterAlerteInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  traiterAlerteAbsence(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type TraiterAlerteAbsenceMutationResult = NonNullable<Awaited<ReturnType<typeof traiterAlerteAbsence>>>
+    export type TraiterAlerteAbsenceMutationBody = BodyType<TraiterAlerteInput>
+    export type TraiterAlerteAbsenceMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Traiter une alerte d'absence
+ */
+export const useTraiterAlerteAbsence = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof traiterAlerteAbsence>>, TError,{id: string;data: BodyType<TraiterAlerteInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof traiterAlerteAbsence>>,
+        TError,
+        {id: string;data: BodyType<TraiterAlerteInput>},
+        TContext
+      > => {
+      return useMutation(getTraiterAlerteAbsenceMutationOptions(options));
+    }
 
 export const getListerAbsencesUrl = (params?: ListerAbsencesParams,) => {
   const normalizedParams = new URLSearchParams();

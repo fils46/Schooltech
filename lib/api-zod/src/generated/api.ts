@@ -3483,6 +3483,242 @@ export const GetConseilParticipantsResponse = zod.object({
 
 
 /**
+ * @summary Récupérer la configuration des absences
+ */
+export const GetConfigAbsencesResponse = zod.object({
+  "config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "mode_saisie": zod.string().optional(),
+  "seuil_alerte_1": zod.number().optional(),
+  "seuil_alerte_2": zod.number().optional(),
+  "seuil_alerte_3": zod.number().optional(),
+  "periode_calcul": zod.string().optional(),
+  "heure_debut_matin": zod.string().optional(),
+  "heure_fin_matin": zod.string().optional(),
+  "heure_debut_aprem": zod.string().optional(),
+  "heure_fin_aprem": zod.string().optional(),
+  "notifier_parent_seuil_1": zod.boolean().optional(),
+  "notifier_parent_seuil_2": zod.boolean().optional(),
+  "notifier_parent_seuil_3": zod.boolean().optional(),
+  "notifier_censeur_seuil_1": zod.boolean().optional(),
+  "notifier_censeur_seuil_2": zod.boolean().optional(),
+  "notifier_censeur_seuil_3": zod.boolean().optional(),
+  "notifier_directeur_seuil_3": zod.boolean().optional()
+})
+})
+
+
+/**
+ * @summary Mettre à jour la configuration des absences
+ */
+export const MettreAJourConfigAbsencesBody = zod.object({
+  "mode_saisie": zod.string().optional(),
+  "seuil_alerte_1": zod.number().optional(),
+  "seuil_alerte_2": zod.number().optional(),
+  "seuil_alerte_3": zod.number().optional(),
+  "periode_calcul": zod.string().optional(),
+  "heure_debut_matin": zod.string().optional(),
+  "heure_fin_matin": zod.string().optional(),
+  "heure_debut_aprem": zod.string().optional(),
+  "heure_fin_aprem": zod.string().optional(),
+  "notifier_parent_seuil_1": zod.boolean().optional(),
+  "notifier_parent_seuil_2": zod.boolean().optional(),
+  "notifier_parent_seuil_3": zod.boolean().optional(),
+  "notifier_censeur_seuil_1": zod.boolean().optional(),
+  "notifier_censeur_seuil_2": zod.boolean().optional(),
+  "notifier_censeur_seuil_3": zod.boolean().optional(),
+  "notifier_directeur_seuil_3": zod.boolean().optional()
+})
+
+export const MettreAJourConfigAbsencesResponse = zod.object({
+  "config": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "mode_saisie": zod.string().optional(),
+  "seuil_alerte_1": zod.number().optional(),
+  "seuil_alerte_2": zod.number().optional(),
+  "seuil_alerte_3": zod.number().optional(),
+  "periode_calcul": zod.string().optional(),
+  "heure_debut_matin": zod.string().optional(),
+  "heure_fin_matin": zod.string().optional(),
+  "heure_debut_aprem": zod.string().optional(),
+  "heure_fin_aprem": zod.string().optional(),
+  "notifier_parent_seuil_1": zod.boolean().optional(),
+  "notifier_parent_seuil_2": zod.boolean().optional(),
+  "notifier_parent_seuil_3": zod.boolean().optional(),
+  "notifier_censeur_seuil_1": zod.boolean().optional(),
+  "notifier_censeur_seuil_2": zod.boolean().optional(),
+  "notifier_censeur_seuil_3": zod.boolean().optional(),
+  "notifier_directeur_seuil_3": zod.boolean().optional()
+})
+})
+
+
+/**
+ * @summary Saisir des absences demi-journée
+ */
+export const SaisirAbsencesDemiJourneeBody = zod.object({
+  "eleve_ids": zod.array(zod.string()),
+  "date_absence": zod.string(),
+  "periode": zod.enum(['matin', 'apres_midi', 'journee_entiere']),
+  "motif_absence": zod.string().optional(),
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string()
+})
+
+
+/**
+ * @summary Lister les absences demi-journée
+ */
+export const ListerAbsencesDemiJourneeQueryParams = zod.object({
+  "classe_id": zod.coerce.string().optional(),
+  "date": zod.coerce.string().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "periode": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListerAbsencesDemiJourneeResponse = zod.object({
+  "success": zod.boolean(),
+  "absences": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "date_absence": zod.string().optional(),
+  "periode": zod.string().optional(),
+  "statut": zod.string().optional(),
+  "motif_absence": zod.string().optional()
+})),
+  "total": zod.number(),
+  "page": zod.number(),
+  "limit": zod.number()
+})
+
+
+/**
+ * @summary Lister les alertes d'absences
+ */
+export const ListerAlertesAbsencesQueryParams = zod.object({
+  "niveau_alerte": zod.coerce.number().optional(),
+  "statut": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional(),
+  "trimestre": zod.coerce.number().optional()
+})
+
+export const ListerAlertesAbsencesResponse = zod.object({
+  "success": zod.boolean(),
+  "alertes": zod.array(zod.object({
+  "success": zod.boolean().optional(),
+  "alerte": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "niveau_alerte": zod.number().optional(),
+  "nb_absences_nj_atteint": zod.number().optional(),
+  "date_declenchement": zod.string().optional(),
+  "traitement_statut": zod.string().optional(),
+  "traitement_notes": zod.string().optional(),
+  "trimestre": zod.number().optional()
+}).optional()
+})),
+  "stats": zod.object({
+  "niveau_1": zod.number().optional(),
+  "niveau_2": zod.number().optional(),
+  "niveau_3": zod.number().optional()
+})
+})
+
+
+/**
+ * @summary Statistiques absences d'un élève
+ */
+export const GetStatsAbsencesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetStatsAbsencesEleveQueryParams = zod.object({
+  "trimestre": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetStatsAbsencesEleveResponse = zod.object({
+  "success": zod.boolean(),
+  "stats": zod.object({
+  "nb_absences_total": zod.number().optional(),
+  "nb_absences_justifiees": zod.number().optional(),
+  "nb_absences_non_justifiees": zod.number().optional(),
+  "nb_demi_journees_total": zod.number().optional(),
+  "taux_presence": zod.number().optional(),
+  "absences_par_matiere": zod.array(zod.object({
+  "matiere": zod.string().optional(),
+  "nb": zod.number().optional()
+})).optional(),
+  "seuil_atteint": zod.number().optional(),
+  "prochaine_alerte_dans": zod.number().optional(),
+  "seuil_1": zod.number().optional(),
+  "seuil_2": zod.number().optional(),
+  "seuil_3": zod.number().optional()
+})
+})
+
+
+/**
+ * @summary Alertes absences d'un élève
+ */
+export const GetAlertesAbsencesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetAlertesAbsencesEleveResponse = zod.object({
+  "success": zod.boolean(),
+  "alertes": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "niveau_alerte": zod.number().optional(),
+  "nb_absences_nj_atteint": zod.number().optional(),
+  "date_declenchement": zod.string().optional(),
+  "traitement_statut": zod.string().optional(),
+  "trimestre": zod.number().optional()
+}))
+})
+
+
+/**
+ * @summary Traiter une alerte d'absence
+ */
+export const TraiterAlerteAbsenceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const TraiterAlerteAbsenceBody = zod.object({
+  "traitement_statut": zod.enum(['nouvelle', 'en_cours', 'traitee', 'ignoree']),
+  "traitement_notes": zod.string().optional()
+})
+
+export const TraiterAlerteAbsenceResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "alerte": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "eleve_nom": zod.string().optional(),
+  "eleve_prenoms": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "niveau_alerte": zod.number().optional(),
+  "nb_absences_nj_atteint": zod.number().optional(),
+  "date_declenchement": zod.string().optional(),
+  "traitement_statut": zod.string().optional(),
+  "traitement_notes": zod.string().optional(),
+  "trimestre": zod.number().optional()
+}).optional()
+})
+
+
+/**
  * @summary Lister les absences
  */
 export const ListerAbsencesQueryParams = zod.object({

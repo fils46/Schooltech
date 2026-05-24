@@ -3255,6 +3255,154 @@ paths:
 
   # ── Module 08 : Absences ─────────────────────────────────
 
+  /absences/config:
+    get:
+      operationId: getConfigAbsences
+      tags: [absences]
+      summary: Récupérer la configuration des absences
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Configuration absences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigAbsencesResponse"
+    put:
+      operationId: mettreAJourConfigAbsences
+      tags: [absences]
+      summary: Mettre à jour la configuration des absences
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigAbsencesInput"
+      responses:
+        "200":
+          description: Configuration mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigAbsencesResponse"
+
+  /absences/demi-journee:
+    post:
+      operationId: saisirAbsencesDemiJournee
+      tags: [absences]
+      summary: Saisir des absences demi-journée
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AbsenceDemiJourneeInput"
+      responses:
+        "201":
+          description: Absences créées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsenceDemiJourneeResponse"
+
+  /absences/demi-journee/liste:
+    get:
+      operationId: listerAbsencesDemiJournee
+      tags: [absences]
+      summary: Lister les absences demi-journée
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: date, in: query, schema: { type: string } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: periode, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Liste absences demi-journée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsencesDemiJourneeListeResponse"
+
+  /absences/alertes:
+    get:
+      operationId: listerAlertesAbsences
+      tags: [absences]
+      summary: Lister les alertes d'absences
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: niveau_alerte, in: query, schema: { type: integer } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: classe_id, in: query, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Alertes absences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertesAbsencesResponse"
+
+  /absences/stats/eleve/{eleveId}:
+    get:
+      operationId: getStatsAbsencesEleve
+      tags: [absences]
+      summary: Statistiques absences d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+        - { name: trimestre, in: query, schema: { type: integer } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Stats absences élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsAbsencesEleveResponse"
+
+  /absences/alertes/eleve/{eleveId}:
+    get:
+      operationId: getAlertesAbsencesEleve
+      tags: [absences]
+      summary: Alertes absences d'un élève
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Alertes élève
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertesEleveResponse"
+
+  /absences/alertes/{id}/traiter:
+    put:
+      operationId: traiterAlerteAbsence
+      tags: [absences]
+      summary: Traiter une alerte d'absence
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TraiterAlerteInput"
+      responses:
+        "200":
+          description: Alerte traitée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlerteAbsenceItemResponse"
+
   /absences/liste:
     get:
       operationId: listerAbsences
@@ -9178,6 +9326,183 @@ components:
       properties:
         absence:
           $ref: "#/components/schemas/AbsenceItem"
+
+    ConfigAbsencesResponse:
+      type: object
+      required: [config]
+      properties:
+        config:
+          type: object
+          properties:
+            id: { type: string }
+            etablissement_id: { type: string }
+            mode_saisie: { type: string }
+            seuil_alerte_1: { type: integer }
+            seuil_alerte_2: { type: integer }
+            seuil_alerte_3: { type: integer }
+            periode_calcul: { type: string }
+            heure_debut_matin: { type: string }
+            heure_fin_matin: { type: string }
+            heure_debut_aprem: { type: string }
+            heure_fin_aprem: { type: string }
+            notifier_parent_seuil_1: { type: boolean }
+            notifier_parent_seuil_2: { type: boolean }
+            notifier_parent_seuil_3: { type: boolean }
+            notifier_censeur_seuil_1: { type: boolean }
+            notifier_censeur_seuil_2: { type: boolean }
+            notifier_censeur_seuil_3: { type: boolean }
+            notifier_directeur_seuil_3: { type: boolean }
+
+    ConfigAbsencesInput:
+      type: object
+      properties:
+        mode_saisie: { type: string }
+        seuil_alerte_1: { type: integer }
+        seuil_alerte_2: { type: integer }
+        seuil_alerte_3: { type: integer }
+        periode_calcul: { type: string }
+        heure_debut_matin: { type: string }
+        heure_fin_matin: { type: string }
+        heure_debut_aprem: { type: string }
+        heure_fin_aprem: { type: string }
+        notifier_parent_seuil_1: { type: boolean }
+        notifier_parent_seuil_2: { type: boolean }
+        notifier_parent_seuil_3: { type: boolean }
+        notifier_censeur_seuil_1: { type: boolean }
+        notifier_censeur_seuil_2: { type: boolean }
+        notifier_censeur_seuil_3: { type: boolean }
+        notifier_directeur_seuil_3: { type: boolean }
+
+    AbsenceDemiJourneeInput:
+      type: object
+      required: [eleve_ids, date_absence, periode, annee_scolaire_id, classe_id]
+      properties:
+        eleve_ids:
+          type: array
+          items: { type: string }
+        date_absence: { type: string }
+        periode: { type: string, enum: [matin, apres_midi, journee_entiere] }
+        motif_absence: { type: string }
+        annee_scolaire_id: { type: string }
+        classe_id: { type: string }
+
+    AbsenceDemiJourneeResponse:
+      type: object
+      required: [success, nb_creees, absences]
+      properties:
+        success: { type: boolean }
+        nb_creees: { type: integer }
+        absences:
+          type: array
+          items: { type: object }
+
+    AbsencesDemiJourneeListeResponse:
+      type: object
+      required: [success, absences, total, page, limit]
+      properties:
+        success: { type: boolean }
+        absences:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              eleve_id: { type: string }
+              eleve_nom: { type: string }
+              eleve_prenoms: { type: string }
+              classe_nom: { type: string }
+              date_absence: { type: string }
+              periode: { type: string }
+              statut: { type: string }
+              motif_absence: { type: string }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    AlerteAbsenceItemResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        alerte:
+          type: object
+          properties:
+            id: { type: string }
+            eleve_id: { type: string }
+            eleve_nom: { type: string }
+            eleve_prenoms: { type: string }
+            classe_nom: { type: string }
+            niveau_alerte: { type: integer }
+            nb_absences_nj_atteint: { type: integer }
+            date_declenchement: { type: string }
+            traitement_statut: { type: string }
+            traitement_notes: { type: string }
+            trimestre: { type: integer }
+
+    AlertesAbsencesResponse:
+      type: object
+      required: [success, alertes, stats]
+      properties:
+        success: { type: boolean }
+        alertes:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlerteAbsenceItemResponse"
+        stats:
+          type: object
+          properties:
+            niveau_1: { type: integer }
+            niveau_2: { type: integer }
+            niveau_3: { type: integer }
+
+    StatsAbsencesEleveResponse:
+      type: object
+      required: [success, stats]
+      properties:
+        success: { type: boolean }
+        stats:
+          type: object
+          properties:
+            nb_absences_total: { type: integer }
+            nb_absences_justifiees: { type: integer }
+            nb_absences_non_justifiees: { type: integer }
+            nb_demi_journees_total: { type: integer }
+            taux_presence: { type: number }
+            absences_par_matiere:
+              type: array
+              items:
+                type: object
+                properties:
+                  matiere: { type: string }
+                  nb: { type: integer }
+            seuil_atteint: { type: integer }
+            prochaine_alerte_dans: { type: integer }
+            seuil_1: { type: integer }
+            seuil_2: { type: integer }
+            seuil_3: { type: integer }
+
+    AlertesEleveResponse:
+      type: object
+      required: [success, alertes]
+      properties:
+        success: { type: boolean }
+        alertes:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              niveau_alerte: { type: integer }
+              nb_absences_nj_atteint: { type: integer }
+              date_declenchement: { type: string }
+              traitement_statut: { type: string }
+              trimestre: { type: integer }
+
+    TraiterAlerteInput:
+      type: object
+      required: [traitement_statut]
+      properties:
+        traitement_statut: { type: string, enum: [nouvelle, en_cours, traitee, ignoree] }
+        traitement_notes: { type: string }
 
     AbsencesListeResponse:
       type: object

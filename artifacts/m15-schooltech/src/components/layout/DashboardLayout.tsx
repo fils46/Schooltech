@@ -12,7 +12,7 @@ import {
   Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, ChevronDown, CalendarDays, Layers,
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
-  Heart, Stethoscope, Package,
+  Heart, Stethoscope, Package, Settings,
   Trophy, Activity, Star as StarIcon,
   ShieldAlert, DollarSign, Banknote, Receipt, CheckCircle2, Send,
 } from "lucide-react";
@@ -134,6 +134,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "ABSENCES",
+      links: [
+        { label: "Gestion absences",  href: "/absences",            icon: UserMinus },
+        { label: "Demi-journées",     href: "/saisie-demi-journee", icon: Clock },
+        { label: "Alertes absences",  href: "/alertes-absences",    icon: Bell },
+        { label: "Config. absences",  href: "/config-absences",     icon: Settings },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -198,6 +207,14 @@ const navConfig: Record<string, Section[]> = {
         { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
         { label: "Salles & Espaces",href: "/salles",          icon: Building  },
         { label: "Absences",        href: "/absences",        icon: UserMinus },
+        { label: "Demi-journées",   href: "/saisie-demi-journee", icon: Clock },
+        { label: "Alertes absences",href: "/alertes-absences", icon: Bell },
+      ],
+    },
+    {
+      title: "CONFIGURATION",
+      links: [
+        { label: "Config. absences", href: "/config-absences", icon: Settings },
       ],
     },
     {
@@ -512,7 +529,10 @@ const PAGE_TITLES: Record<string, string> = {
   "/mon-edt":          "Mon emploi du temps",
   "/mon-edt-eleve":    "Mon emploi du temps",
   "/edt-parent":       "Emploi du temps",
-  "/absences":         "Gestion des Absences",
+  "/absences":              "Gestion des Absences",
+  "/config-absences":       "Configuration des Absences",
+  "/saisie-demi-journee":   "Absences Demi-Journée",
+  "/alertes-absences":      "Alertes d'Absences",
   "/mes-classes":      "Mes classes",
   "/evaluations":      "Évaluations",
   "/cahier-de-textes": "Cahier de textes",

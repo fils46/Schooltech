@@ -52,6 +52,9 @@ import ConseilResultats from "@/pages/conseil-resultats";
 import AbsenceGestion from "@/pages/absence-gestion";
 import AbsencesParent from "@/pages/absences-parent";
 import MesAbsences from "@/pages/mes-absences";
+import ConfigAbsences from "@/pages/config-absences";
+import SaisieDemiJournee from "@/pages/saisie-demi-journee";
+import AlertesAbsences from "@/pages/alertes-absences";
 import NotificationsCentre from "@/pages/notifications-centre";
 import ParentDashboard from "@/pages/parent-dashboard";
 import SuiviScolaire from "@/pages/suivi-scolaire";
@@ -444,6 +447,30 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <AbsenceGestion />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/config-absences">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <ConfigAbsences />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/saisie-demi-journee">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <SaisieDemiJournee />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/alertes-absences">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AlertesAbsences />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>

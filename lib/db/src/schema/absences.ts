@@ -1,5 +1,6 @@
 import {
   pgTable, text, timestamp, uuid, pgEnum, boolean, unique,
+  integer, numeric,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
@@ -29,6 +30,10 @@ export const absencesTable = pgTable(
     type: absenceTypeEnum("type").notNull().default("absence"),
     statut: absenceStatutEnum("statut").notNull().default("non_justifiee"),
     notif_parent_envoyee: boolean("notif_parent_envoyee").notNull().default(false),
+    periode_journee: text("periode_journee"),
+    nb_heures: numeric("nb_heures", { precision: 4, scale: 2 }),
+    alerte_declenchee: integer("alerte_declenchee").notNull().default(0),
+    source_saisie: text("source_saisie").notNull().default("appel_cours"),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updated_at: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

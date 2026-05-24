@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { eq, and, gte, lte, desc, count, sql } from "drizzle-orm";
+import { eq, and, gte, lte, desc, count, sql, isNull, ne } from "drizzle-orm";
 import {
   db, absencesTable, justificationsTable, utilisateursTable,
   elevesTable, classesTable, parentsElevesTable,
+  absencesDemiJourneeTable, alertesAbsencesTable, configAbsencesTable,
+  eleveClassesTable, anneesScolairesTable,
 } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
@@ -10,6 +12,7 @@ import {
   creerNotification, envoyerNotificationJustification,
   getDirecteurEtablissement, declencherNotificationsAbsence, SEUIL_ABSENCES,
 } from "../lib/notificationService";
+import { verifierSeuilsAlerte } from "../lib/alerteAbsenceService";
 
 const router = Router();
 
@@ -435,6 +438,285 @@ router.put("/justifications/:id/traiter", authMiddleware, verifierLicence, async
   }
 
   res.json({ justification: updated });
+});
+
+/* ── POST /api/absences/demi-journee ────────────────────── */
+router.post("/absences/demi-journee", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const { eleve_ids, date_absence, periode, motif_absence, annee_scolaire_id, classe_id } =
+    req.body as { eleve_ids: string[]; date_absence: string; periode: string; motif_absence?: string; annee_scolaire_id: string; classe_id: string };
+
+  if (!eleve_ids?.length || !date_absence || !periode || !annee_scolaire_id || !classe_id) {
+    res.status(400).json({ success: false, message: "Champs obligatoires manquants." }); return;
+  }
+
+  const etablissementId = user.etablissement_id ?? "";
+
+  const [config] = await db.select().from(configAbsencesTable)
+    .where(eq(configAbsencesTable.etablissement_id, etablissementId)).limit(1);
+
+  const modeAutorise = !config || config.mode_saisie === "demi_journee" || config.mode_saisie === "les_deux";
+  if (!modeAutorise) {
+    res.status(400).json({ success: false, message: "Mode demi-journée non activé pour cet établissement." }); return;
+  }
+
+  const absencesCreees = [];
+
+  for (const eleveId of eleve_ids) {
+    if (periode === "journee_entiere") {
+      for (const p of ["matin", "apres_midi"] as const) {
+        try {
+          const [abs] = await db.insert(absencesDemiJourneeTable).values({
+            etablissement_id: etablissementId,
+            eleve_id: eleveId,
+            annee_scolaire_id,
+            classe_id,
+            date_absence,
+            periode: p,
+            motif_absence: motif_absence ?? null,
+            saisi_par: user.id,
+            statut: "non_justifiee",
+          }).onConflictDoNothing().returning();
+          if (abs) absencesCreees.push(abs);
+        } catch { /* doublon ignoré */ }
+      }
+    } else {
+      try {
+        const [abs] = await db.insert(absencesDemiJourneeTable).values({
+          etablissement_id: etablissementId,
+          eleve_id: eleveId,
+          annee_scolaire_id,
+          classe_id,
+          date_absence,
+          periode: periode as "matin" | "apres_midi",
+          motif_absence: motif_absence ?? null,
+          saisi_par: user.id,
+          statut: "non_justifiee",
+        }).onConflictDoNothing().returning();
+        if (abs) absencesCreees.push(abs);
+      } catch { /* doublon ignoré */ }
+    }
+
+    await verifierSeuilsAlerte(eleveId, etablissementId, annee_scolaire_id, null);
+  }
+
+  res.status(201).json({ success: true, nb_creees: absencesCreees.length, absences: absencesCreees });
+});
+
+/* ── GET /api/absences/demi-journee/liste ───────────────── */
+router.get("/absences/demi-journee/liste", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const { classe_id, date, annee_scolaire_id, periode } = req.query as Record<string, string>;
+  const page = Math.max(1, parseInt((req.query["page"] as string) || "1", 10));
+  const limit = Math.min(100, Math.max(1, parseInt((req.query["limit"] as string) || "50", 10)));
+  const etablissementId = user.etablissement_id ?? "";
+
+  const conditions: ReturnType<typeof eq>[] = [
+    eq(absencesDemiJourneeTable.etablissement_id, etablissementId),
+  ];
+  if (classe_id) conditions.push(eq(absencesDemiJourneeTable.classe_id, classe_id));
+  if (annee_scolaire_id) conditions.push(eq(absencesDemiJourneeTable.annee_scolaire_id, annee_scolaire_id));
+  if (date) conditions.push(eq(absencesDemiJourneeTable.date_absence, date));
+  if (periode) conditions.push(eq(absencesDemiJourneeTable.periode, periode as "matin" | "apres_midi" | "journee_entiere"));
+
+  const where = and(...conditions);
+  const [{ total }] = await db.select({ total: count() }).from(absencesDemiJourneeTable).where(where);
+  const rows = await db.select().from(absencesDemiJourneeTable).where(where)
+    .orderBy(desc(absencesDemiJourneeTable.date_absence))
+    .limit(limit).offset((page - 1) * limit);
+
+  const absences = await Promise.all(rows.map(async (a) => {
+    const [eleve] = await db.select({ nom: elevesTable.nom, prenoms: elevesTable.prenoms })
+      .from(elevesTable).where(eq(elevesTable.id, a.eleve_id)).limit(1);
+    const [classe] = await db.select({ nom: classesTable.nom })
+      .from(classesTable).where(eq(classesTable.id, a.classe_id)).limit(1);
+    return { ...a, eleve_nom: eleve?.nom ?? "", eleve_prenoms: eleve?.prenoms ?? "", classe_nom: classe?.nom ?? "" };
+  }));
+
+  res.json({ success: true, absences, total, page, limit });
+});
+
+/* ── GET /api/absences/stats/eleve/:eleveId ─────────────── */
+router.get("/absences/stats/eleve/:eleveId", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const eleveId = normalizeId(req.params["eleveId"]);
+  const { trimestre, annee_scolaire_id } = req.query as Record<string, string>;
+
+  if (user.role === "parent") {
+    const enfants = await db.select().from(parentsElevesTable)
+      .where(and(eq(parentsElevesTable.utilisateur_id, user.id), eq(parentsElevesTable.eleve_id, eleveId)));
+    if (enfants.length === 0) { res.status(403).json({ success: false, message: "Accès refusé." }); return; }
+  } else if (user.role === "eleve" && user.id !== eleveId) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const conditions: ReturnType<typeof eq>[] = [eq(absencesTable.eleve_id, eleveId)];
+  if (annee_scolaire_id) conditions.push(eq(absencesTable.annee_scolaire_id, annee_scolaire_id));
+
+  const absences = await db.select().from(absencesTable).where(and(...conditions));
+  const absTotal = absences.length;
+  const absJust = absences.filter(a => a.statut === "justifiee").length;
+  const absNJ = absences.filter(a => a.statut === "non_justifiee").length;
+
+  const demiConditions: ReturnType<typeof eq>[] = [eq(absencesDemiJourneeTable.eleve_id, eleveId)];
+  if (annee_scolaire_id) demiConditions.push(eq(absencesDemiJourneeTable.annee_scolaire_id, annee_scolaire_id));
+  const demiAbsences = await db.select().from(absencesDemiJourneeTable).where(and(...demiConditions));
+
+  const config = user.etablissement_id
+    ? await db.select().from(configAbsencesTable).where(eq(configAbsencesTable.etablissement_id, user.etablissement_id)).limit(1).then(r => r[0])
+    : null;
+
+  const seuil1 = config?.seuil_alerte_1 ?? 3;
+  const seuil2 = config?.seuil_alerte_2 ?? 6;
+  const seuil3 = config?.seuil_alerte_3 ?? 10;
+
+  const totalNJ = absNJ + demiAbsences.filter(d => d.statut === "non_justifiee").length;
+
+  let seuilAtteint = 0;
+  if (totalNJ >= seuil3) seuilAtteint = 3;
+  else if (totalNJ >= seuil2) seuilAtteint = 2;
+  else if (totalNJ >= seuil1) seuilAtteint = 1;
+
+  const prochainSeuil = seuilAtteint === 0 ? seuil1 : seuilAtteint === 1 ? seuil2 : seuilAtteint === 2 ? seuil3 : null;
+  const prochaineAlerteDans = prochainSeuil !== null ? Math.max(0, prochainSeuil - totalNJ) : null;
+
+  const parMatiereMap: Record<string, number> = {};
+  for (const a of absences) {
+    parMatiereMap[a.matiere] = (parMatiereMap[a.matiere] ?? 0) + 1;
+  }
+
+  const totalDemiJournees = demiAbsences.length;
+  const totalJournees = absTotal + totalDemiJournees;
+  const tauxPresence = totalJournees === 0 ? 100 : Math.max(0, Math.round((1 - totalJournees / (totalJournees + 180)) * 1000) / 10);
+
+  res.json({
+    success: true,
+    stats: {
+      nb_absences_total: absTotal,
+      nb_absences_justifiees: absJust,
+      nb_absences_non_justifiees: absNJ,
+      nb_demi_journees_total: totalDemiJournees,
+      taux_presence: tauxPresence,
+      absences_par_matiere: Object.entries(parMatiereMap).map(([matiere, nb]) => ({ matiere, nb })),
+      seuil_atteint: seuilAtteint,
+      prochaine_alerte_dans: prochaineAlerteDans,
+      seuil_1: seuil1,
+      seuil_2: seuil2,
+      seuil_3: seuil3,
+    },
+  });
+});
+
+/* ── GET /api/absences/alertes ──────────────────────────── */
+router.get("/absences/alertes", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const { niveau_alerte, statut, classe_id, trimestre } = req.query as Record<string, string>;
+  const etablissementId = user.etablissement_id ?? "";
+
+  const conditions: ReturnType<typeof eq>[] = [
+    eq(alertesAbsencesTable.etablissement_id, etablissementId),
+  ];
+  if (niveau_alerte) conditions.push(eq(alertesAbsencesTable.niveau_alerte, parseInt(niveau_alerte)));
+  if (statut) conditions.push(eq(alertesAbsencesTable.traitement_statut, statut as "nouvelle" | "en_cours" | "traitee" | "ignoree"));
+  if (trimestre) conditions.push(eq(alertesAbsencesTable.trimestre, parseInt(trimestre)));
+
+  const rows = await db.select().from(alertesAbsencesTable)
+    .where(and(...conditions))
+    .orderBy(desc(alertesAbsencesTable.niveau_alerte), desc(alertesAbsencesTable.date_declenchement));
+
+  let filteredRows = rows;
+  if (classe_id) {
+    const elevesClasse = await db.select({ eleve_id: eleveClassesTable.eleve_id })
+      .from(eleveClassesTable)
+      .where(eq(eleveClassesTable.classe_id, classe_id));
+    const ids = new Set(elevesClasse.map(e => e.eleve_id));
+    filteredRows = rows.filter(r => ids.has(r.eleve_id));
+  }
+
+  const alertes = await Promise.all(filteredRows.map(async (a) => {
+    const [eleve] = await db.select({ nom: elevesTable.nom, prenoms: elevesTable.prenoms })
+      .from(elevesTable).where(eq(elevesTable.id, a.eleve_id)).limit(1);
+
+    const eleveClasse = await db.select({ classe_id: eleveClassesTable.classe_id })
+      .from(eleveClassesTable)
+      .where(eq(eleveClassesTable.eleve_id, a.eleve_id))
+      .orderBy(desc(eleveClassesTable.created_at)).limit(1);
+    const cls = eleveClasse[0]?.classe_id
+      ? await db.select({ nom: classesTable.nom }).from(classesTable).where(eq(classesTable.id, eleveClasse[0].classe_id)).limit(1).then(r => r[0])
+      : null;
+
+    return {
+      ...a,
+      eleve_nom: eleve?.nom ?? "",
+      eleve_prenoms: eleve?.prenoms ?? "",
+      classe_nom: cls?.nom ?? "",
+    };
+  }));
+
+  const stats = {
+    niveau_1: alertes.filter(a => a.niveau_alerte === 1 && a.traitement_statut === "nouvelle").length,
+    niveau_2: alertes.filter(a => a.niveau_alerte === 2 && a.traitement_statut === "nouvelle").length,
+    niveau_3: alertes.filter(a => a.niveau_alerte === 3 && a.traitement_statut === "nouvelle").length,
+  };
+
+  res.json({ success: true, alertes, stats });
+});
+
+/* ── GET /api/absences/alertes/eleve/:eleveId ───────────── */
+router.get("/absences/alertes/eleve/:eleveId", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const eleveId = normalizeId(req.params["eleveId"]);
+  const rows = await db.select().from(alertesAbsencesTable)
+    .where(and(
+      eq(alertesAbsencesTable.eleve_id, eleveId),
+      eq(alertesAbsencesTable.etablissement_id, user.etablissement_id ?? ""),
+    ))
+    .orderBy(desc(alertesAbsencesTable.date_declenchement));
+
+  res.json({ success: true, alertes: rows });
+});
+
+/* ── PUT /api/absences/alertes/:id/traiter ──────────────── */
+router.put("/absences/alertes/:id/traiter", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
+  }
+
+  const id = normalizeId(req.params["id"]);
+  const { traitement_statut, traitement_notes } = req.body as { traitement_statut: string; traitement_notes?: string };
+
+  const [updated] = await db.update(alertesAbsencesTable)
+    .set({
+      traitement_statut: traitement_statut as "nouvelle" | "en_cours" | "traitee" | "ignoree",
+      traitement_notes: traitement_notes ?? null,
+      traite_par: user.id,
+      date_traitement: new Date().toISOString().split("T")[0] ?? null,
+    })
+    .where(and(
+      eq(alertesAbsencesTable.id, id),
+      eq(alertesAbsencesTable.etablissement_id, user.etablissement_id ?? ""),
+    ))
+    .returning();
+
+  if (!updated) { res.status(404).json({ success: false, message: "Alerte introuvable." }); return; }
+  res.json({ success: true, alerte: updated });
 });
 
 export { declencherNotificationsAbsence };

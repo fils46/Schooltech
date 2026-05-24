@@ -44,3 +44,6 @@ export * from "./honoraires";
 export * from "./clotureAnnee";
 export * from "./matieres";
 export * from "./matiereClasses";
+export * from "./configAbsences";
+export * from "./absencesDemiJournee";
+export * from "./alertesAbsences";
