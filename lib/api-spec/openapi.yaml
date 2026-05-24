@@ -5298,6 +5298,491 @@ paths:
             application/json:
               schema: { type: object }
 
+  # ─── HONORAIRES ───────────────────────────────────────────────────
+
+  /api/honoraires/types:
+    get:
+      operationId: listerTypesProfesseurs
+      summary: Lister les types de professeurs
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste des types
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+    post:
+      operationId: configurerTypeProfesseur
+      summary: Créer un type de professeur
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [libelle, taux_horaire]
+              properties:
+                libelle: { type: string }
+                taux_horaire: { type: number }
+                description: { type: string }
+      responses:
+        "201":
+          description: Type créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/types/{id}:
+    put:
+      operationId: modifierTypeProfesseur
+      summary: Modifier un type de professeur
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                libelle: { type: string }
+                taux_horaire: { type: number }
+                description: { type: string }
+                actif: { type: boolean }
+      responses:
+        "200":
+          description: Type modifié
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/contrats:
+    get:
+      operationId: listerContrats
+      summary: Lister les contrats professeurs
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: type_professeur_id, in: query, schema: { type: string } }
+        - { name: actif, in: query, schema: { type: boolean } }
+      responses:
+        "200":
+          description: Liste des contrats
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+    post:
+      operationId: creerContrat
+      summary: Créer un contrat professeur
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [professeur_id, type_professeur_id, annee_scolaire_id, date_debut]
+              properties:
+                professeur_id: { type: string }
+                type_professeur_id: { type: string }
+                annee_scolaire_id: { type: string }
+                taux_horaire_personnalise: { type: number }
+                nb_heures_contractuelles: { type: number }
+                date_debut: { type: string }
+                date_fin: { type: string }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Contrat créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/contrats/mon-contrat:
+    get:
+      operationId: getMonContrat
+      summary: Récupérer son contrat actif (professeur)
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Contrat actif + historique feuilles
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/feuilles:
+    get:
+      operationId: listerFeuillesHeures
+      summary: Lister les feuilles d'heures
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: professeur_id, in: query, schema: { type: string } }
+        - { name: mois, in: query, schema: { type: integer } }
+        - { name: annee, in: query, schema: { type: integer } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des feuilles
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+    post:
+      operationId: soumettreFeuilleHeures
+      summary: Soumettre une feuille d'heures (professeur)
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mois, annee, nb_heures_effectuees]
+              properties:
+                mois: { type: integer }
+                annee: { type: integer }
+                nb_heures_effectuees: { type: number }
+                notes_professeur: { type: string }
+      responses:
+        "201":
+          description: Feuille soumise
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/feuilles/mes-feuilles:
+    get:
+      operationId: getMesFeuilles
+      summary: Historique de mes feuilles d'heures (professeur)
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Mes feuilles d'heures
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/feuilles/{id}/valider:
+    put:
+      operationId: validerFeuilleHeures
+      summary: Valider une feuille d'heures
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nb_heures_validees]
+              properties:
+                nb_heures_validees: { type: number }
+                montant_net: { type: number }
+                notes_admin: { type: string }
+      responses:
+        "200":
+          description: Feuille validée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/feuilles/{id}/rejeter:
+    put:
+      operationId: rejeterFeuilleHeures
+      summary: Rejeter une feuille d'heures
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [notes_admin]
+              properties:
+                notes_admin: { type: string }
+      responses:
+        "200":
+          description: Feuille rejetée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/feuilles/{id}/payer:
+    put:
+      operationId: payerFeuilleHeures
+      summary: Enregistrer le paiement d'une feuille
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [date_paiement, mode_paiement]
+              properties:
+                date_paiement: { type: string }
+                mode_paiement: { type: string }
+                reference_paiement: { type: string }
+      responses:
+        "200":
+          description: Paiement enregistré
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/honoraires/recap:
+    get:
+      operationId: getRecapHonoraires
+      summary: Récapitulatif mensuel des honoraires
+      tags: [Honoraires]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: mois, in: query, schema: { type: integer } }
+        - { name: annee, in: query, schema: { type: integer } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Récapitulatif honoraires
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  # ─── PRESTATIONS ──────────────────────────────────────────────────
+
+  /api/prestations/types:
+    get:
+      operationId: listerPrestations
+      summary: Lister les types de prestations
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: categorie, in: query, schema: { type: string } }
+        - { name: actif, in: query, schema: { type: boolean } }
+      responses:
+        "200":
+          description: Liste des prestations
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+    post:
+      operationId: configurerPrestation
+      summary: Créer une prestation de service
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [libelle, categorie, montant]
+              properties:
+                libelle: { type: string }
+                categorie: { type: string }
+                montant: { type: number }
+                description: { type: string }
+      responses:
+        "201":
+          description: Prestation créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/types/{id}:
+    put:
+      operationId: modifierPrestation
+      summary: Modifier une prestation
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                libelle: { type: string }
+                categorie: { type: string }
+                montant: { type: number }
+                description: { type: string }
+                actif: { type: boolean }
+      responses:
+        "200":
+          description: Prestation modifiée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/factures:
+    get:
+      operationId: listerFactures
+      summary: Lister les factures de prestations
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleve_id, in: query, schema: { type: string } }
+        - { name: prestation_id, in: query, schema: { type: string } }
+        - { name: statut, in: query, schema: { type: string } }
+        - { name: categorie, in: query, schema: { type: string } }
+        - { name: date_debut, in: query, schema: { type: string } }
+        - { name: date_fin, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des factures
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+    post:
+      operationId: emettreFacture
+      summary: Émettre une facture de prestation
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [prestation_id, eleve_id, annee_scolaire_id]
+              properties:
+                prestation_id: { type: string }
+                eleve_id: { type: string }
+                annee_scolaire_id: { type: string }
+                note: { type: string }
+      responses:
+        "201":
+          description: Facture émise
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/factures/{id}/payer:
+    put:
+      operationId: payerFacturePrestation
+      summary: Enregistrer le paiement d'une facture
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [date_paiement, mode_paiement]
+              properties:
+                date_paiement: { type: string }
+                mode_paiement: { type: string }
+                reference_paiement: { type: string }
+      responses:
+        "200":
+          description: Paiement enregistré
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/factures/{id}/annuler:
+    put:
+      operationId: annulerFacture
+      summary: Annuler une facture
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Facture annulée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/factures/eleve/{eleveId}:
+    get:
+      operationId: getFacturesEleve
+      summary: Factures d'un élève
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: eleveId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Factures de l'élève
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/prestations/recap:
+    get:
+      operationId: getRecapPrestations
+      summary: Récapitulatif mensuel des prestations
+      tags: [Prestations]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: mois, in: query, schema: { type: integer } }
+        - { name: annee, in: query, schema: { type: integer } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Récapitulatif prestations
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  # ─── FINANCES ─────────────────────────────────────────────────────
+
+  /api/finances/dashboard:
+    get:
+      operationId: getDashboardFinancier
+      summary: Tableau de bord financier
+      tags: [Finances]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: mois, in: query, schema: { type: integer } }
+        - { name: annee, in: query, schema: { type: integer } }
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Dashboard financier
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
+
+  /api/finances/evolution:
+    get:
+      operationId: getEvolutionFinanciere
+      summary: Évolution financière par mois
+      tags: [Finances]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: annee_scolaire_id, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Évolution financière
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SuccessResponse" }
 components:
   securitySchemes:
     bearerAuth:
@@ -8917,3 +9402,5 @@ components:
             erreurs:
               type: array
               items: { type: string }
+
+

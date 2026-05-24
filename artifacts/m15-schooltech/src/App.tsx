@@ -100,6 +100,11 @@ import PaiementForm from "@/pages/paiement-form";
 import FraisConfig from "@/pages/frais-config";
 import ScolariteParent from "@/pages/scolarite-parent";
 import RecuPaiement from "@/pages/recu-paiement";
+import DashboardFinancier from "@/pages/finances/DashboardFinancier";
+import GestionHonoraires from "@/pages/finances/GestionHonoraires";
+import MaFeuilleHeures from "@/pages/finances/MaFeuilleHeures";
+import GestionPrestations from "@/pages/finances/GestionPrestations";
+import FacturesParent from "@/pages/finances/FacturesParent";
 
 const queryClient = new QueryClient();
 
@@ -814,6 +819,33 @@ function Router() {
           <DashboardLayout>
             <Dashboard />
           </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Routes Module 10 — Finances */}
+      <Route path="/finances/honoraires">
+        <ProtectedRoute>
+          <DashboardLayout><GestionHonoraires /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/finances/prestations">
+        <ProtectedRoute>
+          <DashboardLayout><GestionPrestations /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/finances/ma-feuille">
+        <ProtectedRoute>
+          <DashboardLayout><MaFeuilleHeures /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/finances/mes-factures">
+        <ProtectedRoute>
+          <DashboardLayout><FacturesParent /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/finances">
+        <ProtectedRoute>
+          <DashboardLayout><DashboardFinancier /></DashboardLayout>
         </ProtectedRoute>
       </Route>
 

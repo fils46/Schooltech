@@ -33,6 +33,9 @@ import analyticsRouter from "./analytics";
 import saasRouter from "./saas";
 import disciplineRouter from "./discipline";
 import scolariteRouter from "./scolarite";
+import honorairesRouter from "./honoraires";
+import prestationsRouter from "./prestations";
+import financesRouter from "./finances";
 
 const router: IRouter = Router();
 
@@ -70,5 +73,8 @@ router.use(analyticsRouter);
 router.use(saasRouter);
 router.use(disciplineRouter);
 router.use(scolariteRouter);
+router.use(honorairesRouter);
+router.use(prestationsRouter);
+router.use(financesRouter);
 
 export default router;

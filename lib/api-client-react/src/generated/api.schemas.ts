@@ -3565,3 +3565,128 @@ export type PutPaiementsIdAnnuler200 = { [key: string]: unknown };
 
 export type GetPaiementsId200 = { [key: string]: unknown };
 
+export type ConfigurerTypeProfesseurBody = {
+  libelle: string;
+  taux_horaire: number;
+  description?: string;
+};
+
+export type ModifierTypeProfesseurBody = {
+  libelle?: string;
+  taux_horaire?: number;
+  description?: string;
+  actif?: boolean;
+};
+
+export type ListerContratsParams = {
+annee_scolaire_id?: string;
+type_professeur_id?: string;
+actif?: boolean;
+};
+
+export type CreerContratBody = {
+  professeur_id: string;
+  type_professeur_id: string;
+  annee_scolaire_id: string;
+  taux_horaire_personnalise?: number;
+  nb_heures_contractuelles?: number;
+  date_debut: string;
+  date_fin?: string;
+  notes?: string;
+};
+
+export type ListerFeuillesHeuresParams = {
+professeur_id?: string;
+mois?: number;
+annee?: number;
+annee_scolaire_id?: string;
+statut?: string;
+};
+
+export type SoumettreFeuilleHeuresBody = {
+  mois: number;
+  annee: number;
+  nb_heures_effectuees: number;
+  notes_professeur?: string;
+};
+
+export type ValiderFeuilleHeuresBody = {
+  nb_heures_validees: number;
+  montant_net?: number;
+  notes_admin?: string;
+};
+
+export type RejeterFeuilleHeuresBody = {
+  notes_admin: string;
+};
+
+export type PayerFeuilleHeuresBody = {
+  date_paiement: string;
+  mode_paiement: string;
+  reference_paiement?: string;
+};
+
+export type GetRecapHonorairesParams = {
+mois?: number;
+annee?: number;
+annee_scolaire_id?: string;
+};
+
+export type ListerPrestationsParams = {
+categorie?: string;
+actif?: boolean;
+};
+
+export type ConfigurerPrestationBody = {
+  libelle: string;
+  categorie: string;
+  montant: number;
+  description?: string;
+};
+
+export type ModifierPrestationBody = {
+  libelle?: string;
+  categorie?: string;
+  montant?: number;
+  description?: string;
+  actif?: boolean;
+};
+
+export type ListerFacturesParams = {
+eleve_id?: string;
+prestation_id?: string;
+statut?: string;
+categorie?: string;
+date_debut?: string;
+date_fin?: string;
+};
+
+export type EmettreFactureBody = {
+  prestation_id: string;
+  eleve_id: string;
+  annee_scolaire_id: string;
+  note?: string;
+};
+
+export type PayerFacturePrestationBody = {
+  date_paiement: string;
+  mode_paiement: string;
+  reference_paiement?: string;
+};
+
+export type GetRecapPrestationsParams = {
+mois?: number;
+annee?: number;
+annee_scolaire_id?: string;
+};
+
+export type GetDashboardFinancierParams = {
+mois?: number;
+annee?: number;
+annee_scolaire_id?: string;
+};
+
+export type GetEvolutionFinanciereParams = {
+annee_scolaire_id?: string;
+};
+

@@ -95,6 +95,14 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "FINANCES",
+      links: [
+        { label: "Tableau de bord",   href: "/finances",              icon: DollarSign },
+        { label: "Honoraires",        href: "/finances/honoraires",   icon: Banknote },
+        { label: "Prestations",       href: "/finances/prestations",  icon: Receipt },
+      ],
+    },
+    {
       title: "CLUBS & ACTIVITÉS",
       links: [
         { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
@@ -189,6 +197,14 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "FINANCES",
+      links: [
+        { label: "Tableau de bord",  href: "/finances",             icon: DollarSign },
+        { label: "Honoraires",       href: "/finances/honoraires",  icon: Banknote },
+        { label: "Prestations",      href: "/finances/prestations", icon: Receipt },
+      ],
+    },
+    {
       title: "CLUBS & ACTIVITÉS",
       links: [
         { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
@@ -252,6 +268,12 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Catalogue",    href: "/bibliotheque",   icon: Library },
         { label: "Mes dépôts",   href: "/depot-ressource",icon: Upload },
+      ],
+    },
+    {
+      title: "MES HONORAIRES",
+      links: [
+        { label: "Ma feuille d'heures", href: "/finances/ma-feuille", icon: Banknote },
       ],
     },
     {
@@ -404,6 +426,12 @@ const navConfig: Record<string, Section[]> = {
       title: "SCOLARITÉ",
       links: [
         { label: "Ma scolarité", href: "/scolarite-parent", icon: DollarSign },
+      ],
+    },
+    {
+      title: "FINANCES",
+      links: [
+        { label: "Mes factures", href: "/finances/mes-factures", icon: Receipt },
       ],
     },
     {

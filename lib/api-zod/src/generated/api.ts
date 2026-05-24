@@ -7191,3 +7191,332 @@ export const GetPaiementsIdResponse = zod.object({
 }).passthrough()
 
 
+/**
+ * @summary Lister les types de professeurs
+ */
+export const ListerTypesProfesseursResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Créer un type de professeur
+ */
+export const ConfigurerTypeProfesseurBody = zod.object({
+  "libelle": zod.string(),
+  "taux_horaire": zod.number(),
+  "description": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier un type de professeur
+ */
+export const ModifierTypeProfesseurParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierTypeProfesseurBody = zod.object({
+  "libelle": zod.string().optional(),
+  "taux_horaire": zod.number().optional(),
+  "description": zod.string().optional(),
+  "actif": zod.boolean().optional()
+})
+
+export const ModifierTypeProfesseurResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les contrats professeurs
+ */
+export const ListerContratsQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "type_professeur_id": zod.coerce.string().optional(),
+  "actif": zod.coerce.boolean().optional()
+})
+
+export const ListerContratsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Créer un contrat professeur
+ */
+export const CreerContratBody = zod.object({
+  "professeur_id": zod.string(),
+  "type_professeur_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "taux_horaire_personnalise": zod.number().optional(),
+  "nb_heures_contractuelles": zod.number().optional(),
+  "date_debut": zod.string(),
+  "date_fin": zod.string().optional(),
+  "notes": zod.string().optional()
+})
+
+
+/**
+ * @summary Récupérer son contrat actif (professeur)
+ */
+export const GetMonContratResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les feuilles d'heures
+ */
+export const ListerFeuillesHeuresQueryParams = zod.object({
+  "professeur_id": zod.coerce.string().optional(),
+  "mois": zod.coerce.number().optional(),
+  "annee": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional()
+})
+
+export const ListerFeuillesHeuresResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Soumettre une feuille d'heures (professeur)
+ */
+export const SoumettreFeuilleHeuresBody = zod.object({
+  "mois": zod.number(),
+  "annee": zod.number(),
+  "nb_heures_effectuees": zod.number(),
+  "notes_professeur": zod.string().optional()
+})
+
+
+/**
+ * @summary Historique de mes feuilles d'heures (professeur)
+ */
+export const GetMesFeuillesResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Valider une feuille d'heures
+ */
+export const ValiderFeuilleHeuresParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ValiderFeuilleHeuresBody = zod.object({
+  "nb_heures_validees": zod.number(),
+  "montant_net": zod.number().optional(),
+  "notes_admin": zod.string().optional()
+})
+
+export const ValiderFeuilleHeuresResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Rejeter une feuille d'heures
+ */
+export const RejeterFeuilleHeuresParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const RejeterFeuilleHeuresBody = zod.object({
+  "notes_admin": zod.string()
+})
+
+export const RejeterFeuilleHeuresResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Enregistrer le paiement d'une feuille
+ */
+export const PayerFeuilleHeuresParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PayerFeuilleHeuresBody = zod.object({
+  "date_paiement": zod.string(),
+  "mode_paiement": zod.string(),
+  "reference_paiement": zod.string().optional()
+})
+
+export const PayerFeuilleHeuresResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Récapitulatif mensuel des honoraires
+ */
+export const GetRecapHonorairesQueryParams = zod.object({
+  "mois": zod.coerce.number().optional(),
+  "annee": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetRecapHonorairesResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les types de prestations
+ */
+export const ListerPrestationsQueryParams = zod.object({
+  "categorie": zod.coerce.string().optional(),
+  "actif": zod.coerce.boolean().optional()
+})
+
+export const ListerPrestationsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Créer une prestation de service
+ */
+export const ConfigurerPrestationBody = zod.object({
+  "libelle": zod.string(),
+  "categorie": zod.string(),
+  "montant": zod.number(),
+  "description": zod.string().optional()
+})
+
+
+/**
+ * @summary Modifier une prestation
+ */
+export const ModifierPrestationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const ModifierPrestationBody = zod.object({
+  "libelle": zod.string().optional(),
+  "categorie": zod.string().optional(),
+  "montant": zod.number().optional(),
+  "description": zod.string().optional(),
+  "actif": zod.boolean().optional()
+})
+
+export const ModifierPrestationResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Lister les factures de prestations
+ */
+export const ListerFacturesQueryParams = zod.object({
+  "eleve_id": zod.coerce.string().optional(),
+  "prestation_id": zod.coerce.string().optional(),
+  "statut": zod.coerce.string().optional(),
+  "categorie": zod.coerce.string().optional(),
+  "date_debut": zod.coerce.string().optional(),
+  "date_fin": zod.coerce.string().optional()
+})
+
+export const ListerFacturesResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Émettre une facture de prestation
+ */
+export const EmettreFactureBody = zod.object({
+  "prestation_id": zod.string(),
+  "eleve_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "note": zod.string().optional()
+})
+
+
+/**
+ * @summary Enregistrer le paiement d'une facture
+ */
+export const PayerFacturePrestationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const PayerFacturePrestationBody = zod.object({
+  "date_paiement": zod.string(),
+  "mode_paiement": zod.string(),
+  "reference_paiement": zod.string().optional()
+})
+
+export const PayerFacturePrestationResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Annuler une facture
+ */
+export const AnnulerFactureParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AnnulerFactureResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Factures d'un élève
+ */
+export const GetFacturesEleveParams = zod.object({
+  "eleveId": zod.coerce.string()
+})
+
+export const GetFacturesEleveResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Récapitulatif mensuel des prestations
+ */
+export const GetRecapPrestationsQueryParams = zod.object({
+  "mois": zod.coerce.number().optional(),
+  "annee": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetRecapPrestationsResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Tableau de bord financier
+ */
+export const GetDashboardFinancierQueryParams = zod.object({
+  "mois": zod.coerce.number().optional(),
+  "annee": zod.coerce.number().optional(),
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetDashboardFinancierResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Évolution financière par mois
+ */
+export const GetEvolutionFinanciereQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional()
+})
+
+export const GetEvolutionFinanciereResponse = zod.object({
+  "message": zod.string()
+})
+
+
