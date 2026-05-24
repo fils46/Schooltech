@@ -33,8 +33,8 @@ const NAV_SECTIONS = [
   },
 ];
 
-function SidebarContent({ location, onClose }: { location: string; onClose: () => void }) {
-  const { user, logout } = useAuth();
+function SidebarContent({ location, onClose, onLogoutRequest }: { location: string; onClose: () => void; onLogoutRequest: () => void }) {
+  const { user } = useAuth();
 
   return (
     <div className="flex flex-col h-full" style={{ backgroundColor: "var(--m15-navy)", borderRight: "1px solid rgba(0,201,167,0.15)" }}>
@@ -100,7 +100,7 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
           </div>
         </div>
         <button
-          onClick={logout}
+          onClick={onLogoutRequest}
           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all"
           style={{ color: "var(--m15-muted)" }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#FF4D6D"; (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,77,109,0.1)"; }}
@@ -125,7 +125,7 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
 
       {/* Sidebar desktop */}
       <aside className="hidden md:flex w-64 flex-shrink-0 flex-col h-screen sticky top-0">
-        <SidebarContent location={location} onClose={() => {}} />
+        <SidebarContent location={location} onClose={() => {}} onLogoutRequest={() => setShowLogoutConfirm(true)} />
       </aside>
 
       {/* Zone principale */}
@@ -157,7 +157,7 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0 border-0" style={{ backgroundColor: "var(--m15-navy)" }}>
-                <SidebarContent location={location} onClose={() => setMobileOpen(false)} />
+                <SidebarContent location={location} onClose={() => setMobileOpen(false)} onLogoutRequest={() => { setMobileOpen(false); setShowLogoutConfirm(true); }} />
               </SheetContent>
             </Sheet>
           </div>
