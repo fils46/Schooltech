@@ -33,87 +33,10 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "ACADÉMIQUE",
-      links: [
-        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
-        { label: "Classes",          href: "/classes",          icon: UsersRound },
-        { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
-        { label: "Filières",         href: "/filieres",         icon: Layers },
-        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
-      ],
-    },
-    {
-      title: "BULLETINS",
-      links: [
-        { label: "Config. matières", href: "/matieres-config",  icon: BookMarked },
-        { label: "Bulletins",        href: "/bulletins",        icon: FileSpreadsheet },
-        { label: "Conseils classe",  href: "/conseils-classe",  icon: UsersRound },
-      ],
-    },
-    {
-      title: "ANALYTIQUE",
-      links: [
-        { label: "Dashboard analytique",  href: "/analytics",            icon: BarChart3 },
-        { label: "Analyse pédagogique",   href: "/analyse-pedagogique",  icon: TrendingUp },
-        { label: "Analyse présences",     href: "/analyse-presences",    icon: UserMinus },
-        { label: "Rapports & Exports",    href: "/rapports-exports",     icon: FileSpreadsheet },
-      ],
-    },
-    {
-      title: "SCOLARITÉ",
-      links: [
-        { label: "Tableau de bord",   href: "/scolarite",              icon: DollarSign },
-        { label: "Suivi par classe",  href: "/scolarite/classe",       icon: Banknote },
-        { label: "Config. frais",     href: "/scolarite/frais-config", icon: Receipt },
-        { label: "Rapport de caisse", href: "/scolarite/caisse",       icon: FileText },
-      ],
-    },
-    {
       title: "GESTION",
       links: [
-        { label: "Licences",       href: "/licences",       icon: Key },
-        { label: "Statistiques",   href: "/statistiques",   icon: BarChart3 },
-      ],
-    },
-    {
-      title: "EXAMENS",
-      links: [
-        { label: "Préparation examens", href: "/examens",              icon: Target },
-        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
-        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
-      ],
-    },
-    {
-      title: "INFIRMERIE",
-      links: [
-        { label: "Tableau de bord",   href: "/infirmerie",                    icon: Heart },
-        { label: "Consultations",     href: "/infirmerie/consultations",      icon: Stethoscope },
-        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",           icon: FileText },
-        { label: "Stocks médicaux",   href: "/infirmerie/stocks",             icon: Package },
-      ],
-    },
-    {
-      title: "CLUBS & ACTIVITÉS",
-      links: [
-        { label: "Catalogue clubs",  href: "/clubs",          icon: Trophy },
-        { label: "Administration",   href: "/admin-clubs",    icon: Activity },
-      ],
-    },
-    {
-      title: "BIBLIOTHÈQUE",
-      links: [
-        { label: "Catalogue",        href: "/bibliotheque",       icon: Library },
-        { label: "Administration",   href: "/admin-bibliotheque", icon: BookMarked },
-        { label: "Statistiques",     href: "/admin-bibliotheque", icon: BarChart3 },
-      ],
-    },
-    {
-      title: "COMMUNICATION",
-      links: [
-        { label: "Annonces",       href: "/annonces",       icon: Megaphone },
-        { label: "Messagerie",     href: "/messagerie",     icon: MessageSquare },
-        { label: "Notifications",  href: "/notifications",  icon: Bell },
+        { label: "Licences",     href: "/licences",     icon: Key },
+        { label: "Statistiques", href: "/statistiques", icon: BarChart3 },
       ],
     },
   ],
