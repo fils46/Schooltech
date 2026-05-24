@@ -9,7 +9,7 @@ import {
   Building, Users, Key, BarChart3, LayoutDashboard, UsersRound, CreditCard,
   FileText, GraduationCap, UserSquare, Calendar, UserMinus, BookOpen,
   FileCheck, Book, ClipboardList, MessageSquare, Award, Library, UserCircle,
-  Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, CalendarDays, Layers,
+  Menu, Moon, Sun, LogOut, Bell, Search, ChevronRight, ChevronDown, CalendarDays, Layers,
   BookMarked, FileSpreadsheet, CalendarCheck, Megaphone,
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
@@ -21,7 +21,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 
 /* ─── NAV CONFIG avec sections ─────────────────────────────── */
-type NavLink = { label: string; href: string; icon: React.ElementType };
+type SubNavLink = { label: string; href: string; icon: React.ElementType };
+type NavLink = { label: string; href: string; icon: React.ElementType; subLinks?: SubNavLink[] };
 type Section = { title: string; links: NavLink[] };
 
 const navConfig: Record<string, Section[]> = {
@@ -31,7 +32,11 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Tableau de bord",     href: "/dashboard",          icon: LayoutDashboard },
         { label: "Mon établissement",   href: "/mon-etablissement",  icon: Building },
-        { label: "Équipe pédagogique",  href: "/utilisateurs",       icon: Users },
+        { label: "Utilisateurs", href: "/utilisateurs", icon: Users, subLinks: [
+          { label: "Équipe pédagogique", href: "/utilisateurs", icon: Users },
+          { label: "Parents",            href: "/parents",       icon: UserCircle },
+          { label: "Élèves",             href: "/eleves",        icon: UserSquare },
+        ]},
       ],
     },
     {
@@ -118,7 +123,11 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Tableau de bord",    href: "/dashboard",         icon: LayoutDashboard },
         { label: "Mon établissement",  href: "/mon-etablissement", icon: Building },
-        { label: "Équipe pédagogique", href: "/utilisateurs",      icon: Users },
+        { label: "Utilisateurs", href: "/utilisateurs", icon: Users, subLinks: [
+          { label: "Équipe pédagogique", href: "/utilisateurs", icon: Users },
+          { label: "Parents",            href: "/parents",       icon: UserCircle },
+          { label: "Élèves",             href: "/eleves",        icon: UserSquare },
+        ]},
       ],
     },
     {
@@ -413,6 +422,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard":        "Tableau de bord",
   "/etablissements":   "Établissements",
   "/utilisateurs":     "Utilisateurs",
+  "/parents":          "Parents",
   "/licences":         "Licences",
   "/statistiques":     "Statistiques",
   "/censeurs":         "Censeurs",
@@ -505,6 +515,18 @@ function NavLinks({ sections, location, onClose }: {
   location: string;
   onClose: () => void;
 }) {
+  /* Groupes ouverts par défaut si un sous-lien est actif */
+  const defaultOpen = sections.flatMap(s => s.links)
+    .filter(l => l.subLinks?.some(sl => sl.href === location))
+    .map(l => l.label);
+  const [openGroups, setOpenGroups] = useState<string[]>(defaultOpen);
+
+  const toggleGroup = (label: string) => {
+    setOpenGroups(prev =>
+      prev.includes(label) ? prev.filter(g => g !== label) : [...prev, label]
+    );
+  };
+
   return (
     <div className="space-y-6">
       {sections.map((section) => (
@@ -515,6 +537,81 @@ function NavLinks({ sections, location, onClose }: {
           <div className="space-y-0.5">
             {section.links.map((link) => {
               const Icon = link.icon;
+
+              /* ── Lien avec sous-menu ── */
+              if (link.subLinks && link.subLinks.length > 0) {
+                const isGroupOpen = openGroups.includes(link.label);
+                const hasActiveSub = link.subLinks.some(sl => sl.href === location);
+                return (
+                  <div key={link.label}>
+                    <button
+                      onClick={() => toggleGroup(link.label)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all w-full text-left"
+                      style={{
+                        color:      hasActiveSub ? "#00C9A7" : "var(--m15-muted)",
+                        background: hasActiveSub ? "rgba(0,201,167,0.06)" : "transparent",
+                        borderLeft: hasActiveSub ? "3px solid #00C9A7" : "3px solid transparent",
+                      }}
+                      onMouseEnter={e => {
+                        if (!hasActiveSub) {
+                          (e.currentTarget as HTMLElement).style.color = "var(--m15-white)";
+                          (e.currentTarget as HTMLElement).style.background = "var(--elevate-2)";
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!hasActiveSub) {
+                          (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)";
+                          (e.currentTarget as HTMLElement).style.background = hasActiveSub ? "rgba(0,201,167,0.06)" : "transparent";
+                        }
+                      }}
+                    >
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span className="flex-1">{link.label}</span>
+                      {isGroupOpen
+                        ? <ChevronDown className="w-3.5 h-3.5" />
+                        : <ChevronRight className="w-3.5 h-3.5" />
+                      }
+                    </button>
+                    {isGroupOpen && (
+                      <div className="ml-4 mt-0.5 space-y-0.5 border-l pl-2" style={{ borderColor: "var(--m15-border)" }}>
+                        {link.subLinks.map((sub) => {
+                          const SubIcon = sub.icon;
+                          const isActive = location === sub.href;
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              onClick={onClose}
+                              className="flex items-center gap-2 px-2 py-2 rounded-lg text-sm font-medium transition-all"
+                              style={{
+                                color:      isActive ? "#00C9A7" : "var(--m15-muted)",
+                                background: isActive ? "rgba(0,201,167,0.08)" : "transparent",
+                              }}
+                              onMouseEnter={e => {
+                                if (!isActive) {
+                                  (e.currentTarget as HTMLElement).style.color = "var(--m15-white)";
+                                  (e.currentTarget as HTMLElement).style.background = "var(--elevate-2)";
+                                }
+                              }}
+                              onMouseLeave={e => {
+                                if (!isActive) {
+                                  (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)";
+                                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                                }
+                              }}
+                            >
+                              <SubIcon className="w-3.5 h-3.5 flex-shrink-0" />
+                              <span>{sub.label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              /* ── Lien simple ── */
               const isActive = location === link.href;
               return (
                 <Link

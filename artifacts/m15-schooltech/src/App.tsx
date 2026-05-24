@@ -18,6 +18,7 @@ import PremierLogin from "@/pages/premier-login";
 import Dashboard from "@/pages/dashboard";
 import Etablissements from "@/pages/etablissements";
 import Utilisateurs from "@/pages/utilisateurs";
+import Parents from "@/pages/parents";
 import MonEtablissement from "@/pages/mon-etablissement";
 import EleveListe from "@/pages/eleves";
 import EleveForm from "@/pages/eleve-form";
@@ -136,6 +137,14 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <Utilisateurs />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/parents">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Parents />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
