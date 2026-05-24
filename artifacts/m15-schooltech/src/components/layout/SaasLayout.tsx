@@ -115,6 +115,7 @@ function SidebarContent({ location, onClose }: { location: string; onClose: () =
 export function SaasLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="flex min-h-screen" style={{ fontFamily: "Poppins, sans-serif", backgroundColor: "var(--m15-navy)" }}>
@@ -132,19 +133,31 @@ export function SaasLayout({ children }: { children: React.ReactNode }) {
           style={{ backgroundColor: "var(--m15-navy)", borderColor: "rgba(0,201,167,0.15)" }}>
           <img src="/logo.png" alt="M15-SchoolTech" className="h-8 w-auto" />
 
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild>
-              <button
-                className="w-9 h-9 flex items-center justify-center rounded-lg transition-all"
-                style={{ backgroundColor: "rgba(0,201,167,0.1)", color: "#00C9A7" }}
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0 border-0" style={{ backgroundColor: "var(--m15-navy)" }}>
-              <SidebarContent location={location} onClose={() => setMobileOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <div className="flex items-center gap-2">
+            {/* Déconnexion */}
+            <button
+              onClick={logout}
+              title="Se déconnecter"
+              className="w-9 h-9 flex items-center justify-center rounded-lg transition-all"
+              style={{ backgroundColor: "rgba(255,77,109,0.1)", color: "#FF4D6D" }}
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <button
+                  className="w-9 h-9 flex items-center justify-center rounded-lg transition-all"
+                  style={{ backgroundColor: "rgba(0,201,167,0.1)", color: "#00C9A7" }}
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 p-0 border-0" style={{ backgroundColor: "var(--m15-navy)" }}>
+                <SidebarContent location={location} onClose={() => setMobileOpen(false)} />
+              </SheetContent>
+            </Sheet>
+          </div>
         </header>
 
         {/* Contenu */}

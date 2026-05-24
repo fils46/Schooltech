@@ -624,7 +624,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme();
   const [location, setLocation] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const qc = useQueryClient();
   const socketRef = useRef<Socket | null>(null);
 
@@ -731,6 +731,17 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-white)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; }}>
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
+            {/* Déconnexion */}
+            <button
+              onClick={logout}
+              title="Se déconnecter"
+              className="w-9 h-9 flex items-center justify-center rounded-xl transition-all"
+              style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#FF4D6D"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,77,109,0.4)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--m15-muted)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--m15-border)"; }}>
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
         </header>
