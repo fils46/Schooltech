@@ -191,13 +191,15 @@ export default function StocksInfirmerie() {
           </h1>
           <p className="text-[var(--m15-muted)] text-sm mt-1">Gestion des médicaments et matériels médicaux</p>
         </div>
-        <Button
-          onClick={() => { setEditingStock(null); setForm({ nom: "", categorie: "medicament", quantite: 0, unite: "", seuil_alerte: 5, date_expiration: "" }); setShowAddDialog(true); }}
-          className="bg-orange-600 hover:bg-orange-700 text-[var(--m15-white)] gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Ajouter un article
-        </Button>
+        {user?.role === "infirmier" && (
+          <Button
+            onClick={() => { setEditingStock(null); setForm({ nom: "", categorie: "medicament", quantite: 0, unite: "", seuil_alerte: 5, date_expiration: "" }); setShowAddDialog(true); }}
+            className="bg-orange-600 hover:bg-orange-700 text-[var(--m15-white)] gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Ajouter un article
+          </Button>
+        )}
       </div>
 
       {/* KPIs */}
