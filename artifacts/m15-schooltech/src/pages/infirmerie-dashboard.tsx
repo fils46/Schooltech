@@ -82,7 +82,7 @@ export default function InfirmerieDashboard() {
           </h1>
           <p className="text-[var(--m15-muted)] text-sm mt-1">Tableau de bord médical</p>
         </div>
-        {["dev", "directeur", "censeur", "infirmier"].includes(user?.role ?? "") && (
+        {["infirmier", "dev"].includes(user?.role ?? "") && (
           <Button
             onClick={() => navigate("/infirmerie/nouvelle-consultation")}
             className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2"
@@ -131,20 +131,22 @@ export default function InfirmerieDashboard() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[var(--m15-muted)] text-xs">Stocks en alerte</p>
-                <p className={`text-2xl font-bold ${(stats?.articles_en_alerte ?? 0) > 0 ? "text-red-400" : "text-emerald-400"}`}>
-                  {stats?.articles_en_alerte ?? 0}
-                </p>
-                <p className="text-[var(--m15-muted)] text-xs">articles</p>
+        {user?.role !== "censeur" && (
+          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[var(--m15-muted)] text-xs">Stocks en alerte</p>
+                  <p className={`text-2xl font-bold ${(stats?.articles_en_alerte ?? 0) > 0 ? "text-red-400" : "text-emerald-400"}`}>
+                    {stats?.articles_en_alerte ?? 0}
+                  </p>
+                  <p className="text-[var(--m15-muted)] text-xs">articles</p>
+                </div>
+                <Package className="h-8 w-8 text-orange-400 opacity-70" />
               </div>
-              <Package className="h-8 w-8 text-orange-400 opacity-70" />
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -260,47 +262,49 @@ export default function InfirmerieDashboard() {
             </CardContent>
           </Card>
 
-          {/* Alertes stock */}
-          <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-orange-400" />
-                  Alertes stock
-                </CardTitle>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-cyan-400 hover:text-cyan-300 text-xs gap-1"
-                  onClick={() => navigate("/infirmerie/stocks")}
-                >
-                  Stocks <ChevronRight className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {alertes.length === 0 ? (
-                <p className="text-emerald-400 text-sm">Tous les stocks sont suffisants ✓</p>
-              ) : (
-                alertes.slice(0, 5).map(a => (
-                  <div key={a.id} className="flex items-center justify-between p-2 bg-[var(--elevate-2)] rounded">
-                    <div>
-                      <p className="text-[var(--m15-white)] text-xs font-medium">{a.nom}</p>
-                      <p className="text-[var(--m15-muted)] text-xs">{a.quantite} {a.unite} restant(s)</p>
+          {/* Alertes stock — masqué pour censeur */}
+          {user?.role !== "censeur" && (
+            <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-[var(--m15-white)] text-base flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-orange-400" />
+                    Alertes stock
+                  </CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-cyan-400 hover:text-cyan-300 text-xs gap-1"
+                    onClick={() => navigate("/infirmerie/stocks")}
+                  >
+                    Stocks <ChevronRight className="h-3 w-3" />
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {alertes.length === 0 ? (
+                  <p className="text-emerald-400 text-sm">Tous les stocks sont suffisants ✓</p>
+                ) : (
+                  alertes.slice(0, 5).map(a => (
+                    <div key={a.id} className="flex items-center justify-between p-2 bg-[var(--elevate-2)] rounded">
+                      <div>
+                        <p className="text-[var(--m15-white)] text-xs font-medium">{a.nom}</p>
+                        <p className="text-[var(--m15-muted)] text-xs">{a.quantite} {a.unite} restant(s)</p>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className={a.statut_stock === "rupture"
+                          ? "bg-red-500/20 text-red-300 border-red-500/30 text-xs"
+                          : "bg-orange-500/20 text-orange-300 border-orange-500/30 text-xs"}
+                      >
+                        {a.statut_stock === "rupture" ? "Rupture" : "Alerte"}
+                      </Badge>
                     </div>
-                    <Badge
-                      variant="outline"
-                      className={a.statut_stock === "rupture"
-                        ? "bg-red-500/20 text-red-300 border-red-500/30 text-xs"
-                        : "bg-orange-500/20 text-orange-300 border-orange-500/30 text-xs"}
-                    >
-                      {a.statut_stock === "rupture" ? "Rupture" : "Alerte"}
-                    </Badge>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Actions rapides */}
           <Card className="bg-[var(--m15-card)] border-[var(--m15-border)]">
@@ -324,14 +328,16 @@ export default function InfirmerieDashboard() {
                 <Heart className="h-4 w-4 text-pink-400" />
                 Dossiers médicaux
               </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)] gap-2"
-                onClick={() => navigate("/infirmerie/stocks")}
-              >
-                <Package className="h-4 w-4 text-orange-400" />
-                Gestion des stocks
-              </Button>
+              {user?.role !== "censeur" && (
+                <Button
+                  variant="outline"
+                  className="w-full justify-start border-[var(--m15-border)] text-[var(--m15-white)] hover:text-[var(--m15-white)] gap-2"
+                  onClick={() => navigate("/infirmerie/stocks")}
+                >
+                  <Package className="h-4 w-4 text-orange-400" />
+                  Gestion des stocks
+                </Button>
+              )}
             </CardContent>
           </Card>
         </div>

@@ -15,6 +15,7 @@ import {
   useGetInfirmerieDossierEleveId,
   usePutInfirmerieDossierEleveId,
 } from "@workspace/api-client-react";
+import { useAuth } from "@/context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -58,6 +59,8 @@ interface DossierMedicalData {
 
 function DossierDetail({ eleveId }: { eleveId: string }) {
   const [, navigate] = useLocation();
+  const { user } = useAuth();
+  const canEdit = ["infirmier", "dev"].includes(user?.role ?? "");
   const { data, isLoading } = useGetInfirmerieDossierEleveId(eleveId) as {
     data: DossierMedicalData | undefined;
     isLoading: boolean;
@@ -384,19 +387,28 @@ function DossierDetail({ eleveId }: { eleveId: string }) {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end">
-        <Button
-          onClick={handleSave}
-          disabled={isPending}
-          className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2 min-w-[160px]"
-        >
-          {saved ? (
-            <><CheckCircle className="h-4 w-4" /> Sauvegardé</>
-          ) : (
-            <><Save className="h-4 w-4" /> {isPending ? "Sauvegarde…" : "Enregistrer"}</>
-          )}
-        </Button>
-      </div>
+      {canEdit ? (
+        <div className="flex justify-end">
+          <Button
+            onClick={handleSave}
+            disabled={isPending}
+            className="bg-rose-600 hover:bg-rose-700 text-[var(--m15-white)] gap-2 min-w-[160px]"
+          >
+            {saved ? (
+              <><CheckCircle className="h-4 w-4" /> Sauvegardé</>
+            ) : (
+              <><Save className="h-4 w-4" /> {isPending ? "Sauvegarde…" : "Enregistrer"}</>
+            )}
+          </Button>
+        </div>
+      ) : (
+        <div className="flex justify-end">
+          <p className="text-[var(--m15-muted)] text-sm italic flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            Lecture seule — seul l'infirmier peut modifier ce dossier
+          </p>
+        </div>
+      )}
     </div>
   );
 }

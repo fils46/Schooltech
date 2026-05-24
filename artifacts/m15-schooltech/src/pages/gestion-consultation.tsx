@@ -66,6 +66,24 @@ export default function GestionConsultation() {
   const [, navigate] = useLocation();
   const params = useParams<{ id: string }>();
   const id = params.id ?? "";
+
+  if (user && !["infirmier", "dev"].includes(user.role)) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-20">
+        <div className="text-5xl">🔒</div>
+        <h2 className="text-xl font-bold text-[var(--m15-white)]">Accès refusé</h2>
+        <p className="text-[var(--m15-muted)] max-w-xs">
+          Seul l'infirmier peut gérer une consultation en cours.
+        </p>
+        <button
+          onClick={() => navigate("/infirmerie/consultations")}
+          className="text-cyan-400 hover:underline text-sm"
+        >
+          ← Voir la liste des consultations
+        </button>
+      </div>
+    );
+  }
   const qc = useQueryClient();
 
   const { data, isLoading } = useGetInfirmerieConsultationsId(id) as { data: ConsultationData | undefined; isLoading: boolean };

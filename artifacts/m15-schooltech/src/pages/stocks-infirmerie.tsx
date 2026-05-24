@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useLocation } from "wouter";
+import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,7 +62,27 @@ function StatutBadge({ statut }: { statut: string }) {
 }
 
 export default function StocksInfirmerie() {
+  const { user } = useAuth();
+  const [, navigate] = useLocation();
   const qc = useQueryClient();
+
+  if (user && user.role === "censeur") {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-20">
+        <div className="text-5xl">🔒</div>
+        <h2 className="text-xl font-bold text-[var(--m15-white)]">Accès refusé</h2>
+        <p className="text-[var(--m15-muted)] max-w-xs">
+          Le censeur n'a pas accès à la gestion des stocks infirmerie.
+        </p>
+        <button
+          onClick={() => navigate("/infirmerie")}
+          className="text-cyan-400 hover:underline text-sm"
+        >
+          ← Retour au tableau de bord infirmerie
+        </button>
+      </div>
+    );
+  }
   const [search, setSearch] = useState("");
   const [categorieFilter, setCategorieFilter] = useState("tous");
   const [showAddDialog, setShowAddDialog] = useState(false);

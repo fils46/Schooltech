@@ -20,6 +20,8 @@ import { emitNotification } from "../socket/socketManager";
 const router = Router();
 const INFIRMERIE = ["dev", "directeur", "censeur", "infirmier"];
 const ADMINS = ["dev", "directeur", "censeur"];
+const INFIRMIER_ONLY = ["dev", "infirmier"];
+const STOCKS_ACCESS = ["dev", "directeur", "infirmier"];
 
 function normalizeId(v: string | string[]): string {
   return Array.isArray(v) ? v[0]! : v;
@@ -133,7 +135,7 @@ router.put(
   "/infirmerie/dossier/:eleveId",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMIER_ONLY),
   async (req, res) => {
     const user = req.user!;
     const eleveId = normalizeId(req.params["eleveId"]!);
@@ -297,7 +299,7 @@ router.post(
   "/infirmerie/consultations",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMIER_ONLY),
   async (req, res) => {
     const user = req.user!;
     const { eleve_id, motif, symptomes, heure_entree } = req.body as {
@@ -328,10 +330,28 @@ router.post(
       return;
     }
 
+    const [consultationEnCours] = await db
+      .select({ id: consultationsInfirmerieTable.id })
+      .from(consultationsInfirmerieTable)
+      .where(
+        and(
+          eq(consultationsInfirmerieTable.eleve_id, eleve_id),
+          eq(consultationsInfirmerieTable.statut, "en_cours"),
+        ),
+      )
+      .limit(1);
+
+    if (consultationEnCours) {
+      res.status(409).json({ message: "Cet élève a déjà une consultation en cours." });
+      return;
+    }
+
+    const etabId = user.role === "dev" ? eleve.etablissement_id : user.etablissement_id!;
+
     const [consultation] = await db
       .insert(consultationsInfirmerieTable)
       .values({
-        etablissement_id: user.role === "dev" ? eleve.etablissement_id : user.etablissement_id!,
+        etablissement_id: etabId,
         eleve_id,
         infirmier_id: user.id,
         motif,
@@ -342,8 +362,48 @@ router.post(
       })
       .returning();
 
-    const enriched = await enrichConsultation(consultation!);
+    const parents = await db
+      .select({ utilisateur_id: parentsElevesTable.utilisateur_id })
+      .from(parentsElevesTable)
+      .where(eq(parentsElevesTable.eleve_id, eleve_id));
 
+    let parentNotifie = false;
+    for (const parent of parents) {
+      try {
+        const [notif] = await db
+          .insert(notificationsTable)
+          .values({
+            etablissement_id: etabId,
+            destinataire_id: parent.utilisateur_id,
+            titre: "Consultation infirmerie ouverte",
+            contenu: `Votre enfant ${eleve.nom} ${eleve.prenoms} est actuellement pris(e) en charge à l'infirmerie. Motif : ${motif}.`,
+            type: "message",
+            lu: false,
+          })
+          .returning();
+        await emitNotification(parent.utilisateur_id, {
+          id: notif!.id,
+          titre: notif!.titre,
+          contenu: notif!.contenu,
+          type: notif!.type,
+          lien: notif!.lien ?? undefined,
+          created_at: notif!.created_at,
+        });
+        parentNotifie = true;
+      } catch {
+        req.log.warn({ parentId: parent.utilisateur_id }, "Erreur notification parent à l'ouverture consultation");
+      }
+    }
+
+    if (parentNotifie) {
+      await db
+        .update(consultationsInfirmerieTable)
+        .set({ parent_notifie: true })
+        .where(eq(consultationsInfirmerieTable.id, consultation!.id));
+      consultation!.parent_notifie = true;
+    }
+
+    const enriched = await enrichConsultation(consultation!);
     const dossierResume = await buildDossierResume(eleve_id);
 
     res.status(201).json({ consultation: enriched, dossier_resume: dossierResume });
@@ -355,7 +415,7 @@ router.get(
   "/infirmerie/consultations/:id",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMERIE), 
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);
@@ -388,7 +448,7 @@ router.put(
   "/infirmerie/consultations/:id",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMIER_ONLY),
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);
@@ -449,7 +509,7 @@ router.put(
   "/infirmerie/consultations/:id/cloturer",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMIER_ONLY),
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);
@@ -714,7 +774,7 @@ router.get(
   "/infirmerie/stocks",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...STOCKS_ACCESS),
   async (req, res) => {
     const user = req.user!;
     const { categorie } = req.query as Record<string, string>;
@@ -762,7 +822,7 @@ router.post(
   "/infirmerie/stocks",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...STOCKS_ACCESS),
   async (req, res) => {
     const user = req.user!;
     const { nom, categorie, quantite, unite, seuil_alerte, date_expiration } = req.body as {
@@ -813,7 +873,7 @@ router.get(
   "/infirmerie/stocks/alertes",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...STOCKS_ACCESS),
   async (req, res) => {
     const user = req.user!;
 
@@ -848,7 +908,7 @@ router.put(
   "/infirmerie/stocks/:id",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...STOCKS_ACCESS),
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);
@@ -902,7 +962,7 @@ router.post(
   "/infirmerie/stocks/:id/mouvement",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...INFIRMIER_ONLY),
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);
@@ -978,7 +1038,7 @@ router.get(
   "/infirmerie/stocks/:id/historique",
   authMiddleware,
   verifierLicence,
-  requireRole(...INFIRMERIE),
+  requireRole(...STOCKS_ACCESS),
   async (req, res) => {
     const user = req.user!;
     const id = normalizeId(req.params["id"]!);

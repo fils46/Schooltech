@@ -26,6 +26,24 @@ export default function NouvelleConsultation() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
 
+  if (user && !["infirmier", "dev"].includes(user.role)) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-20">
+        <div className="text-5xl">🔒</div>
+        <h2 className="text-xl font-bold text-[var(--m15-white)]">Accès refusé</h2>
+        <p className="text-[var(--m15-muted)] max-w-xs">
+          Seul l'infirmier peut ouvrir une consultation. Vous avez un accès en lecture seule.
+        </p>
+        <button
+          onClick={() => navigate("/infirmerie")}
+          className="text-cyan-400 hover:underline text-sm"
+        >
+          ← Retour au tableau de bord infirmerie
+        </button>
+      </div>
+    );
+  }
+
   const [searchEleve, setSearchEleve] = useState("");
   const [selectedEleve, setSelectedEleve] = useState<EleveItem | null>(null);
   const [motif, setMotif] = useState("");
