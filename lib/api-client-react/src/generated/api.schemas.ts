@@ -14,6 +14,307 @@ export interface ErrorResponse {
   error?: string;
 }
 
+export interface ConfigurerCriteresBody {
+  annee_scolaire_id: string;
+  /** @nullable */
+  classe_id?: string | null;
+  moyenne_admission: number;
+  nb_matieres_eliminatoires_max?: number;
+  /** @nullable */
+  moyenne_eliminatoire?: number | null;
+  conseil_obligatoire?: boolean;
+  /** @nullable */
+  notes_criteres?: string | null;
+}
+
+export type CritereAdmissionResponseData = {
+  id?: string;
+  etablissement_id?: string;
+  annee_scolaire_id?: string;
+  /** @nullable */
+  classe_id?: string | null;
+  moyenne_admission?: string;
+  nb_matieres_eliminatoires_max?: number;
+  /** @nullable */
+  moyenne_eliminatoire?: string | null;
+  conseil_obligatoire?: boolean;
+  /** @nullable */
+  notes_criteres?: string | null;
+};
+
+export interface CritereAdmissionResponse {
+  success?: boolean;
+  data?: CritereAdmissionResponseData;
+}
+
+/**
+ * @nullable
+ */
+export type CriteresListResponseDataGlobal = {
+  id?: string;
+  moyenne_admission?: string;
+  nb_matieres_eliminatoires_max?: number;
+  /** @nullable */
+  moyenne_eliminatoire?: string | null;
+  conseil_obligatoire?: boolean;
+  /** @nullable */
+  notes_criteres?: string | null;
+} | null;
+
+export type CriteresListResponseDataParClasseItem = {
+  id?: string;
+  classe_id?: string;
+  moyenne_admission?: string;
+  nb_matieres_eliminatoires_max?: number;
+  conseil_obligatoire?: boolean;
+};
+
+export type CriteresListResponseData = {
+  /** @nullable */
+  global?: CriteresListResponseDataGlobal;
+  par_classe?: CriteresListResponseDataParClasseItem[];
+};
+
+export interface CriteresListResponse {
+  success?: boolean;
+  data?: CriteresListResponseData;
+}
+
+export interface ResultatEleve {
+  eleve_id?: string;
+  nom?: string;
+  prenom?: string;
+  /** @nullable */
+  matricule?: string | null;
+  /** @nullable */
+  moyenne_t1?: number | null;
+  /** @nullable */
+  moyenne_t2?: number | null;
+  /** @nullable */
+  moyenne_t3?: number | null;
+  /** @nullable */
+  moyenne_annuelle?: number | null;
+  nb_matieres_elim?: number;
+  bulletin_incomplet?: boolean;
+  proposition_auto?: string;
+  /** @nullable */
+  decision_enregistree?: string | null;
+  /** @nullable */
+  classe_destination_id?: string | null;
+  /** @nullable */
+  classe_destination_nom?: string | null;
+  /** @nullable */
+  decision_id?: string | null;
+  parent_notifie?: boolean;
+}
+
+export type ResultatsClasseResponseDataClasse = {
+  id?: string;
+  nom?: string;
+  niveau?: string;
+  est_terminale?: boolean;
+};
+
+export type ResultatsClasseResponseDataCriteres = {
+  moyenne_admission?: string;
+  nb_matieres_eliminatoires_max?: number;
+  /** @nullable */
+  moyenne_eliminatoire?: string | null;
+};
+
+export type ResultatsClasseResponseDataStats = {
+  total?: number;
+  admis?: number;
+  redoublants?: number;
+  sans_decision?: number;
+};
+
+export type ResultatsClasseResponseData = {
+  classe?: ResultatsClasseResponseDataClasse;
+  criteres?: ResultatsClasseResponseDataCriteres;
+  eleves?: ResultatEleve[];
+  stats?: ResultatsClasseResponseDataStats;
+};
+
+export interface ResultatsClasseResponse {
+  success?: boolean;
+  data?: ResultatsClasseResponseData;
+}
+
+export type EnregistrerDecisionBodyDecision = typeof EnregistrerDecisionBodyDecision[keyof typeof EnregistrerDecisionBodyDecision];
+
+
+export const EnregistrerDecisionBodyDecision = {
+  admis: 'admis',
+  redoublant: 'redoublant',
+  exclu: 'exclu',
+  oriente_sortie: 'oriente_sortie',
+  admis_avec_reserve: 'admis_avec_reserve',
+} as const;
+
+export interface EnregistrerDecisionBody {
+  eleve_id: string;
+  classe_id: string;
+  annee_scolaire_id: string;
+  decision: EnregistrerDecisionBodyDecision;
+  /** @nullable */
+  classe_destination_id?: string | null;
+  /** @nullable */
+  filiere_destination_id?: string | null;
+  /** @nullable */
+  motif?: string | null;
+  /** @nullable */
+  conseil_classe_id?: string | null;
+  date_decision: string;
+  /** @nullable */
+  moyenne_annuelle?: number | null;
+}
+
+export type DecisionFinAnneeResponseData = {
+  id?: string;
+  eleve_id?: string;
+  decision?: string;
+  /** @nullable */
+  classe_destination_id?: string | null;
+  /** @nullable */
+  moyenne_annuelle?: string | null;
+  parent_notifie?: boolean;
+};
+
+export interface DecisionFinAnneeResponse {
+  success?: boolean;
+  data?: DecisionFinAnneeResponseData;
+}
+
+export type DecisionsMasseBodyDecisionsItem = {
+  eleve_id: string;
+  decision: string;
+  /** @nullable */
+  classe_destination_id?: string | null;
+  /** @nullable */
+  motif?: string | null;
+};
+
+export interface DecisionsMasseBody {
+  annee_scolaire_id: string;
+  classe_id: string;
+  decisions: DecisionsMasseBodyDecisionsItem[];
+}
+
+export type DecisionsMasseResponseData = {
+  nb_enregistrees?: number;
+  erreurs?: string[];
+};
+
+export interface DecisionsMasseResponse {
+  success?: boolean;
+  data?: DecisionsMasseResponseData;
+}
+
+export interface PromouvoirBody {
+  annee_scolaire_source_id: string;
+  annee_scolaire_destination_id: string;
+  classe_source_id: string;
+}
+
+export type PromotionResponseDataStats = {
+  promus?: number;
+  redoublants?: number;
+  exclus?: number;
+  sortie?: number;
+};
+
+export type PromotionResponseData = {
+  promotion_id?: string;
+  stats?: PromotionResponseDataStats;
+};
+
+export interface PromotionResponse {
+  success?: boolean;
+  data?: PromotionResponseData;
+}
+
+export interface NotifierBody {
+  annee_scolaire_id: string;
+  /** @nullable */
+  classe_id?: string | null;
+}
+
+export type NotifierResponseData = {
+  nb_notifies?: number;
+  erreurs?: string[];
+};
+
+export interface NotifierResponse {
+  success?: boolean;
+  data?: NotifierResponseData;
+}
+
+export interface StatsClasse {
+  classe_id?: string;
+  classe_nom?: string;
+  total?: number;
+  admis?: number;
+  redoublants?: number;
+  exclus?: number;
+  sortie?: number;
+  sans_decision?: number;
+  taux_reussite?: number;
+  promotion_effectuee?: boolean;
+}
+
+export type StatsClotureResponseDataTotaux = {
+  total?: number;
+  admis?: number;
+  redoublants?: number;
+  exclus?: number;
+  sortie?: number;
+  sans_decision?: number;
+  taux_reussite?: number;
+};
+
+export type StatsClotureResponseDataPromotionsItem = {
+  id?: string;
+  classe_source?: string;
+  classe_destination?: string;
+  nb_promus?: number;
+  statut?: string;
+  date_promotion?: string;
+};
+
+export type StatsClotureResponseData = {
+  par_classe?: StatsClasse[];
+  totaux?: StatsClotureResponseDataTotaux;
+  promotions?: StatsClotureResponseDataPromotionsItem[];
+};
+
+export interface StatsClotureResponse {
+  success?: boolean;
+  data?: StatsClotureResponseData;
+}
+
+export type HistoriquePromotionsResponseDataItem = {
+  id?: string;
+  classe_source_id?: string;
+  classe_source_nom?: string;
+  classe_destination_id?: string;
+  classe_destination_nom?: string;
+  annee_source?: string;
+  annee_destination?: string;
+  nb_eleves_promus?: number;
+  nb_eleves_redoublants?: number;
+  nb_eleves_exclus?: number;
+  nb_eleves_sortie?: number;
+  statut?: string;
+  date_promotion?: string;
+  effectuee_par?: string;
+};
+
+export interface HistoriquePromotionsResponse {
+  success?: boolean;
+  data?: HistoriquePromotionsResponseDataItem[];
+}
+
 export interface SuccessResponse {
   message: string;
 }
@@ -3688,5 +3989,22 @@ annee_scolaire_id?: string;
 
 export type GetEvolutionFinanciereParams = {
 annee_scolaire_id?: string;
+};
+
+export type GetCriteresParams = {
+annee_scolaire_id: string;
+};
+
+export type CalculerResultatsClasseParams = {
+annee_scolaire_id: string;
+};
+
+export type GetStatsClotureParams = {
+annee_scolaire_id: string;
+};
+
+export type GetHistoriquePromotionsParams = {
+annee_scolaire_id?: string;
+classe_id?: string;
 };
 

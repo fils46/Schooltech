@@ -14,7 +14,7 @@ import {
   Target, ClipboardCheck, TrendingUp, Star, Clock, Upload,
   Heart, Stethoscope, Package,
   Trophy, Activity, Star as StarIcon,
-  ShieldAlert, DollarSign, Banknote, Receipt,
+  ShieldAlert, DollarSign, Banknote, Receipt, CheckCircle2,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -100,6 +100,16 @@ const navConfig: Record<string, Section[]> = {
         { label: "Tableau de bord",   href: "/finances",              icon: DollarSign },
         { label: "Honoraires",        href: "/finances/honoraires",   icon: Banknote },
         { label: "Prestations",       href: "/finances/prestations",  icon: Receipt },
+      ],
+    },
+    {
+      title: "CLÔTURE D'ANNÉE",
+      links: [
+        { label: "Tableau de bord",     href: "/cloture",           icon: GraduationCap },
+        { label: "Critères d'admission",href: "/cloture/criteres",  icon: Target },
+        { label: "Décisions par classe",href: "/cloture",           icon: ClipboardCheck },
+        { label: "Validation & Promotion",href: "/cloture/promotion",icon: CheckCircle2 },
+        { label: "Résultats annuels",   href: "/cloture/resultats", icon: FileSpreadsheet },
       ],
     },
     {
@@ -205,6 +215,14 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "CLÔTURE D'ANNÉE",
+      links: [
+        { label: "Tableau de bord",      href: "/cloture",            icon: GraduationCap },
+        { label: "Décisions par classe", href: "/cloture",            icon: ClipboardCheck },
+        { label: "Résultats annuels",    href: "/cloture/resultats",  icon: FileSpreadsheet },
+      ],
+    },
+    {
       title: "CLUBS & ACTIVITÉS",
       links: [
         { label: "Catalogue clubs", href: "/clubs",       icon: Trophy },
@@ -274,6 +292,12 @@ const navConfig: Record<string, Section[]> = {
       title: "MES HONORAIRES",
       links: [
         { label: "Ma feuille d'heures", href: "/finances/ma-feuille", icon: Banknote },
+      ],
+    },
+    {
+      title: "RÉSULTATS ANNUELS",
+      links: [
+        { label: "Résultats de mes classes", href: "/cloture/resultats", icon: GraduationCap },
       ],
     },
     {

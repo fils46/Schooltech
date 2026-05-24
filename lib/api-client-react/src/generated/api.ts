@@ -53,6 +53,7 @@ import type {
   BulletinsEleveResponse,
   BulletinsEnfantResponse,
   CahierTextesEnfantResponse,
+  CalculerResultatsClasseParams,
   ChangePasswordInput,
   ChangerStatutInput,
   Classe,
@@ -67,6 +68,7 @@ import type {
   ClubsListeResponse,
   ClubsStatsResponse,
   CompletionPlanningResponse,
+  ConfigurerCriteresBody,
   ConfigurerMatieresInput,
   ConfigurerPrestationBody,
   ConfigurerTypeProfesseurBody,
@@ -88,6 +90,11 @@ import type {
   Creneau,
   CreneauInput,
   CreneauxListeResponse,
+  CritereAdmissionResponse,
+  CriteresListResponse,
+  DecisionFinAnneeResponse,
+  DecisionsMasseBody,
+  DecisionsMasseResponse,
   DeliberationsListeResponse,
   DemanderRendezVousInput,
   DevoirsResponse,
@@ -108,6 +115,7 @@ import type {
   EmettreFactureBody,
   EmploiGrilleResponse,
   EmploiTempsEnfantResponse,
+  EnregistrerDecisionBody,
   EnvoyerConvocations200,
   EnvoyerMessageInput,
   EnvoyerNotificationInput,
@@ -144,6 +152,7 @@ import type {
   GetClubsClubIdActivitesParams,
   GetClubsIdMembresParams,
   GetClubsParams,
+  GetCriteresParams,
   GetDashboardFinancierParams,
   GetDevoirsAVenirParams,
   GetElevesARisqueParams,
@@ -155,6 +164,7 @@ import type {
   GetExamensPlanningEleveIdParams,
   GetExamensSujetsParams,
   GetHistoriqueAppelsParams,
+  GetHistoriquePromotionsParams,
   GetInfirmerieConsultationsParams,
   GetInfirmerieStocksParams,
   GetMatiereClasseParams,
@@ -182,7 +192,9 @@ import type {
   GetScolariteStatistiquesParams,
   GetStatistiquesAbsencesParams,
   GetStatistiquesNotesParams,
+  GetStatsClotureParams,
   HealthStatus,
+  HistoriquePromotionsResponse,
   HistoriqueResponse,
   InfirmerieStatsResponse,
   InscrireEleveInput,
@@ -236,6 +248,8 @@ import type {
   NotesGroupeResponse,
   NotificationCountResponse,
   NotificationsListeResponse,
+  NotifierBody,
+  NotifierResponse,
   OuvrirConsultationInput,
   PaiementEnregistreResponse,
   PaiementInput,
@@ -255,6 +269,8 @@ import type {
   PresenceUpdateInput,
   PresencesActiviteResponse,
   ProgressionEleveResponse,
+  PromotionResponse,
+  PromouvoirBody,
   PublierClasseResponse,
   PutBibliothequeRessourcesIdPublierBody,
   PutPaiementsIdAnnuler200,
@@ -273,6 +289,7 @@ import type {
   RessourceDetailResponse,
   RessourceStatsResponse,
   RessourcesListeResponse,
+  ResultatsClasseResponse,
   ResumeAbsencesEleveResponse,
   RoleMembreInput,
   SaisirDeliberation200,
@@ -292,6 +309,7 @@ import type {
   SnapshotInput,
   SoumettreFeuilleHeuresBody,
   StatistiquesAbsencesResponse,
+  StatsClotureResponse,
   StatsEpreuveResponse,
   StatsEtablissement,
   StatsGlobal,
@@ -22239,6 +22257,772 @@ export function useGetEvolutionFinanciere<TData = Awaited<ReturnType<typeof getE
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetEvolutionFinanciereQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getConfigurerCriteresUrl = () => {
+
+
+
+
+  return `/api/api/cloture/criteres`
+}
+
+/**
+ * @summary Configurer critères d'admission
+ */
+export const configurerCriteres = async (configurerCriteresBody: ConfigurerCriteresBody, options?: RequestInit): Promise<CritereAdmissionResponse> => {
+
+  return customFetch<CritereAdmissionResponse>(getConfigurerCriteresUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      configurerCriteresBody,)
+  }
+);}
+
+
+
+
+export const getConfigurerCriteresMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof configurerCriteres>>, TError,{data: BodyType<ConfigurerCriteresBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof configurerCriteres>>, TError,{data: BodyType<ConfigurerCriteresBody>}, TContext> => {
+
+const mutationKey = ['configurerCriteres'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof configurerCriteres>>, {data: BodyType<ConfigurerCriteresBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  configurerCriteres(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfigurerCriteresMutationResult = NonNullable<Awaited<ReturnType<typeof configurerCriteres>>>
+    export type ConfigurerCriteresMutationBody = BodyType<ConfigurerCriteresBody>
+    export type ConfigurerCriteresMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Configurer critères d'admission
+ */
+export const useConfigurerCriteres = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof configurerCriteres>>, TError,{data: BodyType<ConfigurerCriteresBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof configurerCriteres>>,
+        TError,
+        {data: BodyType<ConfigurerCriteresBody>},
+        TContext
+      > => {
+      return useMutation(getConfigurerCriteresMutationOptions(options));
+    }
+
+export const getGetCriteresUrl = (params: GetCriteresParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/cloture/criteres?${stringifiedParams}` : `/api/api/cloture/criteres`
+}
+
+/**
+ * @summary Obtenir critères d'admission
+ */
+export const getCriteres = async (params: GetCriteresParams, options?: RequestInit): Promise<CriteresListResponse> => {
+
+  return customFetch<CriteresListResponse>(getGetCriteresUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCriteresQueryKey = (params?: GetCriteresParams,) => {
+    return [
+    `/api/api/cloture/criteres`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetCriteresQueryOptions = <TData = Awaited<ReturnType<typeof getCriteres>>, TError = ErrorType<unknown>>(params: GetCriteresParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCriteres>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCriteresQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCriteres>>> = ({ signal }) => getCriteres(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCriteres>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCriteresQueryResult = NonNullable<Awaited<ReturnType<typeof getCriteres>>>
+export type GetCriteresQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Obtenir critères d'admission
+ */
+
+export function useGetCriteres<TData = Awaited<ReturnType<typeof getCriteres>>, TError = ErrorType<unknown>>(
+ params: GetCriteresParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCriteres>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCriteresQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCalculerResultatsClasseUrl = (classeId: string,
+    params: CalculerResultatsClasseParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/cloture/resultats/${classeId}?${stringifiedParams}` : `/api/api/cloture/resultats/${classeId}`
+}
+
+/**
+ * @summary Calculer résultats d'une classe
+ */
+export const calculerResultatsClasse = async (classeId: string,
+    params: CalculerResultatsClasseParams, options?: RequestInit): Promise<ResultatsClasseResponse> => {
+
+  return customFetch<ResultatsClasseResponse>(getCalculerResultatsClasseUrl(classeId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getCalculerResultatsClasseQueryKey = (classeId: string,
+    params?: CalculerResultatsClasseParams,) => {
+    return [
+    `/api/api/cloture/resultats/${classeId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getCalculerResultatsClasseQueryOptions = <TData = Awaited<ReturnType<typeof calculerResultatsClasse>>, TError = ErrorType<unknown>>(classeId: string,
+    params: CalculerResultatsClasseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof calculerResultatsClasse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCalculerResultatsClasseQueryKey(classeId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof calculerResultatsClasse>>> = ({ signal }) => calculerResultatsClasse(classeId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(classeId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof calculerResultatsClasse>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type CalculerResultatsClasseQueryResult = NonNullable<Awaited<ReturnType<typeof calculerResultatsClasse>>>
+export type CalculerResultatsClasseQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Calculer résultats d'une classe
+ */
+
+export function useCalculerResultatsClasse<TData = Awaited<ReturnType<typeof calculerResultatsClasse>>, TError = ErrorType<unknown>>(
+ classeId: string,
+    params: CalculerResultatsClasseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof calculerResultatsClasse>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getCalculerResultatsClasseQueryOptions(classeId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getEnregistrerDecisionUrl = () => {
+
+
+
+
+  return `/api/api/cloture/decisions`
+}
+
+/**
+ * @summary Enregistrer une décision de fin d'année
+ */
+export const enregistrerDecision = async (enregistrerDecisionBody: EnregistrerDecisionBody, options?: RequestInit): Promise<DecisionFinAnneeResponse> => {
+
+  return customFetch<DecisionFinAnneeResponse>(getEnregistrerDecisionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      enregistrerDecisionBody,)
+  }
+);}
+
+
+
+
+export const getEnregistrerDecisionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecision>>, TError,{data: BodyType<EnregistrerDecisionBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecision>>, TError,{data: BodyType<EnregistrerDecisionBody>}, TContext> => {
+
+const mutationKey = ['enregistrerDecision'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof enregistrerDecision>>, {data: BodyType<EnregistrerDecisionBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  enregistrerDecision(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnregistrerDecisionMutationResult = NonNullable<Awaited<ReturnType<typeof enregistrerDecision>>>
+    export type EnregistrerDecisionMutationBody = BodyType<EnregistrerDecisionBody>
+    export type EnregistrerDecisionMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Enregistrer une décision de fin d'année
+ */
+export const useEnregistrerDecision = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecision>>, TError,{data: BodyType<EnregistrerDecisionBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof enregistrerDecision>>,
+        TError,
+        {data: BodyType<EnregistrerDecisionBody>},
+        TContext
+      > => {
+      return useMutation(getEnregistrerDecisionMutationOptions(options));
+    }
+
+export const getEnregistrerDecisionsMasseUrl = () => {
+
+
+
+
+  return `/api/api/cloture/decisions/masse`
+}
+
+/**
+ * @summary Enregistrer des décisions en masse
+ */
+export const enregistrerDecisionsMasse = async (decisionsMasseBody: DecisionsMasseBody, options?: RequestInit): Promise<DecisionsMasseResponse> => {
+
+  return customFetch<DecisionsMasseResponse>(getEnregistrerDecisionsMasseUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      decisionsMasseBody,)
+  }
+);}
+
+
+
+
+export const getEnregistrerDecisionsMasseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecisionsMasse>>, TError,{data: BodyType<DecisionsMasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecisionsMasse>>, TError,{data: BodyType<DecisionsMasseBody>}, TContext> => {
+
+const mutationKey = ['enregistrerDecisionsMasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof enregistrerDecisionsMasse>>, {data: BodyType<DecisionsMasseBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  enregistrerDecisionsMasse(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnregistrerDecisionsMasseMutationResult = NonNullable<Awaited<ReturnType<typeof enregistrerDecisionsMasse>>>
+    export type EnregistrerDecisionsMasseMutationBody = BodyType<DecisionsMasseBody>
+    export type EnregistrerDecisionsMasseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Enregistrer des décisions en masse
+ */
+export const useEnregistrerDecisionsMasse = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enregistrerDecisionsMasse>>, TError,{data: BodyType<DecisionsMasseBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof enregistrerDecisionsMasse>>,
+        TError,
+        {data: BodyType<DecisionsMasseBody>},
+        TContext
+      > => {
+      return useMutation(getEnregistrerDecisionsMasseMutationOptions(options));
+    }
+
+export const getPromouvoirClasseUrl = () => {
+
+
+
+
+  return `/api/api/cloture/promouvoir`
+}
+
+/**
+ * @summary Promouvoir une classe vers l'année suivante
+ */
+export const promouvoirClasse = async (promouvoirBody: PromouvoirBody, options?: RequestInit): Promise<PromotionResponse> => {
+
+  return customFetch<PromotionResponse>(getPromouvoirClasseUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      promouvoirBody,)
+  }
+);}
+
+
+
+
+export const getPromouvoirClasseMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof promouvoirClasse>>, TError,{data: BodyType<PromouvoirBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof promouvoirClasse>>, TError,{data: BodyType<PromouvoirBody>}, TContext> => {
+
+const mutationKey = ['promouvoirClasse'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof promouvoirClasse>>, {data: BodyType<PromouvoirBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  promouvoirClasse(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PromouvoirClasseMutationResult = NonNullable<Awaited<ReturnType<typeof promouvoirClasse>>>
+    export type PromouvoirClasseMutationBody = BodyType<PromouvoirBody>
+    export type PromouvoirClasseMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Promouvoir une classe vers l'année suivante
+ */
+export const usePromouvoirClasse = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof promouvoirClasse>>, TError,{data: BodyType<PromouvoirBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof promouvoirClasse>>,
+        TError,
+        {data: BodyType<PromouvoirBody>},
+        TContext
+      > => {
+      return useMutation(getPromouvoirClasseMutationOptions(options));
+    }
+
+export const getNotifierParentsDecisionsUrl = () => {
+
+
+
+
+  return `/api/api/cloture/notifier`
+}
+
+/**
+ * @summary Notifier les parents des décisions
+ */
+export const notifierParentsDecisions = async (notifierBody: NotifierBody, options?: RequestInit): Promise<NotifierResponse> => {
+
+  return customFetch<NotifierResponse>(getNotifierParentsDecisionsUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      notifierBody,)
+  }
+);}
+
+
+
+
+export const getNotifierParentsDecisionsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notifierParentsDecisions>>, TError,{data: BodyType<NotifierBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof notifierParentsDecisions>>, TError,{data: BodyType<NotifierBody>}, TContext> => {
+
+const mutationKey = ['notifierParentsDecisions'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof notifierParentsDecisions>>, {data: BodyType<NotifierBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  notifierParentsDecisions(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type NotifierParentsDecisionsMutationResult = NonNullable<Awaited<ReturnType<typeof notifierParentsDecisions>>>
+    export type NotifierParentsDecisionsMutationBody = BodyType<NotifierBody>
+    export type NotifierParentsDecisionsMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Notifier les parents des décisions
+ */
+export const useNotifierParentsDecisions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notifierParentsDecisions>>, TError,{data: BodyType<NotifierBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof notifierParentsDecisions>>,
+        TError,
+        {data: BodyType<NotifierBody>},
+        TContext
+      > => {
+      return useMutation(getNotifierParentsDecisionsMutationOptions(options));
+    }
+
+export const getGetStatsClotureUrl = (params: GetStatsClotureParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/cloture/stats?${stringifiedParams}` : `/api/api/cloture/stats`
+}
+
+/**
+ * @summary Statistiques de clôture
+ */
+export const getStatsCloture = async (params: GetStatsClotureParams, options?: RequestInit): Promise<StatsClotureResponse> => {
+
+  return customFetch<StatsClotureResponse>(getGetStatsClotureUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetStatsClotureQueryKey = (params?: GetStatsClotureParams,) => {
+    return [
+    `/api/api/cloture/stats`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetStatsClotureQueryOptions = <TData = Awaited<ReturnType<typeof getStatsCloture>>, TError = ErrorType<unknown>>(params: GetStatsClotureParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getStatsCloture>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetStatsClotureQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStatsCloture>>> = ({ signal }) => getStatsCloture(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStatsCloture>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetStatsClotureQueryResult = NonNullable<Awaited<ReturnType<typeof getStatsCloture>>>
+export type GetStatsClotureQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Statistiques de clôture
+ */
+
+export function useGetStatsCloture<TData = Awaited<ReturnType<typeof getStatsCloture>>, TError = ErrorType<unknown>>(
+ params: GetStatsClotureParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getStatsCloture>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetStatsClotureQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAnnulerPromotionUrl = (id: string,) => {
+
+
+
+
+  return `/api/api/cloture/promotions/${id}/annuler`
+}
+
+/**
+ * @summary Annuler une promotion (< 24h)
+ */
+export const annulerPromotion = async (id: string, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getAnnulerPromotionUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getAnnulerPromotionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof annulerPromotion>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof annulerPromotion>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['annulerPromotion'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof annulerPromotion>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  annulerPromotion(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AnnulerPromotionMutationResult = NonNullable<Awaited<ReturnType<typeof annulerPromotion>>>
+
+    export type AnnulerPromotionMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Annuler une promotion (< 24h)
+ */
+export const useAnnulerPromotion = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof annulerPromotion>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof annulerPromotion>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getAnnulerPromotionMutationOptions(options));
+    }
+
+export const getGetHistoriquePromotionsUrl = (params?: GetHistoriquePromotionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/api/cloture/promotions/historique?${stringifiedParams}` : `/api/api/cloture/promotions/historique`
+}
+
+/**
+ * @summary Historique des promotions
+ */
+export const getHistoriquePromotions = async (params?: GetHistoriquePromotionsParams, options?: RequestInit): Promise<HistoriquePromotionsResponse> => {
+
+  return customFetch<HistoriquePromotionsResponse>(getGetHistoriquePromotionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHistoriquePromotionsQueryKey = (params?: GetHistoriquePromotionsParams,) => {
+    return [
+    `/api/api/cloture/promotions/historique`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetHistoriquePromotionsQueryOptions = <TData = Awaited<ReturnType<typeof getHistoriquePromotions>>, TError = ErrorType<unknown>>(params?: GetHistoriquePromotionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHistoriquePromotions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHistoriquePromotionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHistoriquePromotions>>> = ({ signal }) => getHistoriquePromotions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHistoriquePromotions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHistoriquePromotionsQueryResult = NonNullable<Awaited<ReturnType<typeof getHistoriquePromotions>>>
+export type GetHistoriquePromotionsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Historique des promotions
+ */
+
+export function useGetHistoriquePromotions<TData = Awaited<ReturnType<typeof getHistoriquePromotions>>, TError = ErrorType<unknown>>(
+ params?: GetHistoriquePromotionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHistoriquePromotions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHistoriquePromotionsQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

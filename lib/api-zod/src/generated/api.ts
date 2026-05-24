@@ -7520,3 +7520,290 @@ export const GetEvolutionFinanciereResponse = zod.object({
 })
 
 
+/**
+ * @summary Configurer critères d'admission
+ */
+export const ConfigurerCriteresBody = zod.object({
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string().nullish(),
+  "moyenne_admission": zod.number(),
+  "nb_matieres_eliminatoires_max": zod.number().optional(),
+  "moyenne_eliminatoire": zod.number().nullish(),
+  "conseil_obligatoire": zod.boolean().optional(),
+  "notes_criteres": zod.string().nullish()
+})
+
+export const ConfigurerCriteresResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "etablissement_id": zod.string().optional(),
+  "annee_scolaire_id": zod.string().optional(),
+  "classe_id": zod.string().nullish(),
+  "moyenne_admission": zod.string().optional(),
+  "nb_matieres_eliminatoires_max": zod.number().optional(),
+  "moyenne_eliminatoire": zod.string().nullish(),
+  "conseil_obligatoire": zod.boolean().optional(),
+  "notes_criteres": zod.string().nullish()
+}).optional()
+})
+
+
+/**
+ * @summary Obtenir critères d'admission
+ */
+export const GetCriteresQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string()
+})
+
+export const GetCriteresResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "global": zod.object({
+  "id": zod.string().optional(),
+  "moyenne_admission": zod.string().optional(),
+  "nb_matieres_eliminatoires_max": zod.number().optional(),
+  "moyenne_eliminatoire": zod.string().nullish(),
+  "conseil_obligatoire": zod.boolean().optional(),
+  "notes_criteres": zod.string().nullish()
+}).nullish(),
+  "par_classe": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_id": zod.string().optional(),
+  "moyenne_admission": zod.string().optional(),
+  "nb_matieres_eliminatoires_max": zod.number().optional(),
+  "conseil_obligatoire": zod.boolean().optional()
+})).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Calculer résultats d'une classe
+ */
+export const CalculerResultatsClasseParams = zod.object({
+  "classeId": zod.coerce.string()
+})
+
+export const CalculerResultatsClasseQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string()
+})
+
+export const CalculerResultatsClasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "classe": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "niveau": zod.string().optional(),
+  "est_terminale": zod.boolean().optional()
+}).optional(),
+  "criteres": zod.object({
+  "moyenne_admission": zod.string().optional(),
+  "nb_matieres_eliminatoires_max": zod.number().optional(),
+  "moyenne_eliminatoire": zod.string().nullish()
+}).optional(),
+  "eleves": zod.array(zod.object({
+  "eleve_id": zod.string().optional(),
+  "nom": zod.string().optional(),
+  "prenom": zod.string().optional(),
+  "matricule": zod.string().nullish(),
+  "moyenne_t1": zod.number().nullish(),
+  "moyenne_t2": zod.number().nullish(),
+  "moyenne_t3": zod.number().nullish(),
+  "moyenne_annuelle": zod.number().nullish(),
+  "nb_matieres_elim": zod.number().optional(),
+  "bulletin_incomplet": zod.boolean().optional(),
+  "proposition_auto": zod.string().optional(),
+  "decision_enregistree": zod.string().nullish(),
+  "classe_destination_id": zod.string().nullish(),
+  "classe_destination_nom": zod.string().nullish(),
+  "decision_id": zod.string().nullish(),
+  "parent_notifie": zod.boolean().optional()
+})).optional(),
+  "stats": zod.object({
+  "total": zod.number().optional(),
+  "admis": zod.number().optional(),
+  "redoublants": zod.number().optional(),
+  "sans_decision": zod.number().optional()
+}).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Enregistrer une décision de fin d'année
+ */
+export const EnregistrerDecisionBody = zod.object({
+  "eleve_id": zod.string(),
+  "classe_id": zod.string(),
+  "annee_scolaire_id": zod.string(),
+  "decision": zod.enum(['admis', 'redoublant', 'exclu', 'oriente_sortie', 'admis_avec_reserve']),
+  "classe_destination_id": zod.string().nullish(),
+  "filiere_destination_id": zod.string().nullish(),
+  "motif": zod.string().nullish(),
+  "conseil_classe_id": zod.string().nullish(),
+  "date_decision": zod.string(),
+  "moyenne_annuelle": zod.number().nullish()
+})
+
+export const EnregistrerDecisionResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.string().optional(),
+  "eleve_id": zod.string().optional(),
+  "decision": zod.string().optional(),
+  "classe_destination_id": zod.string().nullish(),
+  "moyenne_annuelle": zod.string().nullish(),
+  "parent_notifie": zod.boolean().optional()
+}).optional()
+})
+
+
+/**
+ * @summary Enregistrer des décisions en masse
+ */
+export const EnregistrerDecisionsMasseBody = zod.object({
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string(),
+  "decisions": zod.array(zod.object({
+  "eleve_id": zod.string(),
+  "decision": zod.string(),
+  "classe_destination_id": zod.string().nullish(),
+  "motif": zod.string().nullish()
+}))
+})
+
+export const EnregistrerDecisionsMasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "nb_enregistrees": zod.number().optional(),
+  "erreurs": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Promouvoir une classe vers l'année suivante
+ */
+export const PromouvoirClasseBody = zod.object({
+  "annee_scolaire_source_id": zod.string(),
+  "annee_scolaire_destination_id": zod.string(),
+  "classe_source_id": zod.string()
+})
+
+export const PromouvoirClasseResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "promotion_id": zod.string().optional(),
+  "stats": zod.object({
+  "promus": zod.number().optional(),
+  "redoublants": zod.number().optional(),
+  "exclus": zod.number().optional(),
+  "sortie": zod.number().optional()
+}).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Notifier les parents des décisions
+ */
+export const NotifierParentsDecisionsBody = zod.object({
+  "annee_scolaire_id": zod.string(),
+  "classe_id": zod.string().nullish()
+})
+
+export const NotifierParentsDecisionsResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "nb_notifies": zod.number().optional(),
+  "erreurs": zod.array(zod.string()).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Statistiques de clôture
+ */
+export const GetStatsClotureQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string()
+})
+
+export const GetStatsClotureResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "par_classe": zod.array(zod.object({
+  "classe_id": zod.string().optional(),
+  "classe_nom": zod.string().optional(),
+  "total": zod.number().optional(),
+  "admis": zod.number().optional(),
+  "redoublants": zod.number().optional(),
+  "exclus": zod.number().optional(),
+  "sortie": zod.number().optional(),
+  "sans_decision": zod.number().optional(),
+  "taux_reussite": zod.number().optional(),
+  "promotion_effectuee": zod.boolean().optional()
+})).optional(),
+  "totaux": zod.object({
+  "total": zod.number().optional(),
+  "admis": zod.number().optional(),
+  "redoublants": zod.number().optional(),
+  "exclus": zod.number().optional(),
+  "sortie": zod.number().optional(),
+  "sans_decision": zod.number().optional(),
+  "taux_reussite": zod.number().optional()
+}).optional(),
+  "promotions": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_source": zod.string().optional(),
+  "classe_destination": zod.string().optional(),
+  "nb_promus": zod.number().optional(),
+  "statut": zod.string().optional(),
+  "date_promotion": zod.string().optional()
+})).optional()
+}).optional()
+})
+
+
+/**
+ * @summary Annuler une promotion (< 24h)
+ */
+export const AnnulerPromotionParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AnnulerPromotionResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Historique des promotions
+ */
+export const GetHistoriquePromotionsQueryParams = zod.object({
+  "annee_scolaire_id": zod.coerce.string().optional(),
+  "classe_id": zod.coerce.string().optional()
+})
+
+export const GetHistoriquePromotionsResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "classe_source_id": zod.string().optional(),
+  "classe_source_nom": zod.string().optional(),
+  "classe_destination_id": zod.string().optional(),
+  "classe_destination_nom": zod.string().optional(),
+  "annee_source": zod.string().optional(),
+  "annee_destination": zod.string().optional(),
+  "nb_eleves_promus": zod.number().optional(),
+  "nb_eleves_redoublants": zod.number().optional(),
+  "nb_eleves_exclus": zod.number().optional(),
+  "nb_eleves_sortie": zod.number().optional(),
+  "statut": zod.string().optional(),
+  "date_promotion": zod.string().optional(),
+  "effectuee_par": zod.string().optional()
+})).optional()
+})
+
+

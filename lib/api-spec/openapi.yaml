@@ -5783,6 +5783,196 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
+  /api/cloture/criteres:
+    post:
+      operationId: configurerCriteres
+      summary: Configurer critères d'admission
+      tags: [Cloture]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigurerCriteresBody"
+      responses:
+        "200":
+          description: Critères configurés
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CritereAdmissionResponse"
+    get:
+      operationId: getCriteres
+      summary: Obtenir critères d'admission
+      tags: [Cloture]
+      parameters:
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Critères
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CriteresListResponse"
+
+  /api/cloture/resultats/{classeId}:
+    get:
+      operationId: calculerResultatsClasse
+      summary: Calculer résultats d'une classe
+      tags: [Cloture]
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Résultats élèves
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultatsClasseResponse"
+
+  /api/cloture/decisions:
+    post:
+      operationId: enregistrerDecision
+      summary: Enregistrer une décision de fin d'année
+      tags: [Cloture]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnregistrerDecisionBody"
+      responses:
+        "200":
+          description: Décision enregistrée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecisionFinAnneeResponse"
+
+  /api/cloture/decisions/masse:
+    post:
+      operationId: enregistrerDecisionsMasse
+      summary: Enregistrer des décisions en masse
+      tags: [Cloture]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DecisionsMasseBody"
+      responses:
+        "200":
+          description: Décisions enregistrées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecisionsMasseResponse"
+
+  /api/cloture/promouvoir:
+    post:
+      operationId: promouvoirClasse
+      summary: Promouvoir une classe vers l'année suivante
+      tags: [Cloture]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PromouvoirBody"
+      responses:
+        "200":
+          description: Promotion effectuée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PromotionResponse"
+
+  /api/cloture/notifier:
+    post:
+      operationId: notifierParentsDecisions
+      summary: Notifier les parents des décisions
+      tags: [Cloture]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotifierBody"
+      responses:
+        "200":
+          description: Notifications envoyées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotifierResponse"
+
+  /api/cloture/stats:
+    get:
+      operationId: getStatsCloture
+      summary: Statistiques de clôture
+      tags: [Cloture]
+      parameters:
+        - name: annee_scolaire_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Stats clôture
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsClotureResponse"
+
+  /api/cloture/promotions/{id}/annuler:
+    put:
+      operationId: annulerPromotion
+      summary: Annuler une promotion (< 24h)
+      tags: [Cloture]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Promotion annulée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /api/cloture/promotions/historique:
+    get:
+      operationId: getHistoriquePromotions
+      summary: Historique des promotions
+      tags: [Cloture]
+      parameters:
+        - name: annee_scolaire_id
+          in: query
+          schema: { type: string }
+        - name: classe_id
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Historique promotions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HistoriquePromotionsResponse"
+
+
 components:
   securitySchemes:
     bearerAuth:
@@ -5808,6 +5998,288 @@ components:
           type: string
       required:
         - message
+
+
+    ConfigurerCriteresBody:
+      type: object
+      required: [annee_scolaire_id, moyenne_admission]
+      properties:
+        annee_scolaire_id: { type: string }
+        classe_id: { type: ["string", "null"] }
+        moyenne_admission: { type: number }
+        nb_matieres_eliminatoires_max: { type: integer }
+        moyenne_eliminatoire: { type: ["number", "null"] }
+        conseil_obligatoire: { type: boolean }
+        notes_criteres: { type: ["string", "null"] }
+
+    CritereAdmissionResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            id: { type: string }
+            etablissement_id: { type: string }
+            annee_scolaire_id: { type: string }
+            classe_id: { type: ["string", "null"] }
+            moyenne_admission: { type: string }
+            nb_matieres_eliminatoires_max: { type: integer }
+            moyenne_eliminatoire: { type: ["string", "null"] }
+            conseil_obligatoire: { type: boolean }
+            notes_criteres: { type: ["string", "null"] }
+
+    CriteresListResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            global:
+              type: ["object", "null"]
+              properties:
+                id: { type: string }
+                moyenne_admission: { type: string }
+                nb_matieres_eliminatoires_max: { type: integer }
+                moyenne_eliminatoire: { type: ["string", "null"] }
+                conseil_obligatoire: { type: boolean }
+                notes_criteres: { type: ["string", "null"] }
+            par_classe:
+              type: array
+              items:
+                type: object
+                properties:
+                  id: { type: string }
+                  classe_id: { type: string }
+                  moyenne_admission: { type: string }
+                  nb_matieres_eliminatoires_max: { type: integer }
+                  conseil_obligatoire: { type: boolean }
+
+    ResultatEleve:
+      type: object
+      properties:
+        eleve_id: { type: string }
+        nom: { type: string }
+        prenom: { type: string }
+        matricule: { type: ["string", "null"] }
+        moyenne_t1: { type: ["number", "null"] }
+        moyenne_t2: { type: ["number", "null"] }
+        moyenne_t3: { type: ["number", "null"] }
+        moyenne_annuelle: { type: ["number", "null"] }
+        nb_matieres_elim: { type: integer }
+        bulletin_incomplet: { type: boolean }
+        proposition_auto: { type: string }
+        decision_enregistree: { type: ["string", "null"] }
+        classe_destination_id: { type: ["string", "null"] }
+        classe_destination_nom: { type: ["string", "null"] }
+        decision_id: { type: ["string", "null"] }
+        parent_notifie: { type: boolean }
+
+    ResultatsClasseResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            classe:
+              type: object
+              properties:
+                id: { type: string }
+                nom: { type: string }
+                niveau: { type: string }
+                est_terminale: { type: boolean }
+            criteres:
+              type: object
+              properties:
+                moyenne_admission: { type: string }
+                nb_matieres_eliminatoires_max: { type: integer }
+                moyenne_eliminatoire: { type: ["string", "null"] }
+            eleves:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResultatEleve"
+            stats:
+              type: object
+              properties:
+                total: { type: integer }
+                admis: { type: integer }
+                redoublants: { type: integer }
+                sans_decision: { type: integer }
+
+    EnregistrerDecisionBody:
+      type: object
+      required: [eleve_id, classe_id, annee_scolaire_id, decision, date_decision]
+      properties:
+        eleve_id: { type: string }
+        classe_id: { type: string }
+        annee_scolaire_id: { type: string }
+        decision: { type: string, enum: [admis, redoublant, exclu, oriente_sortie, admis_avec_reserve] }
+        classe_destination_id: { type: ["string", "null"] }
+        filiere_destination_id: { type: ["string", "null"] }
+        motif: { type: ["string", "null"] }
+        conseil_classe_id: { type: ["string", "null"] }
+        date_decision: { type: string }
+        moyenne_annuelle: { type: ["number", "null"] }
+
+    DecisionFinAnneeResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            id: { type: string }
+            eleve_id: { type: string }
+            decision: { type: string }
+            classe_destination_id: { type: ["string", "null"] }
+            moyenne_annuelle: { type: ["string", "null"] }
+            parent_notifie: { type: boolean }
+
+    DecisionsMasseBody:
+      type: object
+      required: [annee_scolaire_id, classe_id, decisions]
+      properties:
+        annee_scolaire_id: { type: string }
+        classe_id: { type: string }
+        decisions:
+          type: array
+          items:
+            type: object
+            required: [eleve_id, decision]
+            properties:
+              eleve_id: { type: string }
+              decision: { type: string }
+              classe_destination_id: { type: ["string", "null"] }
+              motif: { type: ["string", "null"] }
+
+    DecisionsMasseResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            nb_enregistrees: { type: integer }
+            erreurs:
+              type: array
+              items: { type: string }
+
+    PromouvoirBody:
+      type: object
+      required: [annee_scolaire_source_id, annee_scolaire_destination_id, classe_source_id]
+      properties:
+        annee_scolaire_source_id: { type: string }
+        annee_scolaire_destination_id: { type: string }
+        classe_source_id: { type: string }
+
+    PromotionResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            promotion_id: { type: string }
+            stats:
+              type: object
+              properties:
+                promus: { type: integer }
+                redoublants: { type: integer }
+                exclus: { type: integer }
+                sortie: { type: integer }
+
+    NotifierBody:
+      type: object
+      required: [annee_scolaire_id]
+      properties:
+        annee_scolaire_id: { type: string }
+        classe_id: { type: ["string", "null"] }
+
+    NotifierResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            nb_notifies: { type: integer }
+            erreurs:
+              type: array
+              items: { type: string }
+
+    StatsClasse:
+      type: object
+      properties:
+        classe_id: { type: string }
+        classe_nom: { type: string }
+        total: { type: integer }
+        admis: { type: integer }
+        redoublants: { type: integer }
+        exclus: { type: integer }
+        sortie: { type: integer }
+        sans_decision: { type: integer }
+        taux_reussite: { type: number }
+        promotion_effectuee: { type: boolean }
+
+    StatsClotureResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            par_classe:
+              type: array
+              items:
+                $ref: "#/components/schemas/StatsClasse"
+            totaux:
+              type: object
+              properties:
+                total: { type: integer }
+                admis: { type: integer }
+                redoublants: { type: integer }
+                exclus: { type: integer }
+                sortie: { type: integer }
+                sans_decision: { type: integer }
+                taux_reussite: { type: number }
+            promotions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id: { type: string }
+                  classe_source: { type: string }
+                  classe_destination: { type: string }
+                  nb_promus: { type: integer }
+                  statut: { type: string }
+                  date_promotion: { type: string }
+
+    HistoriquePromotionsResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              classe_source_id: { type: string }
+              classe_source_nom: { type: string }
+              classe_destination_id: { type: string }
+              classe_destination_nom: { type: string }
+              annee_source: { type: string }
+              annee_destination: { type: string }
+              nb_eleves_promus: { type: integer }
+              nb_eleves_redoublants: { type: integer }
+              nb_eleves_exclus: { type: integer }
+              nb_eleves_sortie: { type: integer }
+              statut: { type: string }
+              date_promotion: { type: string }
+              effectuee_par: { type: string }
+
 
     SuccessResponse:
       type: object

@@ -105,6 +105,11 @@ import GestionHonoraires from "@/pages/finances/GestionHonoraires";
 import MaFeuilleHeures from "@/pages/finances/MaFeuilleHeures";
 import GestionPrestations from "@/pages/finances/GestionPrestations";
 import FacturesParent from "@/pages/finances/FacturesParent";
+import DashboardCloture from "@/pages/cloture/DashboardCloture";
+import ConfigurationCriteres from "@/pages/cloture/ConfigurationCriteres";
+import DecisionsClasse from "@/pages/cloture/DecisionsClasse";
+import ValidationPromotion from "@/pages/cloture/ValidationPromotion";
+import ResultatsAnnuels from "@/pages/cloture/ResultatsAnnuels";
 
 const queryClient = new QueryClient();
 
@@ -846,6 +851,33 @@ function Router() {
       <Route path="/finances">
         <ProtectedRoute>
           <DashboardLayout><DashboardFinancier /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Routes Module 03-B — Clôture d'année */}
+      <Route path="/cloture/criteres">
+        <ProtectedRoute>
+          <DashboardLayout><ConfigurationCriteres /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/cloture/decisions/:classeId">
+        <ProtectedRoute>
+          <DashboardLayout><DecisionsClasse /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/cloture/promotion">
+        <ProtectedRoute>
+          <DashboardLayout><ValidationPromotion /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/cloture/resultats">
+        <ProtectedRoute>
+          <DashboardLayout><ResultatsAnnuels /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+      <Route path="/cloture">
+        <ProtectedRoute>
+          <DashboardLayout><DashboardCloture /></DashboardLayout>
         </ProtectedRoute>
       </Route>
 

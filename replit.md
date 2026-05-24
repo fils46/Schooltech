@@ -87,6 +87,15 @@ Module 18 — Tableau de Bord Analytique (complet) :
 - Graphiques Recharts (BarChart, LineChart) + tableaux détaillés
 - Sections ANALYTIQUE ajoutées dans la sidebar dev/directeur/censeur/professeur
 
+Module 03-B — Clôture d'année & Promotions (complet) :
+- 3 tables DB : criteres_admission, decisions_fin_annee, promotions (+ 2 enums : decision_fin_annee, statut_promotion)
+- 10 endpoints API REST sous /api/cloture/...
+- Pages : DashboardCloture, ConfigurationCriteres, DecisionsClasse (/:classeId), ValidationPromotion, ResultatsAnnuels
+- Section CLÔTURE D'ANNÉE ajoutée dans la sidebar directeur/censeur, section RÉSULTATS ANNUELS pour professeur
+- Calcul automatique de la moyenne annuelle (3 trimestres), détection bulletin incomplet, promotion en masse
+- Notifications parents automatiques lors de la publication des décisions
+- Historique des promotions par établissement/année
+
 Module 16 — Infirmerie Numérique (complet) :
 - 4 tables DB : dossiers_medicaux, consultations_infirmerie, stocks_infirmerie, mouvements_stocks
 - 15 endpoints API REST sous /api/infirmerie/...

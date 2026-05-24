@@ -41,3 +41,4 @@ export * from "./incidents";
 export * from "./sanctions";
 export * from "./scolarite";
 export * from "./honoraires";
+export * from "./clotureAnnee";

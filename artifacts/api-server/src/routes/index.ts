@@ -36,6 +36,7 @@ import scolariteRouter from "./scolarite";
 import honorairesRouter from "./honoraires";
 import prestationsRouter from "./prestations";
 import financesRouter from "./finances";
+import clotureAnneeRouter from "./clotureAnnee";
 
 const router: IRouter = Router();
 
@@ -76,5 +77,6 @@ router.use(scolariteRouter);
 router.use(honorairesRouter);
 router.use(prestationsRouter);
 router.use(financesRouter);
+router.use(clotureAnneeRouter);
 
 export default router;
