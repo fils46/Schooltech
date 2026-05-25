@@ -153,8 +153,8 @@ function CoursModal({
 
   const creneaux = (creneauxData as unknown as { creneaux?: Record<string, unknown>[] })?.creneaux ?? [];
   const salles = (sallesData as unknown as { salles?: Record<string, unknown>[] })?.salles ?? [];
-  const classes = Array.isArray(classesData) ? (classesData as unknown as { id: string; nom: string }[]) : [];
-  const profs = Array.isArray(profsData) ? (profsData as unknown as { id: string; prenoms: string; nom: string }[]) : [];
+  const classes = (classesData as unknown as { classes?: { id: string; nom: string }[] })?.classes ?? [];
+  const profs = ((profsData ?? []) as unknown as { id: string; prenoms: string; nom: string }[]);
 
   const verifier = useVerifierDisponibilite();
   const creerCours = useCreerCours();
@@ -511,8 +511,8 @@ function TabEmploi({
   const { data: anneesData } = useListerAnneesScolaires();
   const { data: creneauxData } = useListerCreneaux({ etablissement_id: etablissementId });
 
-  const classes = Array.isArray(classesData) ? (classesData as unknown as { id: string; nom: string }[]) : [];
-  const profs = Array.isArray(profsData) ? (profsData as unknown as { id: string; prenoms: string; nom: string }[]) : [];
+  const classes = (classesData as unknown as { classes?: { id: string; nom: string }[] })?.classes ?? [];
+  const profs = ((profsData ?? []) as unknown as { id: string; prenoms: string; nom: string }[]);
   const annees = (anneesData as unknown as { annees?: Record<string, string>[] })?.annees ?? [];
   const creneaux = (creneauxData as unknown as { creneaux?: Record<string, unknown>[] })?.creneaux ?? [];
 
