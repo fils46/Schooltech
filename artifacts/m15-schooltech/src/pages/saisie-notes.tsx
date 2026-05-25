@@ -307,7 +307,14 @@ export default function SaisieNotes() {
         }
       }
 
-      setNotesMap(prev => ({ ...prev, ...map }));
+      // Deep merge : ne pas écraser les sous-objets existants par élève
+      setNotesMap(prev => {
+        const merged: Record<string, Record<string, string>> = { ...prev };
+        for (const [eleveId, notes] of Object.entries(map)) {
+          merged[eleveId] = { ...prev[eleveId], ...notes };
+        }
+        return merged;
+      });
       if (evaluations.length === 0) setEvaluations(Array.from(evs.values()));
     }
   }, [notesData]);

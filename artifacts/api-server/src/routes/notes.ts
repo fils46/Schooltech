@@ -245,6 +245,15 @@ router.post(
           erreurs.push({ eleve_id: item.eleve_id, message: `Note invalide: ${n}/${ns}` });
           continue;
         }
+        // Supprimer l'éventuelle note existante pour éviter les doublons
+        await db.delete(notesTable).where(and(
+          eq(notesTable.eleve_id, item.eleve_id),
+          eq(notesTable.intitule, intitule),
+          eq(notesTable.classe_id, classe_id),
+          eq(notesTable.matiere, matiere),
+          eq(notesTable.trimestre, trimestre as "1" | "2" | "3"),
+          eq(notesTable.annee_scolaire_id, annee_scolaire_id),
+        ));
         await db.insert(notesTable).values({
           etablissement_id: user.etablissement_id ?? "",
           professeur_id: user.id,
