@@ -318,6 +318,7 @@ function ModalSaisirMatricule({
 function TabInfos({ eleve, canManage, onSaisirMatricule }: { eleve: Record<string, unknown>; canManage: boolean; onSaisirMatricule: () => void }) {
   const sfLabel: Record<string, string> = { pere_mere: "Père et mère", mere: "Mère seule", pere: "Père seul", tuteur: "Sous tutelle" };
   const statutMatricule = String(eleve.matricule_statut ?? "en_attente");
+  const classeActuelle = eleve.classe_actuelle as { id: string; nom: string } | null | undefined;
   const rows = [
     { label: "Nom complet",         value: `${eleve.prenoms} ${eleve.nom}` },
     { label: "Date de naissance",   value: String(eleve.date_naissance ?? "—") },
@@ -335,6 +336,20 @@ function TabInfos({ eleve, canManage, onSaisirMatricule }: { eleve: Record<strin
 
   return (
     <div className="divide-y" style={{ borderColor: "var(--m15-border)" }}>
+      {/* Ligne classe */}
+      <div className="flex items-center px-4 py-3 gap-4 flex-wrap">
+        <span className="text-xs w-40 flex-shrink-0 font-semibold uppercase tracking-wide"
+          style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>Classe</span>
+        {classeActuelle ? (
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg"
+            style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            {classeActuelle.nom}
+          </span>
+        ) : (
+          <span className="text-sm italic" style={{ color: "var(--m15-muted)" }}>Aucune classe affectée pour l'année en cours</span>
+        )}
+      </div>
       {/* Ligne matricule spéciale */}
       <div className="flex items-center px-4 py-3 gap-4 flex-wrap">
         <span className="text-xs w-40 flex-shrink-0 font-semibold uppercase tracking-wide"

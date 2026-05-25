@@ -541,6 +541,11 @@ export const EleveResumeMatriculeStatut = {
   officiel: 'officiel',
 } as const;
 
+export type EleveResumeClasseActuelle = {
+  id?: string;
+  nom?: string;
+} | null;
+
 export interface EleveResume {
   id: string;
   etablissement_id?: string;
@@ -566,6 +571,7 @@ export interface EleveResume {
   annee_inscription: number;
   statut: string;
   created_at?: string;
+  classe_actuelle?: EleveResumeClasseActuelle;
 }
 
 export type EleveDetailHistoriqueStatutItem = {
@@ -4022,6 +4028,7 @@ annee_inscription?: number;
 sexe?: string;
 page?: number;
 limit?: number;
+classe_id?: string;
 };
 
 export type RechercherElevesParams = {

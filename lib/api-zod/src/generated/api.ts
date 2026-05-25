@@ -440,7 +440,11 @@ export const GetElevesSansMatriculeResponse = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 })).optional(),
   "total": zod.number().optional(),
   "page": zod.number().optional(),
@@ -480,7 +484,8 @@ export const ListerElevesQueryParams = zod.object({
   "annee_inscription": zod.coerce.number().optional(),
   "sexe": zod.coerce.string().optional(),
   "page": zod.coerce.number().optional(),
-  "limit": zod.coerce.number().optional()
+  "limit": zod.coerce.number().optional(),
+  "classe_id": zod.coerce.string().optional()
 })
 
 export const ListerElevesResponse = zod.object({
@@ -501,7 +506,11 @@ export const ListerElevesResponse = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 })),
   "total": zod.number(),
   "page": zod.number(),
@@ -536,7 +545,11 @@ export const RechercherElevesResponseItem = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 })
 export const RechercherElevesResponse = zod.array(RechercherElevesResponseItem)
 
@@ -565,7 +578,11 @@ export const GetEleveResponse = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 }).and(zod.object({
   "parents": zod.array(zod.object({
   "lien_id": zod.string().optional(),
@@ -628,7 +645,11 @@ export const ModifierEleveResponse = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 })
 
 
@@ -677,7 +698,11 @@ export const MettreAJourMatriculeResponse = zod.object({
   "situation_familiale": zod.string().nullish(),
   "annee_inscription": zod.number(),
   "statut": zod.string(),
-  "created_at": zod.coerce.date().optional()
+  "created_at": zod.coerce.date().optional(),
+  "classe_actuelle": zod.object({
+  "id": zod.string().optional(),
+  "nom": zod.string().optional()
+}).nullish()
 }).optional()
 })
 

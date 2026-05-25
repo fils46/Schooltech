@@ -299,35 +299,95 @@ router.get(
   requireRole("directeur", "censeur", "professeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
-    const { statut, sexe, matricule_statut } = req.query as Record<string, string>;
+    const { statut, sexe, matricule_statut, classe_id } = req.query as Record<string, string>;
     const annee = req.query.annee_inscription ? parseInt(req.query.annee_inscription as string) : undefined;
     const page = parseInt((req.query.page as string) || "1");
     const limit = parseInt((req.query.limit as string) || "20");
     const offset = (page - 1) * limit;
 
-    const conditions: ReturnType<typeof eq>[] = [];
+    const etablissementId = user.role !== "dev" ? (user.etablissement_id ?? null) : null;
 
-    if (user.role !== "dev" && user.etablissement_id) {
-      conditions.push(eq(elevesTable.etablissement_id, user.etablissement_id));
+    /* année scolaire active pour le JOIN classe */
+    let activeYearId: string | null = null;
+    if (etablissementId) {
+      const [ay] = await db
+        .select({ id: anneesScolairesTable.id })
+        .from(anneesScolairesTable)
+        .where(and(eq(anneesScolairesTable.etablissement_id, etablissementId), eq(anneesScolairesTable.est_active, true)))
+        .limit(1);
+      activeYearId = ay?.id ?? null;
     }
+
+    const conditions: ReturnType<typeof eq>[] = [];
+    if (etablissementId) conditions.push(eq(elevesTable.etablissement_id, etablissementId));
     if (statut) conditions.push(eq(elevesTable.statut, statut));
     if (sexe) conditions.push(eq(elevesTable.sexe, sexe));
     if (annee) conditions.push(eq(elevesTable.annee_inscription, annee));
     if (matricule_statut) conditions.push(eq(elevesTable.matricule_statut, matricule_statut));
 
+    /* filtre par classe : force une INNER JOIN côté condition */
+    const classeConditions = activeYearId
+      ? [eq(eleveClassesTable.annee_scolaire_id, activeYearId)]
+      : [];
+
     const whereClause = conditions.length ? and(...conditions) : undefined;
 
-    const [totalResult] = whereClause
-      ? await db.select({ count: count() }).from(elevesTable).where(whereClause)
-      : await db.select({ count: count() }).from(elevesTable);
+    /* count total */
+    let totalCount = 0;
+    if (classe_id && activeYearId) {
+      const [r] = await db
+        .select({ count: count() })
+        .from(elevesTable)
+        .innerJoin(eleveClassesTable, and(
+          eq(eleveClassesTable.eleve_id, elevesTable.id),
+          eq(eleveClassesTable.classe_id, classe_id),
+          eq(eleveClassesTable.annee_scolaire_id, activeYearId),
+        ))
+        .where(whereClause);
+      totalCount = Number(r?.count ?? 0);
+    } else {
+      const [r] = whereClause
+        ? await db.select({ count: count() }).from(elevesTable).where(whereClause)
+        : await db.select({ count: count() }).from(elevesTable);
+      totalCount = Number(r?.count ?? 0);
+    }
 
-    const rows = whereClause
-      ? await db.select().from(elevesTable).where(whereClause).limit(limit).offset(offset)
-      : await db.select().from(elevesTable).limit(limit).offset(offset);
+    /* rows avec LEFT JOIN classe */
+    let rows: Array<{ eleve: typeof elevesTable.$inferSelect; classe: { id: string; nom: string } | null }>;
+
+    const joinConditions = activeYearId
+      ? and(eq(eleveClassesTable.eleve_id, elevesTable.id), ...classeConditions)
+      : eq(eleveClassesTable.eleve_id, elevesTable.id);
+
+    if (classe_id && activeYearId) {
+      const rawRows = await db
+        .select({ eleve: elevesTable, classeId: classesTable.id, classeNom: classesTable.nom })
+        .from(elevesTable)
+        .innerJoin(eleveClassesTable, and(
+          eq(eleveClassesTable.eleve_id, elevesTable.id),
+          eq(eleveClassesTable.classe_id, classe_id),
+          eq(eleveClassesTable.annee_scolaire_id, activeYearId),
+        ))
+        .leftJoin(classesTable, eq(classesTable.id, eleveClassesTable.classe_id))
+        .where(whereClause)
+        .limit(limit)
+        .offset(offset);
+      rows = rawRows.map(r => ({ eleve: r.eleve, classe: r.classeId ? { id: r.classeId, nom: r.classeNom! } : null }));
+    } else {
+      const rawRows = await db
+        .select({ eleve: elevesTable, classeId: classesTable.id, classeNom: classesTable.nom })
+        .from(elevesTable)
+        .leftJoin(eleveClassesTable, joinConditions)
+        .leftJoin(classesTable, eq(classesTable.id, eleveClassesTable.classe_id))
+        .where(whereClause)
+        .limit(limit)
+        .offset(offset);
+      rows = rawRows.map(r => ({ eleve: r.eleve, classe: r.classeId ? { id: r.classeId, nom: r.classeNom! } : null }));
+    }
 
     res.json({
-      eleves: rows.map(mapEleve),
-      total: Number(totalResult?.count ?? 0),
+      eleves: rows.map(({ eleve, classe }) => ({ ...mapEleve(eleve), classe_actuelle: classe ?? null })),
+      total: totalCount,
       page,
       limit,
     });
@@ -379,8 +439,31 @@ router.get(
 
     const documents = await db.select().from(documentsElevesTable).where(eq(documentsElevesTable.eleve_id, rawId));
 
+    /* classe actuelle */
+    let classeActuelle: { id: string; nom: string } | null = null;
+    const etablissementIdEleve = eleve.etablissement_id;
+    if (etablissementIdEleve) {
+      const [ay] = await db
+        .select({ id: anneesScolairesTable.id })
+        .from(anneesScolairesTable)
+        .where(and(eq(anneesScolairesTable.etablissement_id, etablissementIdEleve), eq(anneesScolairesTable.est_active, true)))
+        .limit(1);
+      if (ay) {
+        const [ec] = await db
+          .select({ classeId: eleveClassesTable.classe_id })
+          .from(eleveClassesTable)
+          .where(and(eq(eleveClassesTable.eleve_id, rawId), eq(eleveClassesTable.annee_scolaire_id, ay.id)))
+          .limit(1);
+        if (ec) {
+          const [cl] = await db.select({ id: classesTable.id, nom: classesTable.nom }).from(classesTable).where(eq(classesTable.id, ec.classeId)).limit(1);
+          if (cl) classeActuelle = cl;
+        }
+      }
+    }
+
     res.json({
       ...mapEleve(eleve),
+      classe_actuelle: classeActuelle,
       historique_statut: (eleve.historique_statut as Array<{ statut: string; motif?: string; date: string }>) ?? [],
       parents,
       documents,

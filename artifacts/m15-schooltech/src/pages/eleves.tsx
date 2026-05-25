@@ -6,13 +6,15 @@ import {
   getListerElevesQueryKey,
   useRechercherEleves,
   getRechercherElevesQueryKey,
+  useListerClasses,
+  getListerClassesQueryKey,
 } from "@workspace/api-client-react";
 import { useQuery } from "@tanstack/react-query";
 import {
   UserSquare, Plus, Search, Filter, Download,
   RefreshCw, ChevronLeft, ChevronRight, Users,
   CheckCircle, ArrowRightLeft, XCircle, UserX, AlertTriangle,
-  Clock, FileText,
+  Clock, FileText, GraduationCap,
 } from "lucide-react";
 
 /* ─── Badge statut élève ─────────────────────────────────── */
@@ -90,8 +92,13 @@ export default function EleveListe() {
   const [filtreAnnee, setFiltreAnnee] = useState("");
   const [filtreSexe, setFiltreSexe] = useState("");
   const [filtreMatriculeStatut, setFiltreMatriculeStatut] = useState("");
+  const [filtreClasse, setFiltreClasse] = useState("");
   const [recherche, setRecherche] = useState("");
   const [rechercheDebounced, setRechercheDebounced] = useState("");
+
+  const classesQk = getListerClassesQueryKey();
+  const { data: classesData } = useListerClasses(undefined, { query: { queryKey: classesQk, staleTime: 60_000 } });
+  const classes = (classesData as any)?.classes ?? [];
 
   const { data: sansMatData } = useQuery({
     queryKey: ["eleves-sans-matricule-count"],
@@ -119,6 +126,7 @@ export default function EleveListe() {
       statut: filtreStatut || undefined,
       annee_inscription: filtreAnnee ? parseInt(filtreAnnee) : undefined,
       sexe: filtreSexe || undefined,
+      classe_id: filtreClasse || undefined,
       page,
       limit: LIMIT,
     },
@@ -156,12 +164,12 @@ export default function EleveListe() {
 
   const resetFiltres = () => {
     setFiltreStatut(""); setFiltreAnnee(""); setFiltreSexe("");
-    setFiltreMatriculeStatut("");
+    setFiltreMatriculeStatut(""); setFiltreClasse("");
     setRecherche(""); setRechercheDebounced(""); setPage(1);
   };
 
   const annees = Array.from({ length: 5 }, (_, i) => anneeActuelle - i);
-  const hasFiltres = !!(filtreStatut || filtreAnnee || filtreSexe || filtreMatriculeStatut || recherche);
+  const hasFiltres = !!(filtreStatut || filtreAnnee || filtreSexe || filtreMatriculeStatut || filtreClasse || recherche);
 
   return (
     <div className="space-y-6 page-fade-in">
@@ -312,6 +320,22 @@ export default function EleveListe() {
           <option value="F">Féminin</option>
         </select>
 
+        <select
+          value={filtreClasse}
+          onChange={(e) => { setFiltreClasse(e.target.value); setPage(1); }}
+          className="px-3 py-2 rounded-lg text-sm outline-none"
+          style={{
+            background: "var(--elevate-1)",
+            border: filtreClasse ? "1px solid rgba(0,201,167,0.4)" : "1px solid var(--m15-border)",
+            color: filtreClasse ? "#00C9A7" : "var(--m15-muted)",
+            fontFamily: "'DM Sans', sans-serif",
+          }}>
+          <option value="">Toutes les classes</option>
+          {classes.map((c: any) => (
+            <option key={c.id} value={c.id}>{c.nom}</option>
+          ))}
+        </select>
+
         {hasFiltres && (
           <button onClick={resetFiltres} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm"
             style={{ color: "#FF4D6D", background: "rgba(255,77,109,0.08)", border: "1px solid rgba(255,77,109,0.2)" }}>
@@ -325,7 +349,7 @@ export default function EleveListe() {
         <table className="w-full text-sm">
           <thead>
             <tr style={{ background: "var(--m15-card2)", borderBottom: "1px solid var(--m15-border)" }}>
-              {["Élève", "Matricule", "Sexe", "Année", "Statut", ""].map((h) => (
+              {["Élève", "Classe", "Matricule", "Sexe", "Année", "Statut", ""].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-widest"
                   style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-muted)" }}>{h}</th>
               ))}
@@ -334,12 +358,12 @@ export default function EleveListe() {
           <tbody>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i}><td colSpan={6} className="px-4 py-3">
+                <tr key={i}><td colSpan={7} className="px-4 py-3">
                   <div className="h-8 rounded-lg animate-pulse" style={{ background: "var(--elevate-1)" }} />
                 </td></tr>
               ))
             ) : eleves.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-10 text-center">
+              <tr><td colSpan={7} className="px-4 py-10 text-center">
                 <UserX className="w-10 h-10 mx-auto mb-3" style={{ color: "var(--m15-muted)", opacity: 0.4 }} />
                 <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Aucun élève trouvé</p>
               </td></tr>
@@ -361,6 +385,17 @@ export default function EleveListe() {
                           </p>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      {(e as any).classe_actuelle ? (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg"
+                          style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
+                          <GraduationCap className="w-3 h-3" />
+                          {(e as any).classe_actuelle.nom}
+                        </span>
+                      ) : (
+                        <span className="text-xs italic" style={{ color: "var(--m15-muted)" }}>—</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-col gap-1">
