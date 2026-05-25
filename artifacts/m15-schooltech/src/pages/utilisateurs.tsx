@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Loader2, KeyRound } from "lucide-react";
+import { Plus, Loader2, KeyRound, Copy, Check } from "lucide-react";
 import { format } from "date-fns";
 
 const roleColors: Record<string, string> = {
@@ -52,6 +52,11 @@ type UtilisateurFormValues = z.infer<typeof utilisateurSchema>;
 export default function Utilisateurs() {
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [copiedReset, setCopiedReset] = useState(false);
+  const copyToClipboard = useCallback((text: string, setter: (v: boolean) => void) => {
+    void navigator.clipboard.writeText(text).then(() => { setter(true); setTimeout(() => setter(false), 2000); });
+  }, []);
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [resetTarget, setResetTarget] = useState<{ id: string; nom: string } | null>(null);
   const [resetPassword, setResetPassword] = useState<string | null>(null);
@@ -198,9 +203,19 @@ export default function Utilisateurs() {
                   <h3 className="text-lg font-medium">Utilisateur créé !</h3>
                   <div className="bg-muted p-4 rounded-md">
                     <p className="text-sm text-muted-foreground mb-2">Mot de passe temporaire :</p>
-                    <code className="text-xl font-mono bg-background px-3 py-1 rounded border shadow-sm select-all">
-                      {newPassword}
-                    </code>
+                    <div className="flex items-center justify-center gap-2">
+                      <code className="text-xl font-mono bg-background px-3 py-1 rounded border shadow-sm select-all">
+                        {newPassword}
+                      </code>
+                      <button
+                        onClick={() => copyToClipboard(newPassword!, setCopied)}
+                        className="p-2 rounded-lg transition-all flex-shrink-0"
+                        style={{ background: copied ? "rgba(0,201,167,0.15)" : "rgba(0,0,0,0.06)", color: copied ? "#00C9A7" : "inherit" }}
+                        title="Copier"
+                      >
+                        {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Veuillez communiquer ce mot de passe à l'utilisateur. Il devra le changer lors de sa première connexion.
@@ -391,9 +406,19 @@ export default function Utilisateurs() {
           <div className="py-4 space-y-4 text-center">
             <div className="bg-muted p-4 rounded-md">
               <p className="text-sm text-muted-foreground mb-2">Mot de passe temporaire :</p>
-              <code className="text-xl font-mono bg-background px-3 py-1 rounded border shadow-sm select-all">
-                {resetPassword}
-              </code>
+              <div className="flex items-center justify-center gap-2">
+                <code className="text-xl font-mono bg-background px-3 py-1 rounded border shadow-sm select-all">
+                  {resetPassword}
+                </code>
+                <button
+                  onClick={() => copyToClipboard(resetPassword!, setCopiedReset)}
+                  className="p-2 rounded-lg transition-all flex-shrink-0"
+                  style={{ background: copiedReset ? "rgba(0,201,167,0.15)" : "rgba(0,0,0,0.06)", color: copiedReset ? "#00C9A7" : "inherit" }}
+                  title="Copier"
+                >
+                  {copiedReset ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
             <p className="text-sm text-muted-foreground">
               Communiquez ce mot de passe à l'utilisateur. Il devra le changer à sa prochaine connexion.

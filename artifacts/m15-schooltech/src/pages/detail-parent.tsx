@@ -19,7 +19,7 @@ import {
 import { type ReactNode } from "react";
 import {
   ArrowLeft, Users, UserCircle, BookOpen, Eye, EyeOff,
-  MessageSquare, KeyRound, Trash2, Edit3, Plus, Loader2, X, Check,
+  MessageSquare, KeyRound, Trash2, Edit3, Plus, Loader2, X, Check, Copy,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -256,6 +256,10 @@ export default function DetailParent() {
   const [modifierLiaison, setModifierLiaison] = useState<Record<string, unknown> | null>(null);
   const [showAjouterEnfant, setShowAjouterEnfant] = useState(false);
   const [resetPassword, setResetPassword] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const copyToClipboard = (text: string) => {
+    void navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+  };
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const { data: enfants, isLoading } = useListerEnfantsParent(
@@ -371,7 +375,17 @@ export default function DetailParent() {
           style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.2)" }}>
           <div className="flex-1">
             <p className="text-sm font-semibold" style={{ color: "#00C9A7" }}>Mot de passe temporaire généré</p>
-            <p className="font-mono text-lg mt-1 tracking-widest" style={{ color: "var(--m15-white)" }}>{resetPassword}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="font-mono text-lg tracking-widest" style={{ color: "var(--m15-white)" }}>{resetPassword}</p>
+              <button
+                onClick={() => copyToClipboard(resetPassword!)}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all flex-shrink-0"
+                style={{ background: copied ? "rgba(0,201,167,0.2)" : "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}
+              >
+                {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                {copied ? "Copié !" : "Copier"}
+              </button>
+            </div>
             <p className="text-xs mt-1" style={{ color: "var(--m15-muted)" }}>Communiquez ce mot de passe à l'utilisateur. Il devra le changer à la prochaine connexion.</p>
           </div>
           <button onClick={() => setResetPassword(null)} className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg"

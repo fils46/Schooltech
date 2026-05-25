@@ -30,7 +30,7 @@ import {
 import {
   GraduationCap, Plus, Search, Mail, Phone, Calendar,
   BookOpen, Loader2, Trash2, CheckCircle2, UserX, ChevronRight,
-  Users, ClipboardList,
+  Users, ClipboardList, Copy, Check,
 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -65,6 +65,10 @@ type AffectForm = z.infer<typeof affectSchema>;
 export default function Professeurs() {
   const [addOpen, setAddOpen] = useState(false);
   const [newPassword, setNewPassword] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const copyToClipboard = (text: string) => {
+    void navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+  };
   const [search, setSearch] = useState("");
   const [selectedProfId, setSelectedProfId] = useState<string | null>(null);
   const [affectOpen, setAffectOpen] = useState(false);
@@ -598,9 +602,19 @@ export default function Professeurs() {
               </div>
               <div className="py-3 px-4 rounded-xl" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--m15-border)" }}>
                 <p className="text-xs mb-2" style={{ color: "var(--m15-muted)" }}>Mot de passe temporaire</p>
-                <code className="text-2xl font-mono font-bold select-all" style={{ color: "#00C9A7", letterSpacing: "0.1em" }}>
-                  {newPassword}
-                </code>
+                <div className="flex items-center justify-between gap-2">
+                  <code className="text-2xl font-mono font-bold select-all" style={{ color: "#00C9A7", letterSpacing: "0.1em" }}>
+                    {newPassword}
+                  </code>
+                  <button
+                    onClick={() => copyToClipboard(newPassword!)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0"
+                    style={{ background: copied ? "rgba(0,201,167,0.2)" : "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? "Copié !" : "Copier"}
+                  </button>
+                </div>
               </div>
               <button
                 className="w-full py-2.5 rounded-xl text-sm font-semibold"

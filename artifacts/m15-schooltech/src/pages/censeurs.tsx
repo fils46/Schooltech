@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Loader2, UserCog, Search, Phone, Mail, Calendar, Shield, CheckCircle2 } from "lucide-react";
+import { Plus, Loader2, UserCog, Search, Phone, Mail, Calendar, Shield, CheckCircle2, Copy, Check } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -32,6 +32,10 @@ type CenseurForm = z.infer<typeof censeurSchema>;
 export default function Censeurs() {
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const copyToClipboard = (text: string) => {
+    void navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+  };
   const [search, setSearch] = useState("");
 
   const { user } = useAuth();
@@ -266,9 +270,19 @@ export default function Censeurs() {
               </p>
               <div className="rounded-xl p-4" style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
                 <p className="text-xs mb-2" style={{ color: "var(--m15-muted)" }}>Mot de passe temporaire :</p>
-                <code className="text-xl font-mono font-bold select-all" style={{ color: "#F5C842" }}>
-                  {newPassword}
-                </code>
+                <div className="flex items-center justify-between gap-2">
+                  <code className="text-xl font-mono font-bold select-all" style={{ color: "#F5C842" }}>
+                    {newPassword}
+                  </code>
+                  <button
+                    onClick={() => copyToClipboard(newPassword!)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0"
+                    style={{ background: copied ? "rgba(0,201,167,0.15)" : "rgba(245,200,66,0.1)", color: copied ? "#00C9A7" : "#F5C842", border: `1px solid ${copied ? "rgba(0,201,167,0.3)" : "rgba(245,200,66,0.2)"}` }}
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? "Copié !" : "Copier"}
+                  </button>
+                </div>
               </div>
               <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
                 Communiquez ce mot de passe au censeur. Il devra le changer à sa première connexion.
