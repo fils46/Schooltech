@@ -59,7 +59,7 @@ function CreerAppelForm({
 
   const { data: classesData } = useListerClasses();
   const { data: anneesData } = useListerAnneesScolaires();
-  const classes = (Array.isArray(classesData) ? classesData : []) as Classe[];
+  const classes = ((classesData as unknown as { classes?: Classe[] })?.classes ?? []) as Classe[];
   const annees = (anneesData as unknown as { annees?: { id: string; libelle: string; est_active?: boolean }[] })?.annees ?? [];
   const anneeActive = annees.find(a => a.est_active) ?? annees[0];
 

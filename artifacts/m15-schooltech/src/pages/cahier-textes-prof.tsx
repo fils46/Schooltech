@@ -376,7 +376,7 @@ export default function CahierTextesProfPage() {
   const anneeId = anneeActive?.id ?? "";
 
   const { data: classesData } = useListerClasses();
-  const classes = (Array.isArray(classesData) ? classesData : []) as Classe[];
+  const classes = ((classesData as unknown as { classes?: Classe[] })?.classes ?? []) as Classe[];
 
   const { data: creneauxData } = useListerCreneaux({ etablissement_id: user?.etablissement_id ?? undefined });
   const creneaux = (creneauxData as unknown as { creneaux?: Creneau[] })?.creneaux ?? [];

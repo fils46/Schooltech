@@ -355,7 +355,7 @@ export default function ProfesseurDashboard() {
   const anneeId = anneeActive?.id ?? "";
 
   const { data: classesData } = useListerClasses();
-  const toutesClasses = (Array.isArray(classesData) ? classesData : []) as Classe[];
+  const toutesClasses = ((classesData as unknown as { classes?: Classe[] })?.classes ?? []) as Classe[];
   const classes = toutesClasses; // Filtrage par prof côté API si route dédiée
 
   const prenom = user?.prenoms ?? "Professeur";
