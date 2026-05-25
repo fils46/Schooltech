@@ -107,8 +107,7 @@ router.post(
         .where(
           and(
             eq(professeurClassesTable.professeur_id, user.id),
-            eq(professeurClassesTable.classe_id, classe_id),
-            eq(professeurClassesTable.matiere, matiere)
+            eq(professeurClassesTable.classe_id, classe_id)
           )
         )
         .limit(1);
@@ -120,15 +119,14 @@ router.post(
             .where(
               and(
                 eq(emploisDuTempsTable.professeur_id, user.id),
-                eq(emploisDuTempsTable.classe_id, classe_id),
-                eq(emploisDuTempsTable.matiere, matiere)
+                eq(emploisDuTempsTable.classe_id, classe_id)
               )
             )
             .limit(1)
         : [undefined];
 
       if (!assocDirecte && !assocEdt) {
-        res.status(403).json({ message: "Vous n'enseignez pas cette matière dans cette classe." });
+        res.status(403).json({ message: "Vous n'êtes pas assigné à cette classe." });
         return;
       }
     }
