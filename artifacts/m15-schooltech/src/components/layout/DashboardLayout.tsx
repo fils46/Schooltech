@@ -43,14 +43,14 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ACADÉMIQUE",
       links: [
-        { label: "Classes",          href: "/classes",          icon: UsersRound },
-        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
-        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
-        { label: "Salles & Espaces", href: "/salles",           icon: Building },
+        { label: "Classes",          href: "/classes",          icon: UsersRound },
+        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
         { label: "Matières",         href: "/matieres",         icon: BookMarked },
         { label: "Mat. par classe",  href: "/matieres/classe",  icon: BookMarked },
+        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
+        { label: "Salles & Espaces", href: "/salles",           icon: Building },
       ],
     },
     {
@@ -65,11 +65,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "BULLETINS",
       links: [
+        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
+        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
+        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
         { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
         { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
-        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
-        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
-        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
       ],
     },
     {
@@ -95,10 +95,10 @@ const navConfig: Record<string, Section[]> = {
       title: "SCOLARITÉ",
       links: [
         { label: "Tableau de bord",   href: "/scolarite",              icon: DollarSign },
-        { label: "Suivi par classe",  href: "/scolarite/classe",       icon: Banknote },
         { label: "Enreg. paiement",   href: "/scolarite/paiement",     icon: CreditCard },
-        { label: "Config. frais",     href: "/scolarite/frais-config", icon: Receipt },
+        { label: "Suivi par classe",  href: "/scolarite/classe",       icon: Banknote },
         { label: "Rapport de caisse", href: "/scolarite/caisse",       icon: FileText },
+        { label: "Config. frais",     href: "/scolarite/frais-config", icon: Receipt },
       ],
     },
     {
@@ -112,10 +112,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "INFIRMERIE",
       links: [
-        { label: "Tableau de bord",   href: "/infirmerie",                icon: Heart },
-        { label: "Consultations",     href: "/infirmerie/consultations",  icon: Stethoscope },
-        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",       icon: FileText },
-        { label: "Stocks médicaux",   href: "/infirmerie/stocks",         icon: Package },
+        { label: "Tableau de bord",   href: "/infirmerie",               icon: Heart },
+        { label: "Consultations",     href: "/infirmerie/consultations", icon: Stethoscope },
+        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",      icon: FileText },
+        { label: "Stocks médicaux",   href: "/infirmerie/stocks",        icon: Package },
       ],
     },
     {
@@ -135,17 +135,17 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ANALYTIQUE",
       links: [
-        { label: "Dashboard analytique", href: "/analytics",            icon: BarChart3 },
-        { label: "Analyse pédagogique",  href: "/analyse-pedagogique",  icon: TrendingUp },
-        { label: "Analyse présences",    href: "/analyse-presences",    icon: UserMinus },
-        { label: "Rapports & Exports",   href: "/rapports-exports",     icon: FileSpreadsheet },
+        { label: "Dashboard analytique", href: "/analytics",           icon: BarChart3 },
+        { label: "Analyse pédagogique",  href: "/analyse-pedagogique", icon: TrendingUp },
+        { label: "Analyse présences",    href: "/analyse-presences",   icon: UserMinus },
+        { label: "Rapports & Exports",   href: "/rapports-exports",    icon: FileSpreadsheet },
       ],
     },
     {
       title: "COMMUNICATION",
       links: [
-        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
         { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
         { label: "Notifications", href: "/notifications", icon: Bell },
         { label: "Rendez-vous",   href: "/rendez-vous",   icon: CalendarCheck },
       ],
@@ -167,8 +167,8 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "ACADÉMIQUE",
       links: [
-        { label: "Classes",          href: "/classes",          icon: UsersRound },
         { label: "Professeurs",      href: "/professeurs",      icon: GraduationCap },
+        { label: "Classes",          href: "/classes",          icon: UsersRound },
         { label: "Élèves",           href: "/eleves",           icon: UserSquare },
         { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
         { label: "Salles & Espaces", href: "/salles",           icon: Building },
@@ -186,11 +186,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "BULLETINS",
       links: [
+        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
+        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
+        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
         { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
         { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
-        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
-        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
-        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
       ],
     },
     {
@@ -214,8 +214,8 @@ const navConfig: Record<string, Section[]> = {
       title: "SCOLARITÉ",
       links: [
         { label: "Tableau de bord",  href: "/scolarite",          icon: DollarSign },
-        { label: "Suivi par classe", href: "/scolarite/classe",   icon: Banknote },
         { label: "Enreg. paiement",  href: "/scolarite/paiement", icon: CreditCard },
+        { label: "Suivi par classe", href: "/scolarite/classe",   icon: Banknote },
       ],
     },
     {
@@ -261,8 +261,8 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "COMMUNICATION",
       links: [
-        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
         { label: "Messagerie",    href: "/messagerie",    icon: MessageSquare },
+        { label: "Annonces",      href: "/annonces",      icon: Megaphone },
         { label: "Notifications", href: "/notifications", icon: Bell },
         { label: "Rendez-vous",   href: "/rendez-vous",   icon: CalendarCheck },
       ],
@@ -322,8 +322,8 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "COMMUNICATION",
       links: [
-        { label: "Annonces",      href: "/fil-annonces", icon: Megaphone },
         { label: "Messagerie",    href: "/messagerie",   icon: MessageSquare },
+        { label: "Annonces",      href: "/fil-annonces", icon: Megaphone },
         { label: "Notifications", href: "/notifications",icon: Bell },
         { label: "Rendez-vous",   href: "/rendez-vous",  icon: CalendarCheck },
       ],
@@ -348,10 +348,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "EXAMENS",
       links: [
+        { label: "Mon planning",     href: "/planning-revision",     icon: Calendar },
         { label: "Préparation",      href: "/examens",               icon: Target },
         { label: "Sujets BEPC/BAC",  href: "/bibliotheque-sujets",   icon: BookOpen },
         { label: "Épreuves blanches",href: "/epreuves-blanches",     icon: ClipboardCheck },
-        { label: "Mon planning",     href: "/planning-revision",     icon: Calendar },
         { label: "Mes résultats",    href: "/resultats-progression", icon: TrendingUp },
       ],
     },
@@ -432,10 +432,10 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "MON ENFANT",
       links: [
-        { label: "Suivi scolaire",  href: "/suivi-scolaire",   icon: BookOpen },
         { label: "Bulletins",       href: "/bulletins-parent", icon: FileSpreadsheet },
-        { label: "Emploi du temps", href: "/edt-parent",       icon: Calendar },
+        { label: "Suivi scolaire",  href: "/suivi-scolaire",   icon: BookOpen },
         { label: "Absences",        href: "/absences-parent",  icon: UserMinus },
+        { label: "Emploi du temps", href: "/edt-parent",       icon: Calendar },
       ],
     },
     {
