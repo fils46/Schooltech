@@ -82,8 +82,17 @@ router.post(
       ? matricule_statut
       : matriculeValide ? "officiel" : "en_attente";
 
-    const suffix = Date.now().toString(36).slice(-4);
-    const emailEleve = `${prenoms.toLowerCase().split(" ")[0]}.${nom.toLowerCase().replace(/\s/g, "")}${suffix}@m15.ci`;
+    const annee2Chiffres = String(new Date().getFullYear()).slice(-2);
+    const prenomSlug = prenoms.toLowerCase().split(" ")[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+    const nomSlug = nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+    const baseEmail = `${prenomSlug}.${nomSlug}${annee2Chiffres}@m15.ci`;
+    let emailEleve = baseEmail;
+    const suffixes = "bcdefghjkmnpqrstuvwxyz";
+    for (let i = 0; i < suffixes.length; i++) {
+      const exists = await db.select({ id: utilisateursTable.id }).from(utilisateursTable).where(eq(utilisateursTable.email, emailEleve)).limit(1);
+      if (exists.length === 0) break;
+      emailEleve = `${prenomSlug}.${nomSlug}${annee2Chiffres}${suffixes[i]}@m15.ci`;
+    }
     const passwordEleve = generateTempPassword(8);
     const hashedEleve = await bcrypt.hash(passwordEleve, 10);
 
