@@ -129,7 +129,7 @@ Module 16 — Infirmerie Numérique (complet) :
 
 | Email | Mot de passe | Rôle |
 |-------|-------------|------|
-| dev@m15-schooltech.ci | Dev@M15Tech2026 | dev |
+| contacteyouss@gmail.com | @Youss0546262954 | dev |
 
 Module 02 & 22 — Identité visuelle & En-têtes PDF (complet) :
 - 8 nouvelles colonnes DB sur `etablissements` : `logo_path`, `cachet_url`, `cachet_path`, `signature_directeur_url`, `signature_directeur_path`, `email_contact`, `bp`, `site_web`, `devise`
