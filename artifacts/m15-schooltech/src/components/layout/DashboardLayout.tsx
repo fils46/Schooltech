@@ -68,7 +68,7 @@ const navConfig: Record<string, Section[]> = {
         { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
         { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
         { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
-        { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
+
         { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
       ],
     },
@@ -189,7 +189,7 @@ const navConfig: Record<string, Section[]> = {
         { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
         { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
         { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
-        { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
+
         { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
       ],
     },
@@ -528,7 +528,6 @@ const PAGE_TITLES: Record<string, string> = {
   "/mon-enfant":       "Mon enfant",
   "/annees-scolaires": "Années scolaires",
   "/filieres":         "Filières",
-  "/matieres-config":      "Configuration des Matières",
   "/config-evaluations":   "Types d'évaluations",
   "/matieres":         "Gestion des Matières",
   "/matieres/classe":  "Matières par classe",

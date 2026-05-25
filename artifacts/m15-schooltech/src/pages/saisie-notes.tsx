@@ -215,6 +215,7 @@ export default function SaisieNotes() {
     return "";
   });
   const [matiere, setMatiere] = useState("");
+  const [matieresDisponibles, setMatieresDisponibles] = useState<string[]>([]);
   const [trimestre, setTrimestre] = useState<"1" | "2" | "3">("1");
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [notesMap, setNotesMap] = useState<Record<string, Record<string, string>>>({});
@@ -236,6 +237,26 @@ export default function SaisieNotes() {
       })
       .catch(() => {});
   }, []);
+
+  // Charger les matières disponibles depuis Mat. par classe
+  useEffect(() => {
+    if (!classeId || !anneeId) {
+      setMatieresDisponibles([]);
+      setMatiere("");
+      return;
+    }
+    const token = localStorage.getItem("m15_token");
+    fetch(`/api/matieres/classe/${classeId}?annee_scolaire_id=${anneeId}`, {
+      headers: { Authorization: `Bearer ${token ?? ""}` },
+    })
+      .then(r => r.ok ? r.json() : { matieres: [] })
+      .then((data: { matieres?: Array<{ matiere_nom: string }> }) => {
+        const noms = (data.matieres ?? []).map(m => m.matiere_nom);
+        setMatieresDisponibles(noms);
+        setMatiere(prev => (noms.includes(prev) ? prev : (noms[0] ?? "")));
+      })
+      .catch(() => {});
+  }, [classeId, anneeId]);
 
   // Charger notes existantes
   const { data: notesData, refetch: refetchNotes } = useGetNotesClasse(
@@ -400,10 +421,21 @@ export default function SaisieNotes() {
           <label className="block text-xs font-semibold mb-1 uppercase tracking-wider" style={{ color: "var(--m15-muted)" }}>
             Matière
           </label>
-          <input type="text" value={matiere} onChange={e => setMatiere(e.target.value)}
-            placeholder="Ex: Mathématiques"
-            className="px-3 py-2.5 rounded-xl text-sm outline-none"
-            style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)", minWidth: "180px" }} />
+          {matieresDisponibles.length > 0 ? (
+            <select value={matiere} onChange={e => setMatiere(e.target.value)}
+              className="px-3 py-2.5 rounded-xl text-sm outline-none"
+              style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-white)", minWidth: "180px" }}>
+              {matieresDisponibles.map(nom => (
+                <option key={nom} value={nom}>{nom}</option>
+              ))}
+            </select>
+          ) : (
+            <select disabled
+              className="px-3 py-2.5 rounded-xl text-sm outline-none opacity-50"
+              style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)", minWidth: "180px" }}>
+              <option>{classeId ? "Aucune matière configurée" : "Choisir une classe d'abord"}</option>
+            </select>
+          )}
         </div>
 
         <div>

@@ -5,7 +5,8 @@ import {
   notesTable,
   bulletinsTable,
   bulletinDetailsTable,
-  matieresConfigTable,
+  matieresTable,
+  matiereClassesTable,
   eleveClassesTable,
   elevesTable,
   classesTable,
@@ -89,19 +90,21 @@ async function genererBulletinPourEleve(
   trimestre: "1" | "2" | "3",
   etabId: string
 ): Promise<typeof bulletinsTable.$inferSelect> {
-  // 1. Récupérer les matières configurées
+  // 1. Récupérer les matières depuis matiere_classes (source unique de vérité)
   const matieres = await db
-    .select()
-    .from(matieresConfigTable)
+    .select({
+      nom_matiere: matieresTable.nom,
+      coefficient: matiereClassesTable.coefficient,
+    })
+    .from(matiereClassesTable)
+    .innerJoin(matieresTable, eq(matiereClassesTable.matiere_id, matieresTable.id))
     .where(
       and(
-        eq(matieresConfigTable.classe_id, classeId),
-        eq(matieresConfigTable.annee_scolaire_id, anneeId),
-        eq(matieresConfigTable.etablissement_id, etabId),
-        eq(matieresConfigTable.actif, true)
+        eq(matiereClassesTable.classe_id, classeId),
+        eq(matiereClassesTable.annee_scolaire_id, anneeId)
       )
     )
-    .orderBy(matieresConfigTable.ordre_affichage);
+    .orderBy(matieresTable.nom);
 
   // 2. Récupérer tous les élèves de la classe pour les stats
   const eleveClassesRows = await db

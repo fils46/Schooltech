@@ -4162,10 +4162,6 @@ export type SupprimerNote200 = {
   message?: string;
 };
 
-export type GetMatiereClasseParams = {
-annee_scolaire_id?: string;
-};
-
 export type GetBulletinsClasseParams = {
 trimestre?: GetBulletinsClasseTrimestre;
 annee_scolaire_id?: string;

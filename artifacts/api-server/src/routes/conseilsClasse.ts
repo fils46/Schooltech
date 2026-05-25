@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 import {
   db, conseilsClasseTable, classesTable, utilisateursTable,
-  bulletinsTable, matieresConfigTable, bulletinDetailsTable,
+  bulletinsTable, bulletinDetailsTable,
   anneesScolairesTable, conseilParticipantsTable,
   conseilDeliberationsTable, conseilInterventionsTable,
   etablissementsTable,
