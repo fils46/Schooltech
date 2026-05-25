@@ -3,9 +3,11 @@ import { db } from "@workspace/db";
 import {
   classesTable, eleveClassesTable, professeurClassesTable,
   elevesTable, utilisateursTable, filieresTable, anneesScolairesTable,
+  etablissementsTable,
 } from "@workspace/db";
 import { eq, and, count, sql, type SQL } from "drizzle-orm";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
+import { getNiveauxAutorises, getNiveauxGroupes, niveauEstAutorise } from "../lib/niveaux";
 
 const router = Router();
 
@@ -64,6 +66,37 @@ router.get(
       }));
 
       res.json({ classes: enriched, total: enriched.length });
+    } catch (err) {
+      req.log.error(err);
+      res.status(500).json({ message: "Erreur serveur." });
+    }
+  }
+);
+
+/* ─── Niveaux disponibles pour l'établissement ───────────── */
+router.get(
+  "/classes/niveaux-disponibles",
+  authMiddleware,
+  async (req, res): Promise<void> => {
+    const user = req.user!;
+
+    try {
+      let typeEtab: string | null = null;
+
+      if (user.etablissement_id) {
+        const [etab] = await db
+          .select({ type: etablissementsTable.type })
+          .from(etablissementsTable)
+          .where(eq(etablissementsTable.id, user.etablissement_id))
+          .limit(1);
+        typeEtab = etab?.type ?? null;
+      }
+
+      res.json({
+        type_etablissement: typeEtab,
+        niveaux: getNiveauxAutorises(typeEtab),
+        niveaux_groupes: getNiveauxGroupes(typeEtab),
+      });
     } catch (err) {
       req.log.error(err);
       res.status(500).json({ message: "Erreur serveur." });
@@ -562,6 +595,23 @@ router.post(
     const anneeInt = annee_scolaire != null ? Number(annee_scolaire) : new Date().getFullYear();
 
     try {
+      /* Vérifier que le niveau est autorisé pour ce type d'établissement */
+      const [etabRow] = await db
+        .select({ type: etablissementsTable.type })
+        .from(etablissementsTable)
+        .where(eq(etablissementsTable.id, etabId))
+        .limit(1);
+
+      const typeEtab = etabRow?.type ?? null;
+      if (!niveauEstAutorise(niveau.trim(), typeEtab)) {
+        const autorises = getNiveauxAutorises(typeEtab);
+        res.status(400).json({
+          message: `Le niveau "${niveau.trim()}" n'est pas disponible pour un établissement de type "${typeEtab}".`,
+          niveaux_autorises: autorises,
+        });
+        return;
+      }
+
       const existing = await db.select({ id: classesTable.id })
         .from(classesTable)
         .where(
@@ -617,6 +667,24 @@ router.put(
       if (!classe) { res.status(404).json({ message: "Classe introuvable." }); return; }
       if (user.role !== "dev" && user.etablissement_id !== classe.etablissement_id) {
         res.status(403).json({ message: "Accès refusé." }); return;
+      }
+
+      /* Vérifier que le nouveau niveau est autorisé si fourni */
+      if (typeof niveau === "string" && niveau.trim()) {
+        const [etabRow] = await db
+          .select({ type: etablissementsTable.type })
+          .from(etablissementsTable)
+          .where(eq(etablissementsTable.id, classe.etablissement_id))
+          .limit(1);
+        const typeEtab = etabRow?.type ?? null;
+        if (!niveauEstAutorise(niveau.trim(), typeEtab)) {
+          const autorises = getNiveauxAutorises(typeEtab);
+          res.status(400).json({
+            message: `Le niveau "${niveau.trim()}" n'est pas disponible pour un établissement de type "${typeEtab}".`,
+            niveaux_autorises: autorises,
+          });
+          return;
+        }
       }
 
       const [updated] = await db.update(classesTable).set({

@@ -273,14 +273,62 @@ export default function FicheEtablissement() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {[["Nom", etab.nom], ["Type", etab.type], ["Ville", etab.ville], ["Adresse", etab.adresse], ["Téléphone", etab.telephone], ["Email", etab.email]].map(([l, v]) => (
-                  <div key={l as string}>
-                    <p className="text-xs mb-0.5" style={{ color: C.muted }}>{l}</p>
-                    <p className="text-sm text-[var(--m15-white)]">{(v as string) ?? "—"}</p>
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  {[["Nom", etab.nom], ["Type", etab.type], ["Ville", etab.ville], ["Adresse", etab.adresse], ["Téléphone", etab.telephone], ["Email", etab.email]].map(([l, v]) => (
+                    <div key={l as string}>
+                      <p className="text-xs mb-0.5" style={{ color: C.muted }}>{l}</p>
+                      <p className="text-sm text-[var(--m15-white)] capitalize">{(v as string) ?? "—"}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Niveaux disponibles */}
+                {etab.type && (
+                  <div className="mt-4 rounded-xl p-4" style={{ background: "rgba(0,201,167,0.05)", border: "1px solid rgba(0,201,167,0.15)" }}>
+                    <p className="text-xs font-semibold mb-3 uppercase tracking-wide" style={{ color: C.muted }}>
+                      Niveaux disponibles
+                    </p>
+                    {(() => {
+                      const type = etab.type as string;
+                      const college = ["6ème", "5ème", "4ème", "3ème"];
+                      const lycee   = ["2nde", "1ère", "Terminale"];
+                      const isCollege = type === "collège" || type === "collège & lycée";
+                      const isLycee   = type === "lycée"   || type === "collège & lycée";
+                      return (
+                        <div className="space-y-3">
+                          {isCollege && (
+                            <div>
+                              <p className="text-xs mb-2" style={{ color: C.cyan }}>🏫 Collège</p>
+                              <div className="flex flex-wrap gap-2">
+                                {college.map(n => (
+                                  <span key={n} className="text-xs px-2.5 py-0.5 rounded-full font-medium"
+                                    style={{ background: "rgba(0,201,167,0.12)", color: C.cyan, border: "1px solid rgba(0,201,167,0.2)" }}>
+                                    {n}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {isLycee && (
+                            <div>
+                              <p className="text-xs mb-2" style={{ color: C.gold }}>🏛️ Lycée</p>
+                              <div className="flex flex-wrap gap-2">
+                                {lycee.map(n => (
+                                  <span key={n} className="text-xs px-2.5 py-0.5 rounded-full font-medium"
+                                    style={{ background: "rgba(245,200,66,0.12)", color: C.gold, border: "1px solid rgba(245,200,66,0.2)" }}>
+                                    {n}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
 

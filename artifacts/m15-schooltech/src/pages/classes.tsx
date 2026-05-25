@@ -13,6 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useNiveauxDisponibles } from "@/hooks/useNiveauxDisponibles";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -155,6 +156,7 @@ export default function Classes() {
   const { user } = useAuth();
   const { toast } = useToast();
   const qc = useQueryClient();
+  const { niveaux: niveauxDispo, niveauxGroupes } = useNiveauxDisponibles();
 
   const qKey = getListerClassesQueryKey({ annee_scolaire: annee });
   const { data, isLoading } = useListerClasses(
@@ -226,8 +228,8 @@ export default function Classes() {
   const classes = data?.classes ?? [];
   const filtered = filterNiveau === "tous" ? classes : classes.filter(c => c.niveau === filterNiveau);
 
-  // Grouper par niveau
-  const grouped = NIVEAUX_ALL.reduce<Record<string, Classe[]>>((acc, n) => {
+  // Grouper par niveau (uniquement les niveaux autorisés pour cet établissement)
+  const grouped = niveauxDispo.reduce<Record<string, Classe[]>>((acc, n) => {
     const list = filtered.filter(c => c.niveau === n);
     if (list.length > 0) acc[n] = list;
     return acc;
@@ -306,7 +308,7 @@ export default function Classes() {
 
       {/* Filtre niveau */}
       <div className="flex flex-wrap gap-2">
-        {["tous", ...NIVEAUX_ALL].map(n => (
+        {["tous", ...niveauxDispo].map(n => (
           <button key={n}
             onClick={() => setFilterNiveau(n)}
             className="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
@@ -414,10 +416,12 @@ export default function Classes() {
                     <SelectValue placeholder="Niveau..." />
                   </SelectTrigger>
                   <SelectContent>
-                    <p className="px-2 py-1 text-xs font-semibold" style={{ color: "var(--m15-muted)" }}>COLLÈGE</p>
-                    {NIVEAUX_COLLEGE.map(n => <SelectItem key={n} value={n}>{n}</SelectItem>)}
-                    <p className="px-2 py-1 text-xs font-semibold mt-1" style={{ color: "var(--m15-muted)" }}>LYCÉE</p>
-                    {NIVEAUX_LYCEE.map(n => <SelectItem key={n} value={n}>{n}</SelectItem>)}
+                    {niveauxGroupes.map(groupe => (
+                      <div key={groupe.label}>
+                        <p className="px-2 py-1 text-xs font-semibold" style={{ color: "var(--m15-muted)" }}>{groupe.label.toUpperCase()}</p>
+                        {groupe.niveaux.map(n => <SelectItem key={n} value={n}>{n}</SelectItem>)}
+                      </div>
+                    ))}
                   </SelectContent>
                 </Select>
                 {form.formState.errors.niveau && (

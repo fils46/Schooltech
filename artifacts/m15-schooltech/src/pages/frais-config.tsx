@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,8 +16,17 @@ import {
 } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNiveauxDisponibles } from "@/hooks/useNiveauxDisponibles";
 
-const NIVEAUX = ["6eme", "5eme", "4eme", "3eme", "2nde", "1ere", "terminale"];
+/* Correspondance niveaux affichage → format frais (sans accents) */
+const DISPLAY_TO_RAW: Record<string, string> = {
+  "6ème": "6eme", "5ème": "5eme", "4ème": "4eme", "3ème": "3eme",
+  "2nde": "2nde", "1ère": "1ere", "Terminale": "terminale",
+};
+const RAW_TO_DISPLAY: Record<string, string> = {
+  "6eme": "6ème", "5eme": "5ème", "4eme": "4ème", "3eme": "3ème",
+  "2nde": "2nde", "1ere": "1ère", "terminale": "Terminale",
+};
 
 type FraisConfig = {
   id: string; niveau: string; frais_inscription: string; frais_scolarite_annuel: string;
@@ -43,8 +52,15 @@ export default function FraisConfig() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  /* Niveaux filtrés selon le type de l'établissement */
+  const { niveaux: niveauxDisplay } = useNiveauxDisponibles();
+  const NIVEAUX = useMemo(
+    () => niveauxDisplay.map(n => DISPLAY_TO_RAW[n] ?? n),
+    [niveauxDisplay]
+  );
+
   // Form state
-  const [niveau, setNiveau] = useState("6eme");
+  const [niveau, setNiveau] = useState(() => NIVEAUX[0] ?? "6eme");
   const [fraisInscription, setFraisInscription] = useState("0");
   const [fraisAnnuel, setFraisAnnuel] = useState("0");
   const [t1, setT1] = useState("0");
@@ -70,7 +86,7 @@ export default function FraisConfig() {
   const matchAnnuel = Math.abs(sommeTransches - num(fraisAnnuel)) < 0.01;
 
   function openNew() {
-    setEditingId(null); setNiveau("6eme");
+    setEditingId(null); setNiveau(NIVEAUX[0] ?? "6eme");
     setFraisInscription("0"); setFraisAnnuel("0");
     setT1("0"); setT2("0"); setT3("0");
     setLimT1(""); setLimT2(""); setLimT3("");
@@ -238,7 +254,11 @@ export default function FraisConfig() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
-                  {NIVEAUX.map(n => <SelectItem key={n} value={n} style={{ color: "var(--m15-white)" }}>{n}</SelectItem>)}
+                  {NIVEAUX.map(n => (
+                    <SelectItem key={n} value={n} style={{ color: "var(--m15-white)" }}>
+                      {RAW_TO_DISPLAY[n] ?? n}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
