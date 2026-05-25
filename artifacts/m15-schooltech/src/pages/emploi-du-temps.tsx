@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -48,30 +48,85 @@ function Select({
   placeholder?: string;
   disabled?: boolean;
 }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = options.find(o => o.value === value);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   return (
-    <div className="relative">
-      <select
-        value={value}
-        onChange={e => onChange(e.target.value)}
+    <div ref={ref} className="relative" style={{ opacity: disabled ? 0.5 : 1 }}>
+      <button
+        type="button"
         disabled={disabled}
-        className="w-full px-3 py-2.5 pr-9 rounded-xl text-sm appearance-none outline-none transition-all"
+        onClick={() => !disabled && setOpen(o => !o)}
+        className="w-full px-3 py-2.5 pr-9 rounded-xl text-sm text-left outline-none transition-all"
         style={{
-          background: "var(--m15-card)",
-          border: "1px solid var(--m15-border)",
-          color: value ? "var(--m15-white)" : "var(--m15-muted)",
+          background: "var(--m15-card2, #1e293b)",
+          border: `1px solid ${open ? "rgba(0,201,167,0.5)" : "var(--m15-border)"}`,
+          color: selected ? "var(--m15-white)" : "var(--m15-muted)",
           fontFamily: "'DM Sans', sans-serif",
           cursor: disabled ? "not-allowed" : "pointer",
-          opacity: disabled ? 0.5 : 1,
         }}
       >
-        {placeholder && <option value="">{placeholder}</option>}
-        {options.map(o => (
-          <option key={o.value} value={o.value} style={{ background: "var(--m15-card)", color: "#fff" }}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: "var(--m15-muted)" }} />
+        {selected ? selected.label : (placeholder ?? "Sélectionner...")}
+      </button>
+      <ChevronDown
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none transition-transform"
+        style={{ color: "var(--m15-muted)", transform: open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)" }}
+      />
+      {open && (
+        <div
+          className="absolute z-[200] w-full mt-1 rounded-xl overflow-auto"
+          style={{
+            background: "#1e293b",
+            border: "1px solid rgba(0,201,167,0.25)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+            maxHeight: "220px",
+          }}
+        >
+          {placeholder && (
+            <button
+              type="button"
+              onClick={() => { onChange(""); setOpen(false); }}
+              className="w-full text-left px-3 py-2.5 text-sm transition-colors"
+              style={{ color: "#64748b", fontFamily: "'DM Sans', sans-serif" }}
+              onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+            >
+              {placeholder}
+            </button>
+          )}
+          {options.map(o => (
+            <button
+              key={o.value}
+              type="button"
+              onClick={() => { onChange(o.value); setOpen(false); }}
+              className="w-full text-left px-3 py-2.5 text-sm transition-colors"
+              style={{
+                background: o.value === value ? "rgba(0,201,167,0.12)" : "transparent",
+                color: o.value === value ? "#00C9A7" : "#e2e8f0",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+              onMouseEnter={e => { if (o.value !== value) e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+              onMouseLeave={e => { if (o.value !== value) e.currentTarget.style.background = "transparent"; }}
+            >
+              {o.label}
+            </button>
+          ))}
+          {options.length === 0 && (
+            <div className="px-3 py-2.5 text-sm" style={{ color: "#64748b", fontFamily: "'DM Sans', sans-serif" }}>
+              Aucun élément
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
