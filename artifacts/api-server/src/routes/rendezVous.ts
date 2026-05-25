@@ -100,17 +100,16 @@ router.post("/rendez-vous/demander", authMiddleware, async (req, res) => {
   const enriched = await enrichirRdv(rdv);
   const interlocuteurId = professeur_id ?? directeur_id!;
 
-  /* Notifier l'interlocuteur */
+  /* Notifier l'interlocuteur (persisté en DB + temps réel) */
   await emitNotification(interlocuteurId, {
-    id: `rdv_${rdv.id}`,
-    type: "demande_rdv",
+    id: rdv.id,
+    type: "rdv",
     titre: "Nouvelle demande de rendez-vous",
     contenu: `${enriched.parent_prenoms} ${enriched.parent_nom} demande un RDV le ${date_rdv} à ${heure_rdv} concernant ${enriched.eleve_prenoms} ${enriched.eleve_nom}.`,
     lien: `/rendez-vous`,
     created_at: new Date(),
+    etablissement_id: user.etablissement_id ?? "",
   });
-
-  /* Notifications RDV : socket-only, pas d'insertion en DB (types non standards) */
 
   res.status(201).json({ rdv: enriched });
 });
@@ -135,12 +134,13 @@ router.put("/rendez-vous/:id/confirmer", authMiddleware, async (req, res) => {
   const enriched = await enrichirRdv(updated);
 
   await emitNotification(existing.parent_id, {
-    id: `rdv_conf_${id}`,
-    type: "rdv_confirme",
+    id: updated.id,
+    type: "rdv",
     titre: "Rendez-vous confirmé",
     contenu: `Votre rendez-vous du ${existing.date_rdv} à ${existing.heure_rdv} est confirmé.${lieu ? ` Lieu : ${lieu}` : ""}`,
     lien: "/rendez-vous",
     created_at: new Date(),
+    etablissement_id: existing.etablissement_id,
   });
 
   res.json({ rdv: enriched });
@@ -171,12 +171,13 @@ router.put("/rendez-vous/:id/annuler", authMiddleware, async (req, res) => {
 
   if (notifierId) {
     await emitNotification(notifierId, {
-      id: `rdv_ann_${id}`,
-      type: "rdv_annule",
+      id: updated.id,
+      type: "rdv",
       titre: "Rendez-vous annulé",
       contenu: `Le rendez-vous du ${existing.date_rdv} à ${existing.heure_rdv} a été annulé.`,
       lien: "/rendez-vous",
       created_at: new Date(),
+      etablissement_id: existing.etablissement_id,
     });
   }
 

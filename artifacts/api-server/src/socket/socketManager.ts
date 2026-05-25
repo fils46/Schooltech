@@ -5,7 +5,7 @@ import { logger } from "../lib/logger";
 import {
   db, notificationsTable,
 } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, count } from "drizzle-orm";
 
 let io: SocketServer | null = null;
 
@@ -132,6 +132,13 @@ export function emitToEtablissement(etablissementId: string, event: string, data
   io.to(`etab_${etablissementId}`).emit(event, data);
 }
 
+const VALID_NOTIF_TYPES = [
+  "absence","retard","alerte_seuil","justification_validee","justification_rejetee",
+  "bulletin_publie","message","annonce","rdv",
+  "incident_signale","sanction_en_attente","sanction_validee","sanction_refusee","incident_escalade",
+] as const;
+type NotifType = typeof VALID_NOTIF_TYPES[number];
+
 export async function emitNotification(destinataireId: string, data: {
   id: string;
   type: string;
@@ -139,16 +146,32 @@ export async function emitNotification(destinataireId: string, data: {
   contenu: string;
   lien?: string | null;
   created_at: Date;
+  etablissement_id?: string;
 }) {
+  /* Persiste en DB si etablissement_id fourni */
+  if (data.etablissement_id) {
+    const dbType: NotifType = (VALID_NOTIF_TYPES as readonly string[]).includes(data.type)
+      ? (data.type as NotifType)
+      : "rdv";
+    await db.insert(notificationsTable).values({
+      etablissement_id: data.etablissement_id,
+      destinataire_id: destinataireId,
+      type: dbType,
+      titre: data.titre,
+      contenu: data.contenu,
+      lien: data.lien ?? null,
+    });
+  }
+
   if (!io) return;
   io.to(`user_${destinataireId}`).emit("notification", data);
 
-  const count = await db
-    .select()
+  const [{ total }] = await db
+    .select({ total: count() })
     .from(notificationsTable)
     .where(and(
       eq(notificationsTable.destinataire_id, destinataireId),
       eq(notificationsTable.lu, false)
     ));
-  io.to(`user_${destinataireId}`).emit("badge_count", count.length);
+  io.to(`user_${destinataireId}`).emit("badge_count", total);
 }

@@ -11,7 +11,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Bell, CheckCheck, Trash2, UserMinus, AlertTriangle, FileCheck, FileX, Award, MessageSquare } from "lucide-react";
+import { Bell, CheckCheck, Trash2, UserMinus, AlertTriangle, FileCheck, FileX, Award, MessageSquare, CalendarCheck, ShieldAlert } from "lucide-react";
 
 interface NotifItem {
   id: string; type: string; titre: string; contenu: string;
@@ -19,13 +19,20 @@ interface NotifItem {
 }
 
 const TYPE_ICON: Record<string, { icon: React.ElementType; color: string }> = {
-  absence:                  { icon: UserMinus,   color: "#FF4D6D" },
-  retard:                   { icon: UserMinus,   color: "#F5C842" },
-  alerte_seuil:             { icon: AlertTriangle, color: "#FF4D6D" },
-  justification_validee:    { icon: FileCheck,   color: "#00C9A7" },
-  justification_rejetee:    { icon: FileX,       color: "#FF4D6D" },
-  bulletin_publie:          { icon: Award,       color: "#F5C842" },
-  message:                  { icon: MessageSquare, color: "#0080FF" },
+  absence:                  { icon: UserMinus,      color: "#FF4D6D" },
+  retard:                   { icon: UserMinus,      color: "#F5C842" },
+  alerte_seuil:             { icon: AlertTriangle,  color: "#FF4D6D" },
+  justification_validee:    { icon: FileCheck,      color: "#00C9A7" },
+  justification_rejetee:    { icon: FileX,          color: "#FF4D6D" },
+  bulletin_publie:          { icon: Award,          color: "#F5C842" },
+  message:                  { icon: MessageSquare,  color: "#0080FF" },
+  annonce:                  { icon: Bell,           color: "#0080FF" },
+  rdv:                      { icon: CalendarCheck,  color: "#00C9A7" },
+  incident_signale:         { icon: ShieldAlert,    color: "#FF4D6D" },
+  sanction_en_attente:      { icon: ShieldAlert,    color: "#F5C842" },
+  sanction_validee:         { icon: ShieldAlert,    color: "#00C9A7" },
+  sanction_refusee:         { icon: ShieldAlert,    color: "#FF4D6D" },
+  incident_escalade:        { icon: ShieldAlert,    color: "#FF4D6D" },
 };
 
 function timeAgo(dateStr: string) {
