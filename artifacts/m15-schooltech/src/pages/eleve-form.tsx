@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 import {
   useInscrireEleve, type InscrireEleveInputMatriculeStatut,
@@ -7,7 +7,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import {
   UserSquare, ArrowLeft, ArrowRight, Check, CheckCircle2,
-  User, Users, ClipboardList, Loader2, GraduationCap,
+  User, Users, ClipboardList, Loader2, GraduationCap, CalendarDays,
 } from "lucide-react";
 
 /* ─── Stepper ────────────────────────────────────────────── */
@@ -76,6 +76,80 @@ const inputStyle = {
   width: "100%",
 } as const;
 
+/* ─── Champ date jj/mm/aaaa + calendrier ─────────────────── */
+function DateInputDMY({ value, onChange }: { value: string; onChange: (iso: string) => void }) {
+  const calRef = useRef<HTMLInputElement>(null);
+
+  function isoToDmy(iso: string) {
+    if (!iso) return "";
+    const [y, m, d] = iso.split("-");
+    if (!y || !m || !d) return iso;
+    return `${d}/${m}/${y}`;
+  }
+
+  function dmyToIso(dmy: string) {
+    const parts = dmy.replace(/[^0-9]/g, "");
+    if (parts.length < 8) return "";
+    const d = parts.slice(0, 2);
+    const m = parts.slice(2, 4);
+    const y = parts.slice(4, 8);
+    return `${y}-${m}-${d}`;
+  }
+
+  function handleTextChange(raw: string) {
+    const digits = raw.replace(/[^0-9]/g, "").slice(0, 8);
+    let formatted = digits;
+    if (digits.length > 4) formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+    else if (digits.length > 2) formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    const iso = dmyToIso(formatted);
+    if (iso) onChange(iso);
+    else if (digits.length === 0) onChange("");
+    return formatted;
+  }
+
+  const [text, setText] = useState(() => isoToDmy(value));
+
+  function onTextInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const formatted = handleTextChange(e.target.value);
+    setText(formatted);
+  }
+
+  function onCalendarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    onChange(e.target.value);
+    setText(isoToDmy(e.target.value));
+  }
+
+  return (
+    <div className="relative flex items-center">
+      <input
+        style={{ ...inputStyle, paddingRight: "2.5rem" }}
+        value={text}
+        onChange={onTextInput}
+        placeholder="jj/mm/aaaa"
+        maxLength={10}
+        inputMode="numeric"
+      />
+      <button
+        type="button"
+        onClick={() => calRef.current?.showPicker?.()}
+        className="absolute right-3 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity"
+        style={{ color: "#00C9A7" }}
+        tabIndex={-1}
+      >
+        <CalendarDays className="w-4 h-4" />
+      </button>
+      <input
+        ref={calRef}
+        type="date"
+        value={value}
+        onChange={onCalendarChange}
+        className="absolute inset-0 opacity-0 pointer-events-none"
+        tabIndex={-1}
+      />
+    </div>
+  );
+}
+
 /* ─── Interfaces ─────────────────────────────────────────── */
 interface EleveData {
   nom: string; prenoms: string; date_naissance: string; lieu_naissance: string;
@@ -106,7 +180,7 @@ function EtapeEleve({ data, onChange }: { data: EleveData; onChange: (d: Partial
         <input style={inputStyle} value={data.prenoms} onChange={e => onChange({ prenoms: e.target.value })} placeholder="Jean-Pierre" />
       </Field>
       <Field label="Date de naissance" required>
-        <input type="date" style={inputStyle} value={data.date_naissance} onChange={e => onChange({ date_naissance: e.target.value })} />
+        <DateInputDMY value={data.date_naissance} onChange={(iso) => onChange({ date_naissance: iso })} />
       </Field>
       <Field label="Lieu de naissance">
         <input style={inputStyle} value={data.lieu_naissance} onChange={e => onChange({ lieu_naissance: e.target.value })} placeholder="Abidjan" />
