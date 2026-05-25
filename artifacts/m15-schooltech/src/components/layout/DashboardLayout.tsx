@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
-import { useGetNotificationsCount, getGetNotificationsCountQueryKey } from "@workspace/api-client-react";
+import { useGetNotificationsCount, getGetNotificationsCountQueryKey, useGetMonProfil } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { io, type Socket } from "socket.io-client";
 import { useTheme } from "@/components/theme-provider";
@@ -756,6 +756,8 @@ function SidebarContent({ location, onClose, onLogoutRequest }: { location: stri
   const role = user?.role || "eleve";
   const sections = navConfig[role as keyof typeof navConfig] || [];
   const initials = `${user?.prenoms?.charAt(0) || ""}${user?.nom?.charAt(0) || ""}`.toUpperCase() || "U";
+  const { data: profilData } = useGetMonProfil();
+  const photoUrl = (profilData as { photo_url?: string | null } | undefined)?.photo_url ?? null;
 
   const handleLogout = () => {
     onClose();
@@ -778,13 +780,18 @@ function SidebarContent({ location, onClose, onLogoutRequest }: { location: stri
       <div className="p-4" style={{ borderTop: "1px solid var(--m15-border)" }}>
         <div className="flex items-center gap-3 p-3 rounded-xl mb-3"
           style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
-            style={{
+          <div className="w-10 h-10 rounded-xl flex-shrink-0 overflow-hidden"
+            style={photoUrl ? {} : {
               background: "linear-gradient(135deg, #00C9A7, #0080FF)",
-              color: "#fff",
-              fontFamily: "'Syne', sans-serif",
             }}>
-            {initials}
+            {photoUrl ? (
+              <img src={photoUrl} alt="Photo profil" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-sm font-bold"
+                style={{ color: "#fff", fontFamily: "'Syne', sans-serif" }}>
+                {initials}
+              </div>
+            )}
           </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold truncate" style={{ color: "var(--m15-white)" }}>
