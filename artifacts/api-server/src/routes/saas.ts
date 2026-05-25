@@ -17,8 +17,8 @@ import { generateTempPassword } from "../lib/auth";
 
 const router = Router();
 
-/* ── Garde global : JWT + rôle dev ─────────────────────────────── */
-router.use(authMiddleware, verifSaasAdmin);
+/* ── Garde global : JWT + rôle dev — uniquement pour les routes /saas/* ── */
+router.use("/saas", authMiddleware, verifSaasAdmin);
 
 /* ── Helpers ────────────────────────────────────────────────────── */
 function addMonths(base: Date, months: number): Date {
