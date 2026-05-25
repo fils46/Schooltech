@@ -5,6 +5,7 @@ import {
   classesTable, sallesTable, utilisateursTable,
   professeurClassesTable, anneesScolairesTable, eleveClassesTable,
 } from "@workspace/db";
+import { sql } from "drizzle-orm";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 
 const router = Router();
@@ -197,6 +198,12 @@ router.post(
         })
         .returning();
 
+      // Synchroniser professeur_classes (upsert)
+      await db
+        .insert(professeurClassesTable)
+        .values({ professeur_id, classe_id, matiere: matiere.trim(), annee_scolaire_id })
+        .onConflictDoNothing();
+
       res.status(201).json(await enrichirCours(cours!));
     } catch (err) {
       req.log.error(err);
@@ -247,13 +254,15 @@ router.put(
         return;
       }
 
+      const newMatiere = typeof matiere === "string" ? matiere.trim() : cours.matiere;
+
       const [updated] = await db
         .update(emploisDuTempsTable)
         .set({
           classe_id: newClasse,
           professeur_id: newProf,
           salle_id: newSalle,
-          matiere: typeof matiere === "string" ? matiere.trim() : cours.matiere,
+          matiere: newMatiere,
           jour: newJour,
           creneau_id: newCreneau,
           annee_scolaire_id: newAnnee,
@@ -262,6 +271,12 @@ router.put(
         })
         .where(eq(emploisDuTempsTable.id, rawId))
         .returning();
+
+      // Synchroniser professeur_classes (upsert)
+      await db
+        .insert(professeurClassesTable)
+        .values({ professeur_id: newProf, classe_id: newClasse, matiere: newMatiere, annee_scolaire_id: newAnnee })
+        .onConflictDoNothing();
 
       res.json(await enrichirCours(updated!));
     } catch (err) {

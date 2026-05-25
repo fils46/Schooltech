@@ -3,7 +3,7 @@ import { eq, and, desc, gte, lte, count } from "drizzle-orm";
 import {
   db, appelsTable, appelDetailsTable, elevesTable,
   eleveClassesTable, utilisateursTable, classesTable,
-  professeurClassesTable, absencesTable,
+  professeurClassesTable, absencesTable, emploisDuTempsTable,
 } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
@@ -99,9 +99,9 @@ router.post(
       return;
     }
 
-    // Vérifier que le prof enseigne dans cette classe
+    // Vérifier que le prof enseigne dans cette classe (via professeur_classes OU emploi du temps)
     if (user.role === "professeur") {
-      const [assoc] = await db
+      const [assocDirecte] = await db
         .select()
         .from(professeurClassesTable)
         .where(
@@ -112,7 +112,23 @@ router.post(
           )
         )
         .limit(1);
-      if (!assoc) {
+
+      const [assocEdt] = !assocDirecte
+        ? await db
+            .select()
+            .from(emploisDuTempsTable)
+            .where(
+              and(
+                eq(emploisDuTempsTable.professeur_id, user.id),
+                eq(emploisDuTempsTable.classe_id, classe_id),
+                eq(emploisDuTempsTable.matiere, matiere),
+                eq(emploisDuTempsTable.annee_scolaire_id, annee_scolaire_id)
+              )
+            )
+            .limit(1)
+        : [undefined];
+
+      if (!assocDirecte && !assocEdt) {
         res.status(403).json({ message: "Vous n'enseignez pas cette matière dans cette classe." });
         return;
       }
