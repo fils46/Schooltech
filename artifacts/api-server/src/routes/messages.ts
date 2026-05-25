@@ -42,6 +42,42 @@ async function countNonLus(userId: string): Promise<number> {
   return rows.length;
 }
 
+/* ── GET /api/messages/contacts-disponibles (alias pour rendez-vous) ─ */
+router.get("/messages/contacts-disponibles", authMiddleware, async (req, res) => {
+  const user = req.user!;
+  const etabId = user.etablissement_id ?? "";
+
+  let contacts: typeof utilisateursTable.$inferSelect[] = [];
+
+  if (user.role === "parent") {
+    const liens = await db.select().from(parentsElevesTable).where(eq(parentsElevesTable.utilisateur_id, user.id));
+    const eleveIds = liens.map(l => l.eleve_id);
+
+    if (eleveIds.length > 0) {
+      const classeRows = await db.select().from(eleveClassesTable).where(inArray(eleveClassesTable.eleve_id, eleveIds));
+      const classeIds = [...new Set(classeRows.map(c => c.classe_id))];
+      if (classeIds.length > 0) {
+        const profClasses = await db.select().from(professeurClassesTable).where(inArray(professeurClassesTable.classe_id, classeIds));
+        const profIds = [...new Set(profClasses.map(pc => pc.professeur_id))];
+        if (profIds.length > 0) {
+          const profs = await db.select().from(utilisateursTable).where(and(eq(utilisateursTable.etablissement_id, etabId), inArray(utilisateursTable.id, profIds), eq(utilisateursTable.actif, true)));
+          contacts.push(...profs);
+        }
+      }
+    }
+    const admins = await db.select().from(utilisateursTable).where(and(eq(utilisateursTable.etablissement_id, etabId), or(eq(utilisateursTable.role, "directeur"), eq(utilisateursTable.role, "censeur")), eq(utilisateursTable.actif, true)));
+    contacts.push(...admins);
+  } else {
+    contacts = await db.select().from(utilisateursTable).where(and(eq(utilisateursTable.etablissement_id, etabId), eq(utilisateursTable.actif, true)));
+    contacts = contacts.filter(c => c.id !== user.id);
+  }
+
+  const seen = new Set<string>();
+  const unique = contacts.filter(c => { if (seen.has(c.id)) return false; seen.add(c.id); return c.id !== user.id; });
+  const mapped = unique.map(c => ({ id: c.id, nom: c.nom, prenoms: c.prenoms, role: c.role, photo_url: null }));
+  res.json({ contacts: mapped });
+});
+
 /* ── GET /api/messages/contacts ──────────────────────────────── */
 router.get("/messages/contacts", authMiddleware, async (req, res) => {
   const user = req.user!;
