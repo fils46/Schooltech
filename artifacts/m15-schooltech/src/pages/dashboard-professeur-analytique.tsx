@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
-  useGetApiAnalyticsProfesseur,
+  useGetAnalyticsProfesseur,
 } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +40,7 @@ export default function DashboardProfesseurAnalytique() {
 
   const trimestreParam = trimestre !== "all" ? parseInt(trimestre) : undefined;
 
-  const { data, isLoading } = useGetApiAnalyticsProfesseur({ trimestre: trimestreParam });
+  const { data, isLoading } = useGetAnalyticsProfesseur({ trimestre: trimestreParam });
   const d = (data as any)?.data;
 
   const mesClasses = (d?.mes_classes ?? []) as Array<{

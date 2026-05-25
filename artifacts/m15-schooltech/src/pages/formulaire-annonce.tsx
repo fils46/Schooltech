@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { useLocation, useParams } from "wouter";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  usePostApiAnnonces,
-  usePutApiAnnoncesId,
-  useGetApiAnnoncesId,
-  usePutApiAnnoncesIdPublier,
-  getGetApiAnnoncesQueryKey,
-  getGetApiAnnoncesIdQueryKey,
+  usePostAnnonces,
+  usePutAnnoncesId,
+  useGetAnnoncesId,
+  usePutAnnoncesIdPublier,
+  getGetAnnoncesQueryKey,
+  getGetAnnoncesIdQueryKey,
 } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -59,8 +59,8 @@ export default function FormulaireAnnonce() {
   const [pieceJointeNom, setPieceJointeNom] = useState("");
 
   /* Chargement annonce existante */
-  const detailQk = getGetApiAnnoncesIdQueryKey(annonceId ?? "");
-  const { data: existingData, isLoading: loadingExisting } = useGetApiAnnoncesId(
+  const detailQk = getGetAnnoncesIdQueryKey(annonceId ?? "");
+  const { data: existingData, isLoading: loadingExisting } = useGetAnnoncesId(
     annonceId ?? "",
     { query: { queryKey: detailQk, enabled: isEdit } }
   );
@@ -80,14 +80,14 @@ export default function FormulaireAnnonce() {
     if (a.piece_jointe_nom) setPieceJointeNom(a.piece_jointe_nom);
   }, [existingData]);
 
-  const createMut  = usePostApiAnnonces();
-  const updateMut  = usePutApiAnnoncesId();
-  const publishMut = usePutApiAnnoncesIdPublier();
+  const createMut  = usePostAnnonces();
+  const updateMut  = usePutAnnoncesId();
+  const publishMut = usePutAnnoncesIdPublier();
 
   const isLoading = createMut.isPending || updateMut.isPending || publishMut.isPending;
 
   const invalidateAll = () => {
-    void qc.invalidateQueries({ queryKey: getGetApiAnnoncesQueryKey() });
+    void qc.invalidateQueries({ queryKey: getGetAnnoncesQueryKey() });
   };
 
   function toggleDest(id: string) {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
-  useGetApiAnalyticsPedagogique,
+  useGetAnalyticsPedagogique,
   useListerAnneesScolaires,
 } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,7 +46,7 @@ export default function AnalysePedagogique() {
   const { data: anneesData } = useListerAnneesScolaires();
   const annees = (anneesData as any)?.annees ?? [];
 
-  const { data, isLoading } = useGetApiAnalyticsPedagogique(
+  const { data, isLoading } = useGetAnalyticsPedagogique(
     { annee_scolaire_id: anneeParam, trimestre: trimestreParam },
   );
   const peda = (data as any)?.data;

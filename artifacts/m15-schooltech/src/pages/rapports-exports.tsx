@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
-  useGetApiAnalyticsRapports,
-  usePostApiAnalyticsRapportsGenerer,
+  useGetAnalyticsRapports,
+  usePostAnalyticsRapportsGenerer,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetApiAnalyticsRapportsQueryKey } from "@workspace/api-client-react";
+import { getGetAnalyticsRapportsQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export default function RapportsExports() {
     date_fin: "",
   });
 
-  const { data, isLoading, refetch } = useGetApiAnalyticsRapports();
+  const { data, isLoading, refetch } = useGetAnalyticsRapports();
   const rapports = ((data as any)?.data ?? []) as Array<{
     id: string;
     titre: string;
@@ -57,14 +57,14 @@ export default function RapportsExports() {
     prenoms_generateur: string;
   }>;
 
-  const { mutate: generer, isPending: isGenerating } = usePostApiAnalyticsRapportsGenerer({
+  const { mutate: generer, isPending: isGenerating } = usePostAnalyticsRapportsGenerer({
     mutation: {
       onSuccess: () => {
         toast({ title: "Rapport en cours de génération", description: "Il sera disponible dans quelques instants." });
         setModalOpen(false);
         setForm({ titre: "", type: "resultats", format: "pdf", trimestre: "all", date_debut: "", date_fin: "" });
         setTimeout(() => {
-          queryClient.invalidateQueries({ queryKey: getGetApiAnalyticsRapportsQueryKey() });
+          queryClient.invalidateQueries({ queryKey: getGetAnalyticsRapportsQueryKey() });
         }, 3000);
       },
       onError: () => {

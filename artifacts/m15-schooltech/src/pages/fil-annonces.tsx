@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useGetApiAnnonces,
-  useGetApiAnnoncesId,
-  getGetApiAnnoncesQueryKey,
-  getGetApiAnnoncesNonLuesCountQueryKey,
+  useGetAnnonces,
+  useGetAnnoncesId,
+  getGetAnnoncesQueryKey,
+  getGetAnnoncesNonLuesCountQueryKey,
 } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
 import { useSocket } from "@/hooks/useSocket";
@@ -67,16 +67,16 @@ export default function FilAnnonces() {
     ...(typeFilter ? { type: typeFilter as "information" | "urgence" | "evenement" | "rappel" } : {}),
     publie: true,
   };
-  const qKey = getGetApiAnnoncesQueryKey(params);
+  const qKey = getGetAnnoncesQueryKey(params);
 
-  const { data, isLoading } = useGetApiAnnonces(params, {
+  const { data, isLoading } = useGetAnnonces(params, {
     query: { queryKey: qKey, enabled: !!user, staleTime: 30_000 },
   });
   const annonces: AnnonceItem[] = (data as any)?.annonces ?? [];
   const total: number = (data as any)?.total ?? 0;
 
-  const detailQk = getGetApiAnnoncesQueryKey({ id: selectedId ?? "" } as any);
-  const { data: detailData } = useGetApiAnnoncesId(selectedId ?? "", {
+  const detailQk = getGetAnnoncesQueryKey({ id: selectedId ?? "" } as any);
+  const { data: detailData } = useGetAnnoncesId(selectedId ?? "", {
     query: { queryKey: detailQk, enabled: !!selectedId, staleTime: 0 },
   });
   const detail: AnnonceItem | null = (detailData as any)?.annonce ?? null;
@@ -86,7 +86,7 @@ export default function FilAnnonces() {
     if (!socket) return;
     const handler = () => {
       void qc.invalidateQueries({ queryKey: qKey });
-      void qc.invalidateQueries({ queryKey: getGetApiAnnoncesNonLuesCountQueryKey() });
+      void qc.invalidateQueries({ queryKey: getGetAnnoncesNonLuesCountQueryKey() });
     };
     socket.on("nouvelle_annonce", handler);
     return () => { socket.off("nouvelle_annonce", handler); };
@@ -97,7 +97,7 @@ export default function FilAnnonces() {
     /* Invalider après lecture pour màj badge "lu" */
     setTimeout(() => {
       void qc.invalidateQueries({ queryKey: qKey });
-      void qc.invalidateQueries({ queryKey: getGetApiAnnoncesNonLuesCountQueryKey() });
+      void qc.invalidateQueries({ queryKey: getGetAnnoncesNonLuesCountQueryKey() });
     }, 500);
   }
 

@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useGetApiAnnonces,
-  useDeleteApiAnnoncesId,
-  usePutApiAnnoncesIdPublier,
-  getGetApiAnnoncesQueryKey,
+  useGetAnnonces,
+  useDeleteAnnoncesId,
+  usePutAnnoncesIdPublier,
+  getGetAnnoncesQueryKey,
 } from "@workspace/api-client-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -70,16 +70,16 @@ export default function CommunicationDashboard() {
     ...(typeFilter   ? { type: typeFilter as "information" | "urgence" | "evenement" | "rappel" } : {}),
     ...(publieFilter ? { publie: publieFilter === "true" } : {}),
   };
-  const qKey = getGetApiAnnoncesQueryKey(params);
+  const qKey = getGetAnnoncesQueryKey(params);
 
-  const { data, isLoading } = useGetApiAnnonces(params, {
+  const { data, isLoading } = useGetAnnonces(params, {
     query: { queryKey: qKey, enabled: !!user, staleTime: 30_000 },
   });
   const annonces: AnnonceItem[] = (data as any)?.annonces ?? [];
   const total: number           = (data as any)?.total    ?? 0;
 
-  const deleteMut  = useDeleteApiAnnoncesId();
-  const publishMut = usePutApiAnnoncesIdPublier();
+  const deleteMut  = useDeleteAnnoncesId();
+  const publishMut = usePutAnnoncesIdPublier();
 
   const invalidate = () => void qc.invalidateQueries({ queryKey: ["get", "/api/annonces"] });
 

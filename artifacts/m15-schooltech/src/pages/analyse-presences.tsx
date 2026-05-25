@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  useGetApiAnalyticsPresences,
+  useGetAnalyticsPresences,
   useListerAnneesScolaires,
 } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +43,7 @@ export default function AnalysePresences() {
   const { data: anneesData } = useListerAnneesScolaires();
   const annees = (anneesData as any)?.annees ?? [];
 
-  const { data, isLoading } = useGetApiAnalyticsPresences(
+  const { data, isLoading } = useGetAnalyticsPresences(
     { annee_scolaire_id: anneeParam, trimestre: trimestreParam },
   );
   const pres = (data as any)?.data;

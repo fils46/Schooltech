@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
 import {
-  useGetApiAnalyticsKpis,
-  useGetApiAnalyticsPedagogique,
-  useGetApiAnalyticsPresences,
+  useGetAnalyticsKpis,
+  useGetAnalyticsPedagogique,
+  useGetAnalyticsPresences,
   useListerAnneesScolaires,
 } from "@workspace/api-client-react";
 import {
@@ -82,13 +82,13 @@ export default function DashboardAnalytique() {
   const { data: anneesData } = useListerAnneesScolaires();
   const annees = (anneesData as any)?.annees ?? [];
 
-  const { data: kpisData, isLoading: kpisLoading, refetch: refetchKpis } = useGetApiAnalyticsKpis(
+  const { data: kpisData, isLoading: kpisLoading, refetch: refetchKpis } = useGetAnalyticsKpis(
     { annee_scolaire_id: anneeParam, trimestre: trimestreParam },
   );
-  const { data: pedaData, isLoading: pedaLoading } = useGetApiAnalyticsPedagogique(
+  const { data: pedaData, isLoading: pedaLoading } = useGetAnalyticsPedagogique(
     { annee_scolaire_id: anneeParam, trimestre: trimestreParam },
   );
-  const { data: presencesData } = useGetApiAnalyticsPresences(
+  const { data: presencesData } = useGetAnalyticsPresences(
     { annee_scolaire_id: anneeParam, trimestre: trimestreParam },
   );
 
