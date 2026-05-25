@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Redirect } from "wouter";
 
 export default function MatiereConfig() {
-  const navigate = useNavigate();
-  useEffect(() => { navigate("/matieres/classe", { replace: true }); }, [navigate]);
-  return null;
+  return <Redirect to="/matieres/classe" />;
 }
