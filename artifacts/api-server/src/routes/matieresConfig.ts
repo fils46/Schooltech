@@ -16,7 +16,7 @@ const ROLES_ADMIN = ["dev", "directeur", "censeur"];
 
 /* ─── GET /api/matieres-config/classe/:classeId ─────────────── */
 router.get(
-  "/api/matieres-config/classe/:classeId",
+  "/matieres-config/classe/:classeId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const classeId = normalizeId(req.params.classeId);
@@ -63,7 +63,7 @@ router.get(
 
 /* ─── POST /api/matieres-config/configurer ─────────────────── */
 router.post(
-  "/api/matieres-config/configurer",
+  "/matieres-config/configurer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -158,7 +158,7 @@ router.post(
 
 /* ─── PUT /api/matieres-config/:id/modifier ─────────────────── */
 router.put(
-  "/api/matieres-config/:id/modifier",
+  "/matieres-config/:id/modifier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -200,7 +200,7 @@ router.put(
 
 /* ─── DELETE /api/matieres-config/:id/supprimer ─────────────── */
 router.delete(
-  "/api/matieres-config/:id/supprimer",
+  "/matieres-config/:id/supprimer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;

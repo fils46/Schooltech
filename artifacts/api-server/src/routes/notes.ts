@@ -122,7 +122,7 @@ router.put(
 
 /* ─── POST /api/notes/saisir ─────────────────────────────── */
 router.post(
-  "/api/notes/saisir",
+  "/notes/saisir",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -206,7 +206,7 @@ router.post(
 
 /* ─── POST /api/notes/saisir-groupe ─────────────────────── */
 router.post(
-  "/api/notes/saisir-groupe",
+  "/notes/saisir-groupe",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -274,7 +274,7 @@ router.post(
 
 /* ─── GET /api/notes/classe/:classeId ───────────────────── */
 router.get(
-  "/api/notes/classe/:classeId",
+  "/notes/classe/:classeId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const classeId = normalizeId(req.params.classeId);
@@ -318,7 +318,7 @@ router.get(
 
 /* ─── GET /api/notes/eleve/:eleveId ─────────────────────── */
 router.get(
-  "/api/notes/eleve/:eleveId",
+  "/notes/eleve/:eleveId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const eleveId = normalizeId(req.params.eleveId);
@@ -369,7 +369,7 @@ router.get(
 
 /* ─── GET /api/notes/moyennes/:classeId ─────────────────── */
 router.get(
-  "/api/notes/moyennes/:classeId",
+  "/notes/moyennes/:classeId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const classeId = normalizeId(req.params.classeId);
@@ -441,7 +441,7 @@ router.get(
 
 /* ─── GET /api/notes/statistiques/:classeId ─────────────── */
 router.get(
-  "/api/notes/statistiques/:classeId",
+  "/notes/statistiques/:classeId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const classeId = normalizeId(req.params.classeId);
@@ -496,7 +496,7 @@ router.get(
 
 /* ─── PUT /api/notes/:id/modifier ───────────────────────── */
 router.put(
-  "/api/notes/:id/modifier",
+  "/notes/:id/modifier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -559,7 +559,7 @@ router.put(
 
 /* ─── DELETE /api/notes/:id/supprimer ───────────────────── */
 router.delete(
-  "/api/notes/:id/supprimer",
+  "/notes/:id/supprimer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);

@@ -37,7 +37,7 @@ async function getClasseEleve(eleveId: string) {
 
 /* ─── GET /api/parents ─────────────────────────────────────── */
 router.get(
-  "/api/parents",
+  "/parents",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),
@@ -90,7 +90,7 @@ router.get(
 
 /* ─── POST /api/parents/creer ──────────────────────────────── */
 router.post(
-  "/api/parents/creer",
+  "/parents/creer",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),
@@ -200,7 +200,7 @@ router.post(
 
 /* ─── POST /api/parents/lier ───────────────────────────────── */
 router.post(
-  "/api/parents/lier",
+  "/parents/lier",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),
@@ -262,7 +262,7 @@ router.post(
 
 /* ─── GET /api/parents/eleve/:eleveId ─────────────────────── */
 router.get(
-  "/api/parents/eleve/:eleveId",
+  "/parents/eleve/:eleveId",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),
@@ -296,7 +296,7 @@ router.get(
 
 /* ─── GET /api/parents/:parentId/enfants ──────────────────── */
 router.get(
-  "/api/parents/:parentId/enfants",
+  "/parents/:parentId/enfants",
   authMiddleware,
   verifierLicence,
   async (req, res): Promise<void> => {
@@ -339,7 +339,7 @@ router.get(
 
 /* ─── PUT /api/parents/liaison/:id ────────────────────────── */
 router.put(
-  "/api/parents/liaison/:id",
+  "/parents/liaison/:id",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),
@@ -386,7 +386,7 @@ router.put(
 
 /* ─── DELETE /api/parents/liaison/:id ─────────────────────── */
 router.delete(
-  "/api/parents/liaison/:id",
+  "/parents/liaison/:id",
   authMiddleware,
   verifierLicence,
   requireRole("directeur"),
@@ -416,7 +416,7 @@ router.delete(
 
 /* ─── POST /api/parents/:id/reinitialiser-mdp ─────────────── */
 router.post(
-  "/api/parents/:id/reinitialiser-mdp",
+  "/parents/:id/reinitialiser-mdp",
   authMiddleware,
   verifierLicence,
   requireRole("directeur", "censeur"),

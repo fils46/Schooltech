@@ -87,7 +87,7 @@ async function enrichirAppel(
 
 /* ─── POST /api/appels/creer ─────────────────────────────── */
 router.post(
-  "/api/appels/creer",
+  "/appels/creer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -163,7 +163,7 @@ router.post(
 
 /* ─── GET /api/appels/historique ────────────────────────── */
 router.get(
-  "/api/appels/historique",
+  "/appels/historique",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -195,7 +195,7 @@ router.get(
 
 /* ─── GET /api/appels/eleve/:eleveId ────────────────────── */
 router.get(
-  "/api/appels/eleve/:eleveId",
+  "/appels/eleve/:eleveId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const eleveId = normalizeId(req.params.eleveId);
@@ -246,7 +246,7 @@ router.get(
 
 /* ─── GET /api/appels/:id ───────────────────────────────── */
 router.get(
-  "/api/appels/:id",
+  "/appels/:id",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -271,7 +271,7 @@ router.get(
 
 /* ─── PUT /api/appels/:id/presence ─────────────────────── */
 router.put(
-  "/api/appels/:id/presence",
+  "/appels/:id/presence",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -360,7 +360,7 @@ router.put(
 
 /* ─── PUT /api/appels/:id/terminer ─────────────────────── */
 router.put(
-  "/api/appels/:id/terminer",
+  "/appels/:id/terminer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);

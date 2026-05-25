@@ -60,7 +60,7 @@ async function notifierParent(
 /* ═══════════════════════════════════════════════════════════════
    1. POST /api/cloture/criteres — configurer critères
 ══════════════════════════════════════════════════════════════ */
-router.post("/api/cloture/criteres", authMiddleware, requireRole(...DIRS), async (req, res) => {
+router.post("/cloture/criteres", authMiddleware, requireRole(...DIRS), async (req, res) => {
   try {
     const user = req.user!;
     const {
@@ -132,7 +132,7 @@ router.post("/api/cloture/criteres", authMiddleware, requireRole(...DIRS), async
 /* ═══════════════════════════════════════════════════════════════
    2. GET /api/cloture/criteres
 ══════════════════════════════════════════════════════════════ */
-router.get("/api/cloture/criteres", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.get("/cloture/criteres", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_id } = req.query as { annee_scolaire_id: string };
@@ -166,7 +166,7 @@ router.get("/api/cloture/criteres", authMiddleware, requireRole(...ADMINS), asyn
 /* ═══════════════════════════════════════════════════════════════
    3. GET /api/cloture/resultats/:classeId
 ══════════════════════════════════════════════════════════════ */
-router.get("/api/cloture/resultats/:classeId", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.get("/cloture/resultats/:classeId", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const classeId = req.params["classeId"] as string;
@@ -364,7 +364,7 @@ router.get("/api/cloture/resultats/:classeId", authMiddleware, requireRole(...AD
 /* ═══════════════════════════════════════════════════════════════
    4. POST /api/cloture/decisions — enregistrer une décision
 ══════════════════════════════════════════════════════════════ */
-router.post("/api/cloture/decisions", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.post("/cloture/decisions", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const {
@@ -454,7 +454,7 @@ router.post("/api/cloture/decisions", authMiddleware, requireRole(...ADMINS), as
 /* ═══════════════════════════════════════════════════════════════
    5. POST /api/cloture/decisions/masse
 ══════════════════════════════════════════════════════════════ */
-router.post("/api/cloture/decisions/masse", authMiddleware, requireRole(...DIRS), async (req, res) => {
+router.post("/cloture/decisions/masse", authMiddleware, requireRole(...DIRS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_id, classe_id, decisions } = req.body as {
@@ -529,7 +529,7 @@ router.post("/api/cloture/decisions/masse", authMiddleware, requireRole(...DIRS)
 /* ═══════════════════════════════════════════════════════════════
    6. POST /api/cloture/promouvoir
 ══════════════════════════════════════════════════════════════ */
-router.post("/api/cloture/promouvoir", authMiddleware, requireRole(...DIRS), async (req, res) => {
+router.post("/cloture/promouvoir", authMiddleware, requireRole(...DIRS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_source_id, annee_scolaire_destination_id, classe_source_id } = req.body as {
@@ -711,7 +711,7 @@ router.post("/api/cloture/promouvoir", authMiddleware, requireRole(...DIRS), asy
 /* ═══════════════════════════════════════════════════════════════
    7. POST /api/cloture/notifier
 ══════════════════════════════════════════════════════════════ */
-router.post("/api/cloture/notifier", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.post("/cloture/notifier", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_id, classe_id } = req.body as {
@@ -787,7 +787,7 @@ router.post("/api/cloture/notifier", authMiddleware, requireRole(...ADMINS), asy
 /* ═══════════════════════════════════════════════════════════════
    8. GET /api/cloture/stats
 ══════════════════════════════════════════════════════════════ */
-router.get("/api/cloture/stats", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.get("/cloture/stats", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_id } = req.query as { annee_scolaire_id: string };
@@ -906,7 +906,7 @@ router.get("/api/cloture/stats", authMiddleware, requireRole(...ADMINS), async (
 /* ═══════════════════════════════════════════════════════════════
    9. PUT /api/cloture/promotions/:id/annuler
 ══════════════════════════════════════════════════════════════ */
-router.put("/api/cloture/promotions/:id/annuler", authMiddleware, requireRole(...DIRS), async (req, res) => {
+router.put("/cloture/promotions/:id/annuler", authMiddleware, requireRole(...DIRS), async (req, res) => {
   try {
     const user = req.user!;
     const id = req.params["id"] as string;
@@ -975,7 +975,7 @@ router.put("/api/cloture/promotions/:id/annuler", authMiddleware, requireRole(..
 /* ═══════════════════════════════════════════════════════════════
    10. GET /api/cloture/promotions/historique
 ══════════════════════════════════════════════════════════════ */
-router.get("/api/cloture/promotions/historique", authMiddleware, requireRole(...ADMINS), async (req, res) => {
+router.get("/cloture/promotions/historique", authMiddleware, requireRole(...ADMINS), async (req, res) => {
   try {
     const user = req.user!;
     const { annee_scolaire_id, classe_id } = req.query as {

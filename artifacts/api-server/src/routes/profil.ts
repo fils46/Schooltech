@@ -18,7 +18,7 @@ const DEFAULT_PREFS = {
 };
 
 /* ─── GET /api/profil ────────────────────────────────────────── */
-router.get("/api/profil", authMiddleware, async (req, res) => {
+router.get("/profil", authMiddleware, async (req, res) => {
   try {
     const [row] = await db
       .select({
@@ -57,7 +57,7 @@ router.get("/api/profil", authMiddleware, async (req, res) => {
 });
 
 /* ─── PUT /api/profil ────────────────────────────────────────── */
-router.put("/api/profil", authMiddleware, async (req, res) => {
+router.put("/profil", authMiddleware, async (req, res) => {
   const { nom, prenoms, telephone } = req.body as {
     nom?: string; prenoms?: string; telephone?: string;
   };
@@ -97,7 +97,7 @@ router.put("/api/profil", authMiddleware, async (req, res) => {
 });
 
 /* ─── POST /api/profil/photo ─────────────────────────────────── */
-router.post("/api/profil/photo", authMiddleware, async (req, res) => {
+router.post("/profil/photo", authMiddleware, async (req, res) => {
   const { photo_base64 } = req.body as { photo_base64?: string };
 
   if (!photo_base64) {
@@ -124,7 +124,7 @@ router.post("/api/profil/photo", authMiddleware, async (req, res) => {
 });
 
 /* ─── PUT /api/profil/mot-de-passe ──────────────────────────── */
-router.put("/api/profil/mot-de-passe", authMiddleware, async (req, res) => {
+router.put("/profil/mot-de-passe", authMiddleware, async (req, res) => {
   const { mot_de_passe_actuel, nouveau_mot_de_passe, confirmation } = req.body as {
     mot_de_passe_actuel?: string;
     nouveau_mot_de_passe?: string;
@@ -165,7 +165,7 @@ router.put("/api/profil/mot-de-passe", authMiddleware, async (req, res) => {
 });
 
 /* ─── PUT /api/profil/preferences-notifs ────────────────────── */
-router.put("/api/profil/preferences-notifs", authMiddleware, async (req, res) => {
+router.put("/profil/preferences-notifs", authMiddleware, async (req, res) => {
   const { preferences_notifs } = req.body as { preferences_notifs?: Record<string, boolean> };
 
   if (!preferences_notifs || typeof preferences_notifs !== "object") {

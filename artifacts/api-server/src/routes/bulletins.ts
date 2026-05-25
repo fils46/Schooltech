@@ -320,7 +320,7 @@ async function calculerRangsClasse(classeId: string, anneeId: string, trimestre:
 
 /* ─── POST /api/bulletins/generer ───────────────────────────── */
 router.post(
-  "/api/bulletins/generer",
+  "/bulletins/generer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -346,7 +346,7 @@ router.post(
 
 /* ─── POST /api/bulletins/generer-classe ────────────────────── */
 router.post(
-  "/api/bulletins/generer-classe",
+  "/bulletins/generer-classe",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -400,7 +400,7 @@ router.post(
 
 /* ─── POST /api/bulletins/calculer-rangs ────────────────────── */
 router.post(
-  "/api/bulletins/calculer-rangs",
+  "/bulletins/calculer-rangs",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -422,7 +422,7 @@ router.post(
 
 /* ─── PUT /api/bulletins/publier-classe ─────────────────────── */
 router.put(
-  "/api/bulletins/publier-classe",
+  "/bulletins/publier-classe",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -480,7 +480,7 @@ router.put(
 
 /* ─── GET /api/bulletins/classe/:classeId ───────────────────── */
 router.get(
-  "/api/bulletins/classe/:classeId",
+  "/bulletins/classe/:classeId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const classeId = normalizeId(req.params.classeId);
@@ -525,7 +525,7 @@ router.get(
 
 /* ─── GET /api/bulletins/eleve/:eleveId ─────────────────────── */
 router.get(
-  "/api/bulletins/eleve/:eleveId",
+  "/bulletins/eleve/:eleveId",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const eleveId = normalizeId(req.params.eleveId);
@@ -560,7 +560,7 @@ router.get(
 
 /* ─── GET /api/bulletins/:id ────────────────────────────────── */
 router.get(
-  "/api/bulletins/:id",
+  "/bulletins/:id",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -594,7 +594,7 @@ router.get(
 
 /* ─── PUT /api/bulletins/:id/appreciation ───────────────────── */
 router.put(
-  "/api/bulletins/:id/appreciation",
+  "/bulletins/:id/appreciation",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -637,7 +637,7 @@ router.put(
 
 /* ─── PUT /api/bulletins/:id/publier ────────────────────────── */
 router.put(
-  "/api/bulletins/:id/publier",
+  "/bulletins/:id/publier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -685,7 +685,7 @@ router.put(
 
 /* ─── GET /api/bulletins/:id/pdf ────────────────────────────── */
 router.get(
-  "/api/bulletins/:id/pdf",
+  "/bulletins/:id/pdf",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);

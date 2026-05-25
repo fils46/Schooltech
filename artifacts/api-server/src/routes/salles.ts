@@ -23,7 +23,7 @@ function toTypeSalle(v: unknown, fallback: TypeSalle = "classe"): TypeSalle {
 }
 
 /* ─── GET /api/salles/liste ──────────────────────────────── */
-router.get("/api/salles/liste", authMiddleware, async (req, res) => {
+router.get("/salles/liste", authMiddleware, async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const etabId = user.role === "dev"
@@ -56,7 +56,7 @@ router.get("/api/salles/liste", authMiddleware, async (req, res) => {
 });
 
 /* ─── GET /api/salles/disponibles ────────────────────────── */
-router.get("/api/salles/disponibles", authMiddleware, async (req, res) => {
+router.get("/salles/disponibles", authMiddleware, async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const { jour, creneau_id, annee_scolaire_id, capacite_min } = r.query as Record<string, string>;
@@ -107,7 +107,7 @@ router.get("/api/salles/disponibles", authMiddleware, async (req, res) => {
 });
 
 /* ─── GET /api/salles/conflits ───────────────────────────── */
-router.get("/api/salles/conflits", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
+router.get("/salles/conflits", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const { annee_scolaire_id } = r.query as Record<string, string>;
@@ -179,7 +179,7 @@ router.get("/api/salles/conflits", authMiddleware, requireRole("directeur", "cen
 });
 
 /* ─── GET /api/salles/:id/disponibilite ──────────────────── */
-router.get("/api/salles/:id/disponibilite", authMiddleware, async (req, res) => {
+router.get("/salles/:id/disponibilite", authMiddleware, async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const rawId = String(r.params.id);
@@ -249,7 +249,7 @@ router.get("/api/salles/:id/disponibilite", authMiddleware, async (req, res) => 
 });
 
 /* ─── POST /api/salles/creer ─────────────────────────────── */
-router.post("/api/salles/creer", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
+router.post("/salles/creer", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const { nom, capacite, type, equipements, etage, batiment, etablissement_id } = r.body as Record<string, unknown>;
@@ -286,7 +286,7 @@ router.post("/api/salles/creer", authMiddleware, requireRole("directeur", "cense
 });
 
 /* ─── PUT /api/salles/:id/modifier ──────────────────────── */
-router.put("/api/salles/:id/modifier", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
+router.put("/salles/:id/modifier", authMiddleware, requireRole("directeur", "censeur", "dev"), async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const rawId = String(r.params.id);
@@ -322,7 +322,7 @@ router.put("/api/salles/:id/modifier", authMiddleware, requireRole("directeur", 
 });
 
 /* ─── PUT /api/salles/:id/desactiver ────────────────────── */
-router.put("/api/salles/:id/desactiver", authMiddleware, requireRole("directeur", "dev"), async (req, res) => {
+router.put("/salles/:id/desactiver", authMiddleware, requireRole("directeur", "dev"), async (req, res) => {
   const r = req as Request;
   const user = r.user!;
   const rawId = String(r.params.id);

@@ -988,6 +988,11 @@ function Router() {
           <DashboardLayout><ResultatsAnnuels /></DashboardLayout>
         </ProtectedRoute>
       </Route>
+      <Route path="/cloture/decisions">
+        <ProtectedRoute>
+          <DashboardLayout><DashboardCloture /></DashboardLayout>
+        </ProtectedRoute>
+      </Route>
       <Route path="/cloture">
         <ProtectedRoute>
           <DashboardLayout><DashboardCloture /></DashboardLayout>

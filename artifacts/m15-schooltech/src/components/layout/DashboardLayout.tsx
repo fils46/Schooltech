@@ -112,9 +112,9 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "CLÔTURE D'ANNÉE",
       links: [
-        { label: "Tableau de bord",     href: "/cloture",           icon: GraduationCap },
+        { label: "Tableau de bord",     href: "/cloture",             icon: GraduationCap },
         { label: "Critères d'admission",href: "/cloture/criteres",  icon: Target },
-        { label: "Décisions par classe",href: "/cloture",           icon: ClipboardCheck },
+        { label: "Décisions par classe",href: "/cloture/decisions", icon: ClipboardCheck },
         { label: "Validation & Promotion",href: "/cloture/promotion",icon: CheckCircle2 },
         { label: "Résultats annuels",   href: "/cloture/resultats", icon: FileSpreadsheet },
       ],
@@ -246,8 +246,8 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "CLÔTURE D'ANNÉE",
       links: [
-        { label: "Tableau de bord",      href: "/cloture",            icon: GraduationCap },
-        { label: "Décisions par classe", href: "/cloture",            icon: ClipboardCheck },
+        { label: "Tableau de bord",      href: "/cloture",             icon: GraduationCap },
+        { label: "Décisions par classe", href: "/cloture/decisions", icon: ClipboardCheck },
         { label: "Résultats annuels",    href: "/cloture/resultats",  icon: FileSpreadsheet },
       ],
     },

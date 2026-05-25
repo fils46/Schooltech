@@ -22,7 +22,7 @@ function requireAdmin(role: string, res: import("express").Response): boolean {
 
 /* ─── GET /api/matieres/classe/:classeId ─────────────────────────── */
 router.get(
-  "/api/matieres/classe/:classeId",
+  "/matieres/classe/:classeId",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const classeId = normalizeId(req.params.classeId);
@@ -77,7 +77,7 @@ router.get(
 
 /* ─── GET /api/matieres ──────────────────────────────────────────── */
 router.get(
-  "/api/matieres",
+  "/matieres",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -113,7 +113,7 @@ router.get(
 
 /* ─── POST /api/matieres ─────────────────────────────────────────── */
 router.post(
-  "/api/matieres",
+  "/matieres",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -159,7 +159,7 @@ router.post(
 
 /* ─── POST /api/matieres/assigner/masse ─────────────────────────── */
 router.post(
-  "/api/matieres/assigner/masse",
+  "/matieres/assigner/masse",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -221,7 +221,7 @@ router.post(
 
 /* ─── POST /api/matieres/assigner ───────────────────────────────── */
 router.post(
-  "/api/matieres/assigner",
+  "/matieres/assigner",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -263,7 +263,7 @@ router.post(
 
 /* ─── POST /api/matieres/dupliquer/annee ────────────────────────── */
 router.post(
-  "/api/matieres/dupliquer/annee",
+  "/matieres/dupliquer/annee",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -313,7 +313,7 @@ router.post(
 
 /* ─── POST /api/matieres/dupliquer ──────────────────────────────── */
 router.post(
-  "/api/matieres/dupliquer",
+  "/matieres/dupliquer",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -366,7 +366,7 @@ router.post(
 
 /* ─── PUT /api/matieres/assigner/:id ────────────────────────────── */
 router.put(
-  "/api/matieres/assigner/:id",
+  "/matieres/assigner/:id",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -404,7 +404,7 @@ router.put(
 
 /* ─── DELETE /api/matieres/assigner/:id ─────────────────────────── */
 router.delete(
-  "/api/matieres/assigner/:id",
+  "/matieres/assigner/:id",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -429,7 +429,7 @@ router.delete(
 
 /* ─── PUT /api/matieres/:id ─────────────────────────────────────── */
 router.put(
-  "/api/matieres/:id",
+  "/matieres/:id",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;
@@ -478,7 +478,7 @@ router.put(
 
 /* ─── PUT /api/matieres/:id/desactiver ──────────────────────────── */
 router.put(
-  "/api/matieres/:id/desactiver",
+  "/matieres/:id/desactiver",
   authMiddleware, verifierLicence,
   async (req, res): Promise<void> => {
     const user = req.user!;

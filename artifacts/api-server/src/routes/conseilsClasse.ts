@@ -82,7 +82,7 @@ async function enrichirIntervention(i: typeof conseilInterventionsTable.$inferSe
 
 /* ─── POST /api/conseils/planifier ──────────────────────────── */
 router.post(
-  "/api/conseils/planifier",
+  "/conseils/planifier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -156,7 +156,7 @@ router.post(
 
 /* ─── GET /api/conseils/liste ────────────────────────────────── */
 router.get(
-  "/api/conseils/liste",
+  "/conseils/liste",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -184,7 +184,7 @@ router.get(
 
 /* ─── GET /api/conseils/:id ──────────────────────────────────── */
 router.get(
-  "/api/conseils/:id",
+  "/conseils/:id",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -201,7 +201,7 @@ router.get(
 
 /* ─── PUT /api/conseils/:id/modifier ──────────────────────────── */
 router.put(
-  "/api/conseils/:id/modifier",
+  "/conseils/:id/modifier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -242,7 +242,7 @@ router.put(
 
 /* ─── POST /api/conseils/:id/convoquer ─────────────────────── */
 router.post(
-  "/api/conseils/:id/convoquer",
+  "/conseils/:id/convoquer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -282,7 +282,7 @@ router.post(
 
 /* ─── PUT /api/conseils/:id/presence ───────────────────────── */
 router.put(
-  "/api/conseils/:id/presence",
+  "/conseils/:id/presence",
   authMiddleware,
   async (req, res) => {
     const user = req.user!;
@@ -310,7 +310,7 @@ router.put(
 
 /* ─── GET /api/conseils/:id/en-cours ───────────────────────── */
 router.get(
-  "/api/conseils/:id/en-cours",
+  "/conseils/:id/en-cours",
   authMiddleware,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -337,7 +337,7 @@ router.get(
 
 /* ─── PUT /api/conseils/:id/demarrer ────────────────────────── */
 router.put(
-  "/api/conseils/:id/demarrer",
+  "/conseils/:id/demarrer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -375,7 +375,7 @@ router.put(
 
 /* ─── PUT /api/conseils/:id/terminer ────────────────────────── */
 router.put(
-  "/api/conseils/:id/terminer",
+  "/conseils/:id/terminer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -441,7 +441,7 @@ router.put(
 
 /* ─── PUT /api/conseils/:id/deliberation ───────────────────── */
 router.put(
-  "/api/conseils/:id/deliberation",
+  "/conseils/:id/deliberation",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -507,7 +507,7 @@ router.put(
 
 /* ─── POST /api/conseils/:id/intervention ──────────────────── */
 router.post(
-  "/api/conseils/:id/intervention",
+  "/conseils/:id/intervention",
   authMiddleware,
   async (req, res) => {
     const user = req.user!;
@@ -538,7 +538,7 @@ router.post(
 
 /* ─── GET /api/conseils/:id/deliberations ──────────────────── */
 router.get(
-  "/api/conseils/:id/deliberations",
+  "/conseils/:id/deliberations",
   authMiddleware,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -550,7 +550,7 @@ router.get(
 
 /* ─── GET /api/conseils/:id/participants ───────────────────── */
 router.get(
-  "/api/conseils/:id/participants",
+  "/conseils/:id/participants",
   authMiddleware,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -562,7 +562,7 @@ router.get(
 
 /* ─── POST /api/conseils/:id/generer-pv ────────────────────── */
 router.post(
-  "/api/conseils/:id/generer-pv",
+  "/conseils/:id/generer-pv",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -650,7 +650,7 @@ router.post(
 
 /* ─── PUT /api/conseils/:id/signer-pv ──────────────────────── */
 router.put(
-  "/api/conseils/:id/signer-pv",
+  "/conseils/:id/signer-pv",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;

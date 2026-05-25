@@ -34,7 +34,7 @@ async function enrichirSeance(s: typeof cahierTextesTable.$inferSelect) {
 
 /* ─── POST /api/cahier-textes/creer ─────────────────────── */
 router.post(
-  "/api/cahier-textes/creer",
+  "/cahier-textes/creer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -105,7 +105,7 @@ router.post(
 
 /* ─── GET /api/cahier-textes/devoirs-a-venir ─────────────── */
 router.get(
-  "/api/cahier-textes/devoirs-a-venir",
+  "/cahier-textes/devoirs-a-venir",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -137,7 +137,7 @@ router.get(
 
 /* ─── GET /api/cahier-textes/liste ──────────────────────── */
 router.get(
-  "/api/cahier-textes/liste",
+  "/cahier-textes/liste",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const user = req.user!;
@@ -171,7 +171,7 @@ router.get(
 
 /* ─── GET /api/cahier-textes/:id ────────────────────────── */
 router.get(
-  "/api/cahier-textes/:id",
+  "/cahier-textes/:id",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -199,7 +199,7 @@ router.get(
 
 /* ─── PUT /api/cahier-textes/:id/modifier ───────────────── */
 router.put(
-  "/api/cahier-textes/:id/modifier",
+  "/cahier-textes/:id/modifier",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);
@@ -262,7 +262,7 @@ router.put(
 
 /* ─── DELETE /api/cahier-textes/:id/supprimer ───────────── */
 router.delete(
-  "/api/cahier-textes/:id/supprimer",
+  "/cahier-textes/:id/supprimer",
   authMiddleware, verifierLicence,
   async (req, res) => {
     const id = normalizeId(req.params.id);

@@ -12,7 +12,7 @@ const router = Router();
 
 /* ─── GET /api/eleve/dashboard ──────────────────────────────── */
 router.get(
-  "/api/eleve/dashboard",
+  "/eleve/dashboard",
   authMiddleware, requireRole("eleve"), verifierLicence,
   async (req, res) => {
     const user = req.user!;
