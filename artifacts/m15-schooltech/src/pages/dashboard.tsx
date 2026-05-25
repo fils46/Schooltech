@@ -805,5 +805,8 @@ export default function Dashboard() {
   if (user?.role === "censeur") return <CenseurDashboard />;
   if (user?.role === "educateur") { window.location.replace("/discipline/incidents"); return null; }
   if (user?.role === "infirmier") { window.location.replace("/infirmerie"); return null; }
+  if (user?.role === "parent") { window.location.replace("/parent-dashboard"); return null; }
+  if (user?.role === "eleve") { window.location.replace("/eleve/dashboard"); return null; }
+  if (user?.role === "professeur") { window.location.replace("/analytics-professeur"); return null; }
   return <DefaultDashboard />;
 }
