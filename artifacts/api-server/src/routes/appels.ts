@@ -121,8 +121,7 @@ router.post(
               and(
                 eq(emploisDuTempsTable.professeur_id, user.id),
                 eq(emploisDuTempsTable.classe_id, classe_id),
-                eq(emploisDuTempsTable.matiere, matiere),
-                eq(emploisDuTempsTable.annee_scolaire_id, annee_scolaire_id)
+                eq(emploisDuTempsTable.matiere, matiere)
               )
             )
             .limit(1)

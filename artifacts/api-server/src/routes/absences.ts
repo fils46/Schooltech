@@ -265,179 +265,40 @@ router.get("/absences/eleve/:eleveId/resume", authMiddleware, verifierLicence, a
   res.json({ resume: { total, justifiees, non_justifiees, retards, taux_presence: Math.round(taux_presence * 10) / 10, par_matiere, evolution_mensuelle } });
 });
 
-/* ── GET /api/absences/:id ──────────────────────────────── */
-router.get("/absences/:id", authMiddleware, verifierLicence, async (req, res) => {
+/* ── GET /api/absences/config ──────────────────────────── */
+router.get("/absences/config", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
-  const id = normalizeId(req.params["id"]);
-
-  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, id)).limit(1);
-  if (!absence) { res.status(404).json({ message: "Absence introuvable." }); return; }
-
-  if (user.role === "eleve" && absence.eleve_id !== user.id) { res.status(403).json({ message: "Accès refusé." }); return; }
-  if (user.role === "parent") {
-    const enfants = await db.select().from(parentsElevesTable)
-      .where(and(eq(parentsElevesTable.utilisateur_id, user.id), eq(parentsElevesTable.eleve_id, absence.eleve_id)));
-    if (enfants.length === 0) { res.status(403).json({ message: "Accès refusé." }); return; }
+  if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
   }
-
-  res.json({ absence: await enrichirAbsence(absence, true) });
+  const etablissementId = user.etablissement_id ?? "";
+  const [config] = await db.select().from(configAbsencesTable)
+    .where(eq(configAbsencesTable.etablissement_id, etablissementId)).limit(1);
+  res.json({ success: true, config: config ?? null });
 });
 
-/* ── PUT /api/absences/:id/modifier ────────────────────── */
-router.put("/absences/:id/modifier", authMiddleware, verifierLicence, async (req, res) => {
+/* ── POST /api/absences/config ──────────────────────────── */
+router.post("/absences/config", authMiddleware, verifierLicence, async (req, res) => {
   const user = req.user!;
-  const id = normalizeId(req.params["id"]);
-  const roles = ["dev", "directeur", "censeur"];
-  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
-
-  const { type, date_absence, matiere } = req.body as Record<string, string>;
-
-  const [updated] = await db.update(absencesTable)
-    .set({
-      ...(type ? { type: type as "absence" | "retard" } : {}),
-      ...(date_absence ? { date_absence } : {}),
-      ...(matiere ? { matiere } : {}),
-      updated_at: new Date(),
-    })
-    .where(and(eq(absencesTable.id, id), eq(absencesTable.etablissement_id, user.etablissement_id ?? "")))
-    .returning();
-
-  if (!updated) { res.status(404).json({ message: "Absence introuvable." }); return; }
-  res.json({ absence: await enrichirAbsence(updated, true) });
-});
-
-/* ── DELETE /api/absences/:id/supprimer ─────────────────── */
-router.delete("/absences/:id/supprimer", authMiddleware, verifierLicence, async (req, res) => {
-  const user = req.user!;
-  const id = normalizeId(req.params["id"]);
-  const roles = ["dev", "directeur"];
-  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
-
-  const [deleted] = await db.delete(absencesTable)
-    .where(and(eq(absencesTable.id, id), eq(absencesTable.etablissement_id, user.etablissement_id ?? "")))
-    .returning();
-
-  if (!deleted) { res.status(404).json({ message: "Absence introuvable." }); return; }
-  res.json({ message: "Absence supprimée." });
-});
-
-/* ── POST /api/absences/:id/justifier ───────────────────── */
-router.post("/absences/:id/justifier", authMiddleware, verifierLicence, async (req, res) => {
-  const user = req.user!;
-  const id = normalizeId(req.params["id"]);
-  const { motif, document_url } = req.body as Record<string, string>;
-  if (!motif) { res.status(400).json({ message: "Le motif est obligatoire." }); return; }
-
-  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, id)).limit(1);
-  if (!absence) { res.status(404).json({ message: "Absence introuvable." }); return; }
-
-  if (user.role === "parent") {
-    const enfants = await db.select().from(parentsElevesTable)
-      .where(and(eq(parentsElevesTable.utilisateur_id, user.id), eq(parentsElevesTable.eleve_id, absence.eleve_id)));
-    if (enfants.length === 0) { res.status(403).json({ message: "Accès refusé." }); return; }
-  } else if (!["dev", "directeur", "censeur"].includes(user.role)) {
-    res.status(403).json({ message: "Accès refusé." }); return;
+  if (!["dev", "directeur"].includes(user.role)) {
+    res.status(403).json({ success: false, message: "Accès refusé." }); return;
   }
-
-  if (absence.statut === "justifiee") {
-    res.status(400).json({ message: "Cette absence est déjà justifiée." }); return;
+  const etablissementId = user.etablissement_id ?? "";
+  const body = req.body as Record<string, unknown>;
+  const [existing] = await db.select().from(configAbsencesTable)
+    .where(eq(configAbsencesTable.etablissement_id, etablissementId)).limit(1);
+  if (existing) {
+    const [updated] = await db.update(configAbsencesTable)
+      .set({ ...body, updated_at: new Date() } as Partial<typeof configAbsencesTable.$inferInsert>)
+      .where(eq(configAbsencesTable.etablissement_id, etablissementId))
+      .returning();
+    res.json({ success: true, config: updated });
+  } else {
+    const [created] = await db.insert(configAbsencesTable)
+      .values({ etablissement_id: etablissementId, ...body } as typeof configAbsencesTable.$inferInsert)
+      .returning();
+    res.json({ success: true, config: created });
   }
-
-  await db.update(absencesTable).set({ statut: "en_attente", updated_at: new Date() })
-    .where(eq(absencesTable.id, id));
-
-  const [justification] = await db.insert(justificationsTable).values({
-    absence_id: id,
-    soumis_par: user.id,
-    motif,
-    document_url: document_url ?? null,
-    statut: "en_attente",
-  }).returning();
-
-  const directeur = await getDirecteurEtablissement(absence.etablissement_id);
-  if (directeur) {
-    await creerNotification({
-      etablissement_id: absence.etablissement_id,
-      destinataire_id: directeur.id,
-      type: "message",
-      titre: "Nouvelle justification soumise",
-      contenu: `Une justification a été soumise pour une absence du ${absence.date_absence}.`,
-      lien: "/absences",
-    });
-  }
-
-  res.status(201).json({ justification });
-});
-
-/* ── GET /api/justifications/liste ──────────────────────── */
-router.get("/justifications/liste", authMiddleware, verifierLicence, async (req, res) => {
-  const user = req.user!;
-  const roles = ["dev", "directeur", "censeur"];
-  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
-
-  const { statut, date_debut, date_fin } = req.query as Record<string, string>;
-  const page = Math.max(1, parseInt((req.query["page"] as string) || "1", 10));
-  const limit = Math.min(100, Math.max(1, parseInt((req.query["limit"] as string) || "20", 10)));
-
-  const conditions: ReturnType<typeof eq>[] = [];
-  if (statut) conditions.push(eq(justificationsTable.statut, statut as "en_attente" | "validee" | "rejetee"));
-
-  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
-  const [{ total }] = await db.select({ total: count() }).from(justificationsTable).where(whereClause);
-  const rows = await db.select().from(justificationsTable).where(whereClause)
-    .orderBy(desc(justificationsTable.created_at)).limit(limit).offset((page - 1) * limit);
-
-  const justifications = await Promise.all(rows.map(async j => {
-    const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, j.absence_id)).limit(1);
-    const [soumis] = await db.select({ nom: utilisateursTable.nom }).from(utilisateursTable).where(eq(utilisateursTable.id, j.soumis_par)).limit(1);
-    return { ...j, soumis_par_nom: soumis?.nom ?? "", absence: absence ?? null };
-  }));
-
-  res.json({ justifications, total });
-});
-
-/* ── PUT /api/justifications/:id/traiter ──────────────────── */
-router.put("/justifications/:id/traiter", authMiddleware, verifierLicence, async (req, res) => {
-  const user = req.user!;
-  const id = normalizeId(req.params["id"]);
-  const roles = ["dev", "directeur", "censeur"];
-  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
-
-  const { decision, commentaire } = req.body as { decision: "validee" | "rejetee"; commentaire?: string };
-  if (!decision || !["validee", "rejetee"].includes(decision)) {
-    res.status(400).json({ message: "Décision invalide." }); return;
-  }
-
-  const [justification] = await db.select().from(justificationsTable).where(eq(justificationsTable.id, id)).limit(1);
-  if (!justification) { res.status(404).json({ message: "Justification introuvable." }); return; }
-
-  const [updated] = await db.update(justificationsTable).set({
-    statut: decision,
-    traite_par: user.id,
-    date_traitement: new Date().toISOString().split("T")[0] ?? null,
-    commentaire_traitement: commentaire ?? null,
-    updated_at: new Date(),
-  }).where(eq(justificationsTable.id, id)).returning();
-
-  const newAbsenceStatut = decision === "validee" ? "justifiee" : "rejetee";
-  await db.update(absencesTable).set({ statut: newAbsenceStatut, updated_at: new Date() })
-    .where(eq(absencesTable.id, justification.absence_id));
-
-  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, justification.absence_id)).limit(1);
-  if (absence) {
-    const parentId = await getParentEleve(absence.eleve_id);
-    if (parentId) {
-      await envoyerNotificationJustification({
-        etablissement_id: absence.etablissement_id,
-        parent_id: parentId,
-        statut: decision,
-        date_absence: absence.date_absence,
-        commentaire: commentaire ?? null,
-      });
-    }
-  }
-
-  res.json({ justification: updated });
 });
 
 /* ── POST /api/absences/demi-journee ────────────────────── */
@@ -717,6 +578,181 @@ router.put("/absences/alertes/:id/traiter", authMiddleware, verifierLicence, asy
 
   if (!updated) { res.status(404).json({ success: false, message: "Alerte introuvable." }); return; }
   res.json({ success: true, alerte: updated });
+});
+
+/* ── GET /api/absences/:id ──────────────────────────────── */
+router.get("/absences/:id", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const id = normalizeId(req.params["id"]);
+
+  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, id)).limit(1);
+  if (!absence) { res.status(404).json({ message: "Absence introuvable." }); return; }
+
+  if (user.role === "eleve" && absence.eleve_id !== user.id) { res.status(403).json({ message: "Accès refusé." }); return; }
+  if (user.role === "parent") {
+    const enfants = await db.select().from(parentsElevesTable)
+      .where(and(eq(parentsElevesTable.utilisateur_id, user.id), eq(parentsElevesTable.eleve_id, absence.eleve_id)));
+    if (enfants.length === 0) { res.status(403).json({ message: "Accès refusé." }); return; }
+  }
+
+  res.json({ absence: await enrichirAbsence(absence, true) });
+});
+
+/* ── PUT /api/absences/:id/modifier ────────────────────── */
+router.put("/absences/:id/modifier", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const id = normalizeId(req.params["id"]);
+  const roles = ["dev", "directeur", "censeur"];
+  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
+
+  const { type, date_absence, matiere } = req.body as Record<string, string>;
+
+  const [updated] = await db.update(absencesTable)
+    .set({
+      ...(type ? { type: type as "absence" | "retard" } : {}),
+      ...(date_absence ? { date_absence } : {}),
+      ...(matiere ? { matiere } : {}),
+      updated_at: new Date(),
+    })
+    .where(and(eq(absencesTable.id, id), eq(absencesTable.etablissement_id, user.etablissement_id ?? "")))
+    .returning();
+
+  if (!updated) { res.status(404).json({ message: "Absence introuvable." }); return; }
+  res.json({ absence: await enrichirAbsence(updated, true) });
+});
+
+/* ── DELETE /api/absences/:id/supprimer ─────────────────── */
+router.delete("/absences/:id/supprimer", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const id = normalizeId(req.params["id"]);
+  const roles = ["dev", "directeur"];
+  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
+
+  const [deleted] = await db.delete(absencesTable)
+    .where(and(eq(absencesTable.id, id), eq(absencesTable.etablissement_id, user.etablissement_id ?? "")))
+    .returning();
+
+  if (!deleted) { res.status(404).json({ message: "Absence introuvable." }); return; }
+  res.json({ message: "Absence supprimée." });
+});
+
+/* ── POST /api/absences/:id/justifier ───────────────────── */
+router.post("/absences/:id/justifier", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const id = normalizeId(req.params["id"]);
+  const { motif, document_url } = req.body as Record<string, string>;
+  if (!motif) { res.status(400).json({ message: "Le motif est obligatoire." }); return; }
+
+  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, id)).limit(1);
+  if (!absence) { res.status(404).json({ message: "Absence introuvable." }); return; }
+
+  if (user.role === "parent") {
+    const enfants = await db.select().from(parentsElevesTable)
+      .where(and(eq(parentsElevesTable.utilisateur_id, user.id), eq(parentsElevesTable.eleve_id, absence.eleve_id)));
+    if (enfants.length === 0) { res.status(403).json({ message: "Accès refusé." }); return; }
+  } else if (!["dev", "directeur", "censeur"].includes(user.role)) {
+    res.status(403).json({ message: "Accès refusé." }); return;
+  }
+
+  if (absence.statut === "justifiee") {
+    res.status(400).json({ message: "Cette absence est déjà justifiée." }); return;
+  }
+
+  await db.update(absencesTable).set({ statut: "en_attente", updated_at: new Date() })
+    .where(eq(absencesTable.id, id));
+
+  const [justification] = await db.insert(justificationsTable).values({
+    absence_id: id,
+    soumis_par: user.id,
+    motif,
+    document_url: document_url ?? null,
+    statut: "en_attente",
+  }).returning();
+
+  const directeur = await getDirecteurEtablissement(absence.etablissement_id);
+  if (directeur) {
+    await creerNotification({
+      etablissement_id: absence.etablissement_id,
+      destinataire_id: directeur.id,
+      type: "message",
+      titre: "Nouvelle justification soumise",
+      contenu: `Une justification a été soumise pour une absence du ${absence.date_absence}.`,
+      lien: "/absences",
+    });
+  }
+
+  res.status(201).json({ justification });
+});
+
+/* ── GET /api/justifications/liste ──────────────────────── */
+router.get("/justifications/liste", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const roles = ["dev", "directeur", "censeur"];
+  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
+
+  const { statut, date_debut, date_fin } = req.query as Record<string, string>;
+  const page = Math.max(1, parseInt((req.query["page"] as string) || "1", 10));
+  const limit = Math.min(100, Math.max(1, parseInt((req.query["limit"] as string) || "20", 10)));
+
+  const conditions: ReturnType<typeof eq>[] = [];
+  if (statut) conditions.push(eq(justificationsTable.statut, statut as "en_attente" | "validee" | "rejetee"));
+
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+  const [{ total }] = await db.select({ total: count() }).from(justificationsTable).where(whereClause);
+  const rows = await db.select().from(justificationsTable).where(whereClause)
+    .orderBy(desc(justificationsTable.created_at)).limit(limit).offset((page - 1) * limit);
+
+  const justifications = await Promise.all(rows.map(async j => {
+    const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, j.absence_id)).limit(1);
+    const [soumis] = await db.select({ nom: utilisateursTable.nom }).from(utilisateursTable).where(eq(utilisateursTable.id, j.soumis_par)).limit(1);
+    return { ...j, soumis_par_nom: soumis?.nom ?? "", absence: absence ?? null };
+  }));
+
+  res.json({ justifications, total });
+});
+
+/* ── PUT /api/justifications/:id/traiter ──────────────────── */
+router.put("/justifications/:id/traiter", authMiddleware, verifierLicence, async (req, res) => {
+  const user = req.user!;
+  const id = normalizeId(req.params["id"]);
+  const roles = ["dev", "directeur", "censeur"];
+  if (!roles.includes(user.role)) { res.status(403).json({ message: "Accès refusé." }); return; }
+
+  const { decision, commentaire } = req.body as { decision: "validee" | "rejetee"; commentaire?: string };
+  if (!decision || !["validee", "rejetee"].includes(decision)) {
+    res.status(400).json({ message: "Décision invalide." }); return;
+  }
+
+  const [justification] = await db.select().from(justificationsTable).where(eq(justificationsTable.id, id)).limit(1);
+  if (!justification) { res.status(404).json({ message: "Justification introuvable." }); return; }
+
+  const [updated] = await db.update(justificationsTable).set({
+    statut: decision,
+    traite_par: user.id,
+    date_traitement: new Date().toISOString().split("T")[0] ?? null,
+    commentaire_traitement: commentaire ?? null,
+    updated_at: new Date(),
+  }).where(eq(justificationsTable.id, id)).returning();
+
+  const newAbsenceStatut = decision === "validee" ? "justifiee" : "rejetee";
+  await db.update(absencesTable).set({ statut: newAbsenceStatut, updated_at: new Date() })
+    .where(eq(absencesTable.id, justification.absence_id));
+
+  const [absence] = await db.select().from(absencesTable).where(eq(absencesTable.id, justification.absence_id)).limit(1);
+  if (absence) {
+    const parentId = await getParentEleve(absence.eleve_id);
+    if (parentId) {
+      await envoyerNotificationJustification({
+        etablissement_id: absence.etablissement_id,
+        parent_id: parentId,
+        statut: decision,
+        date_absence: absence.date_absence,
+        commentaire: commentaire ?? null,
+      });
+    }
+  }
+
+  res.json({ justification: updated });
 });
 
 export { declencherNotificationsAbsence };
