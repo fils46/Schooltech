@@ -180,6 +180,46 @@ router.post("/auth/reset-password", async (req, res): Promise<void> => {
 });
 
 // POST /auth/change-password
+router.put("/auth/profil", authMiddleware, async (req, res): Promise<void> => {
+  const { email, nom, prenom } = req.body as { email?: unknown; nom?: unknown; prenom?: unknown };
+  const updates: Partial<{ email: string; nom: string; prenom: string }> = {};
+  if (email !== undefined) {
+    if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      res.status(400).json({ message: "Adresse email invalide." });
+      return;
+    }
+    updates.email = email;
+  }
+  if (nom !== undefined) {
+    if (typeof nom !== "string" || nom.trim().length === 0) {
+      res.status(400).json({ message: "Nom invalide." });
+      return;
+    }
+    updates.nom = nom.trim();
+  }
+  if (prenom !== undefined) {
+    if (typeof prenom !== "string") {
+      res.status(400).json({ message: "Prénom invalide." });
+      return;
+    }
+    updates.prenom = prenom.trim();
+  }
+  if (Object.keys(updates).length === 0) {
+    res.status(400).json({ message: "Aucun champ à mettre à jour." });
+    return;
+  }
+  const [updated] = await db
+    .update(utilisateursTable)
+    .set(updates)
+    .where(eq(utilisateursTable.id, req.user!.id))
+    .returning({ id: utilisateursTable.id, email: utilisateursTable.email, nom: utilisateursTable.nom });
+  if (!updated) {
+    res.status(404).json({ message: "Utilisateur introuvable." });
+    return;
+  }
+  res.json({ message: "Profil mis à jour avec succès.", utilisateur: updated });
+});
+
 router.post("/auth/change-password", authMiddleware, async (req, res): Promise<void> => {
   const parsed = ChangePasswordBody.safeParse(req.body);
   if (!parsed.success) {
