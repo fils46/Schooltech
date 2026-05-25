@@ -13,6 +13,8 @@ import {
   getListerEnfantsParentQueryKey,
   useListerUtilisateurs,
   getListerUtilisateursQueryKey,
+  useListerClasses,
+  getListerClassesQueryKey,
   type LierParentBodyLien,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,7 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft, UserSquare, Info, Users, FileText, Clock,
   Edit3, ShieldAlert, Loader2, X, Check, Upload, Trash2,
-  Download, ExternalLink, Eye, Plus, UserCircle,
+  Download, ExternalLink, Eye, Plus, UserCircle, GraduationCap,
 } from "lucide-react";
 
 /* ─── Badge statut ───────────────────────────────────────── */
@@ -131,6 +133,108 @@ function ModalChangerStatut({
               Confirmer
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Modal affecter classe ───────────────────────────────── */
+function ModalAffecterClasse({ eleveId, classeActuelle, onClose, onSuccess }: {
+  eleveId: string;
+  classeActuelle?: { id: string; nom: string } | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const { toast } = useToast();
+  const token = localStorage.getItem("m15_token") ?? "";
+  const [classeId, setClasseId] = useState(classeActuelle?.id ?? "");
+  const [loading, setLoading] = useState(false);
+
+  const { data: classesData } = useListerClasses(undefined, {
+    query: { queryKey: getListerClassesQueryKey(), staleTime: 60_000 },
+  });
+  const classes = (classesData as any)?.classes ?? [];
+
+  const handleSubmit = async () => {
+    if (!classeId) return;
+    setLoading(true);
+    try {
+      const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+      const res = await fetch(`${basePath}/api/eleves/${eleveId}/classe`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ classe_id: classeId }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message ?? "Erreur");
+      }
+      const data = await res.json();
+      toast({ title: "Classe affectée", description: data.message });
+      onSuccess();
+    } catch (err: unknown) {
+      toast({ title: "Erreur", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.7)" }} onClick={onClose} />
+      <div className="relative rounded-2xl p-6 w-full max-w-md space-y-5"
+        style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)", zIndex: 1 }}>
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-lg" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
+            {classeActuelle ? "Changer de classe" : "Affecter à une classe"}
+          </h3>
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg"
+            style={{ background: "var(--elevate-1)", color: "var(--m15-muted)" }}>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {classeActuelle && (
+          <p className="text-xs rounded-lg px-3 py-2" style={{ background: "rgba(0,128,255,0.08)", color: "#0080FF", border: "1px solid rgba(0,128,255,0.2)" }}>
+            Classe actuelle : <strong>{classeActuelle.nom}</strong>
+          </p>
+        )}
+
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-widest mb-2"
+            style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>
+            Sélectionner une classe
+          </label>
+          {classes.length === 0 ? (
+            <p className="text-sm" style={{ color: "var(--m15-muted)" }}>Aucune classe disponible pour cette année scolaire.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
+              {classes.map((c: { id: string; nom: string }) => (
+                <button key={c.id} type="button" onClick={() => setClasseId(c.id)}
+                  className="py-2.5 px-3 rounded-xl text-sm font-semibold text-left transition-all"
+                  style={{
+                    background: classeId === c.id ? "rgba(0,201,167,0.12)" : "var(--elevate-1)",
+                    border: `1px solid ${classeId === c.id ? "#00C9A7" : "var(--m15-border)"}`,
+                    color: classeId === c.id ? "#00C9A7" : "var(--m15-muted)",
+                  }}>
+                  {c.nom}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-3 pt-1">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
+            style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}>
+            Annuler
+          </button>
+          <button onClick={handleSubmit} disabled={!classeId || loading}
+            className="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+            style={{ background: classeId ? "#00C9A7" : "rgba(0,201,167,0.2)", color: classeId ? "#0A0E27" : "var(--m15-muted)" }}>
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" />Confirmer</>}
+          </button>
         </div>
       </div>
     </div>
@@ -315,7 +419,12 @@ function ModalSaisirMatricule({
 }
 
 /* ─── Onglet Informations ─────────────────────────────────── */
-function TabInfos({ eleve, canManage, onSaisirMatricule }: { eleve: Record<string, unknown>; canManage: boolean; onSaisirMatricule: () => void }) {
+function TabInfos({ eleve, canManage, onSaisirMatricule, onAffecterClasse }: {
+  eleve: Record<string, unknown>;
+  canManage: boolean;
+  onSaisirMatricule: () => void;
+  onAffecterClasse: () => void;
+}) {
   const sfLabel: Record<string, string> = { pere_mere: "Père et mère", mere: "Mère seule", pere: "Père seul", tuteur: "Sous tutelle" };
   const statutMatricule = String(eleve.matricule_statut ?? "en_attente");
   const classeActuelle = eleve.classe_actuelle as { id: string; nom: string } | null | undefined;
@@ -340,15 +449,25 @@ function TabInfos({ eleve, canManage, onSaisirMatricule }: { eleve: Record<strin
       <div className="flex items-center px-4 py-3 gap-4 flex-wrap">
         <span className="text-xs w-40 flex-shrink-0 font-semibold uppercase tracking-wide"
           style={{ color: "var(--m15-muted)", fontFamily: "'Syne', sans-serif" }}>Classe</span>
-        {classeActuelle ? (
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg"
-            style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
-            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            {classeActuelle.nom}
-          </span>
-        ) : (
-          <span className="text-sm italic" style={{ color: "var(--m15-muted)" }}>Aucune classe affectée pour l'année en cours</span>
-        )}
+        <div className="flex items-center gap-3 flex-wrap">
+          {classeActuelle ? (
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg"
+              style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.2)" }}>
+              <GraduationCap className="w-3 h-3" />
+              {classeActuelle.nom}
+            </span>
+          ) : (
+            <span className="text-sm italic" style={{ color: "var(--m15-muted)" }}>Aucune classe affectée pour l'année en cours</span>
+          )}
+          {canManage && (
+            <button onClick={onAffecterClasse}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all"
+              style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}>
+              <GraduationCap className="w-3 h-3" />
+              {classeActuelle ? "Changer de classe" : "Affecter à une classe"}
+            </button>
+          )}
+        </div>
       </div>
       {/* Ligne matricule spéciale */}
       <div className="flex items-center px-4 py-3 gap-4 flex-wrap">
@@ -696,6 +815,7 @@ export default function EleveDetail() {
   const [activeTab, setActiveTab] = useState("infos");
   const [showStatutModal, setShowStatutModal] = useState(false);
   const [showMatriculeModal, setShowMatriculeModal] = useState(false);
+  const [showClasseModal, setShowClasseModal] = useState(false);
 
   const { data: eleve, isLoading, error } = useGetEleve(
     eleveId,
@@ -762,6 +882,17 @@ export default function EleveDetail() {
           onClose={() => setShowMatriculeModal(false)}
           onSuccess={() => {
             setShowMatriculeModal(false);
+            queryClient.invalidateQueries({ queryKey: getGetEleveQueryKey(eleveId) });
+          }}
+        />
+      )}
+      {showClasseModal && (
+        <ModalAffecterClasse
+          eleveId={eleveId}
+          classeActuelle={e.classe_actuelle as { id: string; nom: string } | null}
+          onClose={() => setShowClasseModal(false)}
+          onSuccess={() => {
+            setShowClasseModal(false);
             queryClient.invalidateQueries({ queryKey: getGetEleveQueryKey(eleveId) });
           }}
         />
@@ -873,7 +1004,7 @@ export default function EleveDetail() {
                 ))}
               </div>
             ) : (
-              <TabInfos eleve={e} canManage={canManage} onSaisirMatricule={() => setShowMatriculeModal(true)} />
+              <TabInfos eleve={e} canManage={canManage} onSaisirMatricule={() => setShowMatriculeModal(true)} onAffecterClasse={() => setShowClasseModal(true)} />
             )
           )}
           {activeTab === "parents" && (

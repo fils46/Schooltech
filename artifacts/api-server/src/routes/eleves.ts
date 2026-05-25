@@ -531,6 +531,77 @@ router.put(
   }
 );
 
+/* ─── PUT /eleves/:id/classe ─────────────────────────────── */
+router.put(
+  "/eleves/:id/classe",
+  authMiddleware,
+  verifierLicence,
+  requireRole("directeur", "censeur"),
+  async (req, res): Promise<void> => {
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const user = req.user!;
+    const { classe_id } = req.body as { classe_id?: string };
+
+    if (!classe_id?.trim()) {
+      res.status(400).json({ message: "L'identifiant de la classe est requis." });
+      return;
+    }
+
+    const [eleve] = await db.select().from(elevesTable).where(eq(elevesTable.id, rawId));
+    if (!eleve) { res.status(404).json({ message: "Élève introuvable." }); return; }
+    if (user.role !== "dev" && user.etablissement_id !== eleve.etablissement_id) {
+      res.status(403).json({ message: "Accès refusé." }); return;
+    }
+
+    const etablissementId = eleve.etablissement_id!;
+
+    const [anneeActive] = await db
+      .select({ id: anneesScolairesTable.id })
+      .from(anneesScolairesTable)
+      .where(and(eq(anneesScolairesTable.etablissement_id, etablissementId), eq(anneesScolairesTable.est_active, true)))
+      .limit(1);
+
+    if (!anneeActive) {
+      res.status(400).json({ message: "Aucune année scolaire active pour cet établissement." });
+      return;
+    }
+
+    const [classe] = await db
+      .select({ id: classesTable.id, nom: classesTable.nom })
+      .from(classesTable)
+      .where(and(eq(classesTable.id, classe_id.trim()), eq(classesTable.etablissement_id, etablissementId)))
+      .limit(1);
+
+    if (!classe) {
+      res.status(404).json({ message: "Classe introuvable dans cet établissement." });
+      return;
+    }
+
+    await db
+      .insert(eleveClassesTable)
+      .values({
+        eleve_id: eleve.id,
+        classe_id: classe.id,
+        annee_scolaire_id: anneeActive.id,
+        date_affectation: new Date().toISOString().slice(0, 10),
+        statut: "actif",
+      })
+      .onConflictDoUpdate({
+        target: [eleveClassesTable.eleve_id, eleveClassesTable.annee_scolaire_id],
+        set: {
+          classe_id: classe.id,
+          statut: "actif",
+          date_affectation: new Date().toISOString().slice(0, 10),
+          updated_at: new Date(),
+        },
+      });
+
+    req.log.info({ eleveId: rawId, classeId: classe.id, par: user.id }, "Classe affectée");
+
+    res.json({ success: true, message: `Élève affecté à la classe ${classe.nom}.`, classe });
+  }
+);
+
 /* ─── PUT /eleves/:id ────────────────────────────────────── */
 router.put(
   "/eleves/:id",
