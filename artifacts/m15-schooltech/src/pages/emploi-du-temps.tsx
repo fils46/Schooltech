@@ -754,6 +754,57 @@ function TabEmploi({
 }
 
 /* ─── Onglet Créneaux ─────────────────────────────────────── */
+/* ─── Modal de confirmation générique ───────────────────── */
+function ModalConfirm({
+  title, description, labelConfirm = "Confirmer", danger = false,
+  onConfirm, onClose, loading = false,
+}: {
+  title: string; description?: string; labelConfirm?: string; danger?: boolean;
+  onConfirm: () => void; onClose: () => void; loading?: boolean;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.65)" }}
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div
+        className="w-full max-w-sm rounded-2xl p-6 space-y-4"
+        style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 mt-0.5 w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ background: danger ? "rgba(239,68,68,0.12)" : "rgba(251,191,36,0.12)" }}>
+            <AlertTriangle className="w-5 h-5" style={{ color: danger ? "#ef4444" : "#fbbf24" }} />
+          </div>
+          <div>
+            <h3 className="font-bold text-base" style={{ color: "var(--m15-white)", fontFamily: "'Syne', sans-serif" }}>
+              {title}
+            </h3>
+            {description && (
+              <p className="text-sm mt-1" style={{ color: "var(--m15-muted)" }}>{description}</p>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-3 pt-1">
+          <button
+            onClick={onClose}
+            disabled={loading}
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
+            style={{ background: "var(--m15-card2)", color: "var(--m15-muted)" }}>
+            Annuler
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className="flex-1 py-2.5 rounded-xl text-sm font-bold"
+            style={{ background: danger ? "#ef4444" : "#f59e0b", color: "#fff", opacity: loading ? 0.7 : 1 }}>
+            {loading ? "Traitement..." : labelConfirm}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TabCreneaux({ etablissementId }: { etablissementId: string }) {
   const { toast } = useToast();
   const { data: raw, refetch } = useListerCreneaux({ etablissement_id: etablissementId });
@@ -766,6 +817,7 @@ function TabCreneaux({ etablissementId }: { etablissementId: string }) {
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState<Record<string, unknown> | null>(null);
   const [form, setForm] = useState({ heure_debut: "", heure_fin: "", libelle: "", ordre: "" });
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   function resetForm() {
     setForm({ heure_debut: "", heure_fin: "", libelle: "", ordre: "" });
@@ -818,14 +870,19 @@ function TabCreneaux({ etablissementId }: { etablissementId: string }) {
   }
 
   function handleDelete(id: string) {
-    if (!confirm("Supprimer ce créneau ?")) return;
+    setConfirmId(id);
+  }
+
+  function confirmDelete() {
+    if (!confirmId) return;
     supprimerMut.mutate(
-      { id },
+      { id: confirmId },
       {
-        onSuccess: () => { toast({ title: "Créneau supprimé." }); void refetch(); },
+        onSuccess: () => { toast({ title: "Créneau supprimé." }); setConfirmId(null); void refetch(); },
         onError: (e: unknown) => {
           const msg = (e as { response?: { data?: { message?: string } } })?.response?.data?.message ?? "Erreur";
           toast({ title: "Erreur", description: msg, variant: "destructive" });
+          setConfirmId(null);
         },
       }
     );
@@ -942,6 +999,18 @@ function TabCreneaux({ etablissementId }: { etablissementId: string }) {
           ))
         )}
       </div>
+
+      {confirmId && (
+        <ModalConfirm
+          title="Supprimer ce créneau ?"
+          description="Cette action est irréversible. Le créneau sera définitivement supprimé."
+          labelConfirm="Supprimer"
+          danger
+          loading={supprimerMut.isPending}
+          onConfirm={confirmDelete}
+          onClose={() => setConfirmId(null)}
+        />
+      )}
     </div>
   );
 }
@@ -968,6 +1037,7 @@ function TabSalles({ etablissementId, canEdit }: { etablissementId: string; canE
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState<Record<string, unknown> | null>(null);
   const [form, setForm] = useState({ nom: "", capacite: "", type: "classe" });
+  const [confirmDesactiverId, setConfirmDesactiverId] = useState<string | null>(null);
 
   function resetForm() {
     setForm({ nom: "", capacite: "", type: "classe" });
@@ -1020,14 +1090,19 @@ function TabSalles({ etablissementId, canEdit }: { etablissementId: string; canE
   }
 
   function handleDesactiver(id: string) {
-    if (!confirm("Désactiver cette salle ?")) return;
+    setConfirmDesactiverId(id);
+  }
+
+  function confirmDesactiver() {
+    if (!confirmDesactiverId) return;
     desactiverMut.mutate(
-      { id },
+      { id: confirmDesactiverId },
       {
-        onSuccess: () => { toast({ title: "Salle désactivée." }); void refetch(); },
+        onSuccess: () => { toast({ title: "Salle désactivée." }); setConfirmDesactiverId(null); void refetch(); },
         onError: (e: unknown) => {
           const msg = (e as { response?: { data?: { message?: string } } })?.response?.data?.message ?? "Erreur";
           toast({ title: "Erreur", description: msg, variant: "destructive" });
+          setConfirmDesactiverId(null);
         },
       }
     );
@@ -1176,6 +1251,17 @@ function TabSalles({ etablissementId, canEdit }: { etablissementId: string; canE
             </form>
           </div>
         </div>
+      )}
+
+      {confirmDesactiverId && (
+        <ModalConfirm
+          title="Désactiver cette salle ?"
+          description="La salle ne sera plus disponible pour les emplois du temps. Vous pourrez la réactiver ultérieurement."
+          labelConfirm="Désactiver"
+          loading={desactiverMut.isPending}
+          onConfirm={confirmDesactiver}
+          onClose={() => setConfirmDesactiverId(null)}
+        />
       )}
     </div>
   );
