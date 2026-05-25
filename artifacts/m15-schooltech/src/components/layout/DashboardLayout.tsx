@@ -48,28 +48,47 @@ const navConfig: Record<string, Section[]> = {
         { label: "Années scolaires", href: "/annees-scolaires", icon: CalendarDays },
         { label: "Filières",         href: "/filieres",         icon: Layers },
         { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
-        { label: "Salles & Espaces", href: "/salles",            icon: Building  },
+        { label: "Salles & Espaces", href: "/salles",           icon: Building },
         { label: "Matières",         href: "/matieres",         icon: BookMarked },
         { label: "Mat. par classe",  href: "/matieres/classe",  icon: BookMarked },
       ],
     },
     {
-      title: "BULLETINS",
+      title: "ABSENCES",
       links: [
-        { label: "Config. matières",    href: "/matieres-config",        icon: BookMarked },
-        { label: "Config. évaluations", href: "/config-evaluations",     icon: BookMarked },
-        { label: "Bulletins",           href: "/bulletins",              icon: FileSpreadsheet },
-        { label: "Publier résultats",   href: "/publication-bulletins",  icon: Send },
-        { label: "Conseils classe",     href: "/conseils-classe",        icon: UsersRound },
+        { label: "Gestion absences",  href: "/absences",            icon: UserMinus },
+        { label: "Demi-journées",     href: "/saisie-demi-journee", icon: Clock },
+        { label: "Alertes absences",  href: "/alertes-absences",    icon: Bell },
+        { label: "Config. absences",  href: "/config-absences",     icon: Settings },
       ],
     },
     {
-      title: "ANALYTIQUE",
+      title: "BULLETINS",
       links: [
-        { label: "Dashboard analytique",  href: "/analytics",            icon: BarChart3 },
-        { label: "Analyse pédagogique",   href: "/analyse-pedagogique",  icon: TrendingUp },
-        { label: "Analyse présences",     href: "/analyse-presences",    icon: UserMinus },
-        { label: "Rapports & Exports",    href: "/rapports-exports",     icon: FileSpreadsheet },
+        { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
+        { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
+        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
+        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
+        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
+      ],
+    },
+    {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation examens", href: "/examens",               icon: Target },
+        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",   icon: BookOpen },
+        { label: "Épreuves blanches",   href: "/epreuves-blanches",     icon: ClipboardCheck },
+        { label: "Résultats",           href: "/resultats-progression", icon: TrendingUp },
+      ],
+    },
+    {
+      title: "CLÔTURE D'ANNÉE",
+      links: [
+        { label: "Tableau de bord",        href: "/cloture",           icon: GraduationCap },
+        { label: "Critères d'admission",   href: "/cloture/criteres",  icon: Target },
+        { label: "Décisions par classe",   href: "/cloture/decisions", icon: ClipboardCheck },
+        { label: "Validation & Promotion", href: "/cloture/promotion", icon: CheckCircle2 },
+        { label: "Résultats annuels",      href: "/cloture/resultats", icon: FileSpreadsheet },
       ],
     },
     {
@@ -83,39 +102,20 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "EXAMENS",
+      title: "FINANCES",
       links: [
-        { label: "Préparation examens", href: "/examens",              icon: Target },
-        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
-        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+        { label: "Tableau de bord", href: "/finances",             icon: DollarSign },
+        { label: "Honoraires",      href: "/finances/honoraires",  icon: Banknote },
+        { label: "Prestations",     href: "/finances/prestations", icon: Receipt },
       ],
     },
     {
       title: "INFIRMERIE",
       links: [
-        { label: "Tableau de bord",   href: "/infirmerie",                    icon: Heart },
-        { label: "Consultations",     href: "/infirmerie/consultations",      icon: Stethoscope },
-        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",           icon: FileText },
-        { label: "Stocks médicaux",   href: "/infirmerie/stocks",             icon: Package },
-      ],
-    },
-    {
-      title: "FINANCES",
-      links: [
-        { label: "Tableau de bord",   href: "/finances",              icon: DollarSign },
-        { label: "Honoraires",        href: "/finances/honoraires",   icon: Banknote },
-        { label: "Prestations",       href: "/finances/prestations",  icon: Receipt },
-      ],
-    },
-    {
-      title: "CLÔTURE D'ANNÉE",
-      links: [
-        { label: "Tableau de bord",     href: "/cloture",             icon: GraduationCap },
-        { label: "Critères d'admission",href: "/cloture/criteres",  icon: Target },
-        { label: "Décisions par classe",href: "/cloture/decisions", icon: ClipboardCheck },
-        { label: "Validation & Promotion",href: "/cloture/promotion",icon: CheckCircle2 },
-        { label: "Résultats annuels",   href: "/cloture/resultats", icon: FileSpreadsheet },
+        { label: "Tableau de bord",   href: "/infirmerie",                icon: Heart },
+        { label: "Consultations",     href: "/infirmerie/consultations",  icon: Stethoscope },
+        { label: "Dossiers médicaux", href: "/infirmerie/dossiers",       icon: FileText },
+        { label: "Stocks médicaux",   href: "/infirmerie/stocks",         icon: Package },
       ],
     },
     {
@@ -133,12 +133,12 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "ABSENCES",
+      title: "ANALYTIQUE",
       links: [
-        { label: "Gestion absences",  href: "/absences",            icon: UserMinus },
-        { label: "Demi-journées",     href: "/saisie-demi-journee", icon: Clock },
-        { label: "Alertes absences",  href: "/alertes-absences",    icon: Bell },
-        { label: "Config. absences",  href: "/config-absences",     icon: Settings },
+        { label: "Dashboard analytique", href: "/analytics",            icon: BarChart3 },
+        { label: "Analyse pédagogique",  href: "/analyse-pedagogique",  icon: TrendingUp },
+        { label: "Analyse présences",    href: "/analyse-presences",    icon: UserMinus },
+        { label: "Rapports & Exports",   href: "/rapports-exports",     icon: FileSpreadsheet },
       ],
     },
     {
@@ -165,30 +165,49 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "ANALYTIQUE",
+      title: "ACADÉMIQUE",
       links: [
-        { label: "Dashboard analytique", href: "/analytics",           icon: BarChart3 },
-        { label: "Analyse pédagogique",  href: "/analyse-pedagogique", icon: TrendingUp },
-        { label: "Analyse présences",    href: "/analyse-presences",   icon: UserMinus },
-        { label: "Rapports",             href: "/rapports-exports",    icon: FileSpreadsheet },
+        { label: "Classes",          href: "/classes",          icon: UsersRound },
+        { label: "Professeurs",      href: "/professeurs",      icon: GraduationCap },
+        { label: "Élèves",           href: "/eleves",           icon: UserSquare },
+        { label: "Emploi du temps",  href: "/emploi-du-temps",  icon: Calendar },
+        { label: "Salles & Espaces", href: "/salles",           icon: Building },
       ],
     },
     {
-      title: "ACADÉMIQUE",
+      title: "ABSENCES",
       links: [
-        { label: "Classes",         href: "/classes",         icon: UsersRound },
-        { label: "Professeurs",     href: "/professeurs",     icon: GraduationCap },
-        { label: "Élèves",          href: "/eleves",          icon: UserSquare },
+        { label: "Gestion absences",  href: "/absences",            icon: UserMinus },
+        { label: "Demi-journées",     href: "/saisie-demi-journee", icon: Clock },
+        { label: "Alertes absences",  href: "/alertes-absences",    icon: Bell },
+        { label: "Config. absences",  href: "/config-absences",     icon: Settings },
       ],
     },
     {
       title: "BULLETINS",
       links: [
-        { label: "Config. matières",    href: "/matieres-config",        icon: BookMarked },
-        { label: "Config. évaluations", href: "/config-evaluations",     icon: BookMarked },
-        { label: "Bulletins",           href: "/bulletins",              icon: FileSpreadsheet },
-        { label: "Publier résultats",   href: "/publication-bulletins",  icon: Send },
-        { label: "Conseils classe",     href: "/conseils-classe",        icon: UsersRound },
+        { label: "Config. matières",    href: "/matieres-config",       icon: BookMarked },
+        { label: "Config. évaluations", href: "/config-evaluations",    icon: BookMarked },
+        { label: "Bulletins",           href: "/bulletins",             icon: FileSpreadsheet },
+        { label: "Publier résultats",   href: "/publication-bulletins", icon: Send },
+        { label: "Conseils classe",     href: "/conseils-classe",       icon: UsersRound },
+      ],
+    },
+    {
+      title: "EXAMENS",
+      links: [
+        { label: "Préparation examens", href: "/examens",               icon: Target },
+        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",   icon: BookOpen },
+        { label: "Épreuves blanches",   href: "/epreuves-blanches",     icon: ClipboardCheck },
+        { label: "Résultats",           href: "/resultats-progression", icon: TrendingUp },
+      ],
+    },
+    {
+      title: "CLÔTURE D'ANNÉE",
+      links: [
+        { label: "Tableau de bord",      href: "/cloture",           icon: GraduationCap },
+        { label: "Décisions par classe", href: "/cloture/decisions", icon: ClipboardCheck },
+        { label: "Résultats annuels",    href: "/cloture/resultats", icon: FileSpreadsheet },
       ],
     },
     {
@@ -200,28 +219,11 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "QUOTIDIEN",
+      title: "FINANCES",
       links: [
-        { label: "Emploi du temps", href: "/emploi-du-temps", icon: Calendar },
-        { label: "Salles & Espaces",href: "/salles",          icon: Building  },
-        { label: "Absences",        href: "/absences",        icon: UserMinus },
-        { label: "Demi-journées",   href: "/saisie-demi-journee", icon: Clock },
-        { label: "Alertes absences",href: "/alertes-absences", icon: Bell },
-      ],
-    },
-    {
-      title: "CONFIGURATION",
-      links: [
-        { label: "Config. absences", href: "/config-absences", icon: Settings },
-      ],
-    },
-    {
-      title: "EXAMENS",
-      links: [
-        { label: "Préparation examens", href: "/examens",              icon: Target },
-        { label: "Sujets BEPC/BAC",     href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",   href: "/epreuves-blanches",    icon: ClipboardCheck },
-        { label: "Résultats",           href: "/resultats-progression",icon: TrendingUp },
+        { label: "Tableau de bord", href: "/finances",             icon: DollarSign },
+        { label: "Honoraires",      href: "/finances/honoraires",  icon: Banknote },
+        { label: "Prestations",     href: "/finances/prestations", icon: Receipt },
       ],
     },
     {
@@ -231,22 +233,6 @@ const navConfig: Record<string, Section[]> = {
         { label: "Consultations",     href: "/infirmerie/consultations", icon: Stethoscope },
         { label: "Dossiers médicaux", href: "/infirmerie/dossiers",      icon: FileText },
         { label: "Stocks médicaux",   href: "/infirmerie/stocks",        icon: Package },
-      ],
-    },
-    {
-      title: "FINANCES",
-      links: [
-        { label: "Tableau de bord",  href: "/finances",             icon: DollarSign },
-        { label: "Honoraires",       href: "/finances/honoraires",  icon: Banknote },
-        { label: "Prestations",      href: "/finances/prestations", icon: Receipt },
-      ],
-    },
-    {
-      title: "CLÔTURE D'ANNÉE",
-      links: [
-        { label: "Tableau de bord",      href: "/cloture",             icon: GraduationCap },
-        { label: "Décisions par classe", href: "/cloture/decisions", icon: ClipboardCheck },
-        { label: "Résultats annuels",    href: "/cloture/resultats",  icon: FileSpreadsheet },
       ],
     },
     {
@@ -264,6 +250,15 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
+      title: "ANALYTIQUE",
+      links: [
+        { label: "Dashboard analytique", href: "/analytics",           icon: BarChart3 },
+        { label: "Analyse pédagogique",  href: "/analyse-pedagogique", icon: TrendingUp },
+        { label: "Analyse présences",    href: "/analyse-presences",   icon: UserMinus },
+        { label: "Rapports",             href: "/rapports-exports",    icon: FileSpreadsheet },
+      ],
+    },
+    {
       title: "COMMUNICATION",
       links: [
         { label: "Annonces",      href: "/annonces",      icon: Megaphone },
@@ -274,12 +269,6 @@ const navConfig: Record<string, Section[]> = {
     },
   ],
   professeur: [
-    {
-      title: "MON ANALYTIQUE",
-      links: [
-        { label: "Tableau de bord", href: "/analytics-professeur", icon: BarChart3 },
-      ],
-    },
     {
       title: "MES COURS",
       links: [
@@ -296,11 +285,25 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "EXAMENS",
+      title: "EXAMENS & RÉSULTATS",
       links: [
-        { label: "Sujets BEPC/BAC",   href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
-        { label: "Résultats classe",   href: "/resultats-progression",icon: TrendingUp },
+        { label: "Sujets BEPC/BAC",          href: "/bibliotheque-sujets",  icon: BookOpen },
+        { label: "Épreuves blanches",         href: "/epreuves-blanches",    icon: ClipboardCheck },
+        { label: "Résultats classe",          href: "/resultats-progression",icon: TrendingUp },
+        { label: "Résultats de mes classes",  href: "/cloture/resultats",    icon: GraduationCap },
+      ],
+    },
+    {
+      title: "ANALYTIQUE",
+      links: [
+        { label: "Tableau de bord", href: "/analytics-professeur", icon: BarChart3 },
+      ],
+    },
+    {
+      title: "BIBLIOTHÈQUE",
+      links: [
+        { label: "Catalogue",  href: "/bibliotheque",    icon: Library },
+        { label: "Mes dépôts", href: "/depot-ressource", icon: Upload },
       ],
     },
     {
@@ -311,22 +314,9 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "BIBLIOTHÈQUE",
-      links: [
-        { label: "Catalogue",    href: "/bibliotheque",   icon: Library },
-        { label: "Mes dépôts",   href: "/depot-ressource",icon: Upload },
-      ],
-    },
-    {
       title: "MES HONORAIRES",
       links: [
         { label: "Ma feuille d'heures", href: "/finances/ma-feuille", icon: Banknote },
-      ],
-    },
-    {
-      title: "RÉSULTATS ANNUELS",
-      links: [
-        { label: "Résultats de mes classes", href: "/cloture/resultats", icon: GraduationCap },
       ],
     },
     {
@@ -344,26 +334,25 @@ const navConfig: Record<string, Section[]> = {
       title: "PRINCIPAL",
       links: [
         { label: "Tableau de bord", href: "/eleve/dashboard", icon: LayoutDashboard },
-        { label: "Mes bulletins",   href: "/mes-bulletins", icon: FileSpreadsheet },
-        { label: "Notes",           href: "/notes",         icon: Award },
+        { label: "Mes bulletins",   href: "/mes-bulletins",   icon: FileSpreadsheet },
+        { label: "Notes",           href: "/notes",            icon: Award },
       ],
     },
     {
-      title: "ÉCOLE",
+      title: "QUOTIDIEN",
       links: [
-        { label: "Emploi du temps", href: "/mon-edt-eleve",   icon: Calendar },
-        { label: "Mes absences",    href: "/mes-absences",    icon: UserMinus },
-        { label: "Bibliothèque",    href: "/bibliotheque",    icon: Library },
+        { label: "Emploi du temps", href: "/mon-edt-eleve", icon: Calendar },
+        { label: "Mes absences",    href: "/mes-absences",  icon: UserMinus },
       ],
     },
     {
       title: "EXAMENS",
       links: [
-        { label: "Préparation",     href: "/examens",              icon: Target },
-        { label: "Sujets BEPC/BAC", href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",href: "/epreuves-blanches",   icon: ClipboardCheck },
-        { label: "Mon planning",    href: "/planning-revision",    icon: Calendar },
-        { label: "Mes résultats",   href: "/resultats-progression",icon: TrendingUp },
+        { label: "Préparation",      href: "/examens",               icon: Target },
+        { label: "Sujets BEPC/BAC",  href: "/bibliotheque-sujets",   icon: BookOpen },
+        { label: "Épreuves blanches",href: "/epreuves-blanches",     icon: ClipboardCheck },
+        { label: "Mon planning",     href: "/planning-revision",     icon: Calendar },
+        { label: "Mes résultats",    href: "/resultats-progression", icon: TrendingUp },
       ],
     },
     {
@@ -392,17 +381,17 @@ const navConfig: Record<string, Section[]> = {
   ],
   educateur: [
     {
-      title: "TABLEAU DE BORD",
+      title: "DISCIPLINE",
       links: [
-        { label: "Incidents",        href: "/discipline/incidents", icon: ShieldAlert },
-        { label: "Sanctions",        href: "/discipline/sanctions", icon: ClipboardList },
-        { label: "Statistiques",     href: "/discipline/stats",     icon: BarChart3 },
+        { label: "Incidents",    href: "/discipline/incidents", icon: ShieldAlert },
+        { label: "Sanctions",    href: "/discipline/sanctions", icon: ClipboardList },
+        { label: "Statistiques", href: "/discipline/stats",     icon: BarChart3 },
       ],
     },
     {
       title: "SUIVI",
       links: [
-        { label: "Absences (lecture)", href: "/absences",          icon: UserMinus },
+        { label: "Absences (lecture)", href: "/absences",         icon: UserMinus },
         { label: "Cahier de textes",   href: "/cahier-de-textes", icon: BookOpen },
       ],
     },
@@ -418,11 +407,11 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "INFIRMERIE",
       links: [
-        { label: "Tableau de bord",      href: "/infirmerie",                       icon: Heart },
+        { label: "Tableau de bord",       href: "/infirmerie",                       icon: Heart },
         { label: "Nouvelle consultation", href: "/infirmerie/nouvelle-consultation", icon: Stethoscope },
-        { label: "Toutes les consult.",  href: "/infirmerie/consultations",         icon: ClipboardList },
-        { label: "Dossiers médicaux",    href: "/infirmerie/dossiers",              icon: FileText },
-        { label: "Stocks médicaux",      href: "/infirmerie/stocks",                icon: Package },
+        { label: "Toutes les consult.",   href: "/infirmerie/consultations",         icon: ClipboardList },
+        { label: "Dossiers médicaux",     href: "/infirmerie/dossiers",              icon: FileText },
+        { label: "Stocks médicaux",       href: "/infirmerie/stocks",                icon: Package },
       ],
     },
     {
@@ -443,26 +432,18 @@ const navConfig: Record<string, Section[]> = {
     {
       title: "MON ENFANT",
       links: [
-        { label: "Suivi scolaire",  href: "/suivi-scolaire",    icon: BookOpen },
-        { label: "Bulletins",         href: "/bulletins-parent",  icon: FileSpreadsheet },
-        { label: "Emploi du temps",   href: "/edt-parent",        icon: Calendar },
-        { label: "Absences",          href: "/absences-parent",   icon: UserMinus },
+        { label: "Suivi scolaire",  href: "/suivi-scolaire",   icon: BookOpen },
+        { label: "Bulletins",       href: "/bulletins-parent", icon: FileSpreadsheet },
+        { label: "Emploi du temps", href: "/edt-parent",       icon: Calendar },
+        { label: "Absences",        href: "/absences-parent",  icon: UserMinus },
       ],
     },
     {
       title: "EXAMENS",
       links: [
-        { label: "Sujets BEPC/BAC",    href: "/bibliotheque-sujets",  icon: BookOpen },
-        { label: "Épreuves blanches",  href: "/epreuves-blanches",    icon: ClipboardCheck },
-        { label: "Résultats enfant",   href: "/resultats-progression",icon: TrendingUp },
-      ],
-    },
-    {
-      title: "BIBLIOTHÈQUE",
-      links: [
-        { label: "Catalogue",  href: "/bibliotheque",   icon: Library },
-        { label: "Favoris",    href: "/mes-ressources", icon: Star },
-        { label: "Historique", href: "/mes-ressources", icon: Clock },
+        { label: "Sujets BEPC/BAC",   href: "/bibliotheque-sujets",   icon: BookOpen },
+        { label: "Épreuves blanches", href: "/epreuves-blanches",     icon: ClipboardCheck },
+        { label: "Résultats enfant",  href: "/resultats-progression", icon: TrendingUp },
       ],
     },
     {
@@ -478,15 +459,18 @@ const navConfig: Record<string, Section[]> = {
       ],
     },
     {
-      title: "SCOLARITÉ",
+      title: "BIBLIOTHÈQUE",
       links: [
-        { label: "Ma scolarité", href: "/scolarite-parent", icon: DollarSign },
+        { label: "Catalogue",  href: "/bibliotheque",   icon: Library },
+        { label: "Favoris",    href: "/mes-ressources", icon: Star },
+        { label: "Historique", href: "/mes-ressources", icon: Clock },
       ],
     },
     {
-      title: "FINANCES",
+      title: "SCOLARITÉ & FINANCES",
       links: [
-        { label: "Mes factures", href: "/finances/mes-factures", icon: Receipt },
+        { label: "Ma scolarité", href: "/scolarite-parent",       icon: DollarSign },
+        { label: "Mes factures", href: "/finances/mes-factures",  icon: Receipt },
       ],
     },
     {
