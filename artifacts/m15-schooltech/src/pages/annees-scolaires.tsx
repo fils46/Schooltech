@@ -207,6 +207,62 @@ function ModalTrimestres({ annee, onClose }: { annee: AnneeRow; onClose: () => v
   );
 }
 
+/* ─── Modal confirmation clôture ─────────────────────────── */
+function ModalConfirmCloture({
+  libelle, isPending, onConfirm, onCancel,
+}: { libelle: string; isPending: boolean; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)" }}
+      onClick={e => { if (e.target === e.currentTarget) onCancel(); }}>
+      <div className="w-full max-w-sm rounded-2xl p-6 space-y-5"
+        style={{ background: "var(--m15-card)", border: "1px solid rgba(255,107,107,0.35)", boxShadow: "0 24px 64px rgba(0,0,0,0.5)" }}>
+        {/* Icône */}
+        <div className="flex justify-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={{ background: "rgba(255,107,107,0.12)", border: "1px solid rgba(255,107,107,0.25)" }}>
+            <Lock className="w-6 h-6" style={{ color: "#FF6B6B" }} />
+          </div>
+        </div>
+        {/* Texte */}
+        <div className="text-center space-y-1.5">
+          <h3 className="text-base font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
+            Clôturer l'année {libelle} ?
+          </h3>
+          <p className="text-sm" style={{ color: "var(--m15-muted)" }}>
+            Cette action est <strong style={{ color: "#FF6B6B" }}>irréversible</strong>. L'année sera verrouillée et plus aucune modification ne sera possible.
+          </p>
+        </div>
+        {/* Avertissement */}
+        <div className="flex items-start gap-2 rounded-xl p-3"
+          style={{ background: "rgba(255,107,107,0.08)", border: "1px solid rgba(255,107,107,0.2)" }}>
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#FF6B6B" }} />
+          <p className="text-xs" style={{ color: "#FF6B6B" }}>
+            Assurez-vous d'avoir finalisé toutes les notes, décisions de passage et bulletins avant de continuer.
+          </p>
+        </div>
+        {/* Boutons */}
+        <div className="flex gap-3">
+          <button onClick={onCancel} disabled={isPending}
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all"
+            style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)", color: "var(--m15-muted)" }}>
+            Annuler
+          </button>
+          <button onClick={onConfirm} disabled={isPending}
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+            style={{ background: "linear-gradient(135deg, #FF6B6B, #cc3333)", color: "#fff" }}>
+            {isPending ? (
+              <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" /> Clôture…</>
+            ) : (
+              <><Lock className="w-4 h-4" /> Confirmer la clôture</>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Carte Année ─────────────────────────────────────────── */
 function CarteAnnee({
   annee, canManage, onRefresh, onTrimestres,
@@ -215,6 +271,7 @@ function CarteAnnee({
   const activerMut = useActiverAnneeScolaire();
   const cloturerMut = useCloturerAnneeScolaire();
   const [showTrimestres, setShowTrimestres] = useState(false);
+  const [showCloturModal, setShowCloturModal] = useState(false);
 
   const statut = annee.statut ?? (annee.est_active ? "en_cours" : "a_venir");
   const isActive   = statut === "en_cours";
@@ -229,12 +286,15 @@ function CarteAnnee({
   };
 
   const cloturer = async () => {
-    if (!confirm(`Clôturer l'année ${annee.libelle} ? Action irréversible.`)) return;
     try {
       await cloturerMut.mutateAsync({ id: annee.id });
       toast({ title: "Année clôturée", description: `${annee.libelle} est maintenant clôturée.` });
+      setShowCloturModal(false);
       onRefresh();
-    } catch { toast({ title: "Erreur", variant: "destructive" }); }
+    } catch {
+      toast({ title: "Erreur", variant: "destructive" });
+      setShowCloturModal(false);
+    }
   };
 
   return (
@@ -299,11 +359,10 @@ function CarteAnnee({
             </button>
           )}
           {isActive && (
-            <button onClick={cloturer} disabled={cloturerMut.isPending}
+            <button onClick={() => setShowCloturModal(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold hover:opacity-80 transition-opacity"
               style={{ background: "rgba(255,107,107,0.1)", color: "#FF6B6B" }}>
-              <Lock className="w-3.5 h-3.5" />
-              {cloturerMut.isPending ? "…" : "Clôturer l'année"}
+              <Lock className="w-3.5 h-3.5" /> Clôturer l'année
             </button>
           )}
         </div>
@@ -312,6 +371,15 @@ function CarteAnnee({
         <p className="text-xs flex items-center gap-2" style={{ color: "var(--m15-muted)" }}>
           <Lock className="w-3.5 h-3.5" /> Année clôturée — lecture seule
         </p>
+      )}
+
+      {showCloturModal && (
+        <ModalConfirmCloture
+          libelle={annee.libelle}
+          isPending={cloturerMut.isPending}
+          onConfirm={cloturer}
+          onCancel={() => setShowCloturModal(false)}
+        />
       )}
     </div>
   );
