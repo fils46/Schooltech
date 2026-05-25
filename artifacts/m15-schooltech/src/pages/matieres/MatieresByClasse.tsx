@@ -287,9 +287,18 @@ export default function MatieresByClasse() {
   const { data: anneesData } = useListerAnneesScolaires();
   const annees = anneesData?.annees ?? [];
 
+  /* Extraire l'année numérique depuis le libellé "2025-2026" */
+  const anneeObj = annees.find(a => a.id === anneeId);
+  const anneeNum = anneeObj ? parseInt((anneeObj.libelle ?? "").split("-")[0]) : undefined;
+
+  /* Chercher d'abord par annee_scolaire_id, sinon par annee_scolaire (nombre) */
+  const classesParams = anneeId
+    ? (anneeNum ? { annee_scolaire: anneeNum } : { annee_scolaire_id: anneeId })
+    : undefined;
+
   const { data: classesData } = useListerClasses(
-    anneeId ? { annee_scolaire_id: anneeId } : undefined,
-    { query: { queryKey: getListerClassesQueryKey({ annee_scolaire_id: anneeId }), enabled: !!anneeId } }
+    classesParams,
+    { query: { queryKey: getListerClassesQueryKey(classesParams), enabled: !!anneeId } }
   );
   const classes = classesData?.classes ?? [];
 
