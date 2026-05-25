@@ -110,8 +110,8 @@ router.post("/api/profil/photo", authMiddleware, async (req, res) => {
   }
 
   const approxSizeKb = Math.ceil((photo_base64.length * 3) / 4 / 1024);
-  if (approxSizeKb > 2048) {
-    res.status(400).json({ message: "Image trop grande. Maximum 2 Mo." }); return;
+  if (approxSizeKb > 3072) {
+    res.status(400).json({ message: "Image trop grande. Maximum 3 Mo." }); return;
   }
 
   try {
