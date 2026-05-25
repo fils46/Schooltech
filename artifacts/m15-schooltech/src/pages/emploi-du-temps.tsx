@@ -602,7 +602,9 @@ function TabEmploi({
   const { toast } = useToast();
 
   const emploiData = vue === "classe" ? emploiClasse.data : emploiProf.data;
-  const isLoading = vue === "classe" ? emploiClasse.isLoading : emploiProf.isLoading;
+  const isLoading = vue === "classe"
+    ? (!!classeId && !!anneeId && emploiClasse.isLoading)
+    : (!!profId && !!anneeId && emploiProf.isLoading);
 
   type GrilleShape = { grille?: Record<Jour, Record<string, unknown>[]> };
   const grilleData = (emploiData as unknown as GrilleShape)?.grille ?? {
@@ -673,7 +675,7 @@ function TabEmploi({
         {(user?.role === "dev" || user?.role === "directeur" || user?.role === "censeur") && (
           <div className="flex rounded-xl overflow-hidden" style={{ border: "1px solid var(--m15-border)" }}>
             {(["classe", "professeur"] as const).map(v => (
-              <button key={v} onClick={() => setVue(v)}
+              <button key={v} type="button" onClick={() => setVue(v)}
                 className="px-4 py-2 text-sm font-medium transition-all"
                 style={{
                   background: vue === v ? "#00C9A7" : "var(--m15-card)",
