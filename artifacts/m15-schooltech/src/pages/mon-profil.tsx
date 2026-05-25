@@ -115,8 +115,8 @@ export default function MonProfil() {
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 500 * 1024) {
-      toast({ title: "Photo trop grande", description: "La photo ne doit pas dépasser 500 Ko.", variant: "destructive" });
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "Photo trop grande", description: "La photo ne doit pas dépasser 2 Mo.", variant: "destructive" });
       e.target.value = "";
       return;
     }
@@ -228,7 +228,7 @@ export default function MonProfil() {
               style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.25)" }}>
               <Camera className="w-4 h-4" />Changer la photo
             </button>
-            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>PNG, JPG ou WebP · 500 Ko max</p>
+            <p className="text-xs" style={{ color: "var(--m15-muted)" }}>PNG, JPG ou WebP · 2 Mo max</p>
           </div>
         </div>
 
