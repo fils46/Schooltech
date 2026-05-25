@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
   useSaisirNotesGroupe, useGetNotesClasse, useGetMoyennesClasse,
-  useListerClasses, useListerAnneesScolaires,
+  useListerClasses, useListerAnneesScolaires, useListerEleves,
   getGetMoyennesClasseQueryKey, getGetNotesClasseQueryKey,
 } from "@workspace/api-client-react";
 import {
@@ -30,6 +30,7 @@ type NoteItem = {
 type EleveClassement = {
   rang: number; eleve_id: string; eleve_nom: string; eleve_prenoms: string; moyenne_generale: number;
 };
+type EleveItem = { id: string; nom: string; prenoms: string };
 type Classe = { id: string; nom: string };
 
 const TRIMESTRES = ["1", "2", "3"] as const;
@@ -274,6 +275,16 @@ export default function SaisieNotes() {
   );
   const classement = (moyennesData as unknown as { classement?: EleveClassement[] })?.classement ?? [];
 
+  // Liste directe des élèves de la classe (indépendante des notes)
+  const { data: elevesData } = useListerEleves(
+    { classe_id: classeId || undefined, limit: 200 },
+    { query: { queryKey: ["eleves-liste", classeId], enabled: !!classeId } }
+  );
+  const elevesList = ((elevesData as unknown as { eleves?: EleveItem[] })?.eleves ?? []);
+
+  // Carte rang/moyenne depuis le classement
+  const moyenneMap = new Map(classement.map(e => [e.eleve_id, { rang: e.rang, moyenne: e.moyenne_generale }]));
+
   // Pré-remplir le tableau avec les notes existantes
   useEffect(() => {
     if (notesExistantes.length > 0) {
@@ -324,9 +335,9 @@ export default function SaisieNotes() {
     let totalSaisies = 0;
 
     for (const ev of evaluations) {
-      const notesArr = classement.map(e => ({
-        eleve_id: e.eleve_id,
-        note: Number(notesMap[e.eleve_id]?.[ev.intitule] ?? ""),
+      const notesArr = elevesList.map(e => ({
+        eleve_id: e.id,
+        note: Number(notesMap[e.id]?.[ev.intitule] ?? ""),
       })).filter(n => !isNaN(n.note) && n.note >= 0 && n.note <= ev.note_sur);
 
       if (notesArr.length === 0) continue;
@@ -340,7 +351,7 @@ export default function SaisieNotes() {
               type_evaluation: ev.type_evaluation as "devoir" | "interrogation" | "composition" | "examen_blanc",
               trimestre: trimestre as "1" | "2" | "3",
               intitule: ev.intitule,
-              annee_scolaire_id: anneeId,
+              annee_scolaire_id: anneeId || "",
               note_sur: ev.note_sur,
               coefficient: ev.coefficient,
               date_evaluation: ev.date_evaluation || new Date().toISOString().slice(0, 10),
@@ -368,10 +379,8 @@ export default function SaisieNotes() {
     setEvaluations(prev => [...prev, ev]);
   };
 
-  const eleves = classement;
-
   const moyenneParEval = (ev: Evaluation): string => {
-    const vals = eleves.map(e => Number(notesMap[e.eleve_id]?.[ev.intitule] ?? "")).filter(n => !isNaN(n));
+    const vals = elevesList.map(e => Number(notesMap[e.id]?.[ev.intitule] ?? "")).filter(n => !isNaN(n));
     if (vals.length === 0) return "—";
     return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2);
   };
@@ -480,13 +489,13 @@ export default function SaisieNotes() {
             Le tableau de saisie apparaîtra ici
           </p>
         </div>
-      ) : eleves.length === 0 ? (
+      ) : elevesList.length === 0 ? (
         <div className="rounded-2xl p-16 text-center"
           style={{ background: "var(--m15-card)", border: "1px solid var(--m15-border)" }}>
           <AlertCircle className="w-12 h-12 mx-auto mb-3 opacity-30" style={{ color: "var(--m15-muted)" }} />
-          <p className="font-semibold" style={{ color: "var(--m15-white)" }}>Aucun élève trouvé</p>
+          <p className="font-semibold" style={{ color: "var(--m15-white)" }}>Aucun élève dans cette classe</p>
           <p className="text-sm mt-1" style={{ color: "var(--m15-muted)" }}>
-            Ajoutez d'abord des notes pour voir les élèves de cette classe
+            Inscrivez des élèves dans cette classe pour pouvoir saisir des notes
           </p>
         </div>
       ) : (
@@ -524,23 +533,25 @@ export default function SaisieNotes() {
                 </tr>
               </thead>
               <tbody>
-                {eleves.map((e, i) => (
-                  <tr key={e.eleve_id}
+                {elevesList.map((e, i) => {
+                  const moyInfo = moyenneMap.get(e.id);
+                  return (
+                  <tr key={e.id}
                     style={{ borderBottom: "1px solid var(--m15-border)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)" }}>
                     <td className="px-4 py-3 sticky left-0 z-10"
-                      style={{ background: i % 2 === 0 ? "var(--m15-card)" : "var(--m15-card)" }}>
+                      style={{ background: "var(--m15-card)" }}>
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
                           style={{ background: "rgba(0,128,255,0.1)", color: "#0080FF" }}>
-                          {e.rang}
+                          {moyInfo?.rang ?? i + 1}
                         </div>
                         <span className="font-medium" style={{ color: "var(--m15-white)" }}>
-                          {e.eleve_prenoms} {e.eleve_nom}
+                          {e.prenoms} {e.nom}
                         </span>
                       </div>
                     </td>
                     {evaluations.map(ev => {
-                      const val = notesMap[e.eleve_id]?.[ev.intitule] ?? "";
+                      const val = notesMap[e.id]?.[ev.intitule] ?? "";
                       const num = Number(val);
                       const isValid = !isNaN(num) && num >= 0 && num <= ev.note_sur;
                       const hasVal = val !== "";
@@ -552,7 +563,7 @@ export default function SaisieNotes() {
                             max={ev.note_sur}
                             step={0.25}
                             value={val}
-                            onChange={e2 => setNote(e.eleve_id, ev.intitule, e2.target.value)}
+                            onChange={e2 => setNote(e.id, ev.intitule, e2.target.value)}
                             className="w-16 text-center py-1.5 rounded-lg text-sm outline-none font-semibold"
                             style={{
                               background: hasVal && isValid ? noteColor(num, ev.note_sur) : "var(--elevate-1)",
@@ -565,12 +576,13 @@ export default function SaisieNotes() {
                     })}
                     {evaluations.length === 0 && <td />}
                     <td className="px-4 py-3 text-center font-bold"
-                      style={{ color: e.moyenne_generale >= 10 ? "#00C9A7" : e.moyenne_generale >= 8 ? "#F5C842" : "#FF4D6D" }}>
-                      {e.moyenne_generale > 0 ? e.moyenne_generale.toFixed(2) : "—"}
+                      style={{ color: (moyInfo?.moyenne ?? 0) >= 10 ? "#00C9A7" : (moyInfo?.moyenne ?? 0) >= 8 ? "#F5C842" : "#FF4D6D" }}>
+                      {(moyInfo?.moyenne ?? 0) > 0 ? (moyInfo!.moyenne).toFixed(2) : "—"}
                     </td>
                   </tr>
-                ))}
-                {eleves.length > 0 && evaluations.length > 0 && (
+                  );
+                })}
+                {elevesList.length > 0 && evaluations.length > 0 && (
                   <tr style={{ background: "rgba(0,201,167,0.04)", borderTop: "2px solid var(--m15-border)" }}>
                     <td className="px-4 py-3 font-semibold sticky left-0"
                       style={{ background: "rgba(0,201,167,0.04)", color: "#00C9A7" }}>
