@@ -136,6 +136,7 @@ const VALID_NOTIF_TYPES = [
   "absence","retard","alerte_seuil","justification_validee","justification_rejetee",
   "bulletin_publie","message","annonce","rdv",
   "incident_signale","sanction_en_attente","sanction_validee","sanction_refusee","incident_escalade",
+  "note_ajoutee",
 ] as const;
 type NotifType = typeof VALID_NOTIF_TYPES[number];
 

@@ -2,6 +2,8 @@ import { db, notificationsTable, utilisateursTable, absencesTable, elevesTable, 
 import { eq, and, count } from "drizzle-orm";
 import { emitNotification } from "../socket/socketManager";
 
+type NotifType = "absence" | "retard" | "alerte_seuil" | "justification_validee" | "justification_rejetee" | "bulletin_publie" | "message" | "annonce" | "rdv" | "incident_signale" | "sanction_en_attente" | "sanction_validee" | "sanction_refusee" | "incident_escalade" | "note_ajoutee";
+
 const SEUIL_ABSENCES = parseInt(process.env["SEUIL_ABSENCES_ALERTE"] ?? "3", 10);
 
 export { SEUIL_ABSENCES };
@@ -9,7 +11,7 @@ export { SEUIL_ABSENCES };
 export async function creerNotification(data: {
   etablissement_id: string;
   destinataire_id: string;
-  type: "absence" | "retard" | "alerte_seuil" | "justification_validee" | "justification_rejetee" | "bulletin_publie" | "message" | "annonce" | "rdv" | "incident_signale" | "sanction_en_attente" | "sanction_validee" | "sanction_refusee" | "incident_escalade";
+  type: NotifType;
   titre: string;
   contenu: string;
   lien?: string | null;
@@ -107,6 +109,63 @@ export async function envoyerNotificationJustification(opts: {
       : `Votre justification pour le ${opts.date_absence} a été refusée.${opts.commentaire ? ` Motif : ${opts.commentaire}` : ""}`,
     lien: "/absences-parent",
   });
+}
+
+export async function envoyerNotificationsNote(opts: {
+  etablissement_id: string;
+  eleve_id: string;
+  matiere: string;
+  intitule: string;
+  note: number;
+  note_sur: number;
+  trimestre: string;
+}) {
+  const [eleve] = await db
+    .select({
+      utilisateur_id: elevesTable.utilisateur_id,
+      prenoms: elevesTable.prenoms,
+      nom: elevesTable.nom,
+    })
+    .from(elevesTable)
+    .where(eq(elevesTable.id, opts.eleve_id))
+    .limit(1);
+
+  if (!eleve) return;
+
+  const note20 = opts.note_sur > 0
+    ? Math.round((opts.note / opts.note_sur) * 20 * 100) / 100
+    : opts.note;
+  const noteLabel = `${note20.toFixed(2)}/20`;
+  const lienEleve = "/notes";
+  const lienParent = "/suivi-scolaire";
+
+  if (eleve.utilisateur_id) {
+    await creerNotification({
+      etablissement_id: opts.etablissement_id,
+      destinataire_id: eleve.utilisateur_id,
+      type: "note_ajoutee",
+      titre: "Nouvelle note",
+      contenu: `${opts.matiere} — ${opts.intitule} : ${noteLabel} (Trim. ${opts.trimestre})`,
+      lien: lienEleve,
+    });
+  }
+
+  const parents = await db
+    .select({ parent_id: parentsElevesTable.utilisateur_id })
+    .from(parentsElevesTable)
+    .where(eq(parentsElevesTable.eleve_id, opts.eleve_id));
+
+  const prenom = eleve.prenoms?.split(" ")[0] ?? "Votre enfant";
+  for (const p of parents) {
+    await creerNotification({
+      etablissement_id: opts.etablissement_id,
+      destinataire_id: p.parent_id,
+      type: "note_ajoutee",
+      titre: `Nouvelle note — ${prenom}`,
+      contenu: `${prenom} a reçu une note en ${opts.matiere} — ${opts.intitule} : ${noteLabel} (Trim. ${opts.trimestre})`,
+      lien: lienParent,
+    });
+  }
 }
 
 export async function getDirecteurEtablissement(etablissement_id: string) {

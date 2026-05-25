@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
-import { useGetNotificationsCount, getGetNotificationsCountQueryKey, useGetMonProfil } from "@workspace/api-client-react";
+import {
+  useGetNotificationsCount, getGetNotificationsCountQueryKey, useGetMonProfil,
+  getGetNotesEleveQueryKey, getGetNotesEnfantQueryKey, getGetEleaveDashboardQueryKey,
+  getGetMesEnfantsQueryKey,
+} from "@workspace/api-client-react";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { useQueryClient } from "@tanstack/react-query";
 import { io, type Socket } from "socket.io-client";
@@ -863,8 +867,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     });
     socketRef.current = socket;
 
-    socket.on("notification", () => {
+    socket.on("notification", (data?: { type?: string }) => {
       void qc.invalidateQueries({ queryKey: countQKey });
+      if (data?.type === "note_ajoutee") {
+        void qc.invalidateQueries({ queryKey: getGetNotesEleveQueryKey("") }).catch(() => {});
+        void qc.invalidateQueries({ queryKey: getGetNotesEnfantQueryKey("") }).catch(() => {});
+        void qc.invalidateQueries({ queryKey: getGetEleaveDashboardQueryKey() }).catch(() => {});
+        void qc.invalidateQueries({ queryKey: getGetMesEnfantsQueryKey() }).catch(() => {});
+      }
     });
 
     socket.on("badge_count", (n: number) => {

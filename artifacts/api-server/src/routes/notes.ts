@@ -6,6 +6,7 @@ import {
 } from "@workspace/db";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
+import { envoyerNotificationsNote } from "../lib/notificationService";
 
 const router = Router();
 
@@ -236,6 +237,7 @@ router.post(
 
     let saisies = 0;
     const erreurs: unknown[] = [];
+    const elevesSaisis: { eleve_id: string; note: number; note_sur: number }[] = [];
 
     for (const item of notes) {
       try {
@@ -272,12 +274,33 @@ router.post(
           observations: item.observations ?? null,
         });
         saisies++;
+        elevesSaisis.push({ eleve_id: item.eleve_id, note: n, note_sur: Number(note_sur) });
       } catch (e) {
         erreurs.push({ eleve_id: item.eleve_id, message: (e as Error).message });
       }
     }
 
     res.json({ saisies, erreurs });
+
+    // Notifications push en arrière-plan (ne bloque pas la réponse)
+    if (elevesSaisis.length > 0) {
+      setImmediate(() => {
+        const etabId = user.etablissement_id ?? "";
+        Promise.all(
+          elevesSaisis.map(s =>
+            envoyerNotificationsNote({
+              etablissement_id: etabId,
+              eleve_id: s.eleve_id,
+              matiere,
+              intitule,
+              note: s.note,
+              note_sur: s.note_sur,
+              trimestre,
+            }).catch(() => { /* ignorer les erreurs de notification */ })
+          )
+        ).catch(() => { /* ignorer */ });
+      });
+    }
   }
 );
 
