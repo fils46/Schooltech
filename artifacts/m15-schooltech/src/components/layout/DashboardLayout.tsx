@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/context/AuthContext";
 import { useGetNotificationsCount, getGetNotificationsCountQueryKey, useGetMonProfil } from "@workspace/api-client-react";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { useQueryClient } from "@tanstack/react-query";
 import { io, type Socket } from "socket.io-client";
 import { useTheme } from "@/components/theme-provider";
@@ -758,6 +759,7 @@ function SidebarContent({ location, onClose, onLogoutRequest }: { location: stri
   const initials = `${user?.prenoms?.charAt(0) || ""}${user?.nom?.charAt(0) || ""}`.toUpperCase() || "U";
   const { data: profilData } = useGetMonProfil();
   const photoUrl = (profilData as { photo_url?: string | null } | undefined)?.photo_url ?? null;
+  const { canInstall, install } = usePWAInstall();
 
   const handleLogout = () => {
     onClose();
@@ -816,6 +818,22 @@ function SidebarContent({ location, onClose, onLogoutRequest }: { location: stri
           <UserCircle className="w-4 h-4" />
           Mon profil
         </Link>
+        {canInstall && (
+          <button
+            onClick={() => { void install(); onClose(); }}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all mb-2"
+            style={{
+              background: "rgba(0,201,167,0.06)",
+              border: "1px solid rgba(0,201,167,0.2)",
+              color: "#00C9A7",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,201,167,0.12)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,201,167,0.06)"; }}
+          >
+            <Upload className="w-4 h-4" />
+            Installer l'application
+          </button>
+        )}
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"
