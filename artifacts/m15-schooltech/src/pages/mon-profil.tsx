@@ -115,6 +115,17 @@ export default function MonProfil() {
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 500 * 1024) {
+      toast({ title: "Photo trop grande", description: "La photo ne doit pas dépasser 500 Ko.", variant: "destructive" });
+      e.target.value = "";
+      return;
+    }
+    const validTypes = ["image/png", "image/jpeg", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      toast({ title: "Format invalide", description: "Utilisez un fichier PNG, JPG ou WebP.", variant: "destructive" });
+      e.target.value = "";
+      return;
+    }
     const reader = new FileReader();
     reader.onload = async (ev) => {
       const base64 = ev.target?.result as string;
@@ -124,7 +135,7 @@ export default function MonProfil() {
         toast({ title: "Photo mise à jour" });
         void qc.invalidateQueries({ queryKey: qKey });
       } catch {
-        toast({ title: "Erreur", description: "Photo trop grande ou format invalide.", variant: "destructive" });
+        toast({ title: "Erreur", description: "Impossible d'enregistrer la photo.", variant: "destructive" });
         setPhotoPreview(null);
       }
     };
