@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
   useGetStatsGlobal, useListerEtablissements,
@@ -7,7 +8,7 @@ import {
   useListerEleves, getListerElevesQueryKey,
   useGetEtablissement, getGetEtablissementQueryKey,
 } from "@workspace/api-client-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Building, Users, Activity, AlertCircle, TrendingUp, TrendingDown, Calendar, Bell, GraduationCap, UserSquare, BookOpen, UsersRound, ChevronRight, ArrowRight, School } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -797,16 +798,27 @@ function DefaultDashboard() {
   );
 }
 
+const ROLE_REDIRECTS: Record<string, string> = {
+  educateur:  "/discipline/incidents",
+  infirmier:  "/infirmerie",
+  parent:     "/parent-dashboard",
+  eleve:      "/eleve/dashboard",
+  professeur: "/analytics-professeur",
+};
+
 /* ─── Export ─────────────────────────────────────────────── */
 export default function Dashboard() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
+
+  const redirect = user?.role ? ROLE_REDIRECTS[user.role] : undefined;
+  useEffect(() => {
+    if (redirect) setLocation(redirect);
+  }, [redirect, setLocation]);
+
   if (user?.role === "dev") return <DevDashboard />;
   if (user?.role === "directeur") return <DirecteurDashboard />;
   if (user?.role === "censeur") return <CenseurDashboard />;
-  if (user?.role === "educateur") { window.location.replace("/discipline/incidents"); return null; }
-  if (user?.role === "infirmier") { window.location.replace("/infirmerie"); return null; }
-  if (user?.role === "parent") { window.location.replace("/parent-dashboard"); return null; }
-  if (user?.role === "eleve") { window.location.replace("/eleve/dashboard"); return null; }
-  if (user?.role === "professeur") { window.location.replace("/analytics-professeur"); return null; }
+  if (redirect) return null;
   return <DefaultDashboard />;
 }

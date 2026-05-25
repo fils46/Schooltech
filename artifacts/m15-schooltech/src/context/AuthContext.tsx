@@ -5,6 +5,7 @@ interface AuthContextType {
   user: Utilisateur | null;
   token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (tokens: AuthTokens) => void;
   logout: () => void;
 }
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<Utilisateur | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("m15_token");
@@ -25,12 +27,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(JSON.parse(storedUser));
         setAuthTokenGetter(() => localStorage.getItem("m15_token"));
       } catch (e) {
-        console.error("Failed to parse stored user", e);
         localStorage.removeItem("m15_token");
         localStorage.removeItem("m15_user");
         setAuthTokenGetter(null);
       }
     }
+    setIsLoading(false);
   }, []);
 
   const login = (tokens: AuthTokens) => {
@@ -50,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
