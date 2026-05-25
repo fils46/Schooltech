@@ -267,10 +267,10 @@ router.post(
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const { eleve_id, annee_scolaire_id } = req.body as Record<string, unknown>;
+    const { eleve_id } = req.body as Record<string, unknown>;
 
-    if (typeof eleve_id !== "string" || typeof annee_scolaire_id !== "string") {
-      res.status(400).json({ message: "eleve_id et annee_scolaire_id sont requis." }); return;
+    if (typeof eleve_id !== "string" || !eleve_id.trim()) {
+      res.status(400).json({ message: "eleve_id est requis." }); return;
     }
 
     try {
@@ -281,21 +281,38 @@ router.post(
         res.status(403).json({ message: "Accès refusé." }); return;
       }
 
+      // Toujours utiliser l'année scolaire active de l'établissement
+      const [anneeActive] = await db
+        .select({ id: anneesScolairesTable.id })
+        .from(anneesScolairesTable)
+        .where(and(
+          eq(anneesScolairesTable.etablissement_id, classe.etablissement_id),
+          eq(anneesScolairesTable.est_active, true),
+        ))
+        .limit(1);
+
+      if (!anneeActive) {
+        res.status(400).json({ message: "Aucune année scolaire active pour cet établissement." }); return;
+      }
+
       // Vérifier que l'élève n'est pas déjà dans une classe pour cette année
       const existing = await db
-        .select({ id: eleveClassesTable.id })
+        .select({ id: eleveClassesTable.id, classe_id: eleveClassesTable.classe_id })
         .from(eleveClassesTable)
         .where(
           and(
             eq(eleveClassesTable.eleve_id, eleve_id),
-            eq(eleveClassesTable.annee_scolaire_id, annee_scolaire_id),
+            eq(eleveClassesTable.annee_scolaire_id, anneeActive.id),
             eq(eleveClassesTable.statut, "actif")
           )
         )
         .limit(1);
 
+      if (existing.length > 0 && existing[0].classe_id === rawId) {
+        res.status(400).json({ message: "Cet élève est déjà affecté à cette classe." }); return;
+      }
       if (existing.length > 0) {
-        res.status(400).json({ message: "Cet élève est déjà affecté à une classe pour cette année scolaire." }); return;
+        res.status(400).json({ message: "Cet élève est déjà affecté à une autre classe pour cette année scolaire." }); return;
       }
 
       // Vérifier la capacité
@@ -310,12 +327,21 @@ router.post(
         res.status(400).json({ message: `Capacité maximale de la classe atteinte (${capaciteMax} élèves).` }); return;
       }
 
+      // onConflictDoUpdate pour gérer la ré-affectation (ex : élève transféré puis ré-inscrit)
       await db.insert(eleveClassesTable).values({
         eleve_id,
         classe_id: rawId,
-        annee_scolaire_id,
+        annee_scolaire_id: anneeActive.id,
         date_affectation: new Date().toISOString().split("T")[0] as string,
         statut: "actif",
+      }).onConflictDoUpdate({
+        target: [eleveClassesTable.eleve_id, eleveClassesTable.annee_scolaire_id],
+        set: {
+          classe_id: rawId,
+          statut: "actif",
+          date_affectation: new Date().toISOString().split("T")[0] as string,
+          updated_at: new Date(),
+        },
       });
 
       res.status(201).json({ message: "Élève affecté avec succès." });

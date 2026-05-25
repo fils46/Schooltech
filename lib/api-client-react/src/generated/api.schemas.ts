@@ -975,7 +975,6 @@ export interface ClasseStatistiques {
 
 export interface AffecterEleveInput {
   eleve_id: string;
-  annee_scolaire_id: string;
 }
 
 export interface AffecterProfesseurInput {

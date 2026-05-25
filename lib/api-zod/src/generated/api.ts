@@ -958,8 +958,7 @@ export const AffecterEleveParams = zod.object({
 })
 
 export const AffecterEleveBody = zod.object({
-  "eleve_id": zod.string(),
-  "annee_scolaire_id": zod.string()
+  "eleve_id": zod.string()
 })
 
 

@@ -56,30 +56,26 @@ function ModalAffecterEleve({
   const { toast } = useToast();
   const affecterMut = useAffecterEleve();
 
-  const { data: annees } = useListerAnneesScolaires({
-    query: { queryKey: getListerAnneesScolairesQueryKey() },
-  });
   const { data: elevesData } = useListerEleves(
-    { limit: 100, page: 1 },
-    { query: { queryKey: getListerElevesQueryKey({ limit: 100, page: 1 }) } }
+    { limit: 200, page: 1 },
+    { query: { queryKey: getListerElevesQueryKey({ limit: 200, page: 1 }) } }
   );
 
-  const [eleveId, setEleveId]           = useState("");
-  const [anneeScolaireId, setAnneeId]   = useState(
-    annees?.annees?.find(a => a.est_active)?.id ?? ""
-  );
+  const [eleveId, setEleveId] = useState("");
 
   const submit = async () => {
-    if (!eleveId || !anneeScolaireId) {
-      toast({ title: "Sélectionnez un élève et une année scolaire.", variant: "destructive" }); return;
+    if (!eleveId) {
+      toast({ title: "Sélectionnez un élève.", variant: "destructive" }); return;
     }
     try {
-      await affecterMut.mutateAsync({ id: classeId, data: { eleve_id: eleveId, annee_scolaire_id: anneeScolaireId } });
+      await affecterMut.mutateAsync({ id: classeId, data: { eleve_id: eleveId } });
       await qc.invalidateQueries({ queryKey: getGetClasseDetailQueryKey(classeId) });
-      toast({ title: "Élève affecté" });
+      await qc.invalidateQueries({ queryKey: getListerElevesQueryKey() });
+      toast({ title: "Élève affecté avec succès." });
       onClose();
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Erreur lors de l'affectation.";
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message
+        ?? (err instanceof Error ? err.message : "Erreur lors de l'affectation.");
       toast({ title: "Erreur", description: msg, variant: "destructive" });
     }
   };
@@ -93,37 +89,27 @@ function ModalAffecterEleve({
         <h2 className="text-lg font-bold" style={{ fontFamily: "'Syne', sans-serif", color: "var(--m15-white)" }}>
           Affecter un élève
         </h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "var(--m15-muted)" }}>Année scolaire</label>
-            <select value={anneeScolaireId} onChange={e => setAnneeId(e.target.value)}
-              className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
-              style={{ background: "var(--m15-card2)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
-              <option value="">Sélectionner...</option>
-              {(annees?.annees ?? []).map(a => (
-                <option key={a.id} value={a.id}>{a.libelle}{a.est_active ? " (en cours)" : ""}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "var(--m15-muted)" }}>Élève</label>
-            <select value={eleveId} onChange={e => setEleveId(e.target.value)}
-              className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
-              style={{ background: "var(--m15-card2)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
-              <option value="">Sélectionner...</option>
-              {(elevesData?.eleves ?? []).map(el => (
-                <option key={el.id} value={el.id}>{el.prenoms} {el.nom} — {el.matricule}</option>
-              ))}
-            </select>
-          </div>
+        <p className="text-xs" style={{ color: "var(--m15-muted)" }}>
+          L'élève sera affecté à l'année scolaire actuellement active.
+        </p>
+        <div>
+          <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style={{ color: "var(--m15-muted)" }}>Élève</label>
+          <select value={eleveId} onChange={e => setEleveId(e.target.value)}
+            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+            style={{ background: "var(--m15-card2)", border: "1px solid var(--m15-border)", color: "var(--m15-white)" }}>
+            <option value="">Sélectionner un élève...</option>
+            {(elevesData?.eleves ?? []).map(el => (
+              <option key={el.id} value={el.id}>{el.prenoms} {el.nom}{el.matricule ? ` — ${el.matricule}` : ""}</option>
+            ))}
+          </select>
         </div>
         <div className="flex gap-3 pt-2">
           <button onClick={onClose}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
             style={{ background: "var(--m15-card2)", color: "var(--m15-muted)" }}>Annuler</button>
-          <button onClick={submit} disabled={affecterMut.isPending}
+          <button onClick={submit} disabled={affecterMut.isPending || !eleveId}
             className="flex-1 py-2.5 rounded-xl text-sm font-bold"
-            style={{ background: "#00C9A7", color: "#fff" }}>
+            style={{ background: eleveId ? "#00C9A7" : "rgba(0,201,167,0.3)", color: "#fff" }}>
             {affecterMut.isPending ? "Affectation..." : "Affecter"}
           </button>
         </div>

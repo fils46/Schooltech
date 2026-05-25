@@ -8073,11 +8073,9 @@ components:
 
     AffecterEleveInput:
       type: object
-      required: [eleve_id, annee_scolaire_id]
+      required: [eleve_id]
       properties:
         eleve_id:
-          type: string
-        annee_scolaire_id:
           type: string
 
     AffecterProfesseurInput:
