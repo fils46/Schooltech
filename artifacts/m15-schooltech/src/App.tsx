@@ -38,6 +38,7 @@ import FaireAppel from "@/pages/faire-appel";
 import CahierTextesProfPage from "@/pages/cahier-textes-prof";
 import SaisieNotes from "@/pages/saisie-notes";
 import NoteEleveDetail from "@/pages/note-eleve-detail";
+import MesNotes from "@/pages/mes-notes";
 import MatiereConfig from "@/pages/matiere-config";
 import GestionMatieres from "@/pages/matieres/GestionMatieres";
 import MatieresByClasse from "@/pages/matieres/MatieresByClasse";
@@ -324,6 +325,14 @@ function Router() {
         <ProtectedRoute>
           <DashboardLayout>
             <SaisieNotes />
+          </DashboardLayout>
+        </ProtectedRoute>
+      </Route>
+
+      <Route path="/notes">
+        <ProtectedRoute>
+          <DashboardLayout>
+            <MesNotes />
           </DashboardLayout>
         </ProtectedRoute>
       </Route>
@@ -921,7 +930,7 @@ function Router() {
       {[
         "/licences", "/statistiques",
         "/rapports",
-        "/notes", "/mon-enfant",
+        "/mon-enfant",
       ].map((path) => (
         <Route key={path} path={path}>
           <ProtectedRoute>
