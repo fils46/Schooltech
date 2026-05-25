@@ -58,8 +58,6 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Config. matières",    href: "/matieres-config",        icon: BookMarked },
         { label: "Config. évaluations", href: "/config-evaluations",     icon: BookMarked },
-        { label: "Matières",            href: "/matieres",               icon: BookMarked },
-        { label: "Mat. par classe",     href: "/matieres/classe",        icon: BookMarked },
         { label: "Bulletins",           href: "/bulletins",              icon: FileSpreadsheet },
         { label: "Publier résultats",   href: "/publication-bulletins",  icon: Send },
         { label: "Conseils classe",     href: "/conseils-classe",        icon: UsersRound },
@@ -188,8 +186,6 @@ const navConfig: Record<string, Section[]> = {
       links: [
         { label: "Config. matières",    href: "/matieres-config",        icon: BookMarked },
         { label: "Config. évaluations", href: "/config-evaluations",     icon: BookMarked },
-        { label: "Matières",            href: "/matieres",               icon: BookMarked },
-        { label: "Mat. par classe",     href: "/matieres/classe",        icon: BookMarked },
         { label: "Bulletins",           href: "/bulletins",              icon: FileSpreadsheet },
         { label: "Publier résultats",   href: "/publication-bulletins",  icon: Send },
         { label: "Conseils classe",     href: "/conseils-classe",        icon: UsersRound },
