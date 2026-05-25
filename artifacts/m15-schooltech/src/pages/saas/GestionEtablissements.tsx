@@ -24,9 +24,10 @@ interface ModalCreerProps {
 
 function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
   const [form, setForm] = useState({
-    nom: "", type: "lycée", ville: "", adresse: "", telephone: "", email_contact: "",
+    nom: "", ville: "", adresse: "", telephone: "", email_contact: "",
     nom_directeur: "", prenom_directeur: "", email_directeur: "",
     licence_type: "annuel", licence_duree_mois: "12", montant_licence: "", renouvellement_auto: false,
+    typeLycee: true, typeCollege: false,
   });
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,13 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
+  function computeType() {
+    if (form.typeLycee && form.typeCollege) return "collège & lycée";
+    if (form.typeLycee) return "lycée";
+    if (form.typeCollege) return "collège";
+    return "autre";
+  }
+
   async function submit() {
     if (!form.nom || !form.email_directeur || !form.montant_licence) {
       setError("Veuillez remplir tous les champs obligatoires.");
@@ -46,7 +54,8 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
     setLoading(true);
     setError("");
     try {
-      const res = await saasApi.creerEtablissement(form) as any;
+      const payload = { ...form, type: computeType() };
+      const res = await saasApi.creerEtablissement(payload) as any;
       setResult(res.data);
       setStep(4);
     } catch (err: any) {
@@ -98,11 +107,32 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
                 </div>
                 <div>
                   <label className={labelCls} style={{ color: C.muted }}>Type *</label>
-                  <select className={inputCls} style={inputStyle} value={form.type} onChange={(e) => update("type", e.target.value)}>
-                    <option value="lycée">Lycée</option>
-                    <option value="collège">Collège</option>
-                    <option value="autre">Autre</option>
-                  </select>
+                  <div className="flex gap-2 mt-1">
+                    {[
+                      { key: "typeLycee", label: "Lycée" },
+                      { key: "typeCollege", label: "Collège" },
+                    ].map(({ key, label }) => {
+                      const active = form[key as "typeLycee" | "typeCollege"];
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => update(key, !active)}
+                          className="flex-1 py-2.5 rounded-lg text-sm font-medium border transition-all"
+                          style={{
+                            backgroundColor: active ? "rgba(0,201,167,.15)" : C.navy,
+                            borderColor: active ? C.cyan : C.border,
+                            color: active ? C.cyan : C.muted,
+                          }}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {!form.typeLycee && !form.typeCollege && (
+                    <p className="text-xs mt-1.5" style={{ color: C.red }}>Sélectionnez au moins un type</p>
+                  )}
                 </div>
                 <div>
                   <label className={labelCls} style={{ color: C.muted }}>Ville</label>
@@ -122,7 +152,7 @@ function ModalCreer({ onClose, onCreated }: ModalCreerProps) {
                 </div>
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => setStep(2)} disabled={!form.nom} className="px-5 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50" style={{ backgroundColor: C.cyan }}>
+                <button onClick={() => setStep(2)} disabled={!form.nom || (!form.typeLycee && !form.typeCollege)} className="px-5 py-2.5 rounded-lg text-sm font-medium text-[var(--m15-white)] disabled:opacity-50" style={{ backgroundColor: C.cyan }}>
                   Suivant →
                 </button>
               </div>
@@ -285,7 +315,8 @@ export default function GestionEtablissements() {
     if (search && !e.nom.toLowerCase().includes(search.toLowerCase())) return false;
     if (filtreStatut === "actif" && !e.licence_active) return false;
     if (filtreStatut === "suspendu" && e.licence_active) return false;
-    if (filtreType && e.type !== filtreType) return false;
+    if (filtreType && filtreType !== "collège & lycée" && e.type !== filtreType && e.type !== "collège & lycée") return false;
+    if (filtreType === "collège & lycée" && e.type !== "collège & lycée") return false;
     return true;
   });
 
@@ -328,6 +359,7 @@ export default function GestionEtablissements() {
           <option value="">Tous les types</option>
           <option value="lycée">Lycée</option>
           <option value="collège">Collège</option>
+          <option value="collège & lycée">Collège & Lycée</option>
           <option value="autre">Autre</option>
         </select>
       </div>
