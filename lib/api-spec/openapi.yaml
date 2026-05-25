@@ -2235,7 +2235,7 @@ paths:
                 $ref: "#/components/schemas/VerifierDisponibiliteResponse"
 
   # ─── CAHIER DE TEXTES ─────────────────────────────────────
-  /api/cahier-textes/creer:
+  /cahier-textes/creer:
     post:
       operationId: creerSeance
       summary: Créer une séance
@@ -2254,7 +2254,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SeanceCreeeResponse"
 
-  /api/cahier-textes/liste:
+  /cahier-textes/liste:
     get:
       operationId: listerSeances
       summary: Lister les séances
@@ -2283,7 +2283,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SeancesListeResponse"
 
-  /api/cahier-textes/devoirs-a-venir:
+  /cahier-textes/devoirs-a-venir:
     get:
       operationId: getDevoirsAVenir
       summary: Devoirs à venir
@@ -2303,7 +2303,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DevoirsResponse"
 
-  /api/cahier-textes/{id}:
+  /cahier-textes/{id}:
     get:
       operationId: getSeance
       summary: Détail d'une séance
@@ -2321,7 +2321,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SeanceDetailResponse"
 
-  /api/cahier-textes/{id}/modifier:
+  /cahier-textes/{id}/modifier:
     put:
       operationId: modifierSeance
       summary: Modifier une séance
@@ -2345,7 +2345,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SeanceCreeeResponse"
 
-  /api/cahier-textes/{id}/supprimer:
+  /cahier-textes/{id}/supprimer:
     delete:
       operationId: supprimerSeance
       summary: Supprimer une séance
@@ -2366,7 +2366,7 @@ paths:
                   message: { type: string }
 
   # ─── APPELS ───────────────────────────────────────────────
-  /api/appels/creer:
+  /appels/creer:
     post:
       operationId: creerAppel
       summary: Créer un appel
@@ -2385,7 +2385,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AppelCreeResponse"
 
-  /api/appels/historique:
+  /appels/historique:
     get:
       operationId: getHistoriqueAppels
       summary: Historique des appels
@@ -2414,7 +2414,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AppelsHistoriqueResponse"
 
-  /api/appels/eleve/{eleveId}:
+  /appels/eleve/{eleveId}:
     get:
       operationId: getPresencesEleve
       summary: Présences d'un élève
@@ -2438,7 +2438,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PresenceEleveResponse"
 
-  /api/appels/{id}:
+  /appels/{id}:
     get:
       operationId: getAppel
       summary: Détail d'un appel
@@ -2456,7 +2456,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AppelDetailResponse"
 
-  /api/appels/{id}/presence:
+  /appels/{id}/presence:
     put:
       operationId: mettreAJourPresence
       summary: Mettre à jour la présence d'un élève
@@ -2480,7 +2480,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AppelDetailResponse"
 
-  /api/appels/{id}/terminer:
+  /appels/{id}/terminer:
     put:
       operationId: terminerAppel
       summary: Terminer un appel
@@ -2499,7 +2499,7 @@ paths:
                 $ref: "#/components/schemas/AppelDetailResponse"
 
   # ─── NOTES ────────────────────────────────────────────────
-  /api/notes/saisir:
+  /notes/saisir:
     post:
       operationId: saisirNote
       summary: Saisir une note
@@ -2518,7 +2518,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NoteCreeeResponse"
 
-  /api/notes/saisir-groupe:
+  /notes/saisir-groupe:
     post:
       operationId: saisirNotesGroupe
       summary: Saisir les notes d'une classe
@@ -2537,7 +2537,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotesGroupeResponse"
 
-  /api/notes/classe/{classeId}:
+  /notes/classe/{classeId}:
     get:
       operationId: getNotesClasse
       summary: Notes d'une classe
@@ -2567,7 +2567,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotesClasseResponse"
 
-  /api/notes/eleve/{eleveId}:
+  /notes/eleve/{eleveId}:
     get:
       operationId: getNotesEleve
       summary: Notes d'un élève
@@ -2594,7 +2594,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotesEleveResponse"
 
-  /api/notes/moyennes/{classeId}:
+  /notes/moyennes/{classeId}:
     get:
       operationId: getMoyennesClasse
       summary: Moyennes de la classe
@@ -2618,7 +2618,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MoyennesClasseResponse"
 
-  /api/notes/statistiques/{classeId}:
+  /notes/statistiques/{classeId}:
     get:
       operationId: getStatistiquesNotes
       summary: Statistiques des notes
@@ -2642,7 +2642,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatsNotesResponse"
 
-  /api/notes/{id}/modifier:
+  /notes/{id}/modifier:
     put:
       operationId: modifierNote
       summary: Modifier une note
@@ -2666,7 +2666,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NoteCreeeResponse"
 
-  /api/notes/{id}/supprimer:
+  /notes/{id}/supprimer:
     delete:
       operationId: supprimerNote
       summary: Supprimer une note
@@ -2688,7 +2688,7 @@ paths:
 
   # ── Module 07 : Matières Config ──────────────────────────────
 
-  /api/matieres-config/classe/{classeId}:
+  /matieres-config/classe/{classeId}:
     get:
       operationId: getMatiereClasse
       summary: Lister les matières configurées pour une classe
@@ -2709,7 +2709,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MatieresConfigResponse"
 
-  /api/matieres-config/configurer:
+  /matieres-config/configurer:
     post:
       operationId: configurerMatieres
       summary: Configurer les matières d'une classe
@@ -2728,7 +2728,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MatieresConfigResponse"
 
-  /api/matieres-config/{id}/modifier:
+  /matieres-config/{id}/modifier:
     put:
       operationId: modifierMatiereConfig
       summary: Modifier une matière configurée
@@ -2752,7 +2752,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MatiereConfigItemResponse"
 
-  /api/matieres-config/{id}/supprimer:
+  /matieres-config/{id}/supprimer:
     delete:
       operationId: supprimerMatiereConfig
       summary: Supprimer une matière configurée
@@ -2772,7 +2772,7 @@ paths:
 
   # ── Module 07 : Bulletins ─────────────────────────────────────
 
-  /api/bulletins/generer:
+  /bulletins/generer:
     post:
       operationId: genererBulletin
       summary: Générer le bulletin d'un élève
@@ -2791,7 +2791,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinDetailResponse"
 
-  /api/bulletins/generer-classe:
+  /bulletins/generer-classe:
     post:
       operationId: genererBulletinsClasse
       summary: Générer les bulletins de toute une classe
@@ -2810,7 +2810,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/GenererClasseResponse"
 
-  /api/bulletins/calculer-rangs:
+  /bulletins/calculer-rangs:
     post:
       operationId: calculerRangs
       summary: Recalculer les rangs d'une classe
@@ -2829,7 +2829,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
-  /api/bulletins/publier-classe:
+  /bulletins/publier-classe:
     put:
       operationId: publierBulletinsClasse
       summary: Publier tous les bulletins d'une classe
@@ -2848,7 +2848,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PublierClasseResponse"
 
-  /api/bulletins/classe/{classeId}:
+  /bulletins/classe/{classeId}:
     get:
       operationId: getBulletinsClasse
       summary: Lister les bulletins d'une classe
@@ -2875,7 +2875,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinsClasseResponse"
 
-  /api/bulletins/eleve/{eleveId}:
+  /bulletins/eleve/{eleveId}:
     get:
       operationId: getBulletinsEleve
       summary: Lister les bulletins d'un élève
@@ -2896,7 +2896,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinsEleveResponse"
 
-  /api/bulletins/{id}:
+  /bulletins/{id}:
     get:
       operationId: getBulletin
       summary: Obtenir un bulletin détaillé
@@ -2914,7 +2914,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinDetailResponse"
 
-  /api/bulletins/{id}/appreciation:
+  /bulletins/{id}/appreciation:
     put:
       operationId: ajouterAppreciation
       summary: Ajouter l'appréciation du conseil de classe
@@ -2938,7 +2938,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinDetailResponse"
 
-  /api/bulletins/{id}/publier:
+  /bulletins/{id}/publier:
     put:
       operationId: publierBulletin
       summary: Publier un bulletin
@@ -2956,7 +2956,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/BulletinDetailResponse"
 
-  /api/bulletins/{id}/pdf:
+  /bulletins/{id}/pdf:
     get:
       operationId: exportBulletinPDF
       summary: Exporter le bulletin en HTML imprimable
@@ -2976,7 +2976,7 @@ paths:
 
   # ── Module 07 : Conseils de Classe ────────────────────────────
 
-  /api/conseils/planifier:
+  /conseils/planifier:
     post:
       operationId: planifierConseil
       summary: Planifier un conseil de classe
@@ -2995,7 +2995,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
-  /api/conseils/liste:
+  /conseils/liste:
     get:
       operationId: listerConseils
       summary: Lister les conseils de classe
@@ -3021,7 +3021,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilsListeResponse"
 
-  /api/conseils/{id}:
+  /conseils/{id}:
     get:
       operationId: getConseil
       summary: Obtenir un conseil de classe
@@ -3039,7 +3039,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
-  /api/conseils/{id}/demarrer:
+  /conseils/{id}/demarrer:
     put:
       operationId: demarrerConseil
       summary: Démarrer un conseil de classe
@@ -3057,7 +3057,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
-  /api/conseils/{id}/terminer:
+  /conseils/{id}/terminer:
     put:
       operationId: terminerConseil
       summary: Terminer un conseil de classe
@@ -3081,7 +3081,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConseilClasseItemResponse"
 
-  /api/conseils/{id}/modifier:
+  /conseils/{id}/modifier:
     put:
       operationId: modifierConseil
       summary: Modifier un conseil planifié
@@ -3100,7 +3100,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/ConseilClasseItemResponse" }
 
-  /api/conseils/{id}/convoquer:
+  /conseils/{id}/convoquer:
     post:
       operationId: envoyerConvocations
       summary: Envoyer les convocations aux participants
@@ -3118,7 +3118,7 @@ paths:
                   message: { type: string }
                   envoyes: { type: integer }
 
-  /api/conseils/{id}/presence:
+  /conseils/{id}/presence:
     put:
       operationId: confirmerPresence
       summary: Confirmer sa présence au conseil
@@ -3135,7 +3135,7 @@ paths:
                 properties:
                   message: { type: string }
 
-  /api/conseils/{id}/en-cours:
+  /conseils/{id}/en-cours:
     get:
       operationId: getConseilEnCours
       summary: Obtenir les données du conseil en cours
@@ -3149,7 +3149,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/ConseilEnCoursResponse" }
 
-  /api/conseils/{id}/deliberation:
+  /conseils/{id}/deliberation:
     put:
       operationId: saisirDeliberation
       summary: Saisir ou mettre à jour une délibération
@@ -3171,7 +3171,7 @@ paths:
                 properties:
                   deliberation: { $ref: "#/components/schemas/ConseilDeliberationItem" }
 
-  /api/conseils/{id}/intervention:
+  /conseils/{id}/intervention:
     post:
       operationId: ajouterIntervention
       summary: Ajouter une intervention
@@ -3193,7 +3193,7 @@ paths:
                 properties:
                   intervention: { $ref: "#/components/schemas/ConseilInterventionItem" }
 
-  /api/conseils/{id}/deliberations:
+  /conseils/{id}/deliberations:
     get:
       operationId: getDeliberationsClasse
       summary: Lister les délibérations d'un conseil
@@ -3207,7 +3207,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/DeliberationsListeResponse" }
 
-  /api/conseils/{id}/generer-pv:
+  /conseils/{id}/generer-pv:
     post:
       operationId: genererPV
       summary: Générer le procès-verbal PDF
@@ -3225,7 +3225,7 @@ paths:
                   pv_url: { type: string }
                   conseil: { $ref: "#/components/schemas/ConseilClasseItem" }
 
-  /api/conseils/{id}/signer-pv:
+  /conseils/{id}/signer-pv:
     put:
       operationId: signerPV
       summary: Signer le procès-verbal
@@ -3239,7 +3239,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/ConseilClasseItemResponse" }
 
-  /api/conseils/{id}/participants:
+  /conseils/{id}/participants:
     get:
       operationId: getConseilParticipants
       summary: Lister les participants d'un conseil
@@ -3701,7 +3701,7 @@ paths:
                 $ref: "#/components/schemas/MessageResponse"
 
   # ── Gestion Parents ─────────────────────────────────────────
-  /api/parents:
+  /parents:
     get:
       operationId: listerParents
       tags: [parents]
@@ -3720,7 +3720,7 @@ paths:
                 type: array
                 items: { $ref: "#/components/schemas/ParentAvecEnfants" }
 
-  /api/parents/creer:
+  /parents/creer:
     post:
       operationId: creerCompteParent
       tags: [parents]
@@ -3743,7 +3743,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/MessageResponse" }
 
-  /api/parents/lier:
+  /parents/lier:
     post:
       operationId: lierParentExistant
       tags: [parents]
@@ -3761,7 +3761,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/LiaisonParentEleve" }
 
-  /api/parents/eleve/{eleveId}:
+  /parents/eleve/{eleveId}:
     get:
       operationId: listerParentsEleve
       tags: [parents]
@@ -3781,7 +3781,7 @@ paths:
                 type: array
                 items: { $ref: "#/components/schemas/ParentLiaisonDetail" }
 
-  /api/parents/{parentId}/enfants:
+  /parents/{parentId}/enfants:
     get:
       operationId: listerEnfantsParent
       tags: [parents]
@@ -3801,7 +3801,7 @@ paths:
                 type: array
                 items: { $ref: "#/components/schemas/EnfantParent" }
 
-  /api/parents/liaison/{id}:
+  /parents/liaison/{id}:
     put:
       operationId: modifierLiaison
       tags: [parents]
@@ -3844,7 +3844,7 @@ paths:
                   message: { type: string }
                   parent_desactive: { type: boolean }
 
-  /api/parents/{id}/reinitialiser-mdp:
+  /parents/{id}/reinitialiser-mdp:
     post:
       operationId: reinitialiserMdpParent
       tags: [parents]
@@ -4280,7 +4280,7 @@ paths:
                 $ref: "#/components/schemas/RendezVousItemResponse"
 
   # ── Annonces ──────────────────────────────────────────────────
-  /api/annonces:
+  /annonces:
     get:
       summary: Lister les annonces
       tags: [annonces]
@@ -4326,7 +4326,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AnnonceItemResponse"
 
-  /api/annonces/non-lues/count:
+  /annonces/non-lues/count:
     get:
       summary: Nombre d'annonces non lues
       tags: [annonces]
@@ -4339,7 +4339,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AnnonceCountResponse"
 
-  /api/annonces/{id}:
+  /annonces/{id}:
     get:
       summary: Détail annonce (marque comme lue)
       tags: [annonces]
@@ -4395,7 +4395,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
-  /api/annonces/{id}/publier:
+  /annonces/{id}/publier:
     put:
       summary: Publier une annonce
       tags: [annonces]
@@ -4413,7 +4413,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AnnonceItemResponse"
 
-  /api/annonces/{id}/stats:
+  /annonces/{id}/stats:
     get:
       summary: Stats de lecture d'une annonce
       tags: [annonces]
@@ -4431,7 +4431,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/AnnonceStatsResponse"
 
-  /api/notifications/envoyer:
+  /notifications/envoyer:
     post:
       summary: Envoyer une notification manuelle
       tags: [notifications]
@@ -5513,7 +5513,7 @@ paths:
               schema: { $ref: "#/components/schemas/DistinctionsListeResponse" }
 
   # ── Module 18 : Analytics ─────────────────────────────────────
-  /api/analytics/kpis:
+  /analytics/kpis:
     get:
       summary: KPIs établissement
       tags: [Analytics]
@@ -5528,7 +5528,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/pedagogique:
+  /analytics/pedagogique:
     get:
       summary: Analyse pédagogique
       tags: [Analytics]
@@ -5545,7 +5545,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/presences:
+  /analytics/presences:
     get:
       summary: Analyse présences & absences
       tags: [Analytics]
@@ -5561,7 +5561,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/infirmerie:
+  /analytics/infirmerie:
     get:
       summary: Analyse infirmerie
       tags: [Analytics]
@@ -5573,7 +5573,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/clubs:
+  /analytics/clubs:
     get:
       summary: Analyse clubs & activités
       tags: [Analytics]
@@ -5585,7 +5585,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/bibliotheque:
+  /analytics/bibliotheque:
     get:
       summary: Analyse bibliothèque
       tags: [Analytics]
@@ -5597,7 +5597,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/professeur:
+  /analytics/professeur:
     get:
       summary: Dashboard analytique professeur
       tags: [Analytics]
@@ -5611,7 +5611,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/censeur:
+  /analytics/censeur:
     get:
       summary: Dashboard analytique censeur
       tags: [Analytics]
@@ -5623,7 +5623,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/rapports/generer:
+  /analytics/rapports/generer:
     post:
       summary: Générer un rapport
       tags: [Analytics]
@@ -5640,7 +5640,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/rapports:
+  /analytics/rapports:
     get:
       summary: Lister les rapports générés
       tags: [Analytics]
@@ -5652,7 +5652,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/rapports/{id}/telecharger:
+  /analytics/rapports/{id}/telecharger:
     get:
       summary: Télécharger un rapport
       tags: [Analytics]
@@ -5666,7 +5666,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/analytics/snapshots:
+  /analytics/snapshots:
     post:
       summary: Créer un snapshot analytique (dev uniquement)
       tags: [Analytics]
@@ -6076,7 +6076,7 @@ paths:
 
   # ─── HONORAIRES ───────────────────────────────────────────────────
 
-  /api/honoraires/types:
+  /honoraires/types:
     get:
       operationId: listerTypesProfesseurs
       summary: Lister les types de professeurs
@@ -6111,7 +6111,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/types/{id}:
+  /honoraires/types/{id}:
     put:
       operationId: modifierTypeProfesseur
       summary: Modifier un type de professeur
@@ -6137,7 +6137,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/contrats:
+  /honoraires/contrats:
     get:
       operationId: listerContrats
       summary: Lister les contrats professeurs
@@ -6181,7 +6181,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/contrats/mon-contrat:
+  /honoraires/contrats/mon-contrat:
     get:
       operationId: getMonContrat
       summary: Récupérer son contrat actif (professeur)
@@ -6194,7 +6194,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/feuilles:
+  /honoraires/feuilles:
     get:
       operationId: listerFeuillesHeures
       summary: Lister les feuilles d'heures
@@ -6236,7 +6236,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/feuilles/mes-feuilles:
+  /honoraires/feuilles/mes-feuilles:
     get:
       operationId: getMesFeuilles
       summary: Historique de mes feuilles d'heures (professeur)
@@ -6249,7 +6249,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/feuilles/{id}/valider:
+  /honoraires/feuilles/{id}/valider:
     put:
       operationId: validerFeuilleHeures
       summary: Valider une feuille d'heures
@@ -6275,7 +6275,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/feuilles/{id}/rejeter:
+  /honoraires/feuilles/{id}/rejeter:
     put:
       operationId: rejeterFeuilleHeures
       summary: Rejeter une feuille d'heures
@@ -6299,7 +6299,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/feuilles/{id}/payer:
+  /honoraires/feuilles/{id}/payer:
     put:
       operationId: payerFeuilleHeures
       summary: Enregistrer le paiement d'une feuille
@@ -6325,7 +6325,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/honoraires/recap:
+  /honoraires/recap:
     get:
       operationId: getRecapHonoraires
       summary: Récapitulatif mensuel des honoraires
@@ -6344,7 +6344,7 @@ paths:
 
   # ─── PRESTATIONS ──────────────────────────────────────────────────
 
-  /api/prestations/types:
+  /prestations/types:
     get:
       operationId: listerPrestations
       summary: Lister les types de prestations
@@ -6383,7 +6383,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/types/{id}:
+  /prestations/types/{id}:
     put:
       operationId: modifierPrestation
       summary: Modifier une prestation
@@ -6410,7 +6410,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/factures:
+  /prestations/factures:
     get:
       operationId: listerFactures
       summary: Lister les factures de prestations
@@ -6453,7 +6453,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/factures/{id}/payer:
+  /prestations/factures/{id}/payer:
     put:
       operationId: payerFacturePrestation
       summary: Enregistrer le paiement d'une facture
@@ -6479,7 +6479,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/factures/{id}/annuler:
+  /prestations/factures/{id}/annuler:
     put:
       operationId: annulerFacture
       summary: Annuler une facture
@@ -6494,7 +6494,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/factures/eleve/{eleveId}:
+  /prestations/factures/eleve/{eleveId}:
     get:
       operationId: getFacturesEleve
       summary: Factures d'un élève
@@ -6509,7 +6509,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/prestations/recap:
+  /prestations/recap:
     get:
       operationId: getRecapPrestations
       summary: Récapitulatif mensuel des prestations
@@ -6528,7 +6528,7 @@ paths:
 
   # ─── FINANCES ─────────────────────────────────────────────────────
 
-  /api/finances/dashboard:
+  /finances/dashboard:
     get:
       operationId: getDashboardFinancier
       summary: Tableau de bord financier
@@ -6545,7 +6545,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
 
-  /api/finances/evolution:
+  /finances/evolution:
     get:
       operationId: getEvolutionFinanciere
       summary: Évolution financière par mois
@@ -6559,7 +6559,7 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/SuccessResponse" }
-  /api/cloture/criteres:
+  /cloture/criteres:
     post:
       operationId: configurerCriteres
       summary: Configurer critères d'admission
@@ -6594,7 +6594,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/CriteresListResponse"
 
-  /api/cloture/resultats/{classeId}:
+  /cloture/resultats/{classeId}:
     get:
       operationId: calculerResultatsClasse
       summary: Calculer résultats d'une classe
@@ -6616,7 +6616,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResultatsClasseResponse"
 
-  /api/cloture/decisions:
+  /cloture/decisions:
     post:
       operationId: enregistrerDecision
       summary: Enregistrer une décision de fin d'année
@@ -6635,7 +6635,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DecisionFinAnneeResponse"
 
-  /api/cloture/decisions/masse:
+  /cloture/decisions/masse:
     post:
       operationId: enregistrerDecisionsMasse
       summary: Enregistrer des décisions en masse
@@ -6654,7 +6654,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DecisionsMasseResponse"
 
-  /api/cloture/promouvoir:
+  /cloture/promouvoir:
     post:
       operationId: promouvoirClasse
       summary: Promouvoir une classe vers l'année suivante
@@ -6673,7 +6673,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PromotionResponse"
 
-  /api/cloture/notifier:
+  /cloture/notifier:
     post:
       operationId: notifierParentsDecisions
       summary: Notifier les parents des décisions
@@ -6692,7 +6692,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotifierResponse"
 
-  /api/cloture/stats:
+  /cloture/stats:
     get:
       operationId: getStatsCloture
       summary: Statistiques de clôture
@@ -6710,7 +6710,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatsClotureResponse"
 
-  /api/cloture/promotions/{id}/annuler:
+  /cloture/promotions/{id}/annuler:
     put:
       operationId: annulerPromotion
       summary: Annuler une promotion (< 24h)
@@ -6728,7 +6728,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResponse"
 
-  /api/cloture/promotions/historique:
+  /cloture/promotions/historique:
     get:
       operationId: getHistoriquePromotions
       summary: Historique des promotions
@@ -6748,7 +6748,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HistoriquePromotionsResponse"
 
-  /api/eleve/dashboard:
+  /eleve/dashboard:
     get:
       operationId: getEleaveDashboard
       summary: Tableau de bord élève
@@ -6762,7 +6762,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/EleaveDashboardResponse"
 
-  /api/profil:
+  /profil:
     get:
       operationId: getMonProfil
       summary: Mon profil utilisateur
@@ -6794,7 +6794,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MonProfilResponse"
 
-  /api/profil/photo:
+  /profil/photo:
     post:
       operationId: uploaderPhoto
       summary: Uploader photo de profil (base64)
@@ -6817,7 +6817,7 @@ paths:
                   photo_url: { type: string }
                   message: { type: string }
 
-  /api/profil/mot-de-passe:
+  /profil/mot-de-passe:
     put:
       operationId: changerMotDePasse
       summary: Changer son mot de passe
@@ -6840,7 +6840,7 @@ paths:
                   success: { type: boolean }
                   message: { type: string }
 
-  /api/profil/preferences-notifs:
+  /profil/preferences-notifs:
     put:
       operationId: modifierPreferencesNotifs
       summary: Modifier préférences de notifications

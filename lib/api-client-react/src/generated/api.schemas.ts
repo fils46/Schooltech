@@ -4325,18 +4325,18 @@ date_debut?: string;
 date_fin?: string;
 };
 
-export type GetApiAnnoncesParams = {
-type?: GetApiAnnoncesType;
+export type GetAnnoncesParams = {
+type?: GetAnnoncesType;
 publie?: boolean;
 epingle?: boolean;
 date_debut?: string;
 date_fin?: string;
 };
 
-export type GetApiAnnoncesType = typeof GetApiAnnoncesType[keyof typeof GetApiAnnoncesType];
+export type GetAnnoncesType = typeof GetAnnoncesType[keyof typeof GetAnnoncesType];
 
 
-export const GetApiAnnoncesType = {
+export const GetAnnoncesType = {
   information: 'information',
   urgence: 'urgence',
   evenement: 'evenement',
@@ -4433,25 +4433,25 @@ date_debut?: string;
 date_fin?: string;
 };
 
-export type GetApiAnalyticsKpisParams = {
+export type GetAnalyticsKpisParams = {
 annee_scolaire_id?: string;
 trimestre?: number;
 };
 
-export type GetApiAnalyticsPedagogiqueParams = {
+export type GetAnalyticsPedagogiqueParams = {
 annee_scolaire_id?: string;
 trimestre?: number;
 niveau?: string;
 classe_id?: string;
 };
 
-export type GetApiAnalyticsPresencesParams = {
+export type GetAnalyticsPresencesParams = {
 annee_scolaire_id?: string;
 trimestre?: number;
 classe_id?: string;
 };
 
-export type GetApiAnalyticsProfesseurParams = {
+export type GetAnalyticsProfesseurParams = {
 trimestre?: number;
 };
 

@@ -159,11 +159,11 @@ import type {
   GenererPV200,
   GenererPlanningInput,
   GetAbsencesEnfantParams,
-  GetApiAnalyticsKpisParams,
-  GetApiAnalyticsPedagogiqueParams,
-  GetApiAnalyticsPresencesParams,
-  GetApiAnalyticsProfesseurParams,
-  GetApiAnnoncesParams,
+  GetAnalyticsKpisParams,
+  GetAnalyticsPedagogiqueParams,
+  GetAnalyticsPresencesParams,
+  GetAnalyticsProfesseurParams,
+  GetAnnoncesParams,
   GetBibliothequeHistoriqueParams,
   GetBibliothequeRessourcesParams,
   GetBoiteReceptionParams,
@@ -7137,7 +7137,7 @@ export const getCreerSeanceUrl = () => {
 
 
 
-  return `/api/api/cahier-textes/creer`
+  return `/api/cahier-textes/creer`
 }
 
 /**
@@ -7215,7 +7215,7 @@ export const getListerSeancesUrl = (params?: ListerSeancesParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cahier-textes/liste?${stringifiedParams}` : `/api/api/cahier-textes/liste`
+  return stringifiedParams.length > 0 ? `/api/cahier-textes/liste?${stringifiedParams}` : `/api/cahier-textes/liste`
 }
 
 /**
@@ -7238,7 +7238,7 @@ export const listerSeances = async (params?: ListerSeancesParams, options?: Requ
 
 export const getListerSeancesQueryKey = (params?: ListerSeancesParams,) => {
     return [
-    `/api/api/cahier-textes/liste`, ...(params ? [params] : [])
+    `/api/cahier-textes/liste`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -7299,7 +7299,7 @@ export const getGetDevoirsAVenirUrl = (params?: GetDevoirsAVenirParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cahier-textes/devoirs-a-venir?${stringifiedParams}` : `/api/api/cahier-textes/devoirs-a-venir`
+  return stringifiedParams.length > 0 ? `/api/cahier-textes/devoirs-a-venir?${stringifiedParams}` : `/api/cahier-textes/devoirs-a-venir`
 }
 
 /**
@@ -7322,7 +7322,7 @@ export const getDevoirsAVenir = async (params?: GetDevoirsAVenirParams, options?
 
 export const getGetDevoirsAVenirQueryKey = (params?: GetDevoirsAVenirParams,) => {
     return [
-    `/api/api/cahier-textes/devoirs-a-venir`, ...(params ? [params] : [])
+    `/api/cahier-textes/devoirs-a-venir`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -7376,7 +7376,7 @@ export const getGetSeanceUrl = (id: string,) => {
 
 
 
-  return `/api/api/cahier-textes/${id}`
+  return `/api/cahier-textes/${id}`
 }
 
 /**
@@ -7399,7 +7399,7 @@ export const getSeance = async (id: string, options?: RequestInit): Promise<Sean
 
 export const getGetSeanceQueryKey = (id: string,) => {
     return [
-    `/api/api/cahier-textes/${id}`
+    `/api/cahier-textes/${id}`
     ] as const;
     }
 
@@ -7453,7 +7453,7 @@ export const getModifierSeanceUrl = (id: string,) => {
 
 
 
-  return `/api/api/cahier-textes/${id}/modifier`
+  return `/api/cahier-textes/${id}/modifier`
 }
 
 /**
@@ -7525,7 +7525,7 @@ export const getSupprimerSeanceUrl = (id: string,) => {
 
 
 
-  return `/api/api/cahier-textes/${id}/supprimer`
+  return `/api/cahier-textes/${id}/supprimer`
 }
 
 /**
@@ -7595,7 +7595,7 @@ export const getCreerAppelUrl = () => {
 
 
 
-  return `/api/api/appels/creer`
+  return `/api/appels/creer`
 }
 
 /**
@@ -7673,7 +7673,7 @@ export const getGetHistoriqueAppelsUrl = (params?: GetHistoriqueAppelsParams,) =
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/appels/historique?${stringifiedParams}` : `/api/api/appels/historique`
+  return stringifiedParams.length > 0 ? `/api/appels/historique?${stringifiedParams}` : `/api/appels/historique`
 }
 
 /**
@@ -7696,7 +7696,7 @@ export const getHistoriqueAppels = async (params?: GetHistoriqueAppelsParams, op
 
 export const getGetHistoriqueAppelsQueryKey = (params?: GetHistoriqueAppelsParams,) => {
     return [
-    `/api/api/appels/historique`, ...(params ? [params] : [])
+    `/api/appels/historique`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -7758,7 +7758,7 @@ export const getGetPresencesEleveUrl = (eleveId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/appels/eleve/${eleveId}?${stringifiedParams}` : `/api/api/appels/eleve/${eleveId}`
+  return stringifiedParams.length > 0 ? `/api/appels/eleve/${eleveId}?${stringifiedParams}` : `/api/appels/eleve/${eleveId}`
 }
 
 /**
@@ -7783,7 +7783,7 @@ export const getPresencesEleve = async (eleveId: string,
 export const getGetPresencesEleveQueryKey = (eleveId: string,
     params?: GetPresencesEleveParams,) => {
     return [
-    `/api/api/appels/eleve/${eleveId}`, ...(params ? [params] : [])
+    `/api/appels/eleve/${eleveId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -7839,7 +7839,7 @@ export const getGetAppelUrl = (id: string,) => {
 
 
 
-  return `/api/api/appels/${id}`
+  return `/api/appels/${id}`
 }
 
 /**
@@ -7862,7 +7862,7 @@ export const getAppel = async (id: string, options?: RequestInit): Promise<Appel
 
 export const getGetAppelQueryKey = (id: string,) => {
     return [
-    `/api/api/appels/${id}`
+    `/api/appels/${id}`
     ] as const;
     }
 
@@ -7916,7 +7916,7 @@ export const getMettreAJourPresenceUrl = (id: string,) => {
 
 
 
-  return `/api/api/appels/${id}/presence`
+  return `/api/appels/${id}/presence`
 }
 
 /**
@@ -7988,7 +7988,7 @@ export const getTerminerAppelUrl = (id: string,) => {
 
 
 
-  return `/api/api/appels/${id}/terminer`
+  return `/api/appels/${id}/terminer`
 }
 
 /**
@@ -8058,7 +8058,7 @@ export const getSaisirNoteUrl = () => {
 
 
 
-  return `/api/api/notes/saisir`
+  return `/api/notes/saisir`
 }
 
 /**
@@ -8129,7 +8129,7 @@ export const getSaisirNotesGroupeUrl = () => {
 
 
 
-  return `/api/api/notes/saisir-groupe`
+  return `/api/notes/saisir-groupe`
 }
 
 /**
@@ -8208,7 +8208,7 @@ export const getGetNotesClasseUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/notes/classe/${classeId}?${stringifiedParams}` : `/api/api/notes/classe/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/notes/classe/${classeId}?${stringifiedParams}` : `/api/notes/classe/${classeId}`
 }
 
 /**
@@ -8233,7 +8233,7 @@ export const getNotesClasse = async (classeId: string,
 export const getGetNotesClasseQueryKey = (classeId: string,
     params?: GetNotesClasseParams,) => {
     return [
-    `/api/api/notes/classe/${classeId}`, ...(params ? [params] : [])
+    `/api/notes/classe/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -8297,7 +8297,7 @@ export const getGetNotesEleveUrl = (eleveId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/notes/eleve/${eleveId}?${stringifiedParams}` : `/api/api/notes/eleve/${eleveId}`
+  return stringifiedParams.length > 0 ? `/api/notes/eleve/${eleveId}?${stringifiedParams}` : `/api/notes/eleve/${eleveId}`
 }
 
 /**
@@ -8322,7 +8322,7 @@ export const getNotesEleve = async (eleveId: string,
 export const getGetNotesEleveQueryKey = (eleveId: string,
     params?: GetNotesEleveParams,) => {
     return [
-    `/api/api/notes/eleve/${eleveId}`, ...(params ? [params] : [])
+    `/api/notes/eleve/${eleveId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -8386,7 +8386,7 @@ export const getGetMoyennesClasseUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/notes/moyennes/${classeId}?${stringifiedParams}` : `/api/api/notes/moyennes/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/notes/moyennes/${classeId}?${stringifiedParams}` : `/api/notes/moyennes/${classeId}`
 }
 
 /**
@@ -8411,7 +8411,7 @@ export const getMoyennesClasse = async (classeId: string,
 export const getGetMoyennesClasseQueryKey = (classeId: string,
     params?: GetMoyennesClasseParams,) => {
     return [
-    `/api/api/notes/moyennes/${classeId}`, ...(params ? [params] : [])
+    `/api/notes/moyennes/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -8475,7 +8475,7 @@ export const getGetStatistiquesNotesUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/notes/statistiques/${classeId}?${stringifiedParams}` : `/api/api/notes/statistiques/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/notes/statistiques/${classeId}?${stringifiedParams}` : `/api/notes/statistiques/${classeId}`
 }
 
 /**
@@ -8500,7 +8500,7 @@ export const getStatistiquesNotes = async (classeId: string,
 export const getGetStatistiquesNotesQueryKey = (classeId: string,
     params?: GetStatistiquesNotesParams,) => {
     return [
-    `/api/api/notes/statistiques/${classeId}`, ...(params ? [params] : [])
+    `/api/notes/statistiques/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -8556,7 +8556,7 @@ export const getModifierNoteUrl = (id: string,) => {
 
 
 
-  return `/api/api/notes/${id}/modifier`
+  return `/api/notes/${id}/modifier`
 }
 
 /**
@@ -8628,7 +8628,7 @@ export const getSupprimerNoteUrl = (id: string,) => {
 
 
 
-  return `/api/api/notes/${id}/supprimer`
+  return `/api/notes/${id}/supprimer`
 }
 
 /**
@@ -8706,7 +8706,7 @@ export const getGetMatiereClasseUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/matieres-config/classe/${classeId}?${stringifiedParams}` : `/api/api/matieres-config/classe/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/matieres-config/classe/${classeId}?${stringifiedParams}` : `/api/matieres-config/classe/${classeId}`
 }
 
 /**
@@ -8731,7 +8731,7 @@ export const getMatiereClasse = async (classeId: string,
 export const getGetMatiereClasseQueryKey = (classeId: string,
     params?: GetMatiereClasseParams,) => {
     return [
-    `/api/api/matieres-config/classe/${classeId}`, ...(params ? [params] : [])
+    `/api/matieres-config/classe/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -8787,7 +8787,7 @@ export const getConfigurerMatieresUrl = () => {
 
 
 
-  return `/api/api/matieres-config/configurer`
+  return `/api/matieres-config/configurer`
 }
 
 /**
@@ -8858,7 +8858,7 @@ export const getModifierMatiereConfigUrl = (id: string,) => {
 
 
 
-  return `/api/api/matieres-config/${id}/modifier`
+  return `/api/matieres-config/${id}/modifier`
 }
 
 /**
@@ -8930,7 +8930,7 @@ export const getSupprimerMatiereConfigUrl = (id: string,) => {
 
 
 
-  return `/api/api/matieres-config/${id}/supprimer`
+  return `/api/matieres-config/${id}/supprimer`
 }
 
 /**
@@ -9000,7 +9000,7 @@ export const getGenererBulletinUrl = () => {
 
 
 
-  return `/api/api/bulletins/generer`
+  return `/api/bulletins/generer`
 }
 
 /**
@@ -9071,7 +9071,7 @@ export const getGenererBulletinsClasseUrl = () => {
 
 
 
-  return `/api/api/bulletins/generer-classe`
+  return `/api/bulletins/generer-classe`
 }
 
 /**
@@ -9142,7 +9142,7 @@ export const getCalculerRangsUrl = () => {
 
 
 
-  return `/api/api/bulletins/calculer-rangs`
+  return `/api/bulletins/calculer-rangs`
 }
 
 /**
@@ -9213,7 +9213,7 @@ export const getPublierBulletinsClasseUrl = () => {
 
 
 
-  return `/api/api/bulletins/publier-classe`
+  return `/api/bulletins/publier-classe`
 }
 
 /**
@@ -9292,7 +9292,7 @@ export const getGetBulletinsClasseUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/bulletins/classe/${classeId}?${stringifiedParams}` : `/api/api/bulletins/classe/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/bulletins/classe/${classeId}?${stringifiedParams}` : `/api/bulletins/classe/${classeId}`
 }
 
 /**
@@ -9317,7 +9317,7 @@ export const getBulletinsClasse = async (classeId: string,
 export const getGetBulletinsClasseQueryKey = (classeId: string,
     params?: GetBulletinsClasseParams,) => {
     return [
-    `/api/api/bulletins/classe/${classeId}`, ...(params ? [params] : [])
+    `/api/bulletins/classe/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -9381,7 +9381,7 @@ export const getGetBulletinsEleveUrl = (eleveId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/bulletins/eleve/${eleveId}?${stringifiedParams}` : `/api/api/bulletins/eleve/${eleveId}`
+  return stringifiedParams.length > 0 ? `/api/bulletins/eleve/${eleveId}?${stringifiedParams}` : `/api/bulletins/eleve/${eleveId}`
 }
 
 /**
@@ -9406,7 +9406,7 @@ export const getBulletinsEleve = async (eleveId: string,
 export const getGetBulletinsEleveQueryKey = (eleveId: string,
     params?: GetBulletinsEleveParams,) => {
     return [
-    `/api/api/bulletins/eleve/${eleveId}`, ...(params ? [params] : [])
+    `/api/bulletins/eleve/${eleveId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -9462,7 +9462,7 @@ export const getGetBulletinUrl = (id: string,) => {
 
 
 
-  return `/api/api/bulletins/${id}`
+  return `/api/bulletins/${id}`
 }
 
 /**
@@ -9485,7 +9485,7 @@ export const getBulletin = async (id: string, options?: RequestInit): Promise<Bu
 
 export const getGetBulletinQueryKey = (id: string,) => {
     return [
-    `/api/api/bulletins/${id}`
+    `/api/bulletins/${id}`
     ] as const;
     }
 
@@ -9539,7 +9539,7 @@ export const getAjouterAppreciationUrl = (id: string,) => {
 
 
 
-  return `/api/api/bulletins/${id}/appreciation`
+  return `/api/bulletins/${id}/appreciation`
 }
 
 /**
@@ -9611,7 +9611,7 @@ export const getPublierBulletinUrl = (id: string,) => {
 
 
 
-  return `/api/api/bulletins/${id}/publier`
+  return `/api/bulletins/${id}/publier`
 }
 
 /**
@@ -9681,7 +9681,7 @@ export const getExportBulletinPDFUrl = (id: string,) => {
 
 
 
-  return `/api/api/bulletins/${id}/pdf`
+  return `/api/bulletins/${id}/pdf`
 }
 
 /**
@@ -9704,7 +9704,7 @@ export const exportBulletinPDF = async (id: string, options?: RequestInit): Prom
 
 export const getExportBulletinPDFQueryKey = (id: string,) => {
     return [
-    `/api/api/bulletins/${id}/pdf`
+    `/api/bulletins/${id}/pdf`
     ] as const;
     }
 
@@ -9758,7 +9758,7 @@ export const getPlanifierConseilUrl = () => {
 
 
 
-  return `/api/api/conseils/planifier`
+  return `/api/conseils/planifier`
 }
 
 /**
@@ -9836,7 +9836,7 @@ export const getListerConseilsUrl = (params?: ListerConseilsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/conseils/liste?${stringifiedParams}` : `/api/api/conseils/liste`
+  return stringifiedParams.length > 0 ? `/api/conseils/liste?${stringifiedParams}` : `/api/conseils/liste`
 }
 
 /**
@@ -9859,7 +9859,7 @@ export const listerConseils = async (params?: ListerConseilsParams, options?: Re
 
 export const getListerConseilsQueryKey = (params?: ListerConseilsParams,) => {
     return [
-    `/api/api/conseils/liste`, ...(params ? [params] : [])
+    `/api/conseils/liste`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -9913,7 +9913,7 @@ export const getGetConseilUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}`
+  return `/api/conseils/${id}`
 }
 
 /**
@@ -9936,7 +9936,7 @@ export const getConseil = async (id: string, options?: RequestInit): Promise<Con
 
 export const getGetConseilQueryKey = (id: string,) => {
     return [
-    `/api/api/conseils/${id}`
+    `/api/conseils/${id}`
     ] as const;
     }
 
@@ -9990,7 +9990,7 @@ export const getDemarrerConseilUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/demarrer`
+  return `/api/conseils/${id}/demarrer`
 }
 
 /**
@@ -10060,7 +10060,7 @@ export const getTerminerConseilUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/terminer`
+  return `/api/conseils/${id}/terminer`
 }
 
 /**
@@ -10132,7 +10132,7 @@ export const getModifierConseilUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/modifier`
+  return `/api/conseils/${id}/modifier`
 }
 
 /**
@@ -10204,7 +10204,7 @@ export const getEnvoyerConvocationsUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/convoquer`
+  return `/api/conseils/${id}/convoquer`
 }
 
 /**
@@ -10274,7 +10274,7 @@ export const getConfirmerPresenceUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/presence`
+  return `/api/conseils/${id}/presence`
 }
 
 /**
@@ -10344,7 +10344,7 @@ export const getGetConseilEnCoursUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/en-cours`
+  return `/api/conseils/${id}/en-cours`
 }
 
 /**
@@ -10367,7 +10367,7 @@ export const getConseilEnCours = async (id: string, options?: RequestInit): Prom
 
 export const getGetConseilEnCoursQueryKey = (id: string,) => {
     return [
-    `/api/api/conseils/${id}/en-cours`
+    `/api/conseils/${id}/en-cours`
     ] as const;
     }
 
@@ -10421,7 +10421,7 @@ export const getSaisirDeliberationUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/deliberation`
+  return `/api/conseils/${id}/deliberation`
 }
 
 /**
@@ -10493,7 +10493,7 @@ export const getAjouterInterventionUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/intervention`
+  return `/api/conseils/${id}/intervention`
 }
 
 /**
@@ -10565,7 +10565,7 @@ export const getGetDeliberationsClasseUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/deliberations`
+  return `/api/conseils/${id}/deliberations`
 }
 
 /**
@@ -10588,7 +10588,7 @@ export const getDeliberationsClasse = async (id: string, options?: RequestInit):
 
 export const getGetDeliberationsClasseQueryKey = (id: string,) => {
     return [
-    `/api/api/conseils/${id}/deliberations`
+    `/api/conseils/${id}/deliberations`
     ] as const;
     }
 
@@ -10642,7 +10642,7 @@ export const getGenererPVUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/generer-pv`
+  return `/api/conseils/${id}/generer-pv`
 }
 
 /**
@@ -10712,7 +10712,7 @@ export const getSignerPVUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/signer-pv`
+  return `/api/conseils/${id}/signer-pv`
 }
 
 /**
@@ -10782,7 +10782,7 @@ export const getGetConseilParticipantsUrl = (id: string,) => {
 
 
 
-  return `/api/api/conseils/${id}/participants`
+  return `/api/conseils/${id}/participants`
 }
 
 /**
@@ -10805,7 +10805,7 @@ export const getConseilParticipants = async (id: string, options?: RequestInit):
 
 export const getGetConseilParticipantsQueryKey = (id: string,) => {
     return [
-    `/api/api/conseils/${id}/participants`
+    `/api/conseils/${id}/participants`
     ] as const;
     }
 
@@ -12721,7 +12721,7 @@ export const getListerParentsUrl = (params?: ListerParentsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/parents?${stringifiedParams}` : `/api/api/parents`
+  return stringifiedParams.length > 0 ? `/api/parents?${stringifiedParams}` : `/api/parents`
 }
 
 /**
@@ -12744,7 +12744,7 @@ export const listerParents = async (params?: ListerParentsParams, options?: Requ
 
 export const getListerParentsQueryKey = (params?: ListerParentsParams,) => {
     return [
-    `/api/api/parents`, ...(params ? [params] : [])
+    `/api/parents`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -12798,7 +12798,7 @@ export const getCreerCompteParentUrl = () => {
 
 
 
-  return `/api/api/parents/creer`
+  return `/api/parents/creer`
 }
 
 /**
@@ -12869,7 +12869,7 @@ export const getLierParentExistantUrl = () => {
 
 
 
-  return `/api/api/parents/lier`
+  return `/api/parents/lier`
 }
 
 /**
@@ -12940,7 +12940,7 @@ export const getListerParentsEleveUrl = (eleveId: string,) => {
 
 
 
-  return `/api/api/parents/eleve/${eleveId}`
+  return `/api/parents/eleve/${eleveId}`
 }
 
 /**
@@ -12963,7 +12963,7 @@ export const listerParentsEleve = async (eleveId: string, options?: RequestInit)
 
 export const getListerParentsEleveQueryKey = (eleveId: string,) => {
     return [
-    `/api/api/parents/eleve/${eleveId}`
+    `/api/parents/eleve/${eleveId}`
     ] as const;
     }
 
@@ -13017,7 +13017,7 @@ export const getListerEnfantsParentUrl = (parentId: string,) => {
 
 
 
-  return `/api/api/parents/${parentId}/enfants`
+  return `/api/parents/${parentId}/enfants`
 }
 
 /**
@@ -13040,7 +13040,7 @@ export const listerEnfantsParent = async (parentId: string, options?: RequestIni
 
 export const getListerEnfantsParentQueryKey = (parentId: string,) => {
     return [
-    `/api/api/parents/${parentId}/enfants`
+    `/api/parents/${parentId}/enfants`
     ] as const;
     }
 
@@ -13094,7 +13094,7 @@ export const getModifierLiaisonUrl = (id: string,) => {
 
 
 
-  return `/api/api/parents/liaison/${id}`
+  return `/api/parents/liaison/${id}`
 }
 
 /**
@@ -13166,7 +13166,7 @@ export const getSupprimerLiaisonUrl = (id: string,) => {
 
 
 
-  return `/api/api/parents/liaison/${id}`
+  return `/api/parents/liaison/${id}`
 }
 
 /**
@@ -13236,7 +13236,7 @@ export const getReinitialiserMdpParentUrl = (id: string,) => {
 
 
 
-  return `/api/api/parents/${id}/reinitialiser-mdp`
+  return `/api/parents/${id}/reinitialiser-mdp`
 }
 
 /**
@@ -14925,7 +14925,7 @@ export const useTerminerRendezVous = <TError = ErrorType<unknown>,
       return useMutation(getTerminerRendezVousMutationOptions(options));
     }
 
-export const getGetApiAnnoncesUrl = (params?: GetApiAnnoncesParams,) => {
+export const getGetAnnoncesUrl = (params?: GetAnnoncesParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -14937,15 +14937,15 @@ export const getGetApiAnnoncesUrl = (params?: GetApiAnnoncesParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/annonces?${stringifiedParams}` : `/api/api/annonces`
+  return stringifiedParams.length > 0 ? `/api/annonces?${stringifiedParams}` : `/api/annonces`
 }
 
 /**
  * @summary Lister les annonces
  */
-export const getApiAnnonces = async (params?: GetApiAnnoncesParams, options?: RequestInit): Promise<AnnoncesListeResponse> => {
+export const getAnnonces = async (params?: GetAnnoncesParams, options?: RequestInit): Promise<AnnoncesListeResponse> => {
 
-  return customFetch<AnnoncesListeResponse>(getGetApiAnnoncesUrl(params),
+  return customFetch<AnnoncesListeResponse>(getGetAnnoncesUrl(params),
   {
     ...options,
     method: 'GET'
@@ -14958,45 +14958,45 @@ export const getApiAnnonces = async (params?: GetApiAnnoncesParams, options?: Re
 
 
 
-export const getGetApiAnnoncesQueryKey = (params?: GetApiAnnoncesParams,) => {
+export const getGetAnnoncesQueryKey = (params?: GetAnnoncesParams,) => {
     return [
-    `/api/api/annonces`, ...(params ? [params] : [])
+    `/api/annonces`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiAnnoncesQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnonces>>, TError = ErrorType<unknown>>(params?: GetApiAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnnoncesQueryOptions = <TData = Awaited<ReturnType<typeof getAnnonces>>, TError = ErrorType<unknown>>(params?: GetAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnnoncesQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnonces>>> = ({ signal }) => getApiAnnonces(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnnonces>>> = ({ signal }) => getAnnonces(params, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnnonces>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnnoncesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnonces>>>
-export type GetApiAnnoncesQueryError = ErrorType<unknown>
+export type GetAnnoncesQueryResult = NonNullable<Awaited<ReturnType<typeof getAnnonces>>>
+export type GetAnnoncesQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Lister les annonces
  */
 
-export function useGetApiAnnonces<TData = Awaited<ReturnType<typeof getApiAnnonces>>, TError = ErrorType<unknown>>(
- params?: GetApiAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnnonces<TData = Awaited<ReturnType<typeof getAnnonces>>, TError = ErrorType<unknown>>(
+ params?: GetAnnoncesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnonces>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnnoncesQueryOptions(params,options)
+  const queryOptions = getGetAnnoncesQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -15009,20 +15009,20 @@ export function useGetApiAnnonces<TData = Awaited<ReturnType<typeof getApiAnnonc
 
 
 
-export const getPostApiAnnoncesUrl = () => {
+export const getPostAnnoncesUrl = () => {
 
 
 
 
-  return `/api/api/annonces`
+  return `/api/annonces`
 }
 
 /**
  * @summary Créer une annonce
  */
-export const postApiAnnonces = async (annonceInput: AnnonceInput, options?: RequestInit): Promise<AnnonceItemResponse> => {
+export const postAnnonces = async (annonceInput: AnnonceInput, options?: RequestInit): Promise<AnnonceItemResponse> => {
 
-  return customFetch<AnnonceItemResponse>(getPostApiAnnoncesUrl(),
+  return customFetch<AnnonceItemResponse>(getPostAnnoncesUrl(),
   {
     ...options,
     method: 'POST',
@@ -15035,11 +15035,11 @@ export const postApiAnnonces = async (annonceInput: AnnonceInput, options?: Requ
 
 
 
-export const getPostApiAnnoncesMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext> => {
+export const getPostAnnoncesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext> => {
 
-const mutationKey = ['postApiAnnonces'];
+const mutationKey = ['postAnnonces'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -15049,10 +15049,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnnonces>>, {data: BodyType<AnnonceInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAnnonces>>, {data: BodyType<AnnonceInput>}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiAnnonces(data,requestOptions)
+          return  postAnnonces(data,requestOptions)
         }
 
 
@@ -15062,38 +15062,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiAnnoncesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnnonces>>>
-    export type PostApiAnnoncesMutationBody = BodyType<AnnonceInput>
-    export type PostApiAnnoncesMutationError = ErrorType<unknown>
+    export type PostAnnoncesMutationResult = NonNullable<Awaited<ReturnType<typeof postAnnonces>>>
+    export type PostAnnoncesMutationBody = BodyType<AnnonceInput>
+    export type PostAnnoncesMutationError = ErrorType<unknown>
 
     /**
  * @summary Créer une annonce
  */
-export const usePostApiAnnonces = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePostAnnonces = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnnonces>>, TError,{data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof postApiAnnonces>>,
+        Awaited<ReturnType<typeof postAnnonces>>,
         TError,
         {data: BodyType<AnnonceInput>},
         TContext
       > => {
-      return useMutation(getPostApiAnnoncesMutationOptions(options));
+      return useMutation(getPostAnnoncesMutationOptions(options));
     }
 
-export const getGetApiAnnoncesNonLuesCountUrl = () => {
+export const getGetAnnoncesNonLuesCountUrl = () => {
 
 
 
 
-  return `/api/api/annonces/non-lues/count`
+  return `/api/annonces/non-lues/count`
 }
 
 /**
  * @summary Nombre d'annonces non lues
  */
-export const getApiAnnoncesNonLuesCount = async ( options?: RequestInit): Promise<AnnonceCountResponse> => {
+export const getAnnoncesNonLuesCount = async ( options?: RequestInit): Promise<AnnonceCountResponse> => {
 
-  return customFetch<AnnonceCountResponse>(getGetApiAnnoncesNonLuesCountUrl(),
+  return customFetch<AnnonceCountResponse>(getGetAnnoncesNonLuesCountUrl(),
   {
     ...options,
     method: 'GET'
@@ -15106,45 +15106,45 @@ export const getApiAnnoncesNonLuesCount = async ( options?: RequestInit): Promis
 
 
 
-export const getGetApiAnnoncesNonLuesCountQueryKey = () => {
+export const getGetAnnoncesNonLuesCountQueryKey = () => {
     return [
-    `/api/api/annonces/non-lues/count`
+    `/api/annonces/non-lues/count`
     ] as const;
     }
 
 
-export const getGetApiAnnoncesNonLuesCountQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnnoncesNonLuesCountQueryOptions = <TData = Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesNonLuesCountQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnnoncesNonLuesCountQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>> = ({ signal }) => getApiAnnoncesNonLuesCount({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>> = ({ signal }) => getAnnoncesNonLuesCount({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnnoncesNonLuesCountQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>>
-export type GetApiAnnoncesNonLuesCountQueryError = ErrorType<unknown>
+export type GetAnnoncesNonLuesCountQueryResult = NonNullable<Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>>
+export type GetAnnoncesNonLuesCountQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Nombre d'annonces non lues
  */
 
-export function useGetApiAnnoncesNonLuesCount<TData = Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnnoncesNonLuesCount<TData = Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesNonLuesCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnnoncesNonLuesCountQueryOptions(options)
+  const queryOptions = getGetAnnoncesNonLuesCountQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -15157,20 +15157,20 @@ export function useGetApiAnnoncesNonLuesCount<TData = Awaited<ReturnType<typeof 
 
 
 
-export const getGetApiAnnoncesIdUrl = (id: string,) => {
+export const getGetAnnoncesIdUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/annonces/${id}`
+  return `/api/annonces/${id}`
 }
 
 /**
  * @summary Détail annonce (marque comme lue)
  */
-export const getApiAnnoncesId = async (id: string, options?: RequestInit): Promise<AnnonceDetailResponse> => {
+export const getAnnoncesId = async (id: string, options?: RequestInit): Promise<AnnonceDetailResponse> => {
 
-  return customFetch<AnnonceDetailResponse>(getGetApiAnnoncesIdUrl(id),
+  return customFetch<AnnonceDetailResponse>(getGetAnnoncesIdUrl(id),
   {
     ...options,
     method: 'GET'
@@ -15183,45 +15183,45 @@ export const getApiAnnoncesId = async (id: string, options?: RequestInit): Promi
 
 
 
-export const getGetApiAnnoncesIdQueryKey = (id: string,) => {
+export const getGetAnnoncesIdQueryKey = (id: string,) => {
     return [
-    `/api/api/annonces/${id}`
+    `/api/annonces/${id}`
     ] as const;
     }
 
 
-export const getGetApiAnnoncesIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnnoncesIdQueryOptions = <TData = Awaited<ReturnType<typeof getAnnoncesId>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnnoncesIdQueryKey(id);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesId>>> = ({ signal }) => getApiAnnoncesId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnnoncesId>>> = ({ signal }) => getAnnoncesId(id, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesId>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnnoncesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesId>>>
-export type GetApiAnnoncesIdQueryError = ErrorType<unknown>
+export type GetAnnoncesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getAnnoncesId>>>
+export type GetAnnoncesIdQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Détail annonce (marque comme lue)
  */
 
-export function useGetApiAnnoncesId<TData = Awaited<ReturnType<typeof getApiAnnoncesId>>, TError = ErrorType<unknown>>(
- id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnnoncesId<TData = Awaited<ReturnType<typeof getAnnoncesId>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesId>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnnoncesIdQueryOptions(id,options)
+  const queryOptions = getGetAnnoncesIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -15234,21 +15234,21 @@ export function useGetApiAnnoncesId<TData = Awaited<ReturnType<typeof getApiAnno
 
 
 
-export const getPutApiAnnoncesIdUrl = (id: string,) => {
+export const getPutAnnoncesIdUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/annonces/${id}`
+  return `/api/annonces/${id}`
 }
 
 /**
  * @summary Modifier une annonce
  */
-export const putApiAnnoncesId = async (id: string,
+export const putAnnoncesId = async (id: string,
     annonceInput: AnnonceInput, options?: RequestInit): Promise<AnnonceItemResponse> => {
 
-  return customFetch<AnnonceItemResponse>(getPutApiAnnoncesIdUrl(id),
+  return customFetch<AnnonceItemResponse>(getPutAnnoncesIdUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -15261,11 +15261,11 @@ export const putApiAnnoncesId = async (id: string,
 
 
 
-export const getPutApiAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext> => {
+export const getPutAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext> => {
 
-const mutationKey = ['putApiAnnoncesId'];
+const mutationKey = ['putAnnoncesId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -15275,10 +15275,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAnnoncesId>>, {id: string;data: BodyType<AnnonceInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putAnnoncesId>>, {id: string;data: BodyType<AnnonceInput>}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putApiAnnoncesId(id,data,requestOptions)
+          return  putAnnoncesId(id,data,requestOptions)
         }
 
 
@@ -15288,38 +15288,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutApiAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAnnoncesId>>>
-    export type PutApiAnnoncesIdMutationBody = BodyType<AnnonceInput>
-    export type PutApiAnnoncesIdMutationError = ErrorType<unknown>
+    export type PutAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putAnnoncesId>>>
+    export type PutAnnoncesIdMutationBody = BodyType<AnnonceInput>
+    export type PutAnnoncesIdMutationError = ErrorType<unknown>
 
     /**
  * @summary Modifier une annonce
  */
-export const usePutApiAnnoncesId = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePutAnnoncesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesId>>, TError,{id: string;data: BodyType<AnnonceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof putApiAnnoncesId>>,
+        Awaited<ReturnType<typeof putAnnoncesId>>,
         TError,
         {id: string;data: BodyType<AnnonceInput>},
         TContext
       > => {
-      return useMutation(getPutApiAnnoncesIdMutationOptions(options));
+      return useMutation(getPutAnnoncesIdMutationOptions(options));
     }
 
-export const getDeleteApiAnnoncesIdUrl = (id: string,) => {
+export const getDeleteAnnoncesIdUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/annonces/${id}`
+  return `/api/annonces/${id}`
 }
 
 /**
  * @summary Supprimer une annonce
  */
-export const deleteApiAnnoncesId = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
+export const deleteAnnoncesId = async (id: string, options?: RequestInit): Promise<MessageResponse> => {
 
-  return customFetch<MessageResponse>(getDeleteApiAnnoncesIdUrl(id),
+  return customFetch<MessageResponse>(getDeleteAnnoncesIdUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -15331,11 +15331,11 @@ export const deleteApiAnnoncesId = async (id: string, options?: RequestInit): Pr
 
 
 
-export const getDeleteApiAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext> => {
+export const getDeleteAnnoncesIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAnnoncesId>>, TError,{id: string}, TContext> => {
 
-const mutationKey = ['deleteApiAnnoncesId'];
+const mutationKey = ['deleteAnnoncesId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -15345,10 +15345,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, {id: string}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAnnoncesId>>, {id: string}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteApiAnnoncesId(id,requestOptions)
+          return  deleteAnnoncesId(id,requestOptions)
         }
 
 
@@ -15358,38 +15358,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteApiAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiAnnoncesId>>>
+    export type DeleteAnnoncesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAnnoncesId>>>
 
-    export type DeleteApiAnnoncesIdMutationError = ErrorType<unknown>
+    export type DeleteAnnoncesIdMutationError = ErrorType<unknown>
 
     /**
  * @summary Supprimer une annonce
  */
-export const useDeleteApiAnnoncesId = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const useDeleteAnnoncesId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAnnoncesId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof deleteApiAnnoncesId>>,
+        Awaited<ReturnType<typeof deleteAnnoncesId>>,
         TError,
         {id: string},
         TContext
       > => {
-      return useMutation(getDeleteApiAnnoncesIdMutationOptions(options));
+      return useMutation(getDeleteAnnoncesIdMutationOptions(options));
     }
 
-export const getPutApiAnnoncesIdPublierUrl = (id: string,) => {
+export const getPutAnnoncesIdPublierUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/annonces/${id}/publier`
+  return `/api/annonces/${id}/publier`
 }
 
 /**
  * @summary Publier une annonce
  */
-export const putApiAnnoncesIdPublier = async (id: string, options?: RequestInit): Promise<AnnonceItemResponse> => {
+export const putAnnoncesIdPublier = async (id: string, options?: RequestInit): Promise<AnnonceItemResponse> => {
 
-  return customFetch<AnnonceItemResponse>(getPutApiAnnoncesIdPublierUrl(id),
+  return customFetch<AnnonceItemResponse>(getPutAnnoncesIdPublierUrl(id),
   {
     ...options,
     method: 'PUT'
@@ -15401,11 +15401,11 @@ export const putApiAnnoncesIdPublier = async (id: string, options?: RequestInit)
 
 
 
-export const getPutApiAnnoncesIdPublierMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext> => {
+export const getPutAnnoncesIdPublierMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesIdPublier>>, TError,{id: string}, TContext> => {
 
-const mutationKey = ['putApiAnnoncesIdPublier'];
+const mutationKey = ['putAnnoncesIdPublier'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -15415,10 +15415,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, {id: string}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putAnnoncesIdPublier>>, {id: string}> = (props) => {
           const {id} = props ?? {};
 
-          return  putApiAnnoncesIdPublier(id,requestOptions)
+          return  putAnnoncesIdPublier(id,requestOptions)
         }
 
 
@@ -15428,38 +15428,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutApiAnnoncesIdPublierMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>>
+    export type PutAnnoncesIdPublierMutationResult = NonNullable<Awaited<ReturnType<typeof putAnnoncesIdPublier>>>
 
-    export type PutApiAnnoncesIdPublierMutationError = ErrorType<unknown>
+    export type PutAnnoncesIdPublierMutationError = ErrorType<unknown>
 
     /**
  * @summary Publier une annonce
  */
-export const usePutApiAnnoncesIdPublier = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePutAnnoncesIdPublier = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAnnoncesIdPublier>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof putApiAnnoncesIdPublier>>,
+        Awaited<ReturnType<typeof putAnnoncesIdPublier>>,
         TError,
         {id: string},
         TContext
       > => {
-      return useMutation(getPutApiAnnoncesIdPublierMutationOptions(options));
+      return useMutation(getPutAnnoncesIdPublierMutationOptions(options));
     }
 
-export const getGetApiAnnoncesIdStatsUrl = (id: string,) => {
+export const getGetAnnoncesIdStatsUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/annonces/${id}/stats`
+  return `/api/annonces/${id}/stats`
 }
 
 /**
  * @summary Stats de lecture d'une annonce
  */
-export const getApiAnnoncesIdStats = async (id: string, options?: RequestInit): Promise<AnnonceStatsResponse> => {
+export const getAnnoncesIdStats = async (id: string, options?: RequestInit): Promise<AnnonceStatsResponse> => {
 
-  return customFetch<AnnonceStatsResponse>(getGetApiAnnoncesIdStatsUrl(id),
+  return customFetch<AnnonceStatsResponse>(getGetAnnoncesIdStatsUrl(id),
   {
     ...options,
     method: 'GET'
@@ -15472,45 +15472,45 @@ export const getApiAnnoncesIdStats = async (id: string, options?: RequestInit): 
 
 
 
-export const getGetApiAnnoncesIdStatsQueryKey = (id: string,) => {
+export const getGetAnnoncesIdStatsQueryKey = (id: string,) => {
     return [
-    `/api/api/annonces/${id}/stats`
+    `/api/annonces/${id}/stats`
     ] as const;
     }
 
 
-export const getGetApiAnnoncesIdStatsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnnoncesIdStatsQueryOptions = <TData = Awaited<ReturnType<typeof getAnnoncesIdStats>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnnoncesIdStatsQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnnoncesIdStatsQueryKey(id);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>> = ({ signal }) => getApiAnnoncesIdStats(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnnoncesIdStats>>> = ({ signal }) => getAnnoncesIdStats(id, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesIdStats>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnnoncesIdStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>>
-export type GetApiAnnoncesIdStatsQueryError = ErrorType<unknown>
+export type GetAnnoncesIdStatsQueryResult = NonNullable<Awaited<ReturnType<typeof getAnnoncesIdStats>>>
+export type GetAnnoncesIdStatsQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Stats de lecture d'une annonce
  */
 
-export function useGetApiAnnoncesIdStats<TData = Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError = ErrorType<unknown>>(
- id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnnoncesIdStats<TData = Awaited<ReturnType<typeof getAnnoncesIdStats>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnnoncesIdStats>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnnoncesIdStatsQueryOptions(id,options)
+  const queryOptions = getGetAnnoncesIdStatsQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -15523,20 +15523,20 @@ export function useGetApiAnnoncesIdStats<TData = Awaited<ReturnType<typeof getAp
 
 
 
-export const getPostApiNotificationsEnvoyerUrl = () => {
+export const getPostNotificationsEnvoyerUrl = () => {
 
 
 
 
-  return `/api/api/notifications/envoyer`
+  return `/api/notifications/envoyer`
 }
 
 /**
  * @summary Envoyer une notification manuelle
  */
-export const postApiNotificationsEnvoyer = async (envoyerNotificationInput: EnvoyerNotificationInput, options?: RequestInit): Promise<MessageResponse> => {
+export const postNotificationsEnvoyer = async (envoyerNotificationInput: EnvoyerNotificationInput, options?: RequestInit): Promise<MessageResponse> => {
 
-  return customFetch<MessageResponse>(getPostApiNotificationsEnvoyerUrl(),
+  return customFetch<MessageResponse>(getPostNotificationsEnvoyerUrl(),
   {
     ...options,
     method: 'POST',
@@ -15549,11 +15549,11 @@ export const postApiNotificationsEnvoyer = async (envoyerNotificationInput: Envo
 
 
 
-export const getPostApiNotificationsEnvoyerMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext> => {
+export const getPostNotificationsEnvoyerMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext> => {
 
-const mutationKey = ['postApiNotificationsEnvoyer'];
+const mutationKey = ['postNotificationsEnvoyer'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -15563,10 +15563,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, {data: BodyType<EnvoyerNotificationInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postNotificationsEnvoyer>>, {data: BodyType<EnvoyerNotificationInput>}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiNotificationsEnvoyer(data,requestOptions)
+          return  postNotificationsEnvoyer(data,requestOptions)
         }
 
 
@@ -15576,22 +15576,22 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiNotificationsEnvoyerMutationResult = NonNullable<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>>
-    export type PostApiNotificationsEnvoyerMutationBody = BodyType<EnvoyerNotificationInput>
-    export type PostApiNotificationsEnvoyerMutationError = ErrorType<unknown>
+    export type PostNotificationsEnvoyerMutationResult = NonNullable<Awaited<ReturnType<typeof postNotificationsEnvoyer>>>
+    export type PostNotificationsEnvoyerMutationBody = BodyType<EnvoyerNotificationInput>
+    export type PostNotificationsEnvoyerMutationError = ErrorType<unknown>
 
     /**
  * @summary Envoyer une notification manuelle
  */
-export const usePostApiNotificationsEnvoyer = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePostNotificationsEnvoyer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postNotificationsEnvoyer>>, TError,{data: BodyType<EnvoyerNotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof postApiNotificationsEnvoyer>>,
+        Awaited<ReturnType<typeof postNotificationsEnvoyer>>,
         TError,
         {data: BodyType<EnvoyerNotificationInput>},
         TContext
       > => {
-      return useMutation(getPostApiNotificationsEnvoyerMutationOptions(options));
+      return useMutation(getPostNotificationsEnvoyerMutationOptions(options));
     }
 
 export const getGetExamensSujetsUrl = (params?: GetExamensSujetsParams,) => {
@@ -20731,7 +20731,7 @@ export function useGetDistinctionsEleveEleveId<TData = Awaited<ReturnType<typeof
 
 
 
-export const getGetApiAnalyticsKpisUrl = (params?: GetApiAnalyticsKpisParams,) => {
+export const getGetAnalyticsKpisUrl = (params?: GetAnalyticsKpisParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -20743,15 +20743,15 @@ export const getGetApiAnalyticsKpisUrl = (params?: GetApiAnalyticsKpisParams,) =
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/analytics/kpis?${stringifiedParams}` : `/api/api/analytics/kpis`
+  return stringifiedParams.length > 0 ? `/api/analytics/kpis?${stringifiedParams}` : `/api/analytics/kpis`
 }
 
 /**
  * @summary KPIs établissement
  */
-export const getApiAnalyticsKpis = async (params?: GetApiAnalyticsKpisParams, options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsKpis = async (params?: GetAnalyticsKpisParams, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsKpisUrl(params),
+  return customFetch<SuccessResponse>(getGetAnalyticsKpisUrl(params),
   {
     ...options,
     method: 'GET'
@@ -20764,45 +20764,45 @@ export const getApiAnalyticsKpis = async (params?: GetApiAnalyticsKpisParams, op
 
 
 
-export const getGetApiAnalyticsKpisQueryKey = (params?: GetApiAnalyticsKpisParams,) => {
+export const getGetAnalyticsKpisQueryKey = (params?: GetAnalyticsKpisParams,) => {
     return [
-    `/api/api/analytics/kpis`, ...(params ? [params] : [])
+    `/api/analytics/kpis`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiAnalyticsKpisQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsKpisQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsKpis>>, TError = ErrorType<unknown>>(params?: GetAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsKpisQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsKpisQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsKpis>>> = ({ signal }) => getApiAnalyticsKpis(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsKpis>>> = ({ signal }) => getAnalyticsKpis(params, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsKpis>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsKpisQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsKpis>>>
-export type GetApiAnalyticsKpisQueryError = ErrorType<unknown>
+export type GetAnalyticsKpisQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsKpis>>>
+export type GetAnalyticsKpisQueryError = ErrorType<unknown>
 
 
 /**
  * @summary KPIs établissement
  */
 
-export function useGetApiAnalyticsKpis<TData = Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError = ErrorType<unknown>>(
- params?: GetApiAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsKpis<TData = Awaited<ReturnType<typeof getAnalyticsKpis>>, TError = ErrorType<unknown>>(
+ params?: GetAnalyticsKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsKpisQueryOptions(params,options)
+  const queryOptions = getGetAnalyticsKpisQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -20815,7 +20815,7 @@ export function useGetApiAnalyticsKpis<TData = Awaited<ReturnType<typeof getApiA
 
 
 
-export const getGetApiAnalyticsPedagogiqueUrl = (params?: GetApiAnalyticsPedagogiqueParams,) => {
+export const getGetAnalyticsPedagogiqueUrl = (params?: GetAnalyticsPedagogiqueParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -20827,15 +20827,15 @@ export const getGetApiAnalyticsPedagogiqueUrl = (params?: GetApiAnalyticsPedagog
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/analytics/pedagogique?${stringifiedParams}` : `/api/api/analytics/pedagogique`
+  return stringifiedParams.length > 0 ? `/api/analytics/pedagogique?${stringifiedParams}` : `/api/analytics/pedagogique`
 }
 
 /**
  * @summary Analyse pédagogique
  */
-export const getApiAnalyticsPedagogique = async (params?: GetApiAnalyticsPedagogiqueParams, options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsPedagogique = async (params?: GetAnalyticsPedagogiqueParams, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsPedagogiqueUrl(params),
+  return customFetch<SuccessResponse>(getGetAnalyticsPedagogiqueUrl(params),
   {
     ...options,
     method: 'GET'
@@ -20848,45 +20848,45 @@ export const getApiAnalyticsPedagogique = async (params?: GetApiAnalyticsPedagog
 
 
 
-export const getGetApiAnalyticsPedagogiqueQueryKey = (params?: GetApiAnalyticsPedagogiqueParams,) => {
+export const getGetAnalyticsPedagogiqueQueryKey = (params?: GetAnalyticsPedagogiqueParams,) => {
     return [
-    `/api/api/analytics/pedagogique`, ...(params ? [params] : [])
+    `/api/analytics/pedagogique`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiAnalyticsPedagogiqueQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsPedagogiqueQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsPedagogique>>, TError = ErrorType<unknown>>(params?: GetAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsPedagogiqueQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsPedagogiqueQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>> = ({ signal }) => getApiAnalyticsPedagogique(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsPedagogique>>> = ({ signal }) => getAnalyticsPedagogique(params, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPedagogique>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsPedagogiqueQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>>
-export type GetApiAnalyticsPedagogiqueQueryError = ErrorType<unknown>
+export type GetAnalyticsPedagogiqueQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsPedagogique>>>
+export type GetAnalyticsPedagogiqueQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Analyse pédagogique
  */
 
-export function useGetApiAnalyticsPedagogique<TData = Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError = ErrorType<unknown>>(
- params?: GetApiAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsPedagogique<TData = Awaited<ReturnType<typeof getAnalyticsPedagogique>>, TError = ErrorType<unknown>>(
+ params?: GetAnalyticsPedagogiqueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPedagogique>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsPedagogiqueQueryOptions(params,options)
+  const queryOptions = getGetAnalyticsPedagogiqueQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -20899,7 +20899,7 @@ export function useGetApiAnalyticsPedagogique<TData = Awaited<ReturnType<typeof 
 
 
 
-export const getGetApiAnalyticsPresencesUrl = (params?: GetApiAnalyticsPresencesParams,) => {
+export const getGetAnalyticsPresencesUrl = (params?: GetAnalyticsPresencesParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -20911,15 +20911,15 @@ export const getGetApiAnalyticsPresencesUrl = (params?: GetApiAnalyticsPresences
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/analytics/presences?${stringifiedParams}` : `/api/api/analytics/presences`
+  return stringifiedParams.length > 0 ? `/api/analytics/presences?${stringifiedParams}` : `/api/analytics/presences`
 }
 
 /**
  * @summary Analyse présences & absences
  */
-export const getApiAnalyticsPresences = async (params?: GetApiAnalyticsPresencesParams, options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsPresences = async (params?: GetAnalyticsPresencesParams, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsPresencesUrl(params),
+  return customFetch<SuccessResponse>(getGetAnalyticsPresencesUrl(params),
   {
     ...options,
     method: 'GET'
@@ -20932,45 +20932,45 @@ export const getApiAnalyticsPresences = async (params?: GetApiAnalyticsPresences
 
 
 
-export const getGetApiAnalyticsPresencesQueryKey = (params?: GetApiAnalyticsPresencesParams,) => {
+export const getGetAnalyticsPresencesQueryKey = (params?: GetAnalyticsPresencesParams,) => {
     return [
-    `/api/api/analytics/presences`, ...(params ? [params] : [])
+    `/api/analytics/presences`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiAnalyticsPresencesQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsPresencesQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsPresences>>, TError = ErrorType<unknown>>(params?: GetAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsPresencesQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsPresencesQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsPresences>>> = ({ signal }) => getApiAnalyticsPresences(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsPresences>>> = ({ signal }) => getAnalyticsPresences(params, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPresences>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsPresencesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsPresences>>>
-export type GetApiAnalyticsPresencesQueryError = ErrorType<unknown>
+export type GetAnalyticsPresencesQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsPresences>>>
+export type GetAnalyticsPresencesQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Analyse présences & absences
  */
 
-export function useGetApiAnalyticsPresences<TData = Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError = ErrorType<unknown>>(
- params?: GetApiAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsPresences<TData = Awaited<ReturnType<typeof getAnalyticsPresences>>, TError = ErrorType<unknown>>(
+ params?: GetAnalyticsPresencesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsPresences>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsPresencesQueryOptions(params,options)
+  const queryOptions = getGetAnalyticsPresencesQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -20983,20 +20983,20 @@ export function useGetApiAnalyticsPresences<TData = Awaited<ReturnType<typeof ge
 
 
 
-export const getGetApiAnalyticsInfirmerieUrl = () => {
+export const getGetAnalyticsInfirmerieUrl = () => {
 
 
 
 
-  return `/api/api/analytics/infirmerie`
+  return `/api/analytics/infirmerie`
 }
 
 /**
  * @summary Analyse infirmerie
  */
-export const getApiAnalyticsInfirmerie = async ( options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsInfirmerie = async ( options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsInfirmerieUrl(),
+  return customFetch<SuccessResponse>(getGetAnalyticsInfirmerieUrl(),
   {
     ...options,
     method: 'GET'
@@ -21009,45 +21009,45 @@ export const getApiAnalyticsInfirmerie = async ( options?: RequestInit): Promise
 
 
 
-export const getGetApiAnalyticsInfirmerieQueryKey = () => {
+export const getGetAnalyticsInfirmerieQueryKey = () => {
     return [
-    `/api/api/analytics/infirmerie`
+    `/api/analytics/infirmerie`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsInfirmerieQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsInfirmerieQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsInfirmerie>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsInfirmerieQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsInfirmerieQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>> = ({ signal }) => getApiAnalyticsInfirmerie({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsInfirmerie>>> = ({ signal }) => getAnalyticsInfirmerie({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsInfirmerie>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsInfirmerieQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>>
-export type GetApiAnalyticsInfirmerieQueryError = ErrorType<unknown>
+export type GetAnalyticsInfirmerieQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsInfirmerie>>>
+export type GetAnalyticsInfirmerieQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Analyse infirmerie
  */
 
-export function useGetApiAnalyticsInfirmerie<TData = Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsInfirmerie<TData = Awaited<ReturnType<typeof getAnalyticsInfirmerie>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsInfirmerie>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsInfirmerieQueryOptions(options)
+  const queryOptions = getGetAnalyticsInfirmerieQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21060,20 +21060,20 @@ export function useGetApiAnalyticsInfirmerie<TData = Awaited<ReturnType<typeof g
 
 
 
-export const getGetApiAnalyticsClubsUrl = () => {
+export const getGetAnalyticsClubsUrl = () => {
 
 
 
 
-  return `/api/api/analytics/clubs`
+  return `/api/analytics/clubs`
 }
 
 /**
  * @summary Analyse clubs & activités
  */
-export const getApiAnalyticsClubs = async ( options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsClubs = async ( options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsClubsUrl(),
+  return customFetch<SuccessResponse>(getGetAnalyticsClubsUrl(),
   {
     ...options,
     method: 'GET'
@@ -21086,45 +21086,45 @@ export const getApiAnalyticsClubs = async ( options?: RequestInit): Promise<Succ
 
 
 
-export const getGetApiAnalyticsClubsQueryKey = () => {
+export const getGetAnalyticsClubsQueryKey = () => {
     return [
-    `/api/api/analytics/clubs`
+    `/api/analytics/clubs`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsClubsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsClubsQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsClubs>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsClubsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsClubsQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsClubs>>> = ({ signal }) => getApiAnalyticsClubs({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsClubs>>> = ({ signal }) => getAnalyticsClubs({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsClubs>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsClubsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsClubs>>>
-export type GetApiAnalyticsClubsQueryError = ErrorType<unknown>
+export type GetAnalyticsClubsQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsClubs>>>
+export type GetAnalyticsClubsQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Analyse clubs & activités
  */
 
-export function useGetApiAnalyticsClubs<TData = Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsClubs<TData = Awaited<ReturnType<typeof getAnalyticsClubs>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsClubs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsClubsQueryOptions(options)
+  const queryOptions = getGetAnalyticsClubsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21137,20 +21137,20 @@ export function useGetApiAnalyticsClubs<TData = Awaited<ReturnType<typeof getApi
 
 
 
-export const getGetApiAnalyticsBibliothequeUrl = () => {
+export const getGetAnalyticsBibliothequeUrl = () => {
 
 
 
 
-  return `/api/api/analytics/bibliotheque`
+  return `/api/analytics/bibliotheque`
 }
 
 /**
  * @summary Analyse bibliothèque
  */
-export const getApiAnalyticsBibliotheque = async ( options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsBibliotheque = async ( options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsBibliothequeUrl(),
+  return customFetch<SuccessResponse>(getGetAnalyticsBibliothequeUrl(),
   {
     ...options,
     method: 'GET'
@@ -21163,45 +21163,45 @@ export const getApiAnalyticsBibliotheque = async ( options?: RequestInit): Promi
 
 
 
-export const getGetApiAnalyticsBibliothequeQueryKey = () => {
+export const getGetAnalyticsBibliothequeQueryKey = () => {
     return [
-    `/api/api/analytics/bibliotheque`
+    `/api/analytics/bibliotheque`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsBibliothequeQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsBibliothequeQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsBibliotheque>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsBibliothequeQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsBibliothequeQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>> = ({ signal }) => getApiAnalyticsBibliotheque({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsBibliotheque>>> = ({ signal }) => getAnalyticsBibliotheque({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsBibliotheque>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsBibliothequeQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>>
-export type GetApiAnalyticsBibliothequeQueryError = ErrorType<unknown>
+export type GetAnalyticsBibliothequeQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsBibliotheque>>>
+export type GetAnalyticsBibliothequeQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Analyse bibliothèque
  */
 
-export function useGetApiAnalyticsBibliotheque<TData = Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsBibliotheque<TData = Awaited<ReturnType<typeof getAnalyticsBibliotheque>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsBibliotheque>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsBibliothequeQueryOptions(options)
+  const queryOptions = getGetAnalyticsBibliothequeQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21214,7 +21214,7 @@ export function useGetApiAnalyticsBibliotheque<TData = Awaited<ReturnType<typeof
 
 
 
-export const getGetApiAnalyticsProfesseurUrl = (params?: GetApiAnalyticsProfesseurParams,) => {
+export const getGetAnalyticsProfesseurUrl = (params?: GetAnalyticsProfesseurParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -21226,15 +21226,15 @@ export const getGetApiAnalyticsProfesseurUrl = (params?: GetApiAnalyticsProfesse
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/analytics/professeur?${stringifiedParams}` : `/api/api/analytics/professeur`
+  return stringifiedParams.length > 0 ? `/api/analytics/professeur?${stringifiedParams}` : `/api/analytics/professeur`
 }
 
 /**
  * @summary Dashboard analytique professeur
  */
-export const getApiAnalyticsProfesseur = async (params?: GetApiAnalyticsProfesseurParams, options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsProfesseur = async (params?: GetAnalyticsProfesseurParams, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsProfesseurUrl(params),
+  return customFetch<SuccessResponse>(getGetAnalyticsProfesseurUrl(params),
   {
     ...options,
     method: 'GET'
@@ -21247,45 +21247,45 @@ export const getApiAnalyticsProfesseur = async (params?: GetApiAnalyticsProfesse
 
 
 
-export const getGetApiAnalyticsProfesseurQueryKey = (params?: GetApiAnalyticsProfesseurParams,) => {
+export const getGetAnalyticsProfesseurQueryKey = (params?: GetAnalyticsProfesseurParams,) => {
     return [
-    `/api/api/analytics/professeur`, ...(params ? [params] : [])
+    `/api/analytics/professeur`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiAnalyticsProfesseurQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError = ErrorType<unknown>>(params?: GetApiAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsProfesseurQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsProfesseur>>, TError = ErrorType<unknown>>(params?: GetAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsProfesseurQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsProfesseurQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>> = ({ signal }) => getApiAnalyticsProfesseur(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsProfesseur>>> = ({ signal }) => getAnalyticsProfesseur(params, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsProfesseur>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsProfesseurQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>>
-export type GetApiAnalyticsProfesseurQueryError = ErrorType<unknown>
+export type GetAnalyticsProfesseurQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsProfesseur>>>
+export type GetAnalyticsProfesseurQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Dashboard analytique professeur
  */
 
-export function useGetApiAnalyticsProfesseur<TData = Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError = ErrorType<unknown>>(
- params?: GetApiAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsProfesseur<TData = Awaited<ReturnType<typeof getAnalyticsProfesseur>>, TError = ErrorType<unknown>>(
+ params?: GetAnalyticsProfesseurParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsProfesseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsProfesseurQueryOptions(params,options)
+  const queryOptions = getGetAnalyticsProfesseurQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21298,20 +21298,20 @@ export function useGetApiAnalyticsProfesseur<TData = Awaited<ReturnType<typeof g
 
 
 
-export const getGetApiAnalyticsCenseurUrl = () => {
+export const getGetAnalyticsCenseurUrl = () => {
 
 
 
 
-  return `/api/api/analytics/censeur`
+  return `/api/analytics/censeur`
 }
 
 /**
  * @summary Dashboard analytique censeur
  */
-export const getApiAnalyticsCenseur = async ( options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsCenseur = async ( options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsCenseurUrl(),
+  return customFetch<SuccessResponse>(getGetAnalyticsCenseurUrl(),
   {
     ...options,
     method: 'GET'
@@ -21324,45 +21324,45 @@ export const getApiAnalyticsCenseur = async ( options?: RequestInit): Promise<Su
 
 
 
-export const getGetApiAnalyticsCenseurQueryKey = () => {
+export const getGetAnalyticsCenseurQueryKey = () => {
     return [
-    `/api/api/analytics/censeur`
+    `/api/analytics/censeur`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsCenseurQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsCenseurQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsCenseur>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsCenseurQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsCenseurQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>> = ({ signal }) => getApiAnalyticsCenseur({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsCenseur>>> = ({ signal }) => getAnalyticsCenseur({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsCenseur>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsCenseurQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>>
-export type GetApiAnalyticsCenseurQueryError = ErrorType<unknown>
+export type GetAnalyticsCenseurQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsCenseur>>>
+export type GetAnalyticsCenseurQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Dashboard analytique censeur
  */
 
-export function useGetApiAnalyticsCenseur<TData = Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsCenseur<TData = Awaited<ReturnType<typeof getAnalyticsCenseur>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsCenseur>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsCenseurQueryOptions(options)
+  const queryOptions = getGetAnalyticsCenseurQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21375,20 +21375,20 @@ export function useGetApiAnalyticsCenseur<TData = Awaited<ReturnType<typeof getA
 
 
 
-export const getPostApiAnalyticsRapportsGenererUrl = () => {
+export const getPostAnalyticsRapportsGenererUrl = () => {
 
 
 
 
-  return `/api/api/analytics/rapports/generer`
+  return `/api/analytics/rapports/generer`
 }
 
 /**
  * @summary Générer un rapport
  */
-export const postApiAnalyticsRapportsGenerer = async (rapportInput: RapportInput, options?: RequestInit): Promise<SuccessResponse> => {
+export const postAnalyticsRapportsGenerer = async (rapportInput: RapportInput, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getPostApiAnalyticsRapportsGenererUrl(),
+  return customFetch<SuccessResponse>(getPostAnalyticsRapportsGenererUrl(),
   {
     ...options,
     method: 'POST',
@@ -21401,11 +21401,11 @@ export const postApiAnalyticsRapportsGenerer = async (rapportInput: RapportInput
 
 
 
-export const getPostApiAnalyticsRapportsGenererMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext> => {
+export const getPostAnalyticsRapportsGenererMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext> => {
 
-const mutationKey = ['postApiAnalyticsRapportsGenerer'];
+const mutationKey = ['postAnalyticsRapportsGenerer'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -21415,10 +21415,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, {data: BodyType<RapportInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>, {data: BodyType<RapportInput>}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiAnalyticsRapportsGenerer(data,requestOptions)
+          return  postAnalyticsRapportsGenerer(data,requestOptions)
         }
 
 
@@ -21428,38 +21428,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiAnalyticsRapportsGenererMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>>
-    export type PostApiAnalyticsRapportsGenererMutationBody = BodyType<RapportInput>
-    export type PostApiAnalyticsRapportsGenererMutationError = ErrorType<unknown>
+    export type PostAnalyticsRapportsGenererMutationResult = NonNullable<Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>>
+    export type PostAnalyticsRapportsGenererMutationBody = BodyType<RapportInput>
+    export type PostAnalyticsRapportsGenererMutationError = ErrorType<unknown>
 
     /**
  * @summary Générer un rapport
  */
-export const usePostApiAnalyticsRapportsGenerer = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePostAnalyticsRapportsGenerer = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>, TError,{data: BodyType<RapportInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof postApiAnalyticsRapportsGenerer>>,
+        Awaited<ReturnType<typeof postAnalyticsRapportsGenerer>>,
         TError,
         {data: BodyType<RapportInput>},
         TContext
       > => {
-      return useMutation(getPostApiAnalyticsRapportsGenererMutationOptions(options));
+      return useMutation(getPostAnalyticsRapportsGenererMutationOptions(options));
     }
 
-export const getGetApiAnalyticsRapportsUrl = () => {
+export const getGetAnalyticsRapportsUrl = () => {
 
 
 
 
-  return `/api/api/analytics/rapports`
+  return `/api/analytics/rapports`
 }
 
 /**
  * @summary Lister les rapports générés
  */
-export const getApiAnalyticsRapports = async ( options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsRapports = async ( options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsRapportsUrl(),
+  return customFetch<SuccessResponse>(getGetAnalyticsRapportsUrl(),
   {
     ...options,
     method: 'GET'
@@ -21472,45 +21472,45 @@ export const getApiAnalyticsRapports = async ( options?: RequestInit): Promise<S
 
 
 
-export const getGetApiAnalyticsRapportsQueryKey = () => {
+export const getGetAnalyticsRapportsQueryKey = () => {
     return [
-    `/api/api/analytics/rapports`
+    `/api/analytics/rapports`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsRapportsQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsRapportsQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsRapports>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsRapportsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsRapportsQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsRapports>>> = ({ signal }) => getApiAnalyticsRapports({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsRapports>>> = ({ signal }) => getAnalyticsRapports({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapports>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsRapportsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsRapports>>>
-export type GetApiAnalyticsRapportsQueryError = ErrorType<unknown>
+export type GetAnalyticsRapportsQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsRapports>>>
+export type GetAnalyticsRapportsQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Lister les rapports générés
  */
 
-export function useGetApiAnalyticsRapports<TData = Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsRapports<TData = Awaited<ReturnType<typeof getAnalyticsRapports>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsRapportsQueryOptions(options)
+  const queryOptions = getGetAnalyticsRapportsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21523,20 +21523,20 @@ export function useGetApiAnalyticsRapports<TData = Awaited<ReturnType<typeof get
 
 
 
-export const getGetApiAnalyticsRapportsIdTelechargerUrl = (id: string,) => {
+export const getGetAnalyticsRapportsIdTelechargerUrl = (id: string,) => {
 
 
 
 
-  return `/api/api/analytics/rapports/${id}/telecharger`
+  return `/api/analytics/rapports/${id}/telecharger`
 }
 
 /**
  * @summary Télécharger un rapport
  */
-export const getApiAnalyticsRapportsIdTelecharger = async (id: string, options?: RequestInit): Promise<SuccessResponse> => {
+export const getAnalyticsRapportsIdTelecharger = async (id: string, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getGetApiAnalyticsRapportsIdTelechargerUrl(id),
+  return customFetch<SuccessResponse>(getGetAnalyticsRapportsIdTelechargerUrl(id),
   {
     ...options,
     method: 'GET'
@@ -21549,45 +21549,45 @@ export const getApiAnalyticsRapportsIdTelecharger = async (id: string, options?:
 
 
 
-export const getGetApiAnalyticsRapportsIdTelechargerQueryKey = (id: string,) => {
+export const getGetAnalyticsRapportsIdTelechargerQueryKey = (id: string,) => {
     return [
-    `/api/api/analytics/rapports/${id}/telecharger`
+    `/api/analytics/rapports/${id}/telecharger`
     ] as const;
     }
 
 
-export const getGetApiAnalyticsRapportsIdTelechargerQueryOptions = <TData = Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAnalyticsRapportsIdTelechargerQueryOptions = <TData = Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiAnalyticsRapportsIdTelechargerQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetAnalyticsRapportsIdTelechargerQueryKey(id);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>> = ({ signal }) => getApiAnalyticsRapportsIdTelecharger(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>> = ({ signal }) => getAnalyticsRapportsIdTelecharger(id, { signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetApiAnalyticsRapportsIdTelechargerQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>>
-export type GetApiAnalyticsRapportsIdTelechargerQueryError = ErrorType<unknown>
+export type GetAnalyticsRapportsIdTelechargerQueryResult = NonNullable<Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>>
+export type GetAnalyticsRapportsIdTelechargerQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Télécharger un rapport
  */
 
-export function useGetApiAnalyticsRapportsIdTelecharger<TData = Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(
- id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAnalyticsRapportsIdTelecharger<TData = Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>, TError = ErrorType<unknown>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAnalyticsRapportsIdTelecharger>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetApiAnalyticsRapportsIdTelechargerQueryOptions(id,options)
+  const queryOptions = getGetAnalyticsRapportsIdTelechargerQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -21600,20 +21600,20 @@ export function useGetApiAnalyticsRapportsIdTelecharger<TData = Awaited<ReturnTy
 
 
 
-export const getPostApiAnalyticsSnapshotsUrl = () => {
+export const getPostAnalyticsSnapshotsUrl = () => {
 
 
 
 
-  return `/api/api/analytics/snapshots`
+  return `/api/analytics/snapshots`
 }
 
 /**
  * @summary Créer un snapshot analytique (dev uniquement)
  */
-export const postApiAnalyticsSnapshots = async (snapshotInput: SnapshotInput, options?: RequestInit): Promise<SuccessResponse> => {
+export const postAnalyticsSnapshots = async (snapshotInput: SnapshotInput, options?: RequestInit): Promise<SuccessResponse> => {
 
-  return customFetch<SuccessResponse>(getPostApiAnalyticsSnapshotsUrl(),
+  return customFetch<SuccessResponse>(getPostAnalyticsSnapshotsUrl(),
   {
     ...options,
     method: 'POST',
@@ -21626,11 +21626,11 @@ export const postApiAnalyticsSnapshots = async (snapshotInput: SnapshotInput, op
 
 
 
-export const getPostApiAnalyticsSnapshotsMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext> => {
+export const getPostAnalyticsSnapshotsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext> => {
 
-const mutationKey = ['postApiAnalyticsSnapshots'];
+const mutationKey = ['postAnalyticsSnapshots'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -21640,10 +21640,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, {data: BodyType<SnapshotInput>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAnalyticsSnapshots>>, {data: BodyType<SnapshotInput>}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiAnalyticsSnapshots(data,requestOptions)
+          return  postAnalyticsSnapshots(data,requestOptions)
         }
 
 
@@ -21653,22 +21653,22 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiAnalyticsSnapshotsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>>
-    export type PostApiAnalyticsSnapshotsMutationBody = BodyType<SnapshotInput>
-    export type PostApiAnalyticsSnapshotsMutationError = ErrorType<unknown>
+    export type PostAnalyticsSnapshotsMutationResult = NonNullable<Awaited<ReturnType<typeof postAnalyticsSnapshots>>>
+    export type PostAnalyticsSnapshotsMutationBody = BodyType<SnapshotInput>
+    export type PostAnalyticsSnapshotsMutationError = ErrorType<unknown>
 
     /**
  * @summary Créer un snapshot analytique (dev uniquement)
  */
-export const usePostApiAnalyticsSnapshots = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+export const usePostAnalyticsSnapshots = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAnalyticsSnapshots>>, TError,{data: BodyType<SnapshotInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof postApiAnalyticsSnapshots>>,
+        Awaited<ReturnType<typeof postAnalyticsSnapshots>>,
         TError,
         {data: BodyType<SnapshotInput>},
         TContext
       > => {
-      return useMutation(getPostApiAnalyticsSnapshotsMutationOptions(options));
+      return useMutation(getPostAnalyticsSnapshotsMutationOptions(options));
     }
 
 export const getPostScolariteFraisConfigurerUrl = () => {
@@ -23157,7 +23157,7 @@ export const getListerTypesProfesseursUrl = () => {
 
 
 
-  return `/api/api/honoraires/types`
+  return `/api/honoraires/types`
 }
 
 /**
@@ -23180,7 +23180,7 @@ export const listerTypesProfesseurs = async ( options?: RequestInit): Promise<Su
 
 export const getListerTypesProfesseursQueryKey = () => {
     return [
-    `/api/api/honoraires/types`
+    `/api/honoraires/types`
     ] as const;
     }
 
@@ -23234,7 +23234,7 @@ export const getConfigurerTypeProfesseurUrl = () => {
 
 
 
-  return `/api/api/honoraires/types`
+  return `/api/honoraires/types`
 }
 
 /**
@@ -23305,7 +23305,7 @@ export const getModifierTypeProfesseurUrl = (id: string,) => {
 
 
 
-  return `/api/api/honoraires/types/${id}`
+  return `/api/honoraires/types/${id}`
 }
 
 /**
@@ -23384,7 +23384,7 @@ export const getListerContratsUrl = (params?: ListerContratsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/honoraires/contrats?${stringifiedParams}` : `/api/api/honoraires/contrats`
+  return stringifiedParams.length > 0 ? `/api/honoraires/contrats?${stringifiedParams}` : `/api/honoraires/contrats`
 }
 
 /**
@@ -23407,7 +23407,7 @@ export const listerContrats = async (params?: ListerContratsParams, options?: Re
 
 export const getListerContratsQueryKey = (params?: ListerContratsParams,) => {
     return [
-    `/api/api/honoraires/contrats`, ...(params ? [params] : [])
+    `/api/honoraires/contrats`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -23461,7 +23461,7 @@ export const getCreerContratUrl = () => {
 
 
 
-  return `/api/api/honoraires/contrats`
+  return `/api/honoraires/contrats`
 }
 
 /**
@@ -23532,7 +23532,7 @@ export const getGetMonContratUrl = () => {
 
 
 
-  return `/api/api/honoraires/contrats/mon-contrat`
+  return `/api/honoraires/contrats/mon-contrat`
 }
 
 /**
@@ -23555,7 +23555,7 @@ export const getMonContrat = async ( options?: RequestInit): Promise<SuccessResp
 
 export const getGetMonContratQueryKey = () => {
     return [
-    `/api/api/honoraires/contrats/mon-contrat`
+    `/api/honoraires/contrats/mon-contrat`
     ] as const;
     }
 
@@ -23616,7 +23616,7 @@ export const getListerFeuillesHeuresUrl = (params?: ListerFeuillesHeuresParams,)
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/honoraires/feuilles?${stringifiedParams}` : `/api/api/honoraires/feuilles`
+  return stringifiedParams.length > 0 ? `/api/honoraires/feuilles?${stringifiedParams}` : `/api/honoraires/feuilles`
 }
 
 /**
@@ -23639,7 +23639,7 @@ export const listerFeuillesHeures = async (params?: ListerFeuillesHeuresParams, 
 
 export const getListerFeuillesHeuresQueryKey = (params?: ListerFeuillesHeuresParams,) => {
     return [
-    `/api/api/honoraires/feuilles`, ...(params ? [params] : [])
+    `/api/honoraires/feuilles`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -23693,7 +23693,7 @@ export const getSoumettreFeuilleHeuresUrl = () => {
 
 
 
-  return `/api/api/honoraires/feuilles`
+  return `/api/honoraires/feuilles`
 }
 
 /**
@@ -23764,7 +23764,7 @@ export const getGetMesFeuillesUrl = () => {
 
 
 
-  return `/api/api/honoraires/feuilles/mes-feuilles`
+  return `/api/honoraires/feuilles/mes-feuilles`
 }
 
 /**
@@ -23787,7 +23787,7 @@ export const getMesFeuilles = async ( options?: RequestInit): Promise<SuccessRes
 
 export const getGetMesFeuillesQueryKey = () => {
     return [
-    `/api/api/honoraires/feuilles/mes-feuilles`
+    `/api/honoraires/feuilles/mes-feuilles`
     ] as const;
     }
 
@@ -23841,7 +23841,7 @@ export const getValiderFeuilleHeuresUrl = (id: string,) => {
 
 
 
-  return `/api/api/honoraires/feuilles/${id}/valider`
+  return `/api/honoraires/feuilles/${id}/valider`
 }
 
 /**
@@ -23913,7 +23913,7 @@ export const getRejeterFeuilleHeuresUrl = (id: string,) => {
 
 
 
-  return `/api/api/honoraires/feuilles/${id}/rejeter`
+  return `/api/honoraires/feuilles/${id}/rejeter`
 }
 
 /**
@@ -23985,7 +23985,7 @@ export const getPayerFeuilleHeuresUrl = (id: string,) => {
 
 
 
-  return `/api/api/honoraires/feuilles/${id}/payer`
+  return `/api/honoraires/feuilles/${id}/payer`
 }
 
 /**
@@ -24064,7 +24064,7 @@ export const getGetRecapHonorairesUrl = (params?: GetRecapHonorairesParams,) => 
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/honoraires/recap?${stringifiedParams}` : `/api/api/honoraires/recap`
+  return stringifiedParams.length > 0 ? `/api/honoraires/recap?${stringifiedParams}` : `/api/honoraires/recap`
 }
 
 /**
@@ -24087,7 +24087,7 @@ export const getRecapHonoraires = async (params?: GetRecapHonorairesParams, opti
 
 export const getGetRecapHonorairesQueryKey = (params?: GetRecapHonorairesParams,) => {
     return [
-    `/api/api/honoraires/recap`, ...(params ? [params] : [])
+    `/api/honoraires/recap`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24148,7 +24148,7 @@ export const getListerPrestationsUrl = (params?: ListerPrestationsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/prestations/types?${stringifiedParams}` : `/api/api/prestations/types`
+  return stringifiedParams.length > 0 ? `/api/prestations/types?${stringifiedParams}` : `/api/prestations/types`
 }
 
 /**
@@ -24171,7 +24171,7 @@ export const listerPrestations = async (params?: ListerPrestationsParams, option
 
 export const getListerPrestationsQueryKey = (params?: ListerPrestationsParams,) => {
     return [
-    `/api/api/prestations/types`, ...(params ? [params] : [])
+    `/api/prestations/types`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24225,7 +24225,7 @@ export const getConfigurerPrestationUrl = () => {
 
 
 
-  return `/api/api/prestations/types`
+  return `/api/prestations/types`
 }
 
 /**
@@ -24296,7 +24296,7 @@ export const getModifierPrestationUrl = (id: string,) => {
 
 
 
-  return `/api/api/prestations/types/${id}`
+  return `/api/prestations/types/${id}`
 }
 
 /**
@@ -24375,7 +24375,7 @@ export const getListerFacturesUrl = (params?: ListerFacturesParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/prestations/factures?${stringifiedParams}` : `/api/api/prestations/factures`
+  return stringifiedParams.length > 0 ? `/api/prestations/factures?${stringifiedParams}` : `/api/prestations/factures`
 }
 
 /**
@@ -24398,7 +24398,7 @@ export const listerFactures = async (params?: ListerFacturesParams, options?: Re
 
 export const getListerFacturesQueryKey = (params?: ListerFacturesParams,) => {
     return [
-    `/api/api/prestations/factures`, ...(params ? [params] : [])
+    `/api/prestations/factures`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24452,7 +24452,7 @@ export const getEmettreFactureUrl = () => {
 
 
 
-  return `/api/api/prestations/factures`
+  return `/api/prestations/factures`
 }
 
 /**
@@ -24523,7 +24523,7 @@ export const getPayerFacturePrestationUrl = (id: string,) => {
 
 
 
-  return `/api/api/prestations/factures/${id}/payer`
+  return `/api/prestations/factures/${id}/payer`
 }
 
 /**
@@ -24595,7 +24595,7 @@ export const getAnnulerFactureUrl = (id: string,) => {
 
 
 
-  return `/api/api/prestations/factures/${id}/annuler`
+  return `/api/prestations/factures/${id}/annuler`
 }
 
 /**
@@ -24665,7 +24665,7 @@ export const getGetFacturesEleveUrl = (eleveId: string,) => {
 
 
 
-  return `/api/api/prestations/factures/eleve/${eleveId}`
+  return `/api/prestations/factures/eleve/${eleveId}`
 }
 
 /**
@@ -24688,7 +24688,7 @@ export const getFacturesEleve = async (eleveId: string, options?: RequestInit): 
 
 export const getGetFacturesEleveQueryKey = (eleveId: string,) => {
     return [
-    `/api/api/prestations/factures/eleve/${eleveId}`
+    `/api/prestations/factures/eleve/${eleveId}`
     ] as const;
     }
 
@@ -24749,7 +24749,7 @@ export const getGetRecapPrestationsUrl = (params?: GetRecapPrestationsParams,) =
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/prestations/recap?${stringifiedParams}` : `/api/api/prestations/recap`
+  return stringifiedParams.length > 0 ? `/api/prestations/recap?${stringifiedParams}` : `/api/prestations/recap`
 }
 
 /**
@@ -24772,7 +24772,7 @@ export const getRecapPrestations = async (params?: GetRecapPrestationsParams, op
 
 export const getGetRecapPrestationsQueryKey = (params?: GetRecapPrestationsParams,) => {
     return [
-    `/api/api/prestations/recap`, ...(params ? [params] : [])
+    `/api/prestations/recap`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24833,7 +24833,7 @@ export const getGetDashboardFinancierUrl = (params?: GetDashboardFinancierParams
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/finances/dashboard?${stringifiedParams}` : `/api/api/finances/dashboard`
+  return stringifiedParams.length > 0 ? `/api/finances/dashboard?${stringifiedParams}` : `/api/finances/dashboard`
 }
 
 /**
@@ -24856,7 +24856,7 @@ export const getDashboardFinancier = async (params?: GetDashboardFinancierParams
 
 export const getGetDashboardFinancierQueryKey = (params?: GetDashboardFinancierParams,) => {
     return [
-    `/api/api/finances/dashboard`, ...(params ? [params] : [])
+    `/api/finances/dashboard`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24917,7 +24917,7 @@ export const getGetEvolutionFinanciereUrl = (params?: GetEvolutionFinancierePara
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/finances/evolution?${stringifiedParams}` : `/api/api/finances/evolution`
+  return stringifiedParams.length > 0 ? `/api/finances/evolution?${stringifiedParams}` : `/api/finances/evolution`
 }
 
 /**
@@ -24940,7 +24940,7 @@ export const getEvolutionFinanciere = async (params?: GetEvolutionFinancierePara
 
 export const getGetEvolutionFinanciereQueryKey = (params?: GetEvolutionFinanciereParams,) => {
     return [
-    `/api/api/finances/evolution`, ...(params ? [params] : [])
+    `/api/finances/evolution`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -24994,7 +24994,7 @@ export const getConfigurerCriteresUrl = () => {
 
 
 
-  return `/api/api/cloture/criteres`
+  return `/api/cloture/criteres`
 }
 
 /**
@@ -25072,7 +25072,7 @@ export const getGetCriteresUrl = (params: GetCriteresParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cloture/criteres?${stringifiedParams}` : `/api/api/cloture/criteres`
+  return stringifiedParams.length > 0 ? `/api/cloture/criteres?${stringifiedParams}` : `/api/cloture/criteres`
 }
 
 /**
@@ -25095,7 +25095,7 @@ export const getCriteres = async (params: GetCriteresParams, options?: RequestIn
 
 export const getGetCriteresQueryKey = (params?: GetCriteresParams,) => {
     return [
-    `/api/api/cloture/criteres`, ...(params ? [params] : [])
+    `/api/cloture/criteres`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -25157,7 +25157,7 @@ export const getCalculerResultatsClasseUrl = (classeId: string,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cloture/resultats/${classeId}?${stringifiedParams}` : `/api/api/cloture/resultats/${classeId}`
+  return stringifiedParams.length > 0 ? `/api/cloture/resultats/${classeId}?${stringifiedParams}` : `/api/cloture/resultats/${classeId}`
 }
 
 /**
@@ -25182,7 +25182,7 @@ export const calculerResultatsClasse = async (classeId: string,
 export const getCalculerResultatsClasseQueryKey = (classeId: string,
     params?: CalculerResultatsClasseParams,) => {
     return [
-    `/api/api/cloture/resultats/${classeId}`, ...(params ? [params] : [])
+    `/api/cloture/resultats/${classeId}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -25238,7 +25238,7 @@ export const getEnregistrerDecisionUrl = () => {
 
 
 
-  return `/api/api/cloture/decisions`
+  return `/api/cloture/decisions`
 }
 
 /**
@@ -25309,7 +25309,7 @@ export const getEnregistrerDecisionsMasseUrl = () => {
 
 
 
-  return `/api/api/cloture/decisions/masse`
+  return `/api/cloture/decisions/masse`
 }
 
 /**
@@ -25380,7 +25380,7 @@ export const getPromouvoirClasseUrl = () => {
 
 
 
-  return `/api/api/cloture/promouvoir`
+  return `/api/cloture/promouvoir`
 }
 
 /**
@@ -25451,7 +25451,7 @@ export const getNotifierParentsDecisionsUrl = () => {
 
 
 
-  return `/api/api/cloture/notifier`
+  return `/api/cloture/notifier`
 }
 
 /**
@@ -25529,7 +25529,7 @@ export const getGetStatsClotureUrl = (params: GetStatsClotureParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cloture/stats?${stringifiedParams}` : `/api/api/cloture/stats`
+  return stringifiedParams.length > 0 ? `/api/cloture/stats?${stringifiedParams}` : `/api/cloture/stats`
 }
 
 /**
@@ -25552,7 +25552,7 @@ export const getStatsCloture = async (params: GetStatsClotureParams, options?: R
 
 export const getGetStatsClotureQueryKey = (params?: GetStatsClotureParams,) => {
     return [
-    `/api/api/cloture/stats`, ...(params ? [params] : [])
+    `/api/cloture/stats`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -25606,7 +25606,7 @@ export const getAnnulerPromotionUrl = (id: string,) => {
 
 
 
-  return `/api/api/cloture/promotions/${id}/annuler`
+  return `/api/cloture/promotions/${id}/annuler`
 }
 
 /**
@@ -25683,7 +25683,7 @@ export const getGetHistoriquePromotionsUrl = (params?: GetHistoriquePromotionsPa
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/api/cloture/promotions/historique?${stringifiedParams}` : `/api/api/cloture/promotions/historique`
+  return stringifiedParams.length > 0 ? `/api/cloture/promotions/historique?${stringifiedParams}` : `/api/cloture/promotions/historique`
 }
 
 /**
@@ -25706,7 +25706,7 @@ export const getHistoriquePromotions = async (params?: GetHistoriquePromotionsPa
 
 export const getGetHistoriquePromotionsQueryKey = (params?: GetHistoriquePromotionsParams,) => {
     return [
-    `/api/api/cloture/promotions/historique`, ...(params ? [params] : [])
+    `/api/cloture/promotions/historique`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -25760,7 +25760,7 @@ export const getGetEleaveDashboardUrl = () => {
 
 
 
-  return `/api/api/eleve/dashboard`
+  return `/api/eleve/dashboard`
 }
 
 /**
@@ -25783,7 +25783,7 @@ export const getEleaveDashboard = async ( options?: RequestInit): Promise<Eleave
 
 export const getGetEleaveDashboardQueryKey = () => {
     return [
-    `/api/api/eleve/dashboard`
+    `/api/eleve/dashboard`
     ] as const;
     }
 
@@ -25837,7 +25837,7 @@ export const getGetMonProfilUrl = () => {
 
 
 
-  return `/api/api/profil`
+  return `/api/profil`
 }
 
 /**
@@ -25860,7 +25860,7 @@ export const getMonProfil = async ( options?: RequestInit): Promise<MonProfilRes
 
 export const getGetMonProfilQueryKey = () => {
     return [
-    `/api/api/profil`
+    `/api/profil`
     ] as const;
     }
 
@@ -25914,7 +25914,7 @@ export const getModifierMonProfilUrl = () => {
 
 
 
-  return `/api/api/profil`
+  return `/api/profil`
 }
 
 /**
@@ -25985,7 +25985,7 @@ export const getUploaderPhotoUrl = () => {
 
 
 
-  return `/api/api/profil/photo`
+  return `/api/profil/photo`
 }
 
 /**
@@ -26056,7 +26056,7 @@ export const getChangerMotDePasseUrl = () => {
 
 
 
-  return `/api/api/profil/mot-de-passe`
+  return `/api/profil/mot-de-passe`
 }
 
 /**
@@ -26127,7 +26127,7 @@ export const getModifierPreferencesNotifsUrl = () => {
 
 
 
-  return `/api/api/profil/preferences-notifs`
+  return `/api/profil/preferences-notifs`
 }
 
 /**

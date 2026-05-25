@@ -4746,7 +4746,7 @@ export const TerminerRendezVousResponse = zod.object({
 /**
  * @summary Lister les annonces
  */
-export const GetApiAnnoncesQueryParams = zod.object({
+export const GetAnnoncesQueryParams = zod.object({
   "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
   "publie": zod.coerce.boolean().optional(),
   "epingle": zod.coerce.boolean().optional(),
@@ -4754,7 +4754,7 @@ export const GetApiAnnoncesQueryParams = zod.object({
   "date_fin": zod.coerce.string().optional()
 })
 
-export const GetApiAnnoncesResponse = zod.object({
+export const GetAnnoncesResponse = zod.object({
   "annonces": zod.array(zod.object({
   "id": zod.string().optional(),
   "etablissement_id": zod.string().optional(),
@@ -4784,7 +4784,7 @@ export const GetApiAnnoncesResponse = zod.object({
 /**
  * @summary Créer une annonce
  */
-export const PostApiAnnoncesBody = zod.object({
+export const PostAnnoncesBody = zod.object({
   "titre": zod.string(),
   "contenu": zod.string(),
   "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
@@ -4801,7 +4801,7 @@ export const PostApiAnnoncesBody = zod.object({
 /**
  * @summary Nombre d'annonces non lues
  */
-export const GetApiAnnoncesNonLuesCountResponse = zod.object({
+export const GetAnnoncesNonLuesCountResponse = zod.object({
   "count": zod.number()
 })
 
@@ -4809,11 +4809,11 @@ export const GetApiAnnoncesNonLuesCountResponse = zod.object({
 /**
  * @summary Détail annonce (marque comme lue)
  */
-export const GetApiAnnoncesIdParams = zod.object({
+export const GetAnnoncesIdParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const GetApiAnnoncesIdResponse = zod.object({
+export const GetAnnoncesIdResponse = zod.object({
   "annonce": zod.object({
   "id": zod.string().optional(),
   "etablissement_id": zod.string().optional(),
@@ -4852,11 +4852,11 @@ export const GetApiAnnoncesIdResponse = zod.object({
 /**
  * @summary Modifier une annonce
  */
-export const PutApiAnnoncesIdParams = zod.object({
+export const PutAnnoncesIdParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const PutApiAnnoncesIdBody = zod.object({
+export const PutAnnoncesIdBody = zod.object({
   "titre": zod.string(),
   "contenu": zod.string(),
   "type": zod.enum(['information', 'urgence', 'evenement', 'rappel']).optional(),
@@ -4869,7 +4869,7 @@ export const PutApiAnnoncesIdBody = zod.object({
   "piece_jointe_nom": zod.string().nullish()
 })
 
-export const PutApiAnnoncesIdResponse = zod.object({
+export const PutAnnoncesIdResponse = zod.object({
   "annonce": zod.object({
   "id": zod.string().optional(),
   "etablissement_id": zod.string().optional(),
@@ -4898,11 +4898,11 @@ export const PutApiAnnoncesIdResponse = zod.object({
 /**
  * @summary Supprimer une annonce
  */
-export const DeleteApiAnnoncesIdParams = zod.object({
+export const DeleteAnnoncesIdParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const DeleteApiAnnoncesIdResponse = zod.object({
+export const DeleteAnnoncesIdResponse = zod.object({
   "message": zod.string()
 })
 
@@ -4910,11 +4910,11 @@ export const DeleteApiAnnoncesIdResponse = zod.object({
 /**
  * @summary Publier une annonce
  */
-export const PutApiAnnoncesIdPublierParams = zod.object({
+export const PutAnnoncesIdPublierParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const PutApiAnnoncesIdPublierResponse = zod.object({
+export const PutAnnoncesIdPublierResponse = zod.object({
   "annonce": zod.object({
   "id": zod.string().optional(),
   "etablissement_id": zod.string().optional(),
@@ -4943,11 +4943,11 @@ export const PutApiAnnoncesIdPublierResponse = zod.object({
 /**
  * @summary Stats de lecture d'une annonce
  */
-export const GetApiAnnoncesIdStatsParams = zod.object({
+export const GetAnnoncesIdStatsParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const GetApiAnnoncesIdStatsResponse = zod.object({
+export const GetAnnoncesIdStatsResponse = zod.object({
   "nb_vues": zod.number().optional(),
   "nb_lecteurs": zod.number().optional(),
   "lectures": zod.array(zod.object({
@@ -4962,7 +4962,7 @@ export const GetApiAnnoncesIdStatsResponse = zod.object({
 /**
  * @summary Envoyer une notification manuelle
  */
-export const PostApiNotificationsEnvoyerBody = zod.object({
+export const PostNotificationsEnvoyerBody = zod.object({
   "destinataires_ids": zod.array(zod.string()),
   "titre": zod.string(),
   "contenu": zod.string(),
@@ -4970,7 +4970,7 @@ export const PostApiNotificationsEnvoyerBody = zod.object({
   "lien_action": zod.string().nullish()
 })
 
-export const PostApiNotificationsEnvoyerResponse = zod.object({
+export const PostNotificationsEnvoyerResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7194,12 +7194,12 @@ export const GetDistinctionsEleveEleveIdResponse = zod.object({
 /**
  * @summary KPIs établissement
  */
-export const GetApiAnalyticsKpisQueryParams = zod.object({
+export const GetAnalyticsKpisQueryParams = zod.object({
   "annee_scolaire_id": zod.coerce.string().optional(),
   "trimestre": zod.coerce.number().optional()
 })
 
-export const GetApiAnalyticsKpisResponse = zod.object({
+export const GetAnalyticsKpisResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7207,14 +7207,14 @@ export const GetApiAnalyticsKpisResponse = zod.object({
 /**
  * @summary Analyse pédagogique
  */
-export const GetApiAnalyticsPedagogiqueQueryParams = zod.object({
+export const GetAnalyticsPedagogiqueQueryParams = zod.object({
   "annee_scolaire_id": zod.coerce.string().optional(),
   "trimestre": zod.coerce.number().optional(),
   "niveau": zod.coerce.string().optional(),
   "classe_id": zod.coerce.string().optional()
 })
 
-export const GetApiAnalyticsPedagogiqueResponse = zod.object({
+export const GetAnalyticsPedagogiqueResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7222,13 +7222,13 @@ export const GetApiAnalyticsPedagogiqueResponse = zod.object({
 /**
  * @summary Analyse présences & absences
  */
-export const GetApiAnalyticsPresencesQueryParams = zod.object({
+export const GetAnalyticsPresencesQueryParams = zod.object({
   "annee_scolaire_id": zod.coerce.string().optional(),
   "trimestre": zod.coerce.number().optional(),
   "classe_id": zod.coerce.string().optional()
 })
 
-export const GetApiAnalyticsPresencesResponse = zod.object({
+export const GetAnalyticsPresencesResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7236,7 +7236,7 @@ export const GetApiAnalyticsPresencesResponse = zod.object({
 /**
  * @summary Analyse infirmerie
  */
-export const GetApiAnalyticsInfirmerieResponse = zod.object({
+export const GetAnalyticsInfirmerieResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7244,7 +7244,7 @@ export const GetApiAnalyticsInfirmerieResponse = zod.object({
 /**
  * @summary Analyse clubs & activités
  */
-export const GetApiAnalyticsClubsResponse = zod.object({
+export const GetAnalyticsClubsResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7252,7 +7252,7 @@ export const GetApiAnalyticsClubsResponse = zod.object({
 /**
  * @summary Analyse bibliothèque
  */
-export const GetApiAnalyticsBibliothequeResponse = zod.object({
+export const GetAnalyticsBibliothequeResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7260,11 +7260,11 @@ export const GetApiAnalyticsBibliothequeResponse = zod.object({
 /**
  * @summary Dashboard analytique professeur
  */
-export const GetApiAnalyticsProfesseurQueryParams = zod.object({
+export const GetAnalyticsProfesseurQueryParams = zod.object({
   "trimestre": zod.coerce.number().optional()
 })
 
-export const GetApiAnalyticsProfesseurResponse = zod.object({
+export const GetAnalyticsProfesseurResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7272,7 +7272,7 @@ export const GetApiAnalyticsProfesseurResponse = zod.object({
 /**
  * @summary Dashboard analytique censeur
  */
-export const GetApiAnalyticsCenseurResponse = zod.object({
+export const GetAnalyticsCenseurResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7280,7 +7280,7 @@ export const GetApiAnalyticsCenseurResponse = zod.object({
 /**
  * @summary Générer un rapport
  */
-export const PostApiAnalyticsRapportsGenererBody = zod.object({
+export const PostAnalyticsRapportsGenererBody = zod.object({
   "titre": zod.string(),
   "type": zod.string(),
   "format": zod.string(),
@@ -7298,7 +7298,7 @@ export const PostApiAnalyticsRapportsGenererBody = zod.object({
 /**
  * @summary Lister les rapports générés
  */
-export const GetApiAnalyticsRapportsResponse = zod.object({
+export const GetAnalyticsRapportsResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7306,11 +7306,11 @@ export const GetApiAnalyticsRapportsResponse = zod.object({
 /**
  * @summary Télécharger un rapport
  */
-export const GetApiAnalyticsRapportsIdTelechargerParams = zod.object({
+export const GetAnalyticsRapportsIdTelechargerParams = zod.object({
   "id": zod.coerce.string()
 })
 
-export const GetApiAnalyticsRapportsIdTelechargerResponse = zod.object({
+export const GetAnalyticsRapportsIdTelechargerResponse = zod.object({
   "message": zod.string()
 })
 
@@ -7318,7 +7318,7 @@ export const GetApiAnalyticsRapportsIdTelechargerResponse = zod.object({
 /**
  * @summary Créer un snapshot analytique (dev uniquement)
  */
-export const PostApiAnalyticsSnapshotsBody = zod.object({
+export const PostAnalyticsSnapshotsBody = zod.object({
   "annee_scolaire_id": zod.string(),
   "trimestre": zod.number().optional(),
   "date_snapshot": zod.string(),
