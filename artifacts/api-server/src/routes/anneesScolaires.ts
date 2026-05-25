@@ -122,7 +122,7 @@ router.get(
 router.post(
   "/annees-scolaires/creer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const { libelle, date_debut, date_fin, est_active, etablissement_id } =
@@ -190,7 +190,7 @@ router.post(
 router.put(
   "/annees-scolaires/:id/activer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = normalizeId(req.params.id);
@@ -236,7 +236,7 @@ router.put(
 router.put(
   "/annees-scolaires/:id/cloturer",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = normalizeId(req.params.id);
@@ -279,7 +279,7 @@ router.put(
 router.put(
   "/annees-scolaires/:id/trimestres",
   authMiddleware,
-  requireRole("dev", "directeur"),
+  requireRole("directeur"),
   async (req, res): Promise<void> => {
     const user = req.user!;
     const rawId = normalizeId(req.params.id);
