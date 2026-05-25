@@ -467,7 +467,8 @@ export const InscrireEleveBody = zod.object({
   "parent_prenoms": zod.string(),
   "parent_email": zod.string(),
   "parent_lien": zod.string(),
-  "parent_telephone": zod.string().optional()
+  "parent_telephone": zod.string().optional(),
+  "classe_id": zod.string().optional().describe('Identifiant de la classe à affecter (optionnel)')
 })
 
 

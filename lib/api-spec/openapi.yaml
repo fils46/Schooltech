@@ -7573,6 +7573,9 @@ components:
           type: string
         parent_telephone:
           type: string
+        classe_id:
+          type: string
+          description: Identifiant de la classe à affecter (optionnel)
 
     InscrireEleveResponse:
       type: object

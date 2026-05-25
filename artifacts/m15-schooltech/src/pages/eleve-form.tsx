@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useInscrireEleve, type InscrireEleveInputMatriculeStatut } from "@workspace/api-client-react";
+import {
+  useInscrireEleve, type InscrireEleveInputMatriculeStatut,
+  useListerClasses, getListerClassesQueryKey,
+} from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   UserSquare, ArrowLeft, ArrowRight, Check, CheckCircle2,
-  User, Users, ClipboardList, Loader2,
+  User, Users, ClipboardList, Loader2, GraduationCap,
 } from "lucide-react";
 
 /* ─── Stepper ────────────────────────────────────────────── */
@@ -78,6 +81,7 @@ interface EleveData {
   nom: string; prenoms: string; date_naissance: string; lieu_naissance: string;
   sexe: string; adresse: string; situation_familiale: string; annee_inscription: string;
   matricule: string; matricule_statut: string; matricule_provisoire: string;
+  classe_id: string;
 }
 interface ParentData {
   parent_nom: string; parent_prenoms: string; parent_email: string;
@@ -88,6 +92,10 @@ interface ParentData {
 function EtapeEleve({ data, onChange }: { data: EleveData; onChange: (d: Partial<EleveData>) => void }) {
   const anneeActuelle = new Date().getFullYear();
   const annees = Array.from({ length: 3 }, (_, i) => anneeActuelle - i);
+
+  const classesQk = getListerClassesQueryKey();
+  const { data: classesData } = useListerClasses(undefined, { query: { queryKey: classesQk, staleTime: 60_000 } });
+  const classes = (classesData as any)?.classes ?? [];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,6 +144,27 @@ function EtapeEleve({ data, onChange }: { data: EleveData; onChange: (d: Partial
           <option value="tuteur">Sous tutelle</option>
         </select>
       </Field>
+
+      {/* ── Classe ── */}
+      <div className="md:col-span-2">
+        <Field label="Classe (affectation directe)">
+          <select
+            style={inputStyle}
+            value={data.classe_id}
+            onChange={e => onChange({ classe_id: e.target.value })}
+          >
+            <option value="">— À affecter ultérieurement —</option>
+            {classes.map((c: any) => (
+              <option key={c.id} value={c.id}>{c.nom} {c.niveau ? `(${c.niveau})` : ""}</option>
+            ))}
+          </select>
+          {!data.classe_id && (
+            <p className="text-xs mt-1 flex items-center gap-1" style={{ color: "var(--m15-muted)" }}>
+              <GraduationCap className="w-3 h-3" /> L'élève pourra être affecté à une classe depuis sa fiche.
+            </p>
+          )}
+        </Field>
+      </div>
 
       {/* ── Matricule ── */}
       <div className="md:col-span-2 rounded-xl p-4 space-y-3" style={{ background: "var(--elevate-1)", border: "1px solid var(--m15-border)" }}>
@@ -240,10 +269,11 @@ function EtapeParent({ data, onChange }: { data: ParentData; onChange: (d: Parti
 
 /* ─── Étape 3 — Récapitulatif ─────────────────────────────── */
 function EtapeRecap({
-  eleveData, parentData, confirme, setConfirme,
+  eleveData, parentData, confirme, setConfirme, classeNom,
 }: {
   eleveData: EleveData; parentData: ParentData;
   confirme: boolean; setConfirme: (v: boolean) => void;
+  classeNom?: string;
 }) {
   const sexeLabel = eleveData.sexe === "M" ? "Masculin" : eleveData.sexe === "F" ? "Féminin" : "—";
   const sfLabel: Record<string, string> = { pere_mere: "Père et mère", mere: "Mère seule", pere: "Père seul", tuteur: "Sous tutelle" };
@@ -254,6 +284,7 @@ function EtapeRecap({
     { label: "Date de naissance", value: eleveData.date_naissance || "—" },
     { label: "Lieu de naissance", value: eleveData.lieu_naissance || "—" },
     { label: "Sexe", value: sexeLabel },
+    { label: "Classe", value: classeNom ?? "— À affecter ultérieurement —" },
     { label: "Année d'inscription", value: eleveData.annee_inscription },
     { label: "Adresse", value: eleveData.adresse || "—" },
     { label: "Situation familiale", value: sfLabel[eleveData.situation_familiale] ?? "—" },
@@ -324,10 +355,12 @@ function EtapeRecap({
 
 /* ─── Succès ──────────────────────────────────────────────── */
 function EtapeSucces({
-  matricule, matricule_statut, emailEleve, passwordEleve, onReset,
+  matricule, matricule_statut, emailEleve, passwordEleve, classeAffectee, onReset,
 }: {
   matricule?: string | null; matricule_statut?: string;
-  emailEleve?: string; passwordEleve?: string; onReset: () => void;
+  emailEleve?: string; passwordEleve?: string;
+  classeAffectee?: { id: string; nom: string } | null;
+  onReset: () => void;
 }) {
   const [, setLocation] = useLocation();
   const statut = matricule_statut ?? "en_attente";
@@ -368,6 +401,19 @@ function EtapeSucces({
             {badgeLabel}
           </span>
         </div>
+        {classeAffectee && (
+          <div className="flex items-center gap-2" style={{ borderTop: "1px solid var(--m15-border)", paddingTop: "0.5rem" }}>
+            <GraduationCap className="w-4 h-4 flex-shrink-0" style={{ color: "#00C9A7" }} />
+            <span className="text-sm" style={{ color: "var(--m15-white)" }}>
+              Affecté en <strong style={{ color: "#00C9A7" }}>{classeAffectee.nom}</strong>
+            </span>
+          </div>
+        )}
+        {!classeAffectee && (
+          <p className="text-xs flex items-center gap-1" style={{ color: "#F5C842", borderTop: "1px solid var(--m15-border)", paddingTop: "0.5rem" }}>
+            <GraduationCap className="w-3 h-3" /> Aucune classe affectée — à faire depuis la fiche élève.
+          </p>
+        )}
         {statut !== "officiel" && (
           <p className="text-xs" style={{ color: "#F5C842" }}>
             ⚠️ Pensez à renseigner le matricule officiel dès réception du document du Ministère.
@@ -409,14 +455,23 @@ export default function EleveForm() {
   const [, setLocation] = useLocation();
   const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
-  const [resultat, setResultat] = useState<{ matricule?: string | null; matricule_statut?: string; emailEleve?: string; passwordEleve?: string }>({});
+  const [resultat, setResultat] = useState<{ matricule?: string | null; matricule_statut?: string; emailEleve?: string; passwordEleve?: string; classeAffectee?: { id: string; nom: string } | null }>({});
 
   const ANNEE = new Date().getFullYear();
   const [eleveData, setEleveData] = useState<EleveData>({
     nom: "", prenoms: "", date_naissance: "", lieu_naissance: "",
     sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE),
     matricule: "", matricule_statut: "en_attente", matricule_provisoire: "",
+    classe_id: "",
   });
+
+  /* récupère les classes pour afficher le nom dans le récap */
+  const classesQkPage = getListerClassesQueryKey();
+  const { data: classesDataPage } = useListerClasses(undefined, { query: { queryKey: classesQkPage, staleTime: 60_000 } });
+  const classesPage = (classesDataPage as any)?.classes ?? [];
+  const classeNomSelectionne = eleveData.classe_id
+    ? classesPage.find((c: any) => c.id === eleveData.classe_id)?.nom ?? ""
+    : "";
   const [parentData, setParentData] = useState<ParentData>({
     parent_nom: "", parent_prenoms: "", parent_email: "",
     parent_telephone: "", parent_lien: "", est_principal: true,
@@ -472,13 +527,16 @@ export default function EleveForm() {
           parent_email: parentData.parent_email,
           parent_lien: parentData.parent_lien,
           parent_telephone: parentData.parent_telephone || undefined,
+          classe_id: eleveData.classe_id || undefined,
         },
       });
+      const raw = result as unknown as Record<string, unknown>;
       setResultat({
-        matricule: (result as unknown as Record<string, unknown>).matricule as string | null,
-        matricule_statut: (result as unknown as Record<string, unknown>).matricule_statut as string,
+        matricule: raw.matricule as string | null,
+        matricule_statut: raw.matricule_statut as string,
         emailEleve: result.email_eleve,
         passwordEleve: result.password_eleve_temporaire,
+        classeAffectee: (raw.classe_affectee as { id: string; nom: string } | null) ?? null,
       });
       setSuccess(true);
     } catch (err: unknown) {
@@ -489,7 +547,7 @@ export default function EleveForm() {
 
   const handleReset = () => {
     setStep(1); setSuccess(false); setConfirme(false); setResultat({});
-    setEleveData({ nom: "", prenoms: "", date_naissance: "", lieu_naissance: "", sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE), matricule: "", matricule_statut: "en_attente", matricule_provisoire: "" });
+    setEleveData({ nom: "", prenoms: "", date_naissance: "", lieu_naissance: "", sexe: "", adresse: "", situation_familiale: "", annee_inscription: String(ANNEE), matricule: "", matricule_statut: "en_attente", matricule_provisoire: "", classe_id: "" });
     setParentData({ parent_nom: "", parent_prenoms: "", parent_email: "", parent_telephone: "", parent_lien: "", est_principal: true });
   };
 
@@ -520,7 +578,7 @@ export default function EleveForm() {
         {!success && <div className="mb-8"><Stepper current={step} /></div>}
 
         {success ? (
-          <EtapeSucces matricule={resultat.matricule} matricule_statut={resultat.matricule_statut} emailEleve={resultat.emailEleve} passwordEleve={resultat.passwordEleve} onReset={handleReset} />
+          <EtapeSucces matricule={resultat.matricule} matricule_statut={resultat.matricule_statut} emailEleve={resultat.emailEleve} passwordEleve={resultat.passwordEleve} classeAffectee={resultat.classeAffectee} onReset={handleReset} />
         ) : (
           <>
             <div className="mb-6">
@@ -536,7 +594,7 @@ export default function EleveForm() {
 
             {step === 1 && <EtapeEleve data={eleveData} onChange={(d) => setEleveData((p) => ({ ...p, ...d }))} />}
             {step === 2 && <EtapeParent data={parentData} onChange={(d) => setParentData((p) => ({ ...p, ...d }))} />}
-            {step === 3 && <EtapeRecap eleveData={eleveData} parentData={parentData} confirme={confirme} setConfirme={setConfirme} />}
+            {step === 3 && <EtapeRecap eleveData={eleveData} parentData={parentData} confirme={confirme} setConfirme={setConfirme} classeNom={classeNomSelectionne || undefined} />}
 
             <div className="flex justify-between mt-8 pt-5" style={{ borderTop: "1px solid var(--m15-border)" }}>
               {step > 1 ? (

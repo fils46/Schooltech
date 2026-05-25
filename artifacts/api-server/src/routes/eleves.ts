@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { eq, and, count, isNull, or, ne, sql } from "drizzle-orm";
-import { db, elevesTable, parentsElevesTable, documentsElevesTable, utilisateursTable } from "@workspace/db";
+import { db, elevesTable, parentsElevesTable, documentsElevesTable, utilisateursTable, eleveClassesTable, anneesScolairesTable, classesTable } from "@workspace/db";
 import { authMiddleware, requireRole } from "../middlewares/authMiddleware";
 import { verifierLicence } from "../middlewares/verifierLicence";
 import bcrypt from "bcrypt";
@@ -46,7 +46,7 @@ router.post(
       nom, prenoms, date_naissance, lieu_naissance, sexe,
       adresse, situation_familiale, annee_inscription,
       parent_nom, parent_prenoms, parent_email, parent_lien, parent_telephone,
-      matricule, matricule_statut, matricule_provisoire,
+      matricule, matricule_statut, matricule_provisoire, classe_id,
     } = req.body as Record<string, string>;
 
     if (!nom || !prenoms || !date_naissance || !sexe || !annee_inscription ||
@@ -166,7 +166,39 @@ router.post(
       est_principal: true,
     });
 
-    req.log.info({ eleveId: eleve.id, matricule: matriculeValide, statutMatricule }, "Élève inscrit");
+    /* ── Affectation de classe (optionnelle) ───────────────── */
+    let classeAffectee: { id: string; nom: string } | null = null;
+    if (classe_id?.trim()) {
+      const [classe] = await db
+        .select({ id: classesTable.id, nom: classesTable.nom })
+        .from(classesTable)
+        .where(and(eq(classesTable.id, classe_id.trim()), eq(classesTable.etablissement_id, etablissementId)))
+        .limit(1);
+
+      if (classe) {
+        const [anneeActive] = await db
+          .select({ id: anneesScolairesTable.id })
+          .from(anneesScolairesTable)
+          .where(and(
+            eq(anneesScolairesTable.etablissement_id, etablissementId),
+            eq(anneesScolairesTable.est_active, true),
+          ))
+          .limit(1);
+
+        if (anneeActive) {
+          await db.insert(eleveClassesTable).values({
+            eleve_id: eleve.id,
+            classe_id: classe.id,
+            annee_scolaire_id: anneeActive.id,
+            date_affectation: new Date().toISOString().slice(0, 10),
+            statut: "actif",
+          }).onConflictDoNothing();
+          classeAffectee = classe;
+        }
+      }
+    }
+
+    req.log.info({ eleveId: eleve.id, matricule: matriculeValide, statutMatricule, classeId: classeAffectee?.id }, "Élève inscrit");
 
     res.status(201).json({
       success: true,
@@ -177,6 +209,7 @@ router.post(
       email_eleve: emailEleve,
       password_eleve_temporaire: passwordEleve,
       ...(passwordParentTemporaire ? { email_parent: emailParentNorm, password_parent_temporaire: passwordParentTemporaire } : {}),
+      ...(classeAffectee ? { classe_affectee: classeAffectee } : {}),
     });
   }
 );

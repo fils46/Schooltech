@@ -637,6 +637,8 @@ export interface InscrireEleveInput {
   parent_email: string;
   parent_lien: string;
   parent_telephone?: string;
+  /** Identifiant de la classe à affecter (optionnel) */
+  classe_id?: string;
 }
 
 export interface InscrireEleveResponse {
