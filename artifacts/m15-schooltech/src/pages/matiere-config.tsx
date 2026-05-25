@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  BookOpen, Plus, Save, Edit2, Trash2, Loader2, GripVertical, AlertCircle,
+  BookOpen, Plus, Save, Edit2, Trash2, Loader2, GripVertical, AlertCircle, Download,
 } from "lucide-react";
 
 type MatiereRow = {
@@ -63,6 +63,7 @@ export default function MatiereConfig() {
     nom_matiere: "", coefficient: 1, ordre_affichage: 0,
   });
   const [showAddForm, setShowAddForm] = useState(false);
+  const [importing, setImporting] = useState(false);
 
   const { data: classesData, isLoading: loadingClasses } = useListerClasses();
   const { data: anneesData } = useListerAnneesScolaires();
@@ -141,6 +142,51 @@ export default function MatiereConfig() {
     });
   }
 
+  /* Import depuis la table matiere_classes (Mat. par classe) */
+  async function handleImporter() {
+    if (!classeId || !anneeId) return;
+    if (matieres.length > 0) {
+      if (!confirm(`Cette classe a déjà ${matieres.length} matière(s) configurée(s). L'import va les remplacer. Continuer ?`)) return;
+    }
+    setImporting(true);
+    try {
+      const token = localStorage.getItem("m15_token");
+      const r = await fetch(`/api/matieres/classe/${classeId}?annee_scolaire_id=${anneeId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const json = await r.json() as { matieres?: Array<{ matiere_nom: string; coefficient: number }> };
+      const src = json.matieres ?? [];
+      if (src.length === 0) {
+        toast({ title: "Aucune matière trouvée dans Mat. par classe pour cette classe.", variant: "destructive" });
+        return;
+      }
+      configurer.mutate(
+        {
+          data: {
+            classe_id: classeId,
+            annee_scolaire_id: anneeId,
+            matieres: src.map((m, idx) => ({
+              nom_matiere: m.matiere_nom,
+              coefficient: m.coefficient,
+              ordre_affichage: idx,
+            })),
+          },
+        },
+        {
+          onSuccess: () => {
+            toast({ title: `${src.length} matière(s) importée(s) avec succès.` });
+            invalidate();
+          },
+          onError: () => toast({ title: "Erreur lors de l'import.", variant: "destructive" }),
+        }
+      );
+    } catch {
+      toast({ title: "Erreur lors de l'import.", variant: "destructive" });
+    } finally {
+      setImporting(false);
+    }
+  }
+
   const canEdit = ["dev", "directeur", "censeur"].includes(user?.role ?? "");
 
   return (
@@ -201,13 +247,25 @@ export default function MatiereConfig() {
               {matieres.length} matière{matieres.length !== 1 ? "s" : ""} configurée{matieres.length !== 1 ? "s" : ""}
             </h3>
             {canEdit && (
-              <button
-                onClick={() => setShowAddForm(!showAddForm)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-                style={{ background: "rgba(0,201,167,0.12)", border: "1px solid rgba(0,201,167,0.25)", color: "#00C9A7" }}
-              >
-                <Plus className="w-4 h-4" /> Ajouter
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleImporter}
+                  disabled={importing || configurer.isPending}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                  style={{ background: "rgba(0,128,255,0.12)", border: "1px solid rgba(0,128,255,0.25)", color: "#0080FF" }}
+                  title="Importer les matières depuis Mat. par classe"
+                >
+                  {importing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  Importer
+                </button>
+                <button
+                  onClick={() => setShowAddForm(!showAddForm)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                  style={{ background: "rgba(0,201,167,0.12)", border: "1px solid rgba(0,201,167,0.25)", color: "#00C9A7" }}
+                >
+                  <Plus className="w-4 h-4" /> Ajouter
+                </button>
+              </div>
             )}
           </div>
 
@@ -255,13 +313,24 @@ export default function MatiereConfig() {
               {[1,2,3].map(i => <Skeleton key={i} className="h-14 w-full" />)}
             </div>
           ) : matieres.length === 0 ? (
-            <div className="p-12 text-center">
-              <BookOpen className="w-8 h-8 mx-auto mb-3" style={{ color: "var(--m15-muted)" }} />
+            <div className="p-10 text-center space-y-4">
+              <BookOpen className="w-8 h-8 mx-auto" style={{ color: "var(--m15-muted)" }} />
               <p style={{ color: "var(--m15-muted)" }}>Aucune matière configurée pour cette classe</p>
               {canEdit && (
-                <p className="text-sm mt-1" style={{ color: "var(--m15-muted)", opacity: 0.7 }}>
-                  Cliquez sur « Ajouter » pour configurer les matières
-                </p>
+                <div className="inline-flex flex-col items-center gap-3">
+                  <button
+                    onClick={handleImporter}
+                    disabled={importing || configurer.isPending}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
+                    style={{ background: "rgba(0,128,255,0.15)", border: "1px solid rgba(0,128,255,0.3)", color: "#0080FF" }}
+                  >
+                    {importing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                    Importer depuis Mat. par classe
+                  </button>
+                  <p className="text-xs" style={{ color: "var(--m15-muted)", opacity: 0.7 }}>
+                    Ou cliquez sur « Ajouter » pour saisir manuellement
+                  </p>
+                </div>
               )}
             </div>
           ) : (
