@@ -58,8 +58,8 @@ router.get("/profil", authMiddleware, async (req, res) => {
 
 /* ─── PUT /api/profil ────────────────────────────────────────── */
 router.put("/profil", authMiddleware, async (req, res) => {
-  const { nom, prenoms, telephone } = req.body as {
-    nom?: string; prenoms?: string; telephone?: string;
+  const { nom, prenoms, telephone, email } = req.body as {
+    nom?: string; prenoms?: string; telephone?: string; email?: string;
   };
 
   try {
@@ -67,6 +67,13 @@ router.put("/profil", authMiddleware, async (req, res) => {
     if (nom !== undefined) updates.nom = nom.trim();
     if (prenoms !== undefined) updates.prenoms = prenoms.trim();
     if (telephone !== undefined) updates.telephone = telephone.trim() || null;
+    if (email !== undefined) {
+      const emailTrimmed = email.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+        res.status(400).json({ message: "Adresse email invalide" }); return;
+      }
+      updates.email = emailTrimmed;
+    }
 
     if (Object.keys(updates).length === 0) {
       res.status(400).json({ message: "Aucune donnée à modifier" }); return;
